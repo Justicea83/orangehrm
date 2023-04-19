@@ -119,7 +119,7 @@ class AppSetupUtility
      */
     public function connectToDatabaseServer(): DatabaseConnectionWrapper
     {
-        return DatabaseConnectionWrapper::establishConnection(fn () => DatabaseServerConnection::getConnection());
+        return DatabaseConnectionWrapper::establishConnection(fn() => DatabaseServerConnection::getConnection());
     }
 
     /**
@@ -165,7 +165,7 @@ class AppSetupUtility
      */
     public function connectToDatabase(): DatabaseConnectionWrapper
     {
-        return DatabaseConnectionWrapper::establishConnection(fn () => Connection::getConnection());
+        return DatabaseConnectionWrapper::establishConnection(fn() => Connection::getConnection());
     }
 
     /**
@@ -201,18 +201,18 @@ class AppSetupUtility
         );
     }
 
-    public function insertSystemConfiguration(): void
+    public function insertSystemConfiguration(array $data = []): void
     {
         $this->insertCsrfKey();
-        $this->insertOrganizationInfo();
-        $this->insertSubunitOrganizationName();
+        $this->insertOrganizationInfo($data['organization'] ?? []);
+        $this->insertSubunitOrganizationName($data['department'] ?? []);
         $this->setDefaultLanguage();
-        $this->insertAdminEmployee();
-        $this->insertAdminUser();
+        $this->insertAdminEmployee('0001',$data['admin'] ?? []);
+        $this->insertAdminUser('0001',$data['admin'] ?? []);
         !StateContainer::getInstance()->getRegConsent() ?: $this->insertInstanceIdentifier();
         $this->getConfigHelper()->setConfigValue(
             'instance.reg_consent',
-            (int)StateContainer::getInstance()->getRegConsent()
+            (int)StateContainer::getInstance()->getRegConsent() ?? 1
         );
     }
 
@@ -223,27 +223,27 @@ class AppSetupUtility
         $this->getConfigHelper()->setConfigValue('csrf_secret', $csrfSecret);
     }
 
-    protected function insertOrganizationInfo(): void
+    protected function insertOrganizationInfo(array $data = []): void
     {
-        $instanceData = StateContainer::getInstance()->getInstanceData();
+        $instanceData = StateContainer::getInstance()?->getInstanceData();
         Connection::getConnection()->createQueryBuilder()
             ->insert('ohrm_organization_gen_info')
             ->values([
                 'name' => ':name',
                 'country' => ':countryCode',
             ])
-            ->setParameter('name', $instanceData[StateContainer::INSTANCE_ORG_NAME])
-            ->setParameter('countryCode', $instanceData[StateContainer::INSTANCE_COUNTRY_CODE])
+            ->setParameter('name', $data['name'] ?? $instanceData[StateContainer::INSTANCE_ORG_NAME])
+            ->setParameter('countryCode', $data['countryCode'] ?? $instanceData[StateContainer::INSTANCE_COUNTRY_CODE])
             ->executeQuery();
     }
 
-    protected function insertSubunitOrganizationName(): void
+    protected function insertSubunitOrganizationName(array $data = []): void
     {
         $instanceData = StateContainer::getInstance()->getInstanceData();
         Connection::getConnection()->createQueryBuilder()
             ->update('ohrm_subunit', 'subunit')
             ->set('subunit.name', ':organizationName')
-            ->setParameter('organizationName', $instanceData[StateContainer::INSTANCE_ORG_NAME])
+            ->setParameter('organizationName', $data['name'] ?? $instanceData[StateContainer::INSTANCE_ORG_NAME])
             ->andWhere('subunit.level = :topLevel')
             ->setParameter('topLevel', 0)
             ->executeQuery();
@@ -261,7 +261,7 @@ class AppSetupUtility
     /**
      * @param string $employeeId
      */
-    protected function insertAdminEmployee(string $employeeId = '0001'): void
+    protected function insertAdminEmployee(string $employeeId = '0001', array $data = []): void
     {
         $adminUserData = StateContainer::getInstance()->getAdminUserData();
         Connection::getConnection()->createQueryBuilder()
@@ -274,17 +274,17 @@ class AppSetupUtility
                 'emp_work_telephone' => ':contact',
             ])
             ->setParameter('employeeId', $employeeId)
-            ->setParameter('firstName', $adminUserData[StateContainer::ADMIN_FIRST_NAME])
-            ->setParameter('lastName', $adminUserData[StateContainer::ADMIN_LAST_NAME])
-            ->setParameter('workEmail', $adminUserData[StateContainer::ADMIN_EMAIL])
-            ->setParameter('contact', $adminUserData[StateContainer::ADMIN_CONTACT])
+            ->setParameter('firstName', $data['firstName'] ?? $adminUserData[StateContainer::ADMIN_FIRST_NAME])
+            ->setParameter('lastName', $data['lastName'] ?? $adminUserData[StateContainer::ADMIN_LAST_NAME])
+            ->setParameter('workEmail', $data['workEmail'] ?? $adminUserData[StateContainer::ADMIN_EMAIL])
+            ->setParameter('contact', $data['contact'] ?? $adminUserData[StateContainer::ADMIN_CONTACT])
             ->executeQuery();
     }
 
     /**
      * @param string $employeeId
      */
-    protected function insertAdminUser(string $employeeId = '0001'): void
+    protected function insertAdminUser(string $employeeId = '0001', array $data = []): void
     {
         $empNumber = Connection::getConnection()->createQueryBuilder()
             ->select('employee.emp_number')
@@ -304,7 +304,7 @@ class AppSetupUtility
 
         $adminUserData = StateContainer::getInstance()->getAdminUserData();
         $passwordHasher = new PasswordHash();
-        $hashedPassword = $passwordHasher->hash($adminUserData[StateContainer::ADMIN_PASSWORD]);
+        $hashedPassword = $passwordHasher->hash($data['password'] ?? $adminUserData[StateContainer::ADMIN_PASSWORD]);
         Connection::getConnection()->createQueryBuilder()
             ->insert('ohrm_user')
             ->values([
@@ -316,7 +316,7 @@ class AppSetupUtility
             ])
             ->setParameter('userRoleId', $adminUserRoleId)
             ->setParameter('empNumber', $empNumber)
-            ->setParameter('username', $adminUserData[StateContainer::ADMIN_USERNAME])
+            ->setParameter('username', $data['username'] ?? $adminUserData[StateContainer::ADMIN_USERNAME])
             ->setParameter('hashedPassword', $hashedPassword)
             ->setParameter('created', new DateTime(), Types::DATETIME_MUTABLE)
             ->executeQuery();
@@ -412,11 +412,12 @@ class AppSetupUtility
     }
 
     protected function getUserCreationQueries(
-        string $dbName,
-        string $ohrmDbUser,
+        string  $dbName,
+        string  $ohrmDbUser,
         ?string $ohrmDbPassword,
-        string $grantHost
-    ): array {
+        string  $grantHost
+    ): array
+    {
         $conn = Connection::getConnection();
         $dbName = $conn->quoteIdentifier($dbName);
         $ohrmDbUser = $conn->quote($ohrmDbUser);
@@ -462,10 +463,11 @@ class AppSetupUtility
      * @return string[]
      */
     public function getVersionsInRange(
-        string $fromVersion,
+        string  $fromVersion,
         ?string $toVersion = null,
-        bool $includeFromVersion = true
-    ): array {
+        bool    $includeFromVersion = true
+    ): array
+    {
         $isIn = false;
         $versions = [];
         foreach (self::MIGRATIONS_MAP as $version => $migration) {
@@ -570,5 +572,10 @@ class AppSetupUtility
     {
         $dbName = StateContainer::getInstance()->getDbInfo()[StateContainer::DB_NAME];
         Connection::getConnection()->createSchemaManager()->dropDatabase($dbName);
+    }
+
+    public static function instance(): AppSetupUtility
+    {
+        return new AppSetupUtility();
     }
 }

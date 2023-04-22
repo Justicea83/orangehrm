@@ -119,6 +119,13 @@ export default {
     'password-input': PasswordInput,
   },
 
+  props: {
+    userRoles: {
+      type: Array,
+      required: true,
+    },
+  },
+
   setup() {
     const http = new APIService(
       window.appGlobal.baseUrl,
@@ -145,10 +152,6 @@ export default {
         employee: [required, validSelection],
         status: [required],
       },
-      userRoles: [
-        {id: 1, label: this.$t('general.admin')},
-        {id: 2, label: this.$t('general.ess')},
-      ],
       userStatuses: [
         {id: 1, label: this.$t('general.enabled')},
         {id: 2, label: this.$t('general.disabled')},

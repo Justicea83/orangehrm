@@ -20,6 +20,7 @@
 namespace OrangeHRM\CorporateBranding\Service;
 
 use OrangeHRM\Config\Config;
+use OrangeHRM\Core\Traits\Auth\AuthUserTrait;
 use OrangeHRM\Core\Traits\CacheTrait;
 use OrangeHRM\Core\Traits\ETagHelperTrait;
 use OrangeHRM\CorporateBranding\Dao\ThemeDao;
@@ -30,6 +31,7 @@ use OrangeHRM\Framework\Http\Request;
 
 class ThemeService
 {
+    use AuthUserTrait;
     use CacheTrait;
     use ETagHelperTrait;
 
@@ -146,12 +148,16 @@ class ThemeService
      */
     public function getCurrentThemeVariables(): array
     {
+        $cacheKey = self::THEME_VARIABLES_CACHE_KEY;
+        if ($this->getAuthUser()) {
+            $cacheKey = sprintf('admin.theme.%s.variables', $this->getAuthUser()->getOrgId());
+        }
         return $this->getCache()->get(
-            self::THEME_VARIABLES_CACHE_KEY,
+            $cacheKey,
             function () {
                 $theme = $this->getThemeDao()->getPartialThemeByThemeName(ThemeService::CUSTOM_THEME);
                 if (!$theme instanceof PartialTheme) {
-                    $theme = $this->getThemeDao()->getPartialThemeByThemeName(ThemeService::DEFAULT_THEME);
+                    $theme = $this->getThemeDao()->getPartialThemeByThemeName();
                 }
                 return $this->getDerivedCssVariables(ThemeVariables::createFromArray($theme->getVariables()));
             }

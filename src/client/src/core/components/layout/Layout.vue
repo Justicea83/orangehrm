@@ -66,6 +66,10 @@ export default {
       type: String,
       default: '#',
     },
+    homeUrl: {
+      type: String,
+      default: '#',
+    },
     supportUrl: {
       type: String,
       default: '#',

@@ -1,0 +1,4 @@
+payroll_index:
+  path: /payroll/viewPayroll
+  controller: OrangeHRM\Payroll\Controller\PayrollController::handle
+  methods: [ GET ]

@@ -61,6 +61,8 @@
             "OrangeHRM\\Config\\": "./lib/config",
             "OrangeHRM\\Admin\\": "./plugins/orangehrmAdminPlugin",
             "OrangeHRM\\Offboarding\\": "./plugins/offboardingPlugin",
+            "OrangeHRM\\Onboarding\\": "./plugins/onboardingPlugin",
+            "OrangeHRM\\Payroll\\": "./plugins/payrollPlugin",
             "OrangeHRM\\Attendance\\": "./plugins/orangehrmAttendancePlugin",
             "OrangeHRM\\Authentication\\": "./plugins/orangehrmAuthenticationPlugin",
             "OrangeHRM\\Buzz\\": "./plugins/orangehrmBuzzPlugin",

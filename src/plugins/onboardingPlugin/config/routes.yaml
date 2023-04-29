@@ -1,0 +1,4 @@
+onboarding_index:
+  path: /onboarding/viewOnboarding
+  controller: OrangeHRM\Onboarding\Controller\OnboardingController::handle
+  methods: [ GET ]

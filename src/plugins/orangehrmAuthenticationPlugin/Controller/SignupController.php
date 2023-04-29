@@ -96,7 +96,7 @@ class SignupController extends AbstractController implements PublicControllerInt
         } catch (AuthenticationException $e) {
             $this->getAuthUser()->addFlash(AuthUser::FLASH_REGISTRATION_ERROR, $e->normalize());
             return new RedirectResponse($registerUrl);
-        } catch (Throwable) {
+        } catch (Throwable $t) {
             $this->getAuthUser()->addFlash(
                 AuthUser::FLASH_REGISTRATION_ERROR,
                 [
@@ -109,7 +109,7 @@ class SignupController extends AbstractController implements PublicControllerInt
         $this->getAuthUser()->addFlash(
             AuthUser::FLASH_SUCCESS_REGISTRATION,
             [
-                'message' => 'Registration Completed successfully, login now!',
+                'message' => 'Registration Completed successfully, setting you up now!',
             ]
         );
 

@@ -223,10 +223,6 @@ export default {
     }, 300),
   },
 
-  mounted() {
-    this.testFields();
-  },
-
   methods: {
     onSubmit() {
       console.log(this.$refs.registerForm.$el);

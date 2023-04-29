@@ -26,7 +26,7 @@ use OrangeHRM\ORM\Tenancy\TenantAware;
  * @ORM\Table(name="ohrm_module")
  * @ORM\Entity
  */
-class Module //extends TenantAware
+class Module extends TenantAware
 {
     /**
      * @var int

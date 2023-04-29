@@ -1,5 +1,6 @@
 <template>
   <div class="register-container">
+    <login-branding :img-src="loginBannerSrc"></login-branding>
     <div class="register-wrapper">
       <div class="orangehrm-card-container">
         <oxd-form
@@ -136,21 +137,21 @@ import {navigate} from '@/core/util/helper/navigation';
 import {urlFor} from '@/core/util/helper/url';
 import debounce from '@ohrm/oxd/utils/debounce';
 import {APIService} from '@/core/util/services/api.service';
+import LoginBranding from '@/orangehrmAuthenticationPlugin/components/LoginBranding';
 
 export default {
   name: 'Register',
-
-  setup() {
-    const http = new APIService(window.appGlobal.baseUrl, '/auth/register');
-    return {
-      http,
-    };
+  components: {
+    'login-branding': LoginBranding,
   },
-
   props: {
     error: {
       type: Object,
       default: () => null,
+    },
+    loginBannerSrc: {
+      type: String,
+      required: true,
     },
     token: {
       type: String,
@@ -164,6 +165,13 @@ export default {
       type: Boolean,
       default: false,
     },
+  },
+
+  setup() {
+    const http = new APIService(window.appGlobal.baseUrl, '/auth/register');
+    return {
+      http,
+    };
   },
 
   data() {

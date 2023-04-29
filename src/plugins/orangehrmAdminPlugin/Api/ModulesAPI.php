@@ -46,6 +46,9 @@ class ModulesAPI extends Endpoint implements CrudEndpoint
     public const PARAMETER_MAINTENANCE = 'maintenance';
     public const PARAMETER_MOBILE = 'mobile';
     public const PARAMETER_DIRECTORY = 'directory';
+    public const PARAMETER_ONBOARDING = 'onboarding';
+    public const PARAMETER_OFFBOARDING = 'offboarding';
+    public const PARAMETER_PAYROLL = 'payroll';
 
     /**
      * @var ModuleService|null
@@ -65,6 +68,9 @@ class ModulesAPI extends Endpoint implements CrudEndpoint
         self::PARAMETER_MAINTENANCE => false,
         self::PARAMETER_MOBILE => false,
         self::PARAMETER_DIRECTORY => false,
+        self::PARAMETER_ONBOARDING => false,
+        self::PARAMETER_OFFBOARDING => false,
+        self::PARAMETER_PAYROLL => false,
     ];
 
     /**

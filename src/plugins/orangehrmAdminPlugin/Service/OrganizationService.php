@@ -80,4 +80,9 @@ class OrganizationService
     {
         $this->getOrganizationDao()->setupNewOrganization($organizationSetup);
     }
+
+    public function findById(int $id): ?Organization
+    {
+        return $this->getOrganizationDao()->findById($id);
+    }
 }

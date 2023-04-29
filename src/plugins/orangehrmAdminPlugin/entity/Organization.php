@@ -46,6 +46,13 @@ class Organization
     private string $name;
 
     /**
+     * @var bool
+     *
+     * @ORM\Column(name="setup", type="boolean")
+     */
+    private bool $isSetup;
+
+    /**
      * @var string|null
      *
      * @ORM\Column(name="tax_id", type="string", length=30, nullable=true)
@@ -356,5 +363,21 @@ class Organization
     public static function instance(): Organization
     {
         return new Organization();
+    }
+
+    /**
+     * @return bool
+     */
+    public function isSetup(): bool
+    {
+        return $this->isSetup;
+    }
+
+    /**
+     * @param bool $isSetup
+     */
+    public function setIsSetup(bool $isSetup): void
+    {
+        $this->isSetup = $isSetup;
     }
 }

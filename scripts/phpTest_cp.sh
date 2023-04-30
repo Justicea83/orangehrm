@@ -33,18 +33,22 @@ function usage(){
 
 function runUnitTests {
     echo "Running unit tests"
-    ../src/vendor/bin/phpunit --configuration ../phpunit.xml $2  $1
+    ../src/vendor/bin/phpunit $2  $1
 }
 
+runUnitTests $1
 
+if [ ! -e "$1" ]
+then
+    usage
+    exit 1
+fi
 
 
 # Check if a group name was given
 if [ -n "$2" ]
 then
     group="--group $2"
-    runUnitTests "$group"
-    exit
 fi
 
 runUnitTests $1 "$group"

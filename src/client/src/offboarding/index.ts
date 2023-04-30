@@ -1,4 +1,3 @@
-<?php
 /**
  * OrangeHRM is a comprehensive Human Resource Management (HRM) System that captures
  * all the essential functionalities required for any enterprise.
@@ -17,7 +16,7 @@
  * Boston, MA  02110-1301, USA
  */
 
-$logFilePath = realpath(__DIR__ . '/../log') . DIRECTORY_SEPARATOR . 'orangehrm.log';
-
-ini_set('log_errors', true);
-ini_set('error_log', $logFilePath);
+import {ACTION_NAME} from './pages/{ACTION_FOLDER}/ToDo.vue';
+export default {
+    {EXPORT_GOES_HERE}
+};

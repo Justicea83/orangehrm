@@ -19,6 +19,7 @@
 
 namespace OrangeHRM\Authentication\Controller;
 
+use OrangeHRM\Admin\Service\OrganizationService;
 use OrangeHRM\Authentication\Auth\AuthProviderChain;
 use OrangeHRM\Authentication\Auth\User as AuthUser;
 use OrangeHRM\Authentication\Dto\AuthParams;
@@ -47,19 +48,12 @@ class ValidateController extends AbstractController implements PublicControllerI
     public const PARAMETER_USERNAME = 'username';
     public const PARAMETER_PASSWORD = 'password';
 
-    /**
-     * @var null|LoginService
-     */
+    protected ?OrganizationService $organizationService = null;
+
     protected ?LoginService $loginService = null;
 
-    /**
-     * @var HomePageService|null
-     */
     protected ?HomePageService $homePageService = null;
 
-    /**
-     * @return HomePageService
-     */
     public function getHomePageService(): HomePageService
     {
         if (!$this->homePageService instanceof HomePageService) {
@@ -68,9 +62,14 @@ class ValidateController extends AbstractController implements PublicControllerI
         return $this->homePageService;
     }
 
-    /**
-     * @return LoginService
-     */
+    public function getOrganizationService(): ?OrganizationService
+    {
+        if (!$this->organizationService instanceof OrganizationService) {
+            $this->organizationService = new OrganizationService();
+        }
+        return $this->organizationService;
+    }
+
     public function getLoginService(): LoginService
     {
         if (is_null($this->loginService)) {
@@ -89,6 +88,9 @@ class ValidateController extends AbstractController implements PublicControllerI
         $urlGenerator = $this->getContainer()->get(Services::URL_GENERATOR);
         $loginUrl = $urlGenerator->generate('auth_login', [], UrlGenerator::ABSOLUTE_URL);
 
+        /** @var Session $session */
+        $session = $this->getContainer()->get(Services::SESSION);
+
         try {
             $token = $request->request->get('_token');
             if (!$this->getCsrfTokenManager()->isValid('login', $token)) {
@@ -102,6 +104,16 @@ class ValidateController extends AbstractController implements PublicControllerI
             if (!$success) {
                 throw AuthenticationException::invalidCredentials();
             }
+            $organization = $this->getOrganizationService()->findById($this->getAuthUser()->getOrgId());
+
+            if (!$organization->isSetup()) {
+                $session->invalidate();
+                $session->getFlashBag()->add(AuthUser::FLASH_LOGIN_ERROR, [
+                    'message' => 'We are currently setting you up, try again in a few minutes'
+                ]);
+                return new RedirectResponse($loginUrl);
+            }
+
             $this->getAuthUser()->setIsAuthenticated($success);
             $this->getLoginService()->addLogin($credentials);
         } catch (AuthenticationException $e) {
@@ -118,8 +130,6 @@ class ValidateController extends AbstractController implements PublicControllerI
             return new RedirectResponse($loginUrl);
         }
 
-        /** @var Session $session */
-        $session = $this->getContainer()->get(Services::SESSION);
         //Recreate the session
         $session->migrate(true);
 

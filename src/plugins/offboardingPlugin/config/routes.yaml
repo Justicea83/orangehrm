@@ -1,0 +1,4 @@
+offboarding_index:
+  path: /offboarding/viewOffboarding
+  controller: OrangeHRM\Offboarding\Controller\OffboardingController::handle
+  methods: [ GET ]

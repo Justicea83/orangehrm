@@ -16,6 +16,7 @@ use OrangeHRM\CorporateBranding\Traits\ThemeServiceTrait;
 use OrangeHRM\Framework\Http\RedirectResponse;
 use OrangeHRM\Framework\Http\Request;
 use OrangeHRM\Framework\Http\Response;
+use OrangeHRM\Installer\Util\InstanceCreationHelper;
 
 class RegisterController extends AbstractVueController implements PublicControllerInterface
 {
@@ -57,7 +58,33 @@ class RegisterController extends AbstractVueController implements PublicControll
                 )
             );
         }
-
+        $component->addProp(
+            new Prop(
+                'token',
+                Prop::TYPE_STRING,
+                $this->getCsrfTokenManager()->getToken('register')->getValue()
+            )
+        );
+        $component->addProp(
+            new Prop(
+                'countries',
+                Prop::TYPE_ARRAY,
+                InstanceCreationHelper::COUNTRIES
+            )
+        );
+        $component->addProp(
+            new Prop('login-logo-src', Prop::TYPE_STRING, $request->getBasePath() . '/images/ohrm_logo.png')
+        );
+        $assetsVersion = Config::get(Config::VUE_BUILD_TIMESTAMP);
+        $loginBannerUrl = $request->getBasePath()
+            . "/images/ohrm_branding.png?$assetsVersion";
+        if (!is_null($this->getThemeService()->getImageETag('login_banner'))) {
+            $loginBannerUrl = $request->getBaseUrl()
+                . "/admin/theme/image/loginBanner?$assetsVersion";
+        }
+        $component->addProp(
+            new Prop('login-banner-src', Prop::TYPE_STRING, $loginBannerUrl)
+        );
         $component->addProp(new Prop('is-demo-mode', Prop::TYPE_BOOLEAN, Config::PRODUCT_MODE === Config::MODE_DEMO));
         $this->setComponent($component);
         $this->setTemplate('no_header.html.twig');

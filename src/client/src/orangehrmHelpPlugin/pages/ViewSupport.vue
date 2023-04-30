@@ -22,15 +22,15 @@
   <div class="orangehrm-background-container">
     <div class="orangehrm-card-container">
       <oxd-text tag="h6" class="orangehrm-main-title">
-        {{ $t('help.getting_started_with_orangehrm') }}
+        Getting Started with TaskflowHR
       </oxd-text>
       <oxd-divider />
       <oxd-text tag="p" class="orangehrm-support-text">
-        {{ $t('help.getting_started_with_orangehrm_message_1') }}
+        Learning how to use a new application can be challenging. At TaskflowHR, we are committed to providing you with the necessary knowledge and skills required to fully utilize the application thereby allowing you to quickly and efficiently manage your HR processes.
       </oxd-text>
       <br />
       <oxd-text tag="p" class="orangehrm-support-text">
-        {{ $t('help.getting_started_with_orangehrm_message_2') }}
+        The following information repositories are available to help you understand the application:
       </oxd-text>
       <div class="orangehrm-support">
         <oxd-grid :cols="2" class="orangehrm-support-channel --mail">
@@ -45,9 +45,9 @@
               {{ $t('help.contact_us_on_message') }}
               <a
                 class="orangehrm-support-link"
-                href="mailto:ossupport@orangehrm.com"
+                href="mailto:support@taskflowhr.com"
               >
-                ossupport@orangehrm.com
+                support@taskflowhr.com
               </a>
               {{ $t('help.we_will_be_delighted_to_help') }}
             </oxd-text>

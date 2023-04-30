@@ -30,6 +30,13 @@
           :message="error?.message || ''"
           type="error"
         ></oxd-alert>
+
+        <oxd-alert
+            :show="success !== null"
+            :message="success?.message || ''"
+            type="success"
+        ></oxd-alert>
+
         <oxd-sheet
           v-if="isDemoMode"
           type="gray-lighten-2"
@@ -92,23 +99,6 @@
       <br />
     </div>
     <div class="orangehrm-login-footer">
-      <div v-if="showSocialMedia" class="orangehrm-login-footer-sm">
-        <a
-          href="https://www.linkedin.com/company/orangehrm/mycompany/"
-          target="_blank"
-        >
-          <oxd-icon type="svg" class="orangehrm-sm-icon" name="linkedinFill" />
-        </a>
-        <a href="https://www.facebook.com/OrangeHRM/" target="_blank">
-          <oxd-icon type="svg" class="orangehrm-sm-icon" name="facebookFill" />
-        </a>
-        <a href="https://twitter.com/orangehrm?lang=en" target="_blank">
-          <oxd-icon type="svg" class="orangehrm-sm-icon" name="twitterFill" />
-        </a>
-        <a href="https://www.youtube.com/c/OrangeHRMInc" target="_blank">
-          <oxd-icon type="svg" class="orangehrm-sm-icon" name="youtubeFill" />
-        </a>
-      </div>
       <slot name="footer"></slot>
     </div>
   </login-layout>
@@ -120,12 +110,10 @@ import {required} from '@ohrm/core/util/validation/rules';
 import {navigate, reloadPage} from '@ohrm/core/util/helper/navigation';
 import LoginLayout from '../components/LoginLayout';
 import Alert from '@ohrm/oxd/core/components/Alert/Alert';
-import Icon from '@ohrm/oxd/core/components/Icon/Icon.vue';
 import Sheet from '@ohrm/oxd/core/components/Sheet/Sheet';
 
 export default {
   components: {
-    'oxd-icon': Icon,
     'oxd-alert': Alert,
     'oxd-sheet': Sheet,
     'login-layout': LoginLayout,
@@ -133,6 +121,10 @@ export default {
 
   props: {
     error: {
+      type: Object,
+      default: () => null,
+    },
+    success: {
       type: Object,
       default: () => null,
     },
@@ -181,7 +173,8 @@ export default {
       navigate('/auth/requestPasswordResetCode');
     },
     goToRegistrationPage() {
-      window.location.href = `${window.location.origin}/installer/index.php`;
+      navigate('/auth/register');
+      //window.location.href = `${window.location.origin}/installer/index.php`;
     },
   },
 };

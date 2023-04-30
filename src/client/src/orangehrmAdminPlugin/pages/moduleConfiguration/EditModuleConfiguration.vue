@@ -80,9 +80,21 @@
             </div>
             <div class="orangehrm-module-field-row">
               <oxd-text tag="p" class="orangehrm-module-field-label">
-                {{ $t('general.mobile') }}
+                Onboarding Module
               </oxd-text>
-              <oxd-switch-input disabled />
+              <oxd-switch-input v-model="modules.onboarding" />
+            </div>
+            <div class="orangehrm-module-field-row">
+              <oxd-text tag="p" class="orangehrm-module-field-label">
+                Offboarding Module
+              </oxd-text>
+              <oxd-switch-input v-model="modules.offboarding" />
+            </div>
+            <div class="orangehrm-module-field-row">
+              <oxd-text tag="p" class="orangehrm-module-field-label">
+                Payroll Module
+              </oxd-text>
+              <oxd-switch-input v-model="modules.payroll" />
             </div>
           </oxd-grid>
         </oxd-form-row>
@@ -112,6 +124,9 @@ const modulesModel = {
   maintenance: false,
   mobile: false,
   directory: false,
+  payroll: false,
+  onboarding: false,
+  offboarding: false,
 };
 
 export default {
@@ -148,6 +163,9 @@ export default {
         this.modules.maintenance = data.maintenance;
         this.modules.mobile = data.mobile;
         this.modules.directory = data.directory;
+        this.modules.payroll = data.payroll;
+        this.modules.onboarding = data.onboarding;
+        this.modules.offboarding = data.offboarding;
       })
       .finally(() => {
         this.isLoading = false;

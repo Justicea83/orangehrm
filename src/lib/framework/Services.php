@@ -268,6 +268,8 @@ final class Services
      */
     public const EMPLOYEE_SERVICE = 'pim.employee_service';
 
+    public const TASK_SERVICE = 'onboarding.task_service';
+
     /**
      * @see \OrangeHRM\Pim\Service\EmployeeSalaryService
      */

@@ -357,6 +357,12 @@ admin_module:
   controller: OrangeHRM\Admin\Controller\AdminModuleController::handle
   methods: [ GET ]
 
+# Task List
+view_task_list:
+  path: /admin/viewTaskList
+  controller: OrangeHRM\Admin\Controller\TasksController::handle
+  methods: [ GET ]
+
 view_job_title:
   path: /admin/viewJobTitleList
   controller: OrangeHRM\Admin\Controller\JobTitleController::handle

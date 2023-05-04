@@ -42,7 +42,8 @@
         "symfony/ldap": "~5.4.0",
         "symfony/console": "~5.4.0",
         "crunzphp/crunz": "~3.4.0",
-        "vlucas/phpdotenv": "^5.5"
+        "vlucas/phpdotenv": "^5.5",
+        "nesbot/carbon": "^2.66"
     },
     "require-dev": {
         "phpunit/phpunit": "^9.5",
@@ -91,7 +92,8 @@
                 "./plugins/orangehrmRecruitmentPlugin/entity",
                 "./plugins/orangehrmCorporateBrandingPlugin/entity",
                 "./plugins/orangehrmLDAPAuthenticationPlugin/entity",
-                "./plugins/orangehrmBuzzPlugin/entity"
+                "./plugins/orangehrmBuzzPlugin/entity",
+                "./plugins/onboardingPlugin/entity"
             ]
         }
     },
@@ -114,7 +116,8 @@
             "OrangeHRM\\Tests\\CorporateBranding\\": "./plugins/orangehrmCorporateBrandingPlugin/test",
             "OrangeHRM\\Tests\\Dashboard\\": "./plugins/orangehrmDashboardPlugin/test",
             "OrangeHRM\\Tests\\LDAP\\": "./plugins/orangehrmLDAPAuthenticationPlugin/test",
-            "OrangeHRM\\Tests\\Buzz\\": "./plugins/orangehrmBuzzPlugin/test"
+            "OrangeHRM\\Tests\\Buzz\\": "./plugins/orangehrmBuzzPlugin/test",
+            "OrangeHRM\\Tests\\Onboarding\\": "./plugins/onboardingPlugin/test"
         }
     },
     "scripts": {

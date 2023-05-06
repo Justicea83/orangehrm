@@ -3,6 +3,7 @@
 namespace OrangeHRM\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use OrangeHRM\Entity\Decorator\DecoratorTrait;
 use OrangeHRM\Entity\Decorator\TaskDecorator;
 use OrangeHRM\ORM\Utils\TenantAwareWithTimeStamps;
 
@@ -14,6 +15,8 @@ use OrangeHRM\ORM\Utils\TenantAwareWithTimeStamps;
  */
 class Task extends TenantAwareWithTimeStamps
 {
+    use DecoratorTrait;
+
     public const TYPE_ONBOARDING = 0;
     public const TYPE_OFFBOARDING = 1;
     /**
@@ -149,6 +152,17 @@ class Task extends TenantAwareWithTimeStamps
     public function setJobTitle(?JobTitle $jobTitle): void
     {
         $this->jobTitle = $jobTitle;
+    }
+
+    /**
+     * @return string
+     */
+    public function getTypeText(): string
+    {
+        if ($this->type === self::TYPE_ONBOARDING) {
+            return 'Onboarding';
+        }
+        return 'Offboarding';
     }
 
 }

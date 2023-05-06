@@ -23,6 +23,7 @@ class TaskDetailModel implements Normalizable
             ['getJobTitle', 'getId'],
             ['getJobTitle', 'getJobTitleName'],
             ['getJobTitle', 'isDeleted'],
+            ['getTypeText']
         ]);
 
         $this->setAttributeNames(
@@ -36,6 +37,7 @@ class TaskDetailModel implements Normalizable
                 ['jobTitle', 'id'],
                 ['jobTitle', 'title'],
                 ['jobTitle', 'isDeleted'],
+                ['typeText']
             ]
         );
     }

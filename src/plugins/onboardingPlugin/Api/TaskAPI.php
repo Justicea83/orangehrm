@@ -2,11 +2,13 @@
 
 namespace OrangeHRM\Onboarding\Api;
 
+use Carbon\Carbon;
 use OrangeHRM\Admin\Traits\Service\TaskServiceTrait;
 use OrangeHRM\Core\Api\CommonParams;
 use OrangeHRM\Core\Api\V2\CrudEndpoint;
 use OrangeHRM\Core\Api\V2\Endpoint;
 use OrangeHRM\Core\Api\V2\EndpointCollectionResult;
+use OrangeHRM\Core\Api\V2\EndpointResourceResult;
 use OrangeHRM\Core\Api\V2\EndpointResult;
 use OrangeHRM\Core\Api\V2\ParameterBag;
 use OrangeHRM\Core\Api\V2\RequestParams;
@@ -14,6 +16,9 @@ use OrangeHRM\Core\Api\V2\Validator\ParamRule;
 use OrangeHRM\Core\Api\V2\Validator\ParamRuleCollection;
 use OrangeHRM\Core\Api\V2\Validator\Rule;
 use OrangeHRM\Core\Api\V2\Validator\Rules;
+use OrangeHRM\Core\Api\V2\Validator\Rules\EntityUniquePropertyOption;
+use OrangeHRM\Entity\JobTitle;
+use OrangeHRM\Entity\Task;
 use OrangeHRM\Onboarding\Api\Model\TaskDetailModel;
 use OrangeHRM\Onboarding\Api\Model\TaskModel;
 use OrangeHRM\Onboarding\Dto\TaskSearchFilterParams;
@@ -21,6 +26,14 @@ use OrangeHRM\Onboarding\Dto\TaskSearchFilterParams;
 class TaskAPI extends Endpoint implements CrudEndpoint
 {
     use TaskServiceTrait;
+
+    public const PARAMETER_TITLE = 'title';
+    public const PARAMETER_NOTES = 'notes';
+    public const PARAMETER_TYPE = 'type';
+    public const PARAMETER_JOB_TITLE_ID = 'jobTitleId';
+
+    public const PARAM_RULE_TITLE_MAX_LENGTH = 255;
+    public const PARAM_RULE_NOTES_MAX_LENGTH = 1000;
 
     public const FILTER_MODEL = 'model';
     public const MODEL_DEFAULT = 'default';
@@ -95,14 +108,81 @@ class TaskAPI extends Endpoint implements CrudEndpoint
         );
     }
 
-    public function create(): EndpointResult
+    public function create(): EndpointResourceResult
     {
-        // TODO: Implement create() method.
+        $task = $this->setParamsToTask();
+        $jobTitleId = $this->getRequestParams()->getStringOrNull(RequestParams::PARAM_TYPE_BODY, self::PARAMETER_JOB_TITLE_ID);
+        $task->getDecorator()->setJobTitleById($jobTitleId);
+
+        $this->getTaskService()->saveTask($task);
+        return new EndpointResourceResult(TaskModel::class, $task);
+
+    }
+
+    protected function getTitleRule(): ParamRule
+    {
+        $entityProperties = new EntityUniquePropertyOption();
+        return new ParamRule(
+            self::PARAMETER_TITLE,
+            new Rule(Rules::STRING_TYPE),
+            new Rule(Rules::LENGTH, [null, self::PARAM_RULE_TITLE_MAX_LENGTH]),
+            new Rule(Rules::ENTITY_UNIQUE_PROPERTY, [Task::class, 'title', $entityProperties])
+        );
+    }
+
+    private function setParamsToTask(): Task
+    {
+        $title = $this->getRequestParams()->getString(RequestParams::PARAM_TYPE_BODY, self::PARAMETER_TITLE);
+        $notes = $this->getRequestParams()->getStringOrNull(RequestParams::PARAM_TYPE_BODY, self::PARAMETER_NOTES);
+        $taskType = $this->getRequestParams()->getIntOrNull(RequestParams::PARAM_TYPE_BODY, self::FILTER_TASK_TYPE);
+
+        $task = new Task();
+        $task->setTitle($title);
+        $task->setNotes($notes);
+        $task->setType($taskType);
+        $task->setCreatedAt(Carbon::now()->toDateTimeString());
+        $task->setUpdatedAt(Carbon::now()->toDateTimeString());
+        return $task;
+    }
+
+    private function getTypeRule(): ParamRule
+    {
+        return new ParamRule(
+            self::PARAMETER_TYPE,
+            new Rule(
+                Rules::REQUIRED,
+            ),
+            new Rule(Rules::BETWEEN, [0, 1])
+        );
+    }
+
+    private function getJobTitleIdRule(): ParamRule
+    {
+        return new ParamRule(
+            self::PARAMETER_JOB_TITLE_ID,
+            new Rule(Rules::POSITIVE),
+        );
+    }
+
+    private function getNotesRule(): ParamRule
+    {
+        return new ParamRule(
+            self::PARAMETER_NOTES,
+            new Rule(
+                Rules::REQUIRED,
+            ),
+            new Rule(Rules::LENGTH, [null, self::PARAM_RULE_NOTES_MAX_LENGTH]),
+        );
     }
 
     public function getValidationRuleForCreate(): ParamRuleCollection
     {
-        // TODO: Implement getValidationRuleForCreate() method.
+        return new ParamRuleCollection(
+            $this->getTitleRule(false),
+            $this->getTypeRule(),
+            $this->getNotesRule(),
+            $this->getJobTitleIdRule(),
+        );
     }
 
     public function delete(): EndpointResult

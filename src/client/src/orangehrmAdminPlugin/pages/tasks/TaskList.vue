@@ -43,18 +43,12 @@
 
 <script>
 import {computed, ref} from 'vue';
-import JobtitleDropdown from '@/orangehrmPimPlugin/components/JobtitleDropdown';
 import DeleteConfirmationDialog from '@ohrm/components/dialogs/DeleteConfirmationDialog';
 import usePaginate from '@ohrm/core/util/composable/usePaginate';
 import {navigate} from '@ohrm/core/util/helper/navigation';
 import {APIService} from '@/core/util/services/api.service';
 import useSort from '@ohrm/core/util/composable/useSort';
-import {validSelection} from '@/core/util/validation/rules';
 import usei18n from '@/core/util/composable/usei18n';
-import EmployeeAutocomplete from '@/core/components/inputs/EmployeeAutocomplete';
-import SubunitDropdown from '@/orangehrmPimPlugin/components/SubunitDropdown';
-import EmploymentStatusDropdown from '@/orangehrmPimPlugin/components/EmploymentStatusDropdown';
-import IncludeEmployeeDropdown from '@/core/components/dropdown/IncludeEmployeeDropdown';
 
 const defaultSortOrder = {
   'task.title': 'DEFAULT',
@@ -65,11 +59,6 @@ export default {
   name: 'TaskList',
   components: {
     'delete-confirmation': DeleteConfirmationDialog,
-    'employee-autocomplete': EmployeeAutocomplete,
-    'jobtitle-dropdown': JobtitleDropdown,
-    'subunit-dropdown': SubunitDropdown,
-    'employment-status-dropdown': EmploymentStatusDropdown,
-    'include-employee-dropdown': IncludeEmployeeDropdown,
   },
   props: {
     unSelectableTaskIds: {
@@ -158,6 +147,13 @@ export default {
           style: {flex: 1},
         },
         {
+          name: 'typeText',
+          slot: 'typeText',
+          title: 'Type',
+          sortField: 'task.typeText',
+          style: {flex: 1},
+        },
+        {
           name: 'jobTitle',
           title: this.$t('general.job_title'),
           sortField: 'jobTitle.jobTitleName',
@@ -219,7 +215,7 @@ export default {
       });
     },
     onClickAdd() {
-      navigate('/admin/addTask');
+      navigate('/admin/saveTask');
     },
   },
 };

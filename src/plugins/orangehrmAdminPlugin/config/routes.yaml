@@ -363,6 +363,11 @@ view_task_list:
   controller: OrangeHRM\Admin\Controller\TasksController::handle
   methods: [ GET ]
 
+save_task:
+  path: /admin/saveTask
+  controller: OrangeHRM\Admin\Controller\SaveTaskController::handle
+  methods: [ GET ]
+
 view_job_title:
   path: /admin/viewJobTitleList
   controller: OrangeHRM\Admin\Controller\JobTitleController::handle

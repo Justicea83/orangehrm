@@ -5,6 +5,7 @@ namespace OrangeHRM\Onboarding\Dao;
 use OrangeHRM\Core\Dao\BaseDao;
 use OrangeHRM\Entity\Task;
 use OrangeHRM\Onboarding\Dto\TaskSearchFilterParams;
+use OrangeHRM\ORM\ListSorter;
 use OrangeHRM\ORM\QueryBuilderWrapper;
 
 class TaskDao extends BaseDao
@@ -51,6 +52,8 @@ class TaskDao extends BaseDao
             $q->andWhere('jobTitle.id = :jobTitleId')
                 ->setParameter('jobTitleId', $taskSearchFilterParams->getJobTitleId());
         }
+
+        $q->orderBy('task.id', ListSorter::DESCENDING);
 
         return $this->getQueryBuilderWrapper($q);
     }

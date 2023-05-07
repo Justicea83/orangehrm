@@ -68,6 +68,7 @@ import EditLanguagePackage from '@/orangehrmAdminPlugin/pages/languageTranslatio
 import LdapConfiguration from './pages/ldap/LdapConfiguration.vue';
 import TaskList from './pages/tasks/TaskList.vue';
 import SaveTask from './pages/tasks/SaveTask.vue';
+import EditTask from './pages/tasks/EditTask.vue';
 
 export default {
   'job-title-list': JobTitle,
@@ -122,4 +123,5 @@ export default {
   'ldap-configuration': LdapConfiguration,
   'task-list': TaskList,
   'save-task': SaveTask,
+  'edit-task': EditTask,
 };

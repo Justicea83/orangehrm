@@ -255,8 +255,10 @@ export default {
   },
 
   methods: {
-    onClickEdit() {
-      console.log('edit');
+    onClickEdit(item) {
+      if (item.id) {
+        navigate('/admin/saveTask/{id}', {id: item.id});
+      }
     },
     onClickDelete(item) {
       this.$refs.deleteDialog.showDialog().then(confirmation => {

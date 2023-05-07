@@ -2,7 +2,7 @@
   <div class="orangehrm-background-container">
     <div class="orangehrm-card-container">
       <oxd-text tag="h6" class="orangehrm-main-title">
-        Add Task
+        Edit Task
       </oxd-text>
 
       <oxd-divider />
@@ -63,14 +63,14 @@
 </template>
 
 <script>
+import {APIService} from '@/core/util/services/api.service';
 import {
   required,
   shouldNotExceedCharLength,
 } from '@/core/util/validation/rules';
-import {navigate} from '@/core/util/helper/navigation';
-import JobtitleDropdown from '@/orangehrmPimPlugin/components/JobtitleDropdown';
 import OnboardingTypeDropdown from '@/orangehrmPimPlugin/components/OnboardingTypeDropdown';
-import {APIService} from '@/core/util/services/api.service';
+import JobtitleDropdown from '@/orangehrmPimPlugin/components/JobtitleDropdown';
+import {navigate} from '@/core/util/helper/navigation';
 
 const initialTask = {
   title: '',
@@ -80,18 +80,16 @@ const initialTask = {
 };
 
 export default {
-  name: 'SaveTask',
+  name: 'EditTask',
+
   components: {
     'jobtitle-dropdown': JobtitleDropdown,
     OnboardingTypeDropdown,
   },
+
   props: {
-    allowedFileTypes: {
-      type: Array,
-      required: true,
-    },
-    maxFileSize: {
-      type: Number,
+    taskId: {
+      type: String,
       required: true,
     },
   },
@@ -112,12 +110,49 @@ export default {
       task: {...initialTask},
       rules: {
         title: [required, shouldNotExceedCharLength(100)],
-        jobTitleId: [required],
+        taskId: [required],
         type: [required],
         notes: [shouldNotExceedCharLength(1000)],
       },
     };
   },
+
+  created() {
+    this.isLoading = true;
+    this.http
+      .get(this.taskId)
+      .then(response => {
+        const {data} = response.data;
+        this.task.title = data.title;
+        this.task.notes = data.notes;
+        this.task.type = {
+          id: data.type,
+          label: data.type === 0 ? 'Onboarding' : 'Offboarding',
+        };
+        this.task.jobTitleId = data.jobTitle?.id ? data.jobTitle : null;
+
+        // Fetch list data for unique test
+        return this.http.getAll({limit: 0});
+      })
+      .then(response => {
+        const {data} = response.data;
+        this.rules.title.push(v => {
+          const index = data.findIndex(item => item.title === v);
+          if (index > -1) {
+            const {id} = data[index];
+            return id !== this.taskId
+              ? this.$t('general.already_exists')
+              : true;
+          } else {
+            return true;
+          }
+        });
+      })
+      .finally(() => {
+        this.isLoading = false;
+      });
+  },
+
   methods: {
     onSave() {
       const payload = {
@@ -126,7 +161,7 @@ export default {
         type: this.task?.type?.id,
       };
       this.http
-        .create({
+        .update(this.taskId, {
           ...payload,
         })
         .then(() => {

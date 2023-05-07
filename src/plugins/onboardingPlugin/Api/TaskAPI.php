@@ -3,6 +3,7 @@
 namespace OrangeHRM\Onboarding\Api;
 
 use Carbon\Carbon;
+use OrangeHRM\Admin\Api\Model\JobTitleModel;
 use OrangeHRM\Admin\Traits\Service\TaskServiceTrait;
 use OrangeHRM\Core\Api\CommonParams;
 use OrangeHRM\Core\Api\V2\CrudEndpoint;
@@ -21,6 +22,7 @@ use OrangeHRM\Core\Api\V2\Validator\Rule;
 use OrangeHRM\Core\Api\V2\Validator\Rules;
 use OrangeHRM\Core\Api\V2\Validator\Rules\EntityUniquePropertyOption;
 use OrangeHRM\Core\Exception\DaoException;
+use OrangeHRM\Entity\JobTitle;
 use OrangeHRM\Entity\Task;
 use OrangeHRM\Onboarding\Api\Model\TaskDetailModel;
 use OrangeHRM\Onboarding\Api\Model\TaskModel;
@@ -147,9 +149,17 @@ class TaskAPI extends Endpoint implements CrudEndpoint
 
     }
 
-    protected function getTitleRule(): ParamRule
+    protected function getTitleRule(bool $update = false): ParamRule
     {
         $entityProperties = new EntityUniquePropertyOption();
+        $ignoreValues = [];
+        if ($update) {
+            $ignoreValues['getId'] = $this->getRequestParams()->getInt(
+                RequestParams::PARAM_TYPE_ATTRIBUTE,
+                CommonParams::PARAMETER_ID
+            );
+        }
+        $entityProperties->setIgnoreValues($ignoreValues);
         return new ParamRule(
             self::PARAMETER_TITLE,
             new Rule(Rules::STRING_TYPE),
@@ -239,7 +249,7 @@ class TaskAPI extends Endpoint implements CrudEndpoint
             throw new RecordNotFoundException();
         }
 
-        return new EndpointResourceResult(Task::class, $task);
+        return new EndpointResourceResult(TaskModel::class, $task);
     }
 
     public function getValidationRuleForGetOne(): ParamRuleCollection
@@ -249,9 +259,51 @@ class TaskAPI extends Endpoint implements CrudEndpoint
         );
     }
 
+    private function setTask(Task $task): void
+    {
+        $task->setTitle(
+            $this->getRequestParams()->getString(
+                RequestParams::PARAM_TYPE_BODY,
+                self::PARAMETER_TITLE
+            )
+        );
+        $task->setType(
+            $this->getRequestParams()->getStringOrNull(
+                RequestParams::PARAM_TYPE_BODY,
+                self::PARAMETER_TYPE
+            )
+        );
+        $task->setNotes(
+            $this->getRequestParams()->getStringOrNull(
+                RequestParams::PARAM_TYPE_BODY,
+                self::PARAMETER_NOTES
+            )
+        );
+        $task->getDecorator()->setJobTitleById(
+            $this->getRequestParams()->getStringOrNull(
+                RequestParams::PARAM_TYPE_BODY,
+                self::FILTER_JOB_TITLE_ID
+            )
+        );
+        $task->setUpdatedAt(Carbon::now()->toDateTimeString());
+    }
+
+    /**
+     * @throws DaoException
+     * @throws RecordNotFoundException
+     * @throws NormalizeException
+     */
     public function update(): EndpointResult
     {
-        // TODO: Implement update() method.
+        $id = $this->getRequestParams()->getInt(RequestParams::PARAM_TYPE_ATTRIBUTE, CommonParams::PARAMETER_ID);
+
+        $task = $this->getTaskService()->getTaskById($id);
+        $this->throwRecordNotFoundExceptionIfNotExist($task, Task::class);
+        $this->setTask($task);
+
+        $this->getTaskService()->saveTask($task);
+
+        return new EndpointResourceResult(TaskModel::class, $task);
     }
 
     protected function getModelParamRule(): ParamRule
@@ -266,6 +318,15 @@ class TaskAPI extends Endpoint implements CrudEndpoint
 
     public function getValidationRuleForUpdate(): ParamRuleCollection
     {
-        // TODO: Implement getValidationRuleForUpdate() method.
+        return new ParamRuleCollection(
+            new ParamRule(
+                CommonParams::PARAMETER_ID,
+                new Rule(Rules::POSITIVE)
+            ),
+            $this->getTitleRule(true),
+            $this->getTypeRule(),
+            $this->getNotesRule(),
+            $this->getJobTitleIdRule(),
+        );
     }
 }

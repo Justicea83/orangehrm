@@ -57,7 +57,7 @@ export class APIService {
     return this._http.get(this._apiSection, {headers, params});
   }
 
-  get(id: number, params?: object): Promise<AxiosResponse> {
+  get(id: number | string, params?: object): Promise<AxiosResponse> {
     const headers = {
       'Content-Type': 'application/json',
     };
@@ -74,14 +74,14 @@ export class APIService {
   }
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  update(id: number, data: any): Promise<AxiosResponse> {
+  update(id: number | string, data: any): Promise<AxiosResponse> {
     const headers = {
       'Content-Type': 'application/json',
     };
     return this._http.put(`${this._apiSection}/${id}`, data, {headers});
   }
 
-  delete(id: number): Promise<AxiosResponse> {
+  delete(id: number | string): Promise<AxiosResponse> {
     const headers = {
       'Content-Type': 'application/json',
     };

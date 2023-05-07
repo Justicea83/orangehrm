@@ -48,7 +48,6 @@ export default {
                   _task: task,
                 };
               });
-              console.log(formattedData);
               resolve(formattedData);
             });
         } else {

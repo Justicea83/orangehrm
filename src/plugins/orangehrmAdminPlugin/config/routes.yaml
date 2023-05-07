@@ -368,6 +368,13 @@ save_task:
   controller: OrangeHRM\Admin\Controller\SaveTaskController::handle
   methods: [ GET ]
 
+edit_task:
+  path: /admin/saveTask/{id}
+  controller: OrangeHRM\Admin\Controller\SaveTaskController::handle
+  methods: [ GET ]
+
+# End Task routes
+
 view_job_title:
   path: /admin/viewJobTitleList
   controller: OrangeHRM\Admin\Controller\JobTitleController::handle

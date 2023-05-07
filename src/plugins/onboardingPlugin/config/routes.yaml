@@ -4,6 +4,13 @@ onboarding_index:
   methods: [ GET ]
 
 apiv2_onboarding_task:
+  path: /api/v2/onboarding/tasks/{id}
+  controller: OrangeHRM\Core\Controller\Rest\V2\GenericRestController::handle
+  methods: [ GET, PUT ]
+  defaults:
+    _api: OrangeHRM\Onboarding\Api\TaskAPI
+
+apiv2_onboarding_tasks:
   path: /api/v2/onboarding/tasks
   controller: OrangeHRM\Core\Controller\Rest\V2\GenericRestController::handle
   methods: [ GET, POST, DELETE ]

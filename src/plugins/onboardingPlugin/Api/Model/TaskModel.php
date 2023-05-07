@@ -28,8 +28,9 @@ class TaskModel implements Normalizable
             'title',
             'type',
             'id',
-            'createdAt',
-            'updatedAt',
+            'notes',
+            ['getJobTitle', 'getId'],
+            ['getJobTitle', 'getJobTitleName'],
         ]);
 
         $this->setAttributeNames(
@@ -37,6 +38,9 @@ class TaskModel implements Normalizable
                 'title',
                 'type',
                 'id',
+                'notes',
+                ['jobTitle', 'id'],
+                ['jobTitle', 'label'],
             ]
         );
     }

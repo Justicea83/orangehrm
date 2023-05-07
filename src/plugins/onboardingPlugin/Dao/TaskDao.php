@@ -2,7 +2,9 @@
 
 namespace OrangeHRM\Onboarding\Dao;
 
+use Exception;
 use OrangeHRM\Core\Dao\BaseDao;
+use OrangeHRM\Core\Exception\DaoException;
 use OrangeHRM\Entity\Task;
 use OrangeHRM\Onboarding\Dto\TaskSearchFilterParams;
 use OrangeHRM\ORM\ListSorter;
@@ -78,5 +80,36 @@ class TaskDao extends BaseDao
         }
 
         return $this->count($q);
+    }
+
+    /**
+     * @throws DaoException
+     */
+    public function getTaskById(int $id) : ?Task{
+        try {
+            $task = $this->getRepository(Task::class)->find($id);
+            if ($task instanceof Task) {
+                return $task;
+            }
+            return null;
+        } catch (Exception $e) {
+            throw new DaoException($e->getMessage());
+        }
+    }
+
+    /**
+     * @throws DaoException
+     */
+    public function deleteTaskById(array $ids) : int
+    {
+        try {
+            $q = $this->createQueryBuilder(Task::class, 't');
+            $q->delete()
+                ->where($q->expr()->in('t.id', ':ids'))
+                ->setParameter('ids', $ids);
+            return $q->getQuery()->execute();
+        } catch (Exception $e) {
+            throw new DaoException($e->getMessage());
+        }
     }
 }

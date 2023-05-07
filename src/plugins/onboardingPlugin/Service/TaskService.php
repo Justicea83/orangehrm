@@ -2,6 +2,7 @@
 
 namespace OrangeHRM\Onboarding\Service;
 
+use OrangeHRM\Core\Exception\DaoException;
 use OrangeHRM\Entity\Task;
 use OrangeHRM\Onboarding\Dao\TaskDao;
 use OrangeHRM\Onboarding\Dto\TaskSearchFilterParams;
@@ -44,5 +45,21 @@ class TaskService
     public function getUnDeletableTaskIds(): array
     {
         return [];
+    }
+
+    /**
+     * @throws DaoException
+     */
+    public function getTaskById(int $id): ?Task
+    {
+        return $this->getTaskDao()->getTaskById($id);
+    }
+
+    /**
+     * @throws DaoException
+     */
+    public function deleteTask(array $ids): int
+    {
+        return $this->getTaskDao()->deleteTaskById($ids);
     }
 }

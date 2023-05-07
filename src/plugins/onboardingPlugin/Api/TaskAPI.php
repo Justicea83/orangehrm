@@ -10,14 +10,17 @@ use OrangeHRM\Core\Api\V2\Endpoint;
 use OrangeHRM\Core\Api\V2\EndpointCollectionResult;
 use OrangeHRM\Core\Api\V2\EndpointResourceResult;
 use OrangeHRM\Core\Api\V2\EndpointResult;
+use OrangeHRM\Core\Api\V2\Exception\RecordNotFoundException;
+use OrangeHRM\Core\Api\V2\Model\ArrayModel;
 use OrangeHRM\Core\Api\V2\ParameterBag;
 use OrangeHRM\Core\Api\V2\RequestParams;
+use OrangeHRM\Core\Api\V2\Serializer\NormalizeException;
 use OrangeHRM\Core\Api\V2\Validator\ParamRule;
 use OrangeHRM\Core\Api\V2\Validator\ParamRuleCollection;
 use OrangeHRM\Core\Api\V2\Validator\Rule;
 use OrangeHRM\Core\Api\V2\Validator\Rules;
 use OrangeHRM\Core\Api\V2\Validator\Rules\EntityUniquePropertyOption;
-use OrangeHRM\Entity\JobTitle;
+use OrangeHRM\Core\Exception\DaoException;
 use OrangeHRM\Entity\Task;
 use OrangeHRM\Onboarding\Api\Model\TaskDetailModel;
 use OrangeHRM\Onboarding\Api\Model\TaskModel;
@@ -210,44 +213,39 @@ class TaskAPI extends Endpoint implements CrudEndpoint
         );
     }
 
+    /**
+     * @throws NormalizeException
+     * @throws DaoException
+     */
     public function delete(): EndpointResult
     {
-        // TODO: Implement delete() method.
+        $ids = $this->getRequestParams()->getArray(RequestParams::PARAM_TYPE_BODY, CommonParams::PARAMETER_IDS);
+        $this->getTaskService()->deleteTask($ids);
+        return new EndpointResourceResult(ArrayModel::class, $ids);
     }
 
     public function getValidationRuleForDelete(): ParamRuleCollection
     {
-        // TODO: Implement getValidationRuleForDelete() method.
+        return new ParamRuleCollection(
+            new ParamRule(CommonParams::PARAMETER_IDS),
+        );
     }
 
     public function getOne(): EndpointResult
     {
-        // TODO: Implement getOne() method.
+        $id = $this->getRequestParams()->getInt(RequestParams::PARAM_TYPE_ATTRIBUTE, CommonParams::PARAMETER_ID);
+        $task = $this->getTaskService()->getTaskById($id);
+        if (!$task instanceof Task) {
+            throw new RecordNotFoundException();
+        }
+
+        return new EndpointResourceResult(Task::class, $task);
     }
 
     public function getValidationRuleForGetOne(): ParamRuleCollection
     {
         return new ParamRuleCollection(
-            $this->getModelParamRule(),
-            $this->getValidationDecorator()->notRequiredParamRule(
-                new ParamRule(
-                    self::FILTER_TASK_TITLE,
-                    new Rule(Rules::STRING_TYPE),
-                    new Rule(Rules::LENGTH, [null, self::PARAM_RULE_FILTER_NAME_MAX_LENGTH]),
-                ),
-            ),
-            $this->getValidationDecorator()->notRequiredParamRule(
-                new ParamRule(
-                    self::FILTER_JOB_TITLE_ID,
-                    new Rule(Rules::POSITIVE),
-                ),
-            ),
-            $this->getValidationDecorator()->notRequiredParamRule(
-                new ParamRule(
-                    self::FILTER_TASK_TYPE,
-                    new Rule(Rules::INT_TYPE),
-                ),
-            ),
+            new ParamRule(CommonParams::PARAMETER_ID),
         );
     }
 

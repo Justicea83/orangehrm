@@ -61,6 +61,7 @@
           v-model:order="sortDefinition"
           :headers="headers"
           :items="items?.data"
+          :selectable="true"
           :clickable="true"
           :loading="isLoading"
           class="orangehrm-employee-list"
@@ -257,18 +258,46 @@ export default {
     onClickEdit() {
       console.log('edit');
     },
+    onClickDelete(item) {
+      this.$refs.deleteDialog.showDialog().then(confirmation => {
+        if (confirmation === 'ok') {
+          this.deleteItems([item.id]);
+        }
+      });
+    },
     async filterItems() {
       await this.execQuery();
     },
     onClickDeleteSelected() {
-      const ids = this.checkedItems.map(index => {
-        return this.items?.data[index].id;
+      const ids = [];
+      this.checkedItems.forEach(index => {
+        ids.push(this.items?.data[index].id);
       });
       this.$refs.deleteDialog.showDialog().then(confirmation => {
         if (confirmation === 'ok') {
           this.deleteItems(ids);
         }
       });
+    },
+    deleteItems(items) {
+      if (items instanceof Array) {
+        this.isLoading = true;
+        this.http
+          .deleteAll({
+            ids: items,
+          })
+          .then(() => {
+            return this.$toast.deleteSuccess();
+          })
+          .then(() => {
+            this.isLoading = false;
+            this.resetDataTable();
+          });
+      }
+    },
+    async resetDataTable() {
+      this.checkedItems = [];
+      await this.execQuery();
     },
     onClickAdd() {
       navigate('/admin/saveTask');

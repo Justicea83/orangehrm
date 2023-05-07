@@ -40,7 +40,7 @@ class TaskAPI extends Endpoint implements CrudEndpoint
     public const MODEL_DETAILED = 'detailed';
 
     public const FILTER_TASK_TITLE = 'title';
-    public const FILTER_TASK_TYPE = 'type';
+    public const FILTER_TASK_TYPE = 'taskType';
     public const FILTER_JOB_TITLE_ID = 'jobTitleId';
 
     public const PARAM_RULE_EMP_PICTURE_FILE_NAME_MAX_LENGTH = 100;
@@ -70,7 +70,32 @@ class TaskAPI extends Endpoint implements CrudEndpoint
         $filterParams = new TaskSearchFilterParams();
         $this->setSortingAndPaginationParams($filterParams);
 
-        // TODO set search filters
+        $title = $this->getRequestParams()->getStringOrNull(
+            RequestParams::PARAM_TYPE_QUERY,
+            self::FILTER_TASK_TITLE
+        );
+
+        if (!is_null($title)) {
+            $filterParams->setTitle($title);
+        }
+
+        $jobTitleId = $this->getRequestParams()->getIntOrNull(
+            RequestParams::PARAM_TYPE_QUERY,
+            self::FILTER_JOB_TITLE_ID
+        );
+
+        if (!is_null($jobTitleId)) {
+            $filterParams->setJobTitleId($jobTitleId);
+        }
+
+        $taskType = $this->getRequestParams()->getIntOrNull(
+            RequestParams::PARAM_TYPE_QUERY,
+            self::FILTER_TASK_TYPE
+        );
+
+        if (!is_null($taskType)) {
+            $filterParams->setType($taskType);
+        }
 
         $tasks = $this->getTaskService()->getTaskList($filterParams);
         $count = $this->getTaskService()->getTaskListCount($filterParams);
@@ -84,6 +109,7 @@ class TaskAPI extends Endpoint implements CrudEndpoint
     public function getValidationRuleForGetAll(): ParamRuleCollection
     {
         return new ParamRuleCollection(
+            $this->getModelParamRule(),
             $this->getValidationDecorator()->notRequiredParamRule(
                 new ParamRule(
                     self::FILTER_TASK_TITLE,
@@ -93,17 +119,16 @@ class TaskAPI extends Endpoint implements CrudEndpoint
             ),
             $this->getValidationDecorator()->notRequiredParamRule(
                 new ParamRule(
-                    self::FILTER_TASK_TYPE,
-                    new Rule(Rules::INT_TYPE),
-                ),
-            ),
-            $this->getValidationDecorator()->notRequiredParamRule(
-                new ParamRule(
                     self::FILTER_JOB_TITLE_ID,
                     new Rule(Rules::POSITIVE),
                 ),
             ),
-            $this->getModelParamRule(),
+            $this->getValidationDecorator()->notRequiredParamRule(
+                new ParamRule(
+                    self::FILTER_TASK_TYPE,
+                    new Rule(Rules::INT_VAL),
+                ),
+            ),
             ...$this->getSortingAndPaginationParamsRules(TaskSearchFilterParams::ALLOWED_SORT_FIELDS)
         );
     }
@@ -134,7 +159,7 @@ class TaskAPI extends Endpoint implements CrudEndpoint
     {
         $title = $this->getRequestParams()->getString(RequestParams::PARAM_TYPE_BODY, self::PARAMETER_TITLE);
         $notes = $this->getRequestParams()->getStringOrNull(RequestParams::PARAM_TYPE_BODY, self::PARAMETER_NOTES);
-        $taskType = $this->getRequestParams()->getIntOrNull(RequestParams::PARAM_TYPE_BODY, self::FILTER_TASK_TYPE);
+        $taskType = $this->getRequestParams()->getIntOrNull(RequestParams::PARAM_TYPE_BODY, self::PARAMETER_TYPE);
 
         $task = new Task();
         $task->setTitle($title);
@@ -178,7 +203,7 @@ class TaskAPI extends Endpoint implements CrudEndpoint
     public function getValidationRuleForCreate(): ParamRuleCollection
     {
         return new ParamRuleCollection(
-            $this->getTitleRule(false),
+            $this->getTitleRule(),
             $this->getTypeRule(),
             $this->getNotesRule(),
             $this->getJobTitleIdRule(),
@@ -202,7 +227,28 @@ class TaskAPI extends Endpoint implements CrudEndpoint
 
     public function getValidationRuleForGetOne(): ParamRuleCollection
     {
-        // TODO: Implement getValidationRuleForGetOne() method.
+        return new ParamRuleCollection(
+            $this->getModelParamRule(),
+            $this->getValidationDecorator()->notRequiredParamRule(
+                new ParamRule(
+                    self::FILTER_TASK_TITLE,
+                    new Rule(Rules::STRING_TYPE),
+                    new Rule(Rules::LENGTH, [null, self::PARAM_RULE_FILTER_NAME_MAX_LENGTH]),
+                ),
+            ),
+            $this->getValidationDecorator()->notRequiredParamRule(
+                new ParamRule(
+                    self::FILTER_JOB_TITLE_ID,
+                    new Rule(Rules::POSITIVE),
+                ),
+            ),
+            $this->getValidationDecorator()->notRequiredParamRule(
+                new ParamRule(
+                    self::FILTER_TASK_TYPE,
+                    new Rule(Rules::INT_TYPE),
+                ),
+            ),
+        );
     }
 
     public function update(): EndpointResult

@@ -1,4 +1,43 @@
 <template>
+  <oxd-table-filter filter-title="Task Information">
+    <oxd-form @submitValid="filterItems" @reset="filterItems">
+      <oxd-form-row>
+        <oxd-grid :cols="4" class="orangehrm-full-width-grid">
+          <oxd-grid-item>
+            <task-auto-complete v-model="filters.task" />
+          </oxd-grid-item>
+          <oxd-grid-item>
+            <jobtitle-dropdown v-model="filters.jobTitleId" />
+          </oxd-grid-item>
+          <oxd-grid-item>
+            <onboarding-type-dropdown
+              v-model="filters.type"
+              label="Task Type"
+            />
+          </oxd-grid-item>
+        </oxd-grid>
+      </oxd-form-row>
+
+      <oxd-divider />
+
+      <oxd-form-actions>
+        <oxd-button
+          display-type="ghost"
+          :label="$t('general.reset')"
+          type="reset"
+        />
+        <oxd-button
+          class="orangehrm-left-space"
+          display-type="secondary"
+          :label="$t('general.search')"
+          type="submit"
+        />
+      </oxd-form-actions>
+    </oxd-form>
+  </oxd-table-filter>
+
+  <br />
+
   <div class="orangehrm-background-container">
     <div class="orangehrm-paper-container">
       <div class="orangehrm-header-container">
@@ -49,6 +88,9 @@ import {navigate} from '@ohrm/core/util/helper/navigation';
 import {APIService} from '@/core/util/services/api.service';
 import useSort from '@ohrm/core/util/composable/useSort';
 import usei18n from '@/core/util/composable/usei18n';
+import JobtitleDropdown from '@/orangehrmPimPlugin/components/JobtitleDropdown';
+import OnboardingTypeDropdown from '@/orangehrmPimPlugin/components/OnboardingTypeDropdown';
+import TaskAutoComplete from '@/orangehrmAdminPlugin/pages/tasks/TaskAutoComplete';
 
 const defaultSortOrder = {
   'task.title': 'DEFAULT',
@@ -59,15 +101,21 @@ export default {
   name: 'TaskList',
   components: {
     'delete-confirmation': DeleteConfirmationDialog,
+    TaskAutoComplete,
+    JobtitleDropdown,
+    OnboardingTypeDropdown,
   },
+
   props: {
     unSelectableTaskIds: {
       type: Array,
       default: () => [],
     },
   },
+
   setup(props) {
     const {$t} = usei18n();
+
     const dataNormalizer = data => {
       return data.map(item => {
         const selectable = props.unSelectableTaskIds.findIndex(
@@ -84,9 +132,11 @@ export default {
     };
 
     const filters = ref({
-      title: null,
+      title: '',
+      notes: '',
       jobTitleId: null,
       type: null,
+      task: null,
     });
 
     const {sortDefinition, sortField, sortOrder, onSort} = useSort({
@@ -96,9 +146,11 @@ export default {
     const serializedFilters = computed(() => {
       return {
         model: 'detailed',
-        title: filters.value.task?.id,
-        type: filters.value.task?.type,
+        title: filters.value.task?.label,
+        taskType: filters.value.type ? parseInt(filters.value.type?.id) : null,
         jobTitleId: filters.value.jobTitleId?.id,
+        sortField: sortField.value,
+        sortOrder: sortOrder.value,
       };
     });
 
@@ -106,6 +158,7 @@ export default {
       window.appGlobal.baseUrl,
       '/api/v2/onboarding/tasks',
     );
+
     const {
       showPaginator,
       currentPage,
@@ -134,6 +187,14 @@ export default {
       items: response,
       filters,
       sortDefinition,
+    };
+  },
+  data() {
+    return {
+      checkedItems: [],
+      rules: {
+        tasks: [],
+      },
     };
   },
   computed: {
@@ -191,18 +252,13 @@ export default {
       ];
     },
   },
-  data() {
-    return {
-      checkedItems: [],
-      rules: {
-        tasks: [],
-      },
-    };
-  },
 
   methods: {
     onClickEdit() {
       console.log('edit');
+    },
+    async filterItems() {
+      await this.execQuery();
     },
     onClickDeleteSelected() {
       const ids = this.checkedItems.map(index => {

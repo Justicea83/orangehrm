@@ -3,7 +3,6 @@
 namespace OrangeHRM\Onboarding\Api;
 
 use Carbon\Carbon;
-use OrangeHRM\Admin\Api\Model\JobTitleModel;
 use OrangeHRM\Admin\Traits\Service\TaskServiceTrait;
 use OrangeHRM\Core\Api\CommonParams;
 use OrangeHRM\Core\Api\V2\CrudEndpoint;
@@ -22,7 +21,6 @@ use OrangeHRM\Core\Api\V2\Validator\Rule;
 use OrangeHRM\Core\Api\V2\Validator\Rules;
 use OrangeHRM\Core\Api\V2\Validator\Rules\EntityUniquePropertyOption;
 use OrangeHRM\Core\Exception\DaoException;
-use OrangeHRM\Entity\JobTitle;
 use OrangeHRM\Entity\Task;
 use OrangeHRM\Onboarding\Api\Model\TaskDetailModel;
 use OrangeHRM\Onboarding\Api\Model\TaskModel;

@@ -1,0 +1,57 @@
+@import '@ohrm/oxd/styles/_variables.scss';
+
+.board-wrapper {
+  border-radius: 8px;
+  display: flex;
+  justify-content: center;
+  overflow-x: auto;
+}
+
+.board-group {
+  background: #dad9d9;
+  width: 18rem;
+  border-radius: 4px;
+  height: 100%;
+  padding: 0.5rem;
+  max-height: 60vh;
+  margin-right: 10px;
+}
+
+.board-group-header {
+  display: flex;
+  width: 100%;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.board-group-body {
+  overflow-y: auto;
+  height: 100%;
+  & > ul {
+    list-style: none;
+    height: 100%;
+  }
+}
+
+button {
+  &.gray-background {
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+    border-radius: 4px;
+    &:hover {
+      background-color: #ecebeb;
+    }
+  }
+  &.absolute {
+    position: absolute;
+    top: 3px;
+    right: 5px;
+    display: none;
+  }
+  & > .icon {
+    height: 1rem;
+  }
+}

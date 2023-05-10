@@ -47,16 +47,6 @@
                   />
                 </oxd-grid-item>
               </oxd-grid>
-
-              <oxd-grid :cols="2" class="orangehrm-full-width-grid">
-                <oxd-grid-item>
-                  <oxd-input-field
-                    v-model="employee.employeeId"
-                    :label="$t('general.employee_id')"
-                    :rules="rules.employeeId"
-                  />
-                </oxd-grid-item>
-              </oxd-grid>
             </oxd-form-row>
             <oxd-divider />
             <oxd-form-row class="user-form-header">
@@ -80,23 +70,14 @@
                   </oxd-grid-item>
 
                   <oxd-grid-item>
-                    <oxd-input-group
-                      :label="$t('general.status')"
-                      :classes="{wrapper: '--status-grouped-field'}"
-                    >
-                      <oxd-input-field
-                        v-model="user.status"
-                        type="radio"
-                        :option-label="$t('general.enabled')"
-                        value="1"
-                      />
-                      <oxd-input-field
-                        v-model="user.status"
-                        type="radio"
-                        :option-label="$t('general.disabled')"
-                        value="2"
-                      />
-                    </oxd-input-group>
+                    <oxd-input-field
+                      v-model="user.role"
+                      type="select"
+                      :label="$t('general.user_role')"
+                      :rules="rules.role"
+                      :options="userRoles"
+                      required
+                    />
                   </oxd-grid-item>
                 </oxd-grid>
               </oxd-form-row>
@@ -152,7 +133,8 @@ const employeeModel = {
 
 const userModel = {
   username: '',
-  userRoleId: 2,
+  //userRoleId: 2,
+  role: null,
   empNumber: 0,
   status: '1',
   password: '',
@@ -173,6 +155,10 @@ export default {
       required: true,
     },
     allowedImageTypes: {
+      type: Array,
+      required: true,
+    },
+    userRoles: {
       type: Array,
       required: true,
     },
@@ -206,6 +192,7 @@ export default {
         middleName: [shouldNotExceedCharLength(30)],
         lastName: [required, shouldNotExceedCharLength(30)],
         employeeId: [shouldNotExceedCharLength(10)],
+        role: [required],
         empPicture: [
           maxFileSize(1024 * 1024),
           validFileTypes(this.allowedImageTypes),
@@ -293,16 +280,12 @@ export default {
             this.empNumber = data.data.empNumber;
           }
           if (this.createLogin && data?.data) {
-            return this.http.request({
-              method: 'POST',
-              url: '/api/v2/admin/users',
-              data: {
-                username: this.user.username,
-                password: this.user.password,
-                status: this.user.status == '1',
-                userRoleId: this.user.userRoleId,
-                empNumber: data.data.empNumber,
-              },
+            return this.http.http.post('api/v2/admin/users', {
+              username: this.user.username,
+              password: this.user.password,
+              status: this.user.status === '1',
+              userRoleId: this.user.role?.id,
+              empNumber: data.data.empNumber,
             });
           } else {
             return;

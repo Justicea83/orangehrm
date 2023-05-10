@@ -23,6 +23,7 @@ use DateTime;
 use Doctrine\ORM\Mapping as ORM;
 use OrangeHRM\Entity\Decorator\DecoratorTrait;
 use OrangeHRM\Entity\Decorator\KpiDecorator;
+use OrangeHRM\ORM\Tenancy\TenantAware;
 
 /**
  * @method KpiDecorator getDecorator()
@@ -30,7 +31,7 @@ use OrangeHRM\Entity\Decorator\KpiDecorator;
  * @ORM\Table(name="ohrm_kpi")
  * @ORM\Entity
  */
-class Kpi
+class Kpi extends TenantAware
 {
     use DecoratorTrait;
 

@@ -203,7 +203,10 @@ export default {
     fetchWidgetData() {
       this.isLoading = true;
       const currentDate = freshDate();
-      const timezoneOffset = (currentDate.getTimezoneOffset() / 60) * -1;
+      const timezoneOffset = (
+        (currentDate.getTimezoneOffset() / 60) *
+        -1
+      ).toFixed(4);
       this.http
         .getAll({
           timezoneOffset,

@@ -23,12 +23,18 @@
     class="orangehrm-left-space"
     display-type="secondary"
     :label="$t('general.save')"
-    type="submit"
+    :type="buttonType"
   />
 </template>
 
 <script>
 export default {
   name: 'SubmitButton',
+  props: {
+    buttonType: {
+      type: String,
+      default: 'submit',
+    },
+  },
 };
 </script>

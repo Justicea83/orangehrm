@@ -9,7 +9,7 @@
         <oxd-divider />
 
         <oxd-form :loading="isLoading" @submitValid="onCreateOnboarding">
-          <stepper :tabs="tabs" :start-index="1" @completed="complete">
+          <stepper :tabs="tabs" @completed="complete">
             <template #0>
               <onboarding-details
                 :rules="rules.onboardingDetails"
@@ -41,6 +41,7 @@ const initialActivity = {
   supervisor: null,
   dueDate: null,
   startDate: null,
+  type: null,
   endDate: null,
   tasks: [],
 };

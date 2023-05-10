@@ -4,6 +4,7 @@
       <oxd-grid :cols="3" class="orangehrm-full-width-grid">
         <oxd-grid-item>
           <employee-autocomplete
+            v-model="activityModel.employee"
             label="Employee"
             required
             :rules="rules.employee"
@@ -11,13 +12,19 @@
         </oxd-grid-item>
         <oxd-grid-item>
           <supervisor-auto-complete
+            v-model="activityModel.supervisor"
             label="Supervisor"
             required
             :rules="rules.supervisor"
           />
         </oxd-grid-item>
         <oxd-grid-item>
-          <onboarding-type-dropdown required label="Type" :rules="rules.type" />
+          <onboarding-type-dropdown
+            v-model="activityModel.type"
+            required
+            label="Type"
+            :rules="rules.type"
+          />
         </oxd-grid-item>
       </oxd-grid>
     </oxd-form-row>
@@ -25,13 +32,28 @@
     <oxd-form-row>
       <oxd-grid :cols="3" class="orangehrm-full-width-grid">
         <oxd-grid-item>
-          <date-input label="Start Date" :rules="rules.startDate" required />
+          <date-input
+            v-model="activityModel.startDate"
+            label="Start Date"
+            :rules="rules.startDate"
+            required
+          />
         </oxd-grid-item>
         <oxd-grid-item>
-          <date-input label="End Date" :rules="rules.endDate" required />
+          <date-input
+            v-model="activityModel.endDate"
+            label="End Date"
+            :rules="rules.endDate"
+            required
+          />
         </oxd-grid-item>
         <oxd-grid-item>
-          <date-input label="Due Date" :rules="rules.dueDate" required />
+          <date-input
+            v-model="activityModel.dueDate"
+            label="Due Date"
+            :rules="rules.dueDate"
+            required
+          />
         </oxd-grid-item>
       </oxd-grid>
     </oxd-form-row>
@@ -78,6 +100,16 @@ export default {
     rules: {
       type: Object,
       required: true,
+    },
+  },
+  computed: {
+    activityModel: {
+      get() {
+        return this.activity;
+      },
+      set(value) {
+        this.$emit('update:prop', value);
+      },
     },
   },
 };

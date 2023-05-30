@@ -32,9 +32,9 @@
         ></oxd-alert>
 
         <oxd-alert
-            :show="success !== null"
-            :message="success?.message || ''"
-            type="success"
+          :show="success !== null"
+          :message="success?.message || ''"
+          type="success"
         ></oxd-alert>
 
         <oxd-sheet
@@ -91,7 +91,10 @@
             {{ $t('auth.forgot_password') }}?
           </oxd-text>
 
-          <oxd-text class="orangehrm-login-forgot-header" @click="goToRegistrationPage">
+          <oxd-text
+            class="orangehrm-login-forgot-header"
+            @click="goToRegistrationPage"
+          >
             {{ $t('auth.register') }}?
           </oxd-text>
         </div>
@@ -109,13 +112,12 @@ import {urlFor} from '@ohrm/core/util/helper/url';
 import {required} from '@ohrm/core/util/validation/rules';
 import {navigate, reloadPage} from '@ohrm/core/util/helper/navigation';
 import LoginLayout from '../components/LoginLayout';
-import Alert from '@ohrm/oxd/core/components/Alert/Alert';
-import Sheet from '@ohrm/oxd/core/components/Sheet/Sheet';
+import {OxdAlert, OxdSheet} from '@ohrm/oxd';
 
 export default {
   components: {
-    'oxd-alert': Alert,
-    'oxd-sheet': Sheet,
+    'oxd-alert': OxdAlert,
+    'oxd-sheet': OxdSheet,
     'login-layout': LoginLayout,
   },
 

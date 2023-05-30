@@ -160,6 +160,8 @@ export class APIService {
       };
       // Additional interceptors for caching
       this._http.interceptors.request.use(
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        // @ts-ignore
         (config: AxiosRequestConfig) => {
           if (config.url) {
             const url = config.url;

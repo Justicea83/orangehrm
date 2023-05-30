@@ -5607,6 +5607,134 @@
     bottom: 1rem;
 }
 }
+/*!*****************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** css ./node_modules/css-loader/dist/cjs.js??clonedRuleSet-22.use[1]!./node_modules/vue-loader/dist/stylePostLoader.js!./node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-22.use[2]!./node_modules/sass-loader/dist/cjs.js??clonedRuleSet-22.use[3]!./src/orangehrmAuthenticationPlugin/pages/Register/register.scss?vue&type=style&index=0&id=c98d36e8&lang=scss&scoped=true ***!
+  \*****************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************/
+/* Import OXD Globals */
+.orangehrm-card-container[data-v-c98d36e8] {
+  box-shadow: 3px 3px 10px #929baa;
+  width: 80vw;
+}
+@media (min-width: 800px) {
+.orangehrm-card-container[data-v-c98d36e8] {
+    width: 30vw;
+}
+}
+.register-subheading[data-v-c98d36e8] {
+  font-style: italic;
+  font-weight: 100;
+  font-size: 15px;
+  padding: 1rem 0 1rem 0;
+}
+.register-button-wrapper[data-v-c98d36e8] {
+  margin-top: 2rem;
+  justify-content: center;
+}
+.register-button[data-v-c98d36e8] {
+  flex: 1;
+  padding: 1rem 0;
+}
+.register-reset[data-v-c98d36e8] {
+  cursor: pointer;
+  font-size: 12px;
+}
+.register-reset--link[data-v-c98d36e8] {
+  color: var(--oxd-primary-one-color);
+}
+.register-wrapper[data-v-c98d36e8] {
+  flex: 1;
+  display: flex;
+  align-items: center;
+}
+.register-card-note[data-v-c98d36e8] {
+  margin: 1rem 0;
+}
+.register-container[data-v-c98d36e8] {
+  display: flex;
+  padding: 15rem 0 5rem 0 !important;
+  flex-direction: column;
+  height: 100vh;
+  justify-content: center;
+  align-items: center;
+}
+.register-note.--padding[data-v-c98d36e8] {
+  padding-bottom: 1.2rem;
+}
+.register-buttons[data-v-c98d36e8] {
+  display: flex;
+  margin-top: 1.1rem;
+  width: 100%;
+}
+.register-button[data-v-c98d36e8] {
+  flex: 1;
+}
+.register-button-container[data-v-c98d36e8] {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  flex-direction: column;
+}
+@media (min-width: 1000px) {
+.register-button-container[data-v-c98d36e8] {
+    flex-direction: row;
+    align-items: center;
+    box-sizing: border-box;
+}
+}
+.register-button-container button[data-v-c98d36e8] {
+  margin-top: 0.5rem;
+  margin-bottom: 0.5rem;
+}
+@media (min-width: 1000px) {
+.register-button--reset[data-v-c98d36e8] {
+    margin-left: 0.5rem;
+}
+}
+@media (min-width: 1000px) {
+.register-button--cancel[data-v-c98d36e8] {
+    margin-right: 0.5rem;
+}
+}
+.orangehrm-login-forgot[data-v-c98d36e8] {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 1rem;
+}
+.orangehrm-login-forgot-header[data-v-c98d36e8] {
+  cursor: pointer;
+  color: var(--oxd-primary-one-color);
+}
+.orangehrm-login-forgot[data-v-c98d36e8] {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 1rem;
+}
+.orangehrm-login-forgot-header[data-v-c98d36e8] {
+  cursor: pointer;
+  color: var(--oxd-primary-one-color);
+}
+.orangehrm-login-footer-sm[data-v-c98d36e8] {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.orangehrm-login-footer-sm a[data-v-c98d36e8] {
+  width: 22px;
+  height: 22px;
+  margin: 0 0.25rem;
+}
+.orangehrm-login-footer-sm .orangehrm-sm-icon[data-v-c98d36e8] {
+  width: inherit;
+  height: inherit;
+  color: rgba(146, 155, 170, 0.8);
+}
+@media (min-width: 800px) {
+.orangehrm-login-footer-sm[data-v-c98d36e8] {
+    position: absolute;
+    left: 1rem;
+    bottom: 1rem;
+}
+}
 /*!***********************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
   !*** css ./node_modules/css-loader/dist/cjs.js??clonedRuleSet-22.use[1]!./node_modules/vue-loader/dist/stylePostLoader.js!./node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-22.use[2]!./node_modules/sass-loader/dist/cjs.js??clonedRuleSet-22.use[3]!./node_modules/vue-loader/dist/index.js??ruleSet[0].use[0]!./src/orangehrmAuthenticationPlugin/components/CardNote.vue?vue&type=style&index=0&id=1e6cd7ba&scoped=true&lang=scss ***!
   \***********************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************/

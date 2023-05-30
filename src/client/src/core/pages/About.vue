@@ -44,7 +44,7 @@
         </oxd-text>
       </oxd-grid-item>
       <!--   Version   -->
-<!--      <oxd-grid-item>
+      <!--      <oxd-grid-item>
         <oxd-text tag="p" class="orangehrm-about-title">
           {{ $t('general.version') }}:
         </oxd-text>

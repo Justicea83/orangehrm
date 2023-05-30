@@ -9,9 +9,7 @@
           :action="submitUrl"
           @submitValid="onSubmit"
         >
-          <oxd-text tag="h6">
-            Create Account
-          </oxd-text>
+          <oxd-text tag="h6"> Create Account </oxd-text>
           <oxd-divider />
           <oxd-text tag="h6" class="register-subheading">
             Organization Details
@@ -41,9 +39,7 @@
             />
           </oxd-form-row>
           <oxd-divider />
-          <oxd-text tag="h6" class="register-subheading">
-            Admin User
-          </oxd-text>
+          <oxd-text tag="h6" class="register-subheading"> Admin User </oxd-text>
           <oxd-form-row>
             <oxd-input-field
               v-model="firstName"
@@ -112,6 +108,7 @@
           <div class="orangehrm-login-forgot">
             <oxd-text
               class="orangehrm-login-forgot-header"
+              type="button"
               @click="goToLoginPage"
             >
               {{ $t('auth.login') }}?
@@ -132,10 +129,8 @@ import {
   shouldNotExceedCharLength,
   validEmailFormat,
 } from '@/core/util/validation/rules';
-import {checkPassword} from '@/core/util/helper/password';
 import {navigate} from '@/core/util/helper/navigation';
 import {urlFor} from '@/core/util/helper/url';
-import debounce from '@ohrm/oxd/utils/debounce';
 import {APIService} from '@/core/util/services/api.service';
 import LoginBranding from '@/orangehrmAuthenticationPlugin/components/LoginBranding';
 
@@ -197,13 +192,13 @@ export default {
           required,
           shouldNotExceedCharLength(50),
           validEmailFormat,
-          v => (!!v && this.isUsernameValid) || 'This email is already taken',
+          (v) => (!!v && this.isUsernameValid) || 'This email is already taken',
         ],
-        password: [required, shouldNotExceedCharLength(64), checkPassword],
+        password: [required, shouldNotExceedCharLength(64)],
         passwordConfirm: [
           required,
           shouldNotExceedCharLength(64),
-          v => (!!v && v === this.password) || 'Passwords do not match',
+          (v) => (!!v && v === this.password) || 'Passwords do not match',
         ],
       },
     };
@@ -219,7 +214,7 @@ export default {
   },
 
   watch: {
-    username: debounce(function(value) {
+    username: function (value) {
       new APIService('/installer/index.php').http
         .post('/installer/api/validate-username', {
           type: 'username',
@@ -228,7 +223,7 @@ export default {
         .then(({data}) => {
           this.isUsernameValid = data.status;
         });
-    }, 300),
+    },
   },
 
   methods: {

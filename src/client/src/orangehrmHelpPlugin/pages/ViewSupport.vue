@@ -26,11 +26,15 @@
       </oxd-text>
       <oxd-divider />
       <oxd-text tag="p" class="orangehrm-support-text">
-        Learning how to use a new application can be challenging. At TaskflowHR, we are committed to providing you with the necessary knowledge and skills required to fully utilize the application thereby allowing you to quickly and efficiently manage your HR processes.
+        Learning how to use a new application can be challenging. At TaskflowHR,
+        we are committed to providing you with the necessary knowledge and
+        skills required to fully utilize the application thereby allowing you to
+        quickly and efficiently manage your HR processes.
       </oxd-text>
       <br />
       <oxd-text tag="p" class="orangehrm-support-text">
-        The following information repositories are available to help you understand the application:
+        The following information repositories are available to help you
+        understand the application:
       </oxd-text>
       <div class="orangehrm-support">
         <oxd-grid :cols="2" class="orangehrm-support-channel --mail">

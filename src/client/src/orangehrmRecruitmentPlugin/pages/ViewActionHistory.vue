@@ -24,7 +24,7 @@
       :loading="isLoading"
       :candidate-id="candidateId"
       :title="$t('recruitment.view_action_history')"
-      @submitValid="onSave"
+      @submit-valid="onSave"
     >
       <oxd-form-row>
         <oxd-grid :cols="3" class="orangehrm-full-width-grid">
@@ -228,9 +228,9 @@ export default {
         interviewerName: [
           required,
           validSelection,
-          value => {
+          (value) => {
             return this.interviewers.filter(
-              interviewer => interviewer && interviewer.id === value?.id,
+              (interviewer) => interviewer && interviewer.id === value?.id,
             ).length < 2
               ? true
               : this.$t('general.already_exists');
@@ -269,8 +269,8 @@ export default {
     },
     performedAction() {
       return (
-        this.statuses.find(item => item.id === this.history.action.id)?.label ||
-        null
+        this.statuses.find((item) => item.id === this.history.action.id)
+          ?.label || null
       );
     },
     isScheduleInterview() {
@@ -282,18 +282,18 @@ export default {
     this.isLoading = true;
     this.http
       .get(this.historyId)
-      .then(response => {
+      .then((response) => {
         const {data, meta} = response.data;
         this.history = {...data};
         this.disabled = meta.disabled;
         return this.isScheduleInterview
           ? this.http.request({
               method: 'GET',
-              url: `api/v2/recruitment/candidates/${this.candidateId}/interviews/${this.history.interview.id}`,
+              url: `/api/v2/recruitment/candidates/${this.candidateId}/interviews/${this.history.interview.id}`,
             })
           : null;
       })
-      .then(response => {
+      .then((response) => {
         if (response) {
           const {data} = response.data;
           this.interview.interviewName = data.name;
@@ -301,7 +301,7 @@ export default {
           this.interview.interviewTime = data.interviewTime;
           this.history.note = data.note;
           if (Array.isArray(data.interviewers)) {
-            this.interviewers = data.interviewers.map(interviewer => ({
+            this.interviewers = data.interviewers.map((interviewer) => ({
               id: interviewer.empNumber,
               label: this.translateEmpName(interviewer, {
                 includeMiddle: true,
@@ -336,12 +336,12 @@ export default {
           return this.isScheduleInterview
             ? this.http.request({
                 method: 'PUT',
-                url: `api/v2/recruitment/candidates/${this.candidateId}/interviews/${this.history.interview.id}`,
+                url: `/api/v2/recruitment/candidates/${this.candidateId}/interviews/${this.history.interview.id}`,
                 data: {
                   ...this.interview,
                   note: this.history.note,
                   interviewerEmpNumbers: this.interviewers
-                    .map(interviewer => interviewer?.id)
+                    .map((interviewer) => interviewer?.id)
                     .filter(Number),
                 },
               })

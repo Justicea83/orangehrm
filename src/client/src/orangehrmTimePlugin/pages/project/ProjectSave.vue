@@ -26,7 +26,7 @@
       </oxd-text>
       <oxd-divider />
 
-      <oxd-form :loading="isLoading" @submitValid="onSave">
+      <oxd-form :loading="isLoading" @submit-valid="onSave">
         <oxd-grid :cols="2" class="orangehrm-full-width-grid">
           <oxd-grid-item>
             <oxd-input-field
@@ -112,7 +112,7 @@ import {
 } from '@ohrm/core/util/validation/rules';
 import {APIService} from '@/core/util/services/api.service';
 import {navigate} from '@ohrm/core/util/helper/navigation';
-import promiseDebounce from '@ohrm/oxd/utils/promiseDebounce';
+import {promiseDebounce} from '@ohrm/oxd';
 import AddCustomerModal from '@/orangehrmTimePlugin/components/AddCustomerModal.vue';
 import CustomerAutocomplete from '@/orangehrmTimePlugin/components/CustomerAutocomplete.vue';
 import ProjectAdminAutocomplete from '@/orangehrmTimePlugin/components/ProjectAdminAutocomplete.vue';
@@ -134,9 +134,9 @@ export default {
   setup() {
     const http = new APIService(
       window.appGlobal.baseUrl,
-      'api/v2/time/projects',
+      '/api/v2/time/projects',
     );
-    http.setIgnorePath('api/v2/time/validation/project-name');
+    http.setIgnorePath('/api/v2/time/validation/project-name');
     return {
       http,
     };
@@ -158,7 +158,7 @@ export default {
         customer: [required, validSelection],
         projectAdmin: [
           validSelection,
-          value => {
+          (value) => {
             return this.projectAdmins.filter(
               ({value: admin}) => admin && admin.id === value?.id,
             ).length < 2
@@ -205,7 +205,7 @@ export default {
             .map(({value}) => value && value.id)
             .filter(Number),
         })
-        .then(result => {
+        .then((result) => {
           this.projectId = result.data?.data.id;
           return this.$toast.saveSuccess();
         })
@@ -214,18 +214,18 @@ export default {
         });
     },
     validateProjectName(project) {
-      return new Promise(resolve => {
+      return new Promise((resolve) => {
         if (project) {
           this.http
             .request({
               method: 'GET',
-              url: `api/v2/time/validation/project-name`,
+              url: `/api/v2/time/validation/project-name`,
               params: {
                 projectName: this.project.name.trim(),
                 customerId: this.project.customer?.id,
               },
             })
-            .then(response => {
+            .then((response) => {
               const {data} = response.data;
               return data.valid === true
                 ? resolve(true)

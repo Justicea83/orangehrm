@@ -36,7 +36,7 @@
       <oxd-divider />
 
       <div class="orangehrm-paper-container">
-        <oxd-form :loading="isLoading" @submitValid="onSave">
+        <oxd-form :loading="isLoading" @submit-valid="onSave">
           <oxd-grid :cols="2" class="orangehrm-full-width-grid no-gap">
             <oxd-grid-item>
               <oxd-grid :cols="2" class="orangehrm-full-width-grid">
@@ -167,7 +167,7 @@ import {
 import {diffInTime, parseDate, secondsTohhmm} from '@/core/util/helper/datefns';
 import {navigate} from '@/core/util/helper/navigation';
 import {APIService} from '@/core/util/services/api.service';
-import promiseDebounce from '@ohrm/oxd/utils/promiseDebounce';
+import {promiseDebounce} from '@ohrm/oxd';
 import useDateFormat from '@/core/util/composable/useDateFormat';
 import TimezoneDropdown from '@/orangehrmAttendancePlugin/components/TimezoneDropdown.vue';
 
@@ -202,7 +202,7 @@ export default {
   setup() {
     const http = new APIService(
       window.appGlobal.baseUrl,
-      `api/v2/attendance/records`,
+      `/api/v2/attendance/records`,
     );
     const {userDateFormat} = useDateFormat();
 
@@ -299,7 +299,7 @@ export default {
     this.isLoading = true;
     this.http
       .get(this.attendanceId)
-      .then(response => {
+      .then((response) => {
         const {data} = response.data;
         this.attendance.employee = data.employee;
         this.attendance.punchIn = {
@@ -385,11 +385,11 @@ export default {
       ) {
         return true;
       }
-      return new Promise(resolve => {
+      return new Promise((resolve) => {
         this.http
           .request({
             method: 'GET',
-            url: `api/v2/attendance/records/${apiPath}`,
+            url: `/api/v2/attendance/records/${apiPath}`,
             params: {
               recordId: this.attendanceId,
               punchInTimezoneOffset: this.attendance.punchIn.timezone
@@ -404,11 +404,11 @@ export default {
               punchOutTime: this.attendance.punchOut?.userTime,
             },
             // Prevent triggering response interceptor on 400
-            validateStatus: status => {
+            validateStatus: (status) => {
               return (status >= 200 && status < 300) || status == 400;
             },
           })
-          .then(res => {
+          .then((res) => {
             const {data, error} = res.data;
             if (error) {
               return resolve(error.message);

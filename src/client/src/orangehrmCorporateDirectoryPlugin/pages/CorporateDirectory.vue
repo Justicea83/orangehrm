@@ -21,14 +21,14 @@
 <template>
   <div class="orangehrm-background-container">
     <oxd-table-filter :filter-title="$t('general.directory')">
-      <oxd-form @submitValid="onSearch" @reset="onReset">
+      <oxd-form @submit-valid="onSearch" @reset="onReset">
         <oxd-form-row>
           <oxd-grid :cols="3">
             <oxd-grid-item>
               <employee-autocomplete
                 v-model="filters.employeeNumber"
                 :rules="rules.employee"
-                api-path="api/v2/directory/employees"
+                api-path="/api/v2/directory/employees"
               />
             </oxd-grid-item>
             <oxd-grid-item>
@@ -125,7 +125,7 @@
             :employee-location="employees[currentIndex].employeeLocation"
             :employee-name="employees[currentIndex].employeeName"
             :employee-sub-unit="employees[currentIndex].employeeSubUnit"
-            @hideDetails="hideEmployeeDetails()"
+            @hide-details="hideEmployeeDetails()"
           ></summary-card-details>
         </oxd-grid-item>
       </div>
@@ -139,13 +139,12 @@ import usei18n from '@/core/util/composable/usei18n';
 import useToast from '@/core/util/composable/useToast';
 import {APIService} from '@/core/util/services/api.service';
 import {validSelection} from '@/core/util/validation/rules';
-import Spinner from '@ohrm/oxd/core/components/Loader/Spinner';
-import useResponsive from '@ohrm/oxd/composables/useResponsive';
 import useInfiniteScroll from '@ohrm/core/util/composable/useInfiniteScroll';
 import EmployeeAutocomplete from '@/core/components/inputs/EmployeeAutocomplete';
 import SummaryCard from '@/orangehrmCorporateDirectoryPlugin/components/SummaryCard';
 import EmployeeDetails from '@/orangehrmCorporateDirectoryPlugin/components/EmployeeDetails';
 import SummaryCardDetails from '@/orangehrmCorporateDirectoryPlugin/components/SummaryCardDetails';
+import {OxdSpinner, useResponsive} from '@ohrm/oxd';
 
 const defaultFilters = {
   employeeNumber: null,
@@ -158,7 +157,7 @@ export default {
 
   components: {
     'summary-card': SummaryCard,
-    'oxd-loading-spinner': Spinner,
+    'oxd-loading-spinner': OxdSpinner,
     'employee-details': EmployeeDetails,
     'summary-card-details': SummaryCardDetails,
     'employee-autocomplete': EmployeeAutocomplete,
@@ -184,8 +183,8 @@ export default {
       employee: [validSelection],
     };
 
-    const employeeDataNormalizer = data => {
-      return data.map(item => {
+    const employeeDataNormalizer = (data) => {
+      return data.map((item) => {
         return {
           id: item.empNumber,
           employeeName:
@@ -202,7 +201,7 @@ export default {
 
     const http = new APIService(
       window.appGlobal.baseUrl,
-      'api/v2/directory/employees',
+      '/api/v2/directory/employees',
     );
 
     const limit = 14;
@@ -228,7 +227,7 @@ export default {
           empNumber: state.filters.employeeNumber?.id,
           jobTitleId: state.filters.jobTitleId?.id,
         })
-        .then(response => {
+        .then((response) => {
           const {data, meta} = response.data;
           state.total = meta?.total || 0;
           if (Array.isArray(data)) {

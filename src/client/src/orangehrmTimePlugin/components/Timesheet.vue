@@ -91,7 +91,7 @@
                 :only-allowed="false"
                 :rules="rules.project"
                 :model-value="getProject(record)"
-                @update:modelValue="updateProject($event, i)"
+                @update:model-value="updateProject($event, i)"
               />
               <span v-else>
                 {{
@@ -107,7 +107,7 @@
                 :rules="rules.activity"
                 :project-id="record.project && record.project.id"
                 :model-value="getActivity(record.activity)"
-                @update:modelValue="updateActivity($event, i)"
+                @update:model-value="updateActivity($event, i)"
               />
               <span v-else>{{ record.activity && record.activity.name }}</span>
             </td>
@@ -135,7 +135,7 @@
                 :model-value="getDuration(record.dates[date])"
                 @blur="onDurationBlur"
                 @focus="onDurationFocus(i, date)"
-                @update:modelValue="updateTime($event, i, date)"
+                @update:model-value="updateTime($event, i, date)"
               />
               <span v-else>
                 {{ getDuration(record.dates[date]) ?? '00:00' }}
@@ -235,20 +235,19 @@
 </template>
 
 <script>
-import Alert from '@ohrm/oxd/core/components/Alert/Alert';
 import {validSelection} from '@/core/util/validation/rules';
-import Spinner from '@ohrm/oxd/core/components/Loader/Spinner.vue';
 import {parseDate, parseTimeInSeconds} from '@ohrm/core/util/helper/datefns';
 import ActivityDropdown from '@/orangehrmTimePlugin/components/ActivityDropdown.vue';
 import ProjectAutocomplete from '@/orangehrmTimePlugin/components/ProjectAutocomplete.vue';
 import TimesheetCommentModal from '@/orangehrmTimePlugin/components/TimesheetCommentModal.vue';
+import {OxdAlert, OxdSpinner} from '@ohrm/oxd';
 
 export default {
   name: 'Timesheet',
 
   components: {
-    'oxd-alert': Alert,
-    'oxd-loading-spinner': Spinner,
+    'oxd-alert': OxdAlert,
+    'oxd-loading-spinner': OxdSpinner,
     'activity-dropdown': ActivityDropdown,
     'project-autocomplete': ProjectAutocomplete,
     'timesheet-comment-modal': TimesheetCommentModal,
@@ -293,12 +292,12 @@ export default {
       rules: {
         project: [
           validSelection,
-          v => v !== null || this.$t('time.select_a_project'),
+          (v) => v !== null || this.$t('time.select_a_project'),
         ],
         activity: [
-          v => v !== null || this.$t('time.select_an_activity'),
-          v =>
-            this.records.filter(record => record.activity?.id === v?.id)
+          (v) => v !== null || this.$t('time.select_an_activity'),
+          (v) =>
+            this.records.filter((record) => record.activity?.id === v?.id)
               .length < 2 || this.$t('time.duplicate_record'),
         ],
       },
@@ -329,7 +328,7 @@ export default {
         this.$t('general.fri'),
         this.$t('general.sat'),
       ];
-      return this.days.map(day => {
+      return this.days.map((day) => {
         const date = parseDate(day, 'yyyy-MM-dd');
         return {
           id: date.valueOf(),
@@ -503,7 +502,7 @@ export default {
       this.focusedField = null;
     },
     validateDuration(date) {
-      const validateFormat = v => {
+      const validateFormat = (v) => {
         return (
           v === '' ||
           v === null ||

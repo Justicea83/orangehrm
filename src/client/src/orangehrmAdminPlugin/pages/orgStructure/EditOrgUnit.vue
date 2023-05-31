@@ -21,12 +21,12 @@
 <template>
   <oxd-dialog class="orangehrm-dialog-modal" @update:show="onCancel">
     <div class="orangehrm-modal-header">
-      <oxd-text type="card-title">{{
-        $t('admin.edit_organization_unit')
-      }}</oxd-text>
+      <oxd-text type="card-title">
+        {{ $t('admin.edit_organization_unit') }}
+      </oxd-text>
     </div>
     <oxd-divider />
-    <oxd-form :loading="isLoading" @submitValid="onSave">
+    <oxd-form :loading="isLoading" @submit-valid="onSave">
       <oxd-form-row>
         <oxd-input-field
           v-model="orgUnit.unitId"
@@ -70,11 +70,11 @@
 
 <script>
 import {APIService} from '@/core/util/services/api.service';
-import Dialog from '@ohrm/oxd/core/components/Dialog/Dialog';
 import {
   required,
   shouldNotExceedCharLength,
 } from '@ohrm/core/util/validation/rules';
+import {OxdDialog} from '@ohrm/oxd';
 
 const orgUnitModel = {
   unitId: '',
@@ -85,7 +85,7 @@ const orgUnitModel = {
 export default {
   name: 'EditOrgUnit',
   components: {
-    'oxd-dialog': Dialog,
+    'oxd-dialog': OxdDialog,
   },
   props: {
     data: {
@@ -97,7 +97,7 @@ export default {
   setup() {
     const http = new APIService(
       window.appGlobal.baseUrl,
-      'api/v2/admin/subunits',
+      '/api/v2/admin/subunits',
     );
     return {
       http,
@@ -118,7 +118,7 @@ export default {
     this.isLoading = true;
     this.http
       .get(this.data.id)
-      .then(response => {
+      .then((response) => {
         const {data} = response.data;
         this.orgUnit.name = data.name;
         this.orgUnit.description = data.description;
@@ -126,12 +126,12 @@ export default {
         // Fetch list data for unique test
         return this.http.getAll();
       })
-      .then(response => {
+      .then((response) => {
         const {data} = response.data;
         if (data) {
-          this.rules.name.push(v => {
+          this.rules.name.push((v) => {
             const index = data.findIndex(
-              item =>
+              (item) =>
                 String(item.name).toLowerCase() == String(v).toLowerCase(),
             );
             if (index > -1) {

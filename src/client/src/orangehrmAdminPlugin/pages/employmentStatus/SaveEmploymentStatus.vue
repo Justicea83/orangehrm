@@ -27,7 +27,7 @@
 
       <oxd-divider />
 
-      <oxd-form :loading="isLoading" @submitValid="onSave">
+      <oxd-form :loading="isLoading" @submit-valid="onSave">
         <oxd-form-row>
           <oxd-input-field
             v-model="employmentStatus.name"
@@ -88,11 +88,14 @@ export default {
   created() {
     this.isLoading = true;
     this.http
-      .getAll()
-      .then(response => {
+      .getAll({limit: 0})
+      .then((response) => {
         const {data} = response.data;
-        this.rules.name.push(v => {
-          const index = data.findIndex(item => item.name == v);
+        this.rules.name.push((v) => {
+          const index = data.findIndex(
+            (item) =>
+              String(item.name).toLowerCase() == String(v).toLowerCase(),
+          );
           return index === -1 || this.$t('general.already_exists');
         });
       })

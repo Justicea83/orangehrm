@@ -26,7 +26,7 @@
       </oxd-text>
     </div>
     <oxd-divider />
-    <oxd-form :loading="isLoading" @submitValid="onSave">
+    <oxd-form :loading="isLoading" @submit-valid="onSave">
       <oxd-form-row>
         <date-input
           v-model="termination.date"
@@ -72,7 +72,7 @@
 
 <script>
 import {APIService} from '@/core/util/services/api.service';
-import Dialog from '@ohrm/oxd/core/components/Dialog/Dialog';
+import {OxdDialog} from '@ohrm/oxd';
 import {
   required,
   shouldNotExceedCharLength,
@@ -89,7 +89,7 @@ const terminationModel = {
 export default {
   name: 'TerminateModal',
   components: {
-    'oxd-dialog': Dialog,
+    'oxd-dialog': OxdDialog,
   },
   props: {
     employeeId: {
@@ -110,7 +110,7 @@ export default {
   setup(props) {
     const http = new APIService(
       window.appGlobal.baseUrl,
-      `api/v2/pim/employees/${props.employeeId}/terminations`,
+      `/api/v2/pim/employees/${props.employeeId}/terminations`,
     );
     const {userDateFormat} = useDateFormat();
 
@@ -136,10 +136,10 @@ export default {
       this.isLoading = true;
       this.http
         .get(this.terminationId)
-        .then(response => {
+        .then((response) => {
           const {data} = response.data;
           this.termination.terminationReason = this.terminationReasons.find(
-            item => item.id === data.terminationReason?.id,
+            (item) => item.id === data.terminationReason?.id,
           );
           this.termination.date = data.date;
           this.termination.note = data.note;

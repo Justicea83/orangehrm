@@ -14,7 +14,6 @@
 // if not, write to the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor,
 // Boston, MA  02110-1301, USA
 
-@import '@ohrm/oxd/styles/_mixins.scss';
 
 .orangehrm {
   &-background-container {
@@ -185,5 +184,11 @@
   height: 72vh;
   @include oxd-respond-to('md') {
     height: 75vh;
+  }
+  @media screen and (min-width: 1536px) {
+    height: 85vh;
+  }
+  @media screen and (min-width: 2560px) {
+    height: 90vh;
   }
 }

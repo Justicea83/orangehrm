@@ -24,7 +24,6 @@ use OrangeHRM\Authentication\Dto\OrganizationSetup;
 use OrangeHRM\Core\Exception\DaoException;
 use OrangeHRM\Entity\Organization;
 use OrangeHRM\ORM\Exception\TransactionException;
-use Throwable;
 
 class OrganizationService
 {

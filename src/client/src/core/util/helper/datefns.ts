@@ -217,6 +217,14 @@ const parseTime = (value: string, timeFormat: string): Date | null => {
   return parseDate(value, timeFormat);
 };
 
+const formatTime = (
+  value: Date,
+  timeFormat: string,
+  options = {},
+): string | null => {
+  return formatDate(value, timeFormat, options);
+};
+
 const compareTime = (
   reference: string,
   comparable: string,
@@ -337,7 +345,7 @@ const guessTimezone = () => {
   if (timezoneName === undefined) {
     // assign timezone manually
     const resolvedTz = defaultTimezones.find(
-      tz => tz.offset === timezoneOffset,
+      (tz) => tz.offset === timezoneOffset,
     );
     timezoneName = resolvedTz ? resolvedTz.label : defaultTimezones[0].label;
   }
@@ -373,4 +381,5 @@ export {
   guessTimezone,
   getStandardTimezone,
   isToday,
+  formatTime,
 };

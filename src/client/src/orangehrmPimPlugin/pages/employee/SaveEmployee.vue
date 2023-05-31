@@ -26,7 +26,7 @@
       </oxd-text>
       <oxd-divider />
 
-      <oxd-form :loading="isLoading" @submitValid="onSave">
+      <oxd-form :loading="isLoading" @submit-valid="onSave">
         <div class="orangehrm-employee-container">
           <div class="orangehrm-employee-image">
             <profile-image-input
@@ -109,7 +109,6 @@
 import {ref} from 'vue';
 import {APIService} from '@/core/util/services/api.service';
 import {navigate} from '@ohrm/core/util/helper/navigation';
-import SwitchInput from '@ohrm/oxd/core/components/Input/SwitchInput';
 import ProfileImageInput from '@/orangehrmPimPlugin/components/ProfileImageInput';
 import FullNameInput from '@/orangehrmPimPlugin/components/FullNameInput';
 import PasswordInput from '@/core/components/inputs/PasswordInput';
@@ -120,8 +119,9 @@ import {
   shouldNotLessThanCharLength,
   validFileTypes,
 } from '@ohrm/core/util/validation/rules';
+import {OxdSwitchInput} from '@ohrm/oxd';
 
-const defaultPic = `${window.appGlobal.baseUrl}/../dist/img/user-default-400.png`;
+const defaultPic = `${window.appGlobal.publicPath}/images/default-photo.png`;
 
 const employeeModel = {
   firstName: '',
@@ -143,7 +143,7 @@ const userModel = {
 
 export default {
   components: {
-    'oxd-switch-input': SwitchInput,
+    'oxd-switch-input': OxdSwitchInput,
     'profile-image-input': ProfileImageInput,
     'full-name-input': FullNameInput,
     'password-input': PasswordInput,
@@ -172,7 +172,7 @@ export default {
 
     const http = new APIService(
       window.appGlobal.baseUrl,
-      'api/v2/pim/employees',
+      '/api/v2/pim/employees',
     );
 
     return {
@@ -213,7 +213,7 @@ export default {
         const file = this.employee.empPicture.base64;
         const type = this.employee.empPicture.type;
         const isPicture = this.allowedImageTypes.findIndex(
-          item => item === type,
+          (item) => item === type,
         );
         return isPicture > -1 ? `data:${type};base64,${file}` : defaultPic;
       } else {
@@ -226,11 +226,11 @@ export default {
     this.isLoading = true;
     this.http
       .getAll()
-      .then(response => {
+      .then((response) => {
         const {data} = response.data;
-        this.rules.employeeId.push(v => {
+        this.rules.employeeId.push((v) => {
           const index = data.findIndex(
-            item =>
+            (item) =>
               item.employeeId?.trim() &&
               String(item.employeeId).toLowerCase() == String(v).toLowerCase(),
           );
@@ -240,13 +240,16 @@ export default {
             return true;
           }
         });
-        return this.http.http.get('api/v2/admin/users');
+        return this.http.request({
+          method: 'GET',
+          url: '/api/v2/admin/users',
+        });
       })
-      .then(response => {
+      .then((response) => {
         const {data} = response.data;
-        this.rules.username.push(v => {
+        this.rules.username.push((v) => {
           const index = data.findIndex(
-            item =>
+            (item) =>
               String(item.userName).toLowerCase() == String(v).toLowerCase(),
           );
           if (index > -1) {
@@ -271,7 +274,7 @@ export default {
         .create({
           ...this.employee,
         })
-        .then(response => {
+        .then((response) => {
           const {data} = response;
           if (data?.data) {
             this.empNumber = data.data.empNumber;

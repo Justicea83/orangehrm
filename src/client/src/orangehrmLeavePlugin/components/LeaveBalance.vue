@@ -51,15 +51,15 @@
 <script>
 import {toRefs, reactive, computed, watchPostEffect} from 'vue';
 import {APIService} from '@ohrm/core/util/services/api.service';
-import Label from '@ohrm/oxd/core/components/Label/Label';
 import LeaveBalanceModal from '@/orangehrmLeavePlugin/components/LeaveBalanceModal';
 import LeaveBalanceInsufficientModal from '@/orangehrmLeavePlugin/components/LeaveBalanceInsufficientModal';
 import useLeaveValidators from '@/orangehrmLeavePlugin/util/composable/useLeaveValidators';
+import {OxdLabel} from '@ohrm/oxd';
 
 export default {
   name: 'LeaveBalance',
   components: {
-    'oxd-label': Label,
+    'oxd-label': OxdLabel,
     'leave-balance-modal': LeaveBalanceModal,
     'leave-balance-insufficient-modal': LeaveBalanceInsufficientModal,
   },
@@ -79,9 +79,9 @@ export default {
     });
     const http = new APIService(
       window.appGlobal.baseUrl,
-      'api/v2/leave/leave-balance/leave-type',
+      '/api/v2/leave/leave-balance/leave-type',
     );
-    http.setIgnorePath('api/v2/leave/leave-balance/leave-type');
+    http.setIgnorePath('/api/v2/leave/leave-balance/leave-type');
     const {validateLeaveBalance} = useLeaveValidators(http);
 
     const leaveBalance = computed(() => {

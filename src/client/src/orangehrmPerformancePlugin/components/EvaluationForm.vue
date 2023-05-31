@@ -108,7 +108,7 @@
               :disabled="!editable"
               :rules="rules[index]"
               :model-value="modelValue.kpis[index].rating"
-              @update:modelValue="onUpdateRating($event, index)"
+              @update:model-value="onUpdateRating($event, index)"
             />
           </oxd-grid-item>
           <oxd-grid-item>
@@ -125,7 +125,7 @@
               :disabled="!editable"
               :rules="commentValidators"
               :model-value="modelValue.kpis[index].comment"
-              @update:modelValue="onUpdateComment($event, index)"
+              @update:model-value="onUpdateComment($event, index)"
             />
           </oxd-grid-item>
           <oxd-grid-item
@@ -149,7 +149,7 @@
             :disabled="!editable"
             :rules="commentValidators"
             :model-value="modelValue.generalComment"
-            @update:modelValue="onUpdateGeneralComment($event)"
+            @update:model-value="onUpdateGeneralComment($event)"
           />
         </oxd-grid-item>
       </oxd-grid>
@@ -162,14 +162,14 @@
 import {computed, ref} from 'vue';
 import usei18n from '@/core/util/composable/usei18n';
 import {shouldNotExceedCharLength} from '@/core/util/validation/rules';
-import Divider from '@ohrm/oxd/core/components/Divider/Divider.vue';
 import useEmployeeNameTranslate from '@/core/util/composable/useEmployeeNameTranslate';
+import {OxdDivider} from '@ohrm/oxd';
 
-const defaultPic = `${window.appGlobal.baseUrl}/../dist/img/user-default-400.png`;
+const defaultPic = `${window.appGlobal.publicPath}/images/default-photo.png`;
 
 export default {
   components: {
-    'oxd-divider': Divider,
+    'oxd-divider': OxdDivider,
   },
   props: {
     kpis: {
@@ -203,7 +203,7 @@ export default {
     modelValue: {
       type: Object,
       required: true,
-      validator: value =>
+      validator: (value) =>
         Object.hasOwn(value, 'kpis') && Object.hasOwn(value, 'generalComment'),
     },
     collapsed: {
@@ -262,7 +262,7 @@ export default {
       });
     };
 
-    const onUpdateGeneralComment = value => {
+    const onUpdateGeneralComment = (value) => {
       context.emit('update:modelValue', {
         kpis: props.modelValue.kpis,
         generalComment: value,
@@ -276,7 +276,7 @@ export default {
     ];
 
     const evaluationLabel = computed(
-      () => statusOpts.find(el => el.id === props.status).label,
+      () => statusOpts.find((el) => el.id === props.status).label,
     );
 
     return {

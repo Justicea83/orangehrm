@@ -138,20 +138,18 @@ import useEmployeeNameTranslate from '@/core/util/composable/useEmployeeNameTran
 import useDateFormat from '@/core/util/composable/useDateFormat';
 import useLocale from '@/core/util/composable/useLocale';
 import useInfiniteScroll from '@/core/util/composable/useInfiniteScroll';
-import Icon from '@ohrm/oxd/core/components/Icon/Icon.vue';
-import Sheet from '@ohrm/oxd/core/components/Sheet/Sheet';
-import Spinner from '@ohrm/oxd/core/components/Loader/Spinner';
 import AddTrackerLogModal from '@/orangehrmPerformancePlugin/components/AddTrackerLogModal';
 import EditTrackerLogModal from '@/orangehrmPerformancePlugin/components/EditTrackerLogModal';
 import DeleteConfirmationDialog from '@/core/components/dialogs/DeleteConfirmationDialog';
 import EmployeeTrackerLogCard from '@/orangehrmPerformancePlugin/components/EmployeeTrackerLogCard';
+import {OxdIcon, OxdSheet, OxdSpinner} from '@ohrm/oxd';
 
 export default {
   name: 'ViewEmployeeTrackerLogs',
   components: {
-    'oxd-icon': Icon,
-    'oxd-sheet': Sheet,
-    'oxd-loading-spinner': Spinner,
+    'oxd-icon': OxdIcon,
+    'oxd-sheet': OxdSheet,
+    'oxd-loading-spinner': OxdSpinner,
     'add-tracker-log-modal': AddTrackerLogModal,
     'edit-tracker-log-modal': EditTrackerLogModal,
     'delete-confirmation': DeleteConfirmationDialog,
@@ -170,7 +168,7 @@ export default {
   setup(props) {
     const http = new APIService(
       window.appGlobal.baseUrl,
-      `api/v2/performance/trackers/${props.trackerId}/logs`,
+      `/api/v2/performance/trackers/${props.trackerId}/logs`,
     );
     const limit = 10;
     const state = reactive({
@@ -197,13 +195,13 @@ export default {
           limit: limit,
           offset: state.items.length === 0 ? 0 : limit,
         })
-        .then(response => {
+        .then((response) => {
           const {data, meta} = response.data;
           state.total = meta?.total || 0;
           if (Array.isArray(data)) {
             state.items = [
               ...state.items,
-              ...data.map(item => {
+              ...data.map((item) => {
                 return {
                   ...item,
                   reviewerPictureSrc: `${window.appGlobal.baseUrl}/pim/viewPhoto/empNumber/${item.reviewer.empNumber}`,
@@ -260,9 +258,9 @@ export default {
     this.http
       .request({
         method: 'GET',
-        url: `api/v2/performance/employees/trackers/${this.trackerId}`,
+        url: `/api/v2/performance/employees/trackers/${this.trackerId}`,
       })
-      .then(response => {
+      .then((response) => {
         const {data} = response.data;
         this.trackerName = data.trackerName;
         this.employeeName = `${data.employee.firstName} ${
@@ -294,7 +292,7 @@ export default {
       this.showEditTrackerModal = true;
     },
     onClickDelete(id) {
-      this.$refs.deleteDialog.showDialog().then(confirmation => {
+      this.$refs.deleteDialog.showDialog().then((confirmation) => {
         if (confirmation === 'ok') {
           this.deleteItems([id]);
         }

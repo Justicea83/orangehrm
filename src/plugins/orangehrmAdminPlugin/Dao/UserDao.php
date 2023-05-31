@@ -124,7 +124,8 @@ class UserDao extends BaseDao
         return $query->getQuery()->execute();
     }
 
-    public function getFormattedAssignableUserRoles(): array {
+    public function getFormattedAssignableUserRoles(): array
+    {
         return array_map(function (UserRole $userRole) {
             return [
                 'id' => $userRole->getId(),
@@ -219,8 +220,7 @@ class UserDao extends BaseDao
         string $roleName,
         bool   $includeInactive = false,
         bool   $includeTerminated = false
-    ): array
-    {
+    ): array {
         $q = $this->createQueryBuilder(Employee::class, 'e');
         $q->innerJoin('e.users', 'u');
         $q->leftJoin('u.userRole', 'r');

@@ -36,22 +36,21 @@
 
 <script>
 import {APIService} from '@/core/util/services/api.service';
-import {CHART_COLORS} from '@ohrm/oxd/core/components/Chart/types';
-import PieChart from '@ohrm/oxd/core/components/Chart/PieChart.vue';
 import BaseWidget from '@/orangehrmDashboardPlugin/components/BaseWidget.vue';
+import {OxdPieChart, CHART_COLORS} from '@ohrm/oxd';
 
 export default {
   name: 'EmployeeLocationWidget',
 
   components: {
     'base-widget': BaseWidget,
-    'oxd-pie-chart': PieChart,
+    'oxd-pie-chart': OxdPieChart,
   },
 
   setup() {
     const http = new APIService(
       window.appGlobal.baseUrl,
-      'api/v2/dashboard/employees/locations',
+      '/api/v2/dashboard/employees/locations',
     );
 
     return {
@@ -70,7 +69,7 @@ export default {
     this.isLoading = true;
     this.http
       .getAll()
-      .then(response => {
+      .then((response) => {
         const {data, meta} = response.data;
 
         const colors = [
@@ -95,7 +94,7 @@ export default {
                 }
               : false;
           })
-          .filter(item => item);
+          .filter((item) => item);
 
         if (meta?.otherEmployeeCount) {
           this.dataset.push({

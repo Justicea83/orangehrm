@@ -43,8 +43,8 @@ import {computed, reactive, toRefs} from 'vue';
 import {APIService} from '@/core/util/services/api.service';
 import PostModal from '@/orangehrmBuzzPlugin/components/PostModal';
 import PhotoInput from '@/orangehrmBuzzPlugin/components/PhotoInput';
-import BuzzPostInput from '@ohrm/oxd/core/components/Buzz/BuzzPostInput';
 import {shouldNotExceedCharLength} from '@/core/util/validation/rules';
+import {OxdBuzzPostInput} from '@ohrm/oxd';
 
 export default {
   name: 'SharePhotoModal',
@@ -52,7 +52,7 @@ export default {
   components: {
     'post-modal': PostModal,
     'photo-input': PhotoInput,
-    'oxd-buzz-post-input': BuzzPostInput,
+    'oxd-buzz-post-input': OxdBuzzPostInput,
   },
 
   props: {
@@ -68,7 +68,7 @@ export default {
     const rules = {
       text: [shouldNotExceedCharLength(65530)],
     };
-    const http = new APIService(window.appGlobal.baseUrl, 'api/v2/buzz/posts');
+    const http = new APIService(window.appGlobal.baseUrl, '/api/v2/buzz/posts');
 
     const state = reactive({
       post: {

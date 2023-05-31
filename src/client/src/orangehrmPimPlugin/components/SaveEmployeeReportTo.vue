@@ -35,7 +35,7 @@
       {{ $t('pim.add_subordinate') }}
     </oxd-text>
     <oxd-divider />
-    <oxd-form :loading="isLoading" @submitValid="onSave">
+    <oxd-form :loading="isLoading" @submit-valid="onSave">
       <oxd-form-row>
         <oxd-grid :cols="3" class="orangehrm-full-width-grid">
           <oxd-grid-item>
@@ -112,7 +112,7 @@ export default {
   emits: ['close'],
 
   setup(props) {
-    const api = `api/v2/pim/employees/${props.empNumber}/report-to/allowed`;
+    const api = `/api/v2/pim/employees/${props.empNumber}/report-to/allowed`;
     return {
       api,
     };

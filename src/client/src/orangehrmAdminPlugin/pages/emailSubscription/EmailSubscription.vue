@@ -50,15 +50,14 @@
 import usePaginate from '@ohrm/core/util/composable/usePaginate';
 import {navigate} from '@ohrm/core/util/helper/navigation';
 import {APIService} from '@ohrm/core/util/services/api.service';
-import SwitchInput from '@ohrm/oxd/core/components/Input/SwitchInput';
-import Spinner from '@ohrm/oxd/core/components/Loader/Spinner';
 import usei18n from '@/core/util/composable/usei18n';
+import {OxdSpinner, OxdSwitchInput} from '@ohrm/oxd';
 
 export default {
   setup() {
     const {$t} = usei18n();
-    const subscribersNormalizer = data => {
-      return data.map(item => {
+    const subscribersNormalizer = (data) => {
+      return data.map((item) => {
         const subscribers = Array.isArray(item.subscribers)
           ? item.subscribers.slice(0, 10)
           : [];
@@ -84,7 +83,7 @@ export default {
           id: item.id,
           type: _type,
           subscribers: subscribers
-            .map(sub => {
+            .map((sub) => {
               return `${sub.name} <${sub.email}>`;
             })
             .join(', '),
@@ -149,16 +148,16 @@ export default {
       };
 
       const switchSubscription = {
-        component: SwitchInput,
+        component: OxdSwitchInput,
         props: {
           modelValue: row.enabled,
-          'onUpdate:modelValue': $event => {
+          'onUpdate:modelValue': ($event) => {
             this.items.data[index]._loading = true;
             this.http
               .update(row.id, {
                 enabled: $event,
               })
-              .then(response => {
+              .then((response) => {
                 const {data} = response.data;
                 this.items.data[index].enabled = data.isEnabled;
                 this.$toast.updateSuccess();
@@ -175,7 +174,7 @@ export default {
       };
 
       const loader = {
-        component: Spinner,
+        component: OxdSpinner,
         props: {
           withContainer: false,
         },

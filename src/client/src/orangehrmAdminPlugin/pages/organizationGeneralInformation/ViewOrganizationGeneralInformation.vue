@@ -33,7 +33,7 @@
       </div>
       <oxd-divider />
 
-      <oxd-form :loading="isLoading" @submitValid="onSave">
+      <oxd-form :loading="isLoading" @submit-valid="onSave">
         <oxd-form-row>
           <oxd-grid :cols="3" class="orangehrm-full-width-grid">
             <oxd-grid-item class="organization-name-container">
@@ -193,17 +193,17 @@
 
 <script>
 import {APIService} from '@ohrm/core/util/services/api.service';
-import SwitchInput from '@ohrm/oxd/core/components/Input/SwitchInput';
 import {
   required,
   shouldNotExceedCharLength,
   validEmailFormat,
   validPhoneNumberFormat,
 } from '@ohrm/core/util/validation/rules';
+import {OxdSwitchInput} from '@ohrm/oxd';
 
 export default {
   components: {
-    'oxd-switch-input': SwitchInput,
+    'oxd-switch-input': OxdSwitchInput,
   },
   props: {
     numberOfEmployees: {
@@ -218,7 +218,7 @@ export default {
   setup() {
     const http = new APIService(
       window.appGlobal.baseUrl,
-      'api/v2/admin/organization',
+      '/api/v2/admin/organization',
     );
     return {
       http,
@@ -266,8 +266,8 @@ export default {
   created() {
     this.isLoading = true;
     this.http.http
-      .get('api/v2/admin/organization')
-      .then(response => {
+      .get('/api/v2/admin/organization')
+      .then((response) => {
         const {data} = response.data;
         this.organization.name = data.name;
         this.organization.registrationNumber = data.registrationNumber;
@@ -280,7 +280,7 @@ export default {
         this.organization.city = data.city;
         this.organization.province = data.province;
         if (data.country !== '' && data.country !== null) {
-          this.organization.country = this.countryList.find(item => {
+          this.organization.country = this.countryList.find((item) => {
             return item.id === data.country;
           });
         }
@@ -296,7 +296,7 @@ export default {
     onSave() {
       this.isLoading = true;
       this.http.http
-        .put('api/v2/admin/organization', {
+        .put('/api/v2/admin/organization', {
           name: this.organization.name,
           registrationNumber: this.organization.registrationNumber,
           taxId: this.organization.taxId,

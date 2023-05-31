@@ -71,24 +71,21 @@
 
 <script>
 import {onBeforeMount, reactive, toRefs} from 'vue';
-import Icon from '@ohrm/oxd/core/components/Icon/Icon';
-import Sheet from '@ohrm/oxd/core/components/Sheet/Sheet';
 import {APIService} from '@/core/util/services/api.service';
-import Dialog from '@ohrm/oxd/core/components/Dialog/Dialog';
-import Spinner from '@ohrm/oxd/core/components/Loader/Spinner';
 import ProfileImage from '@/orangehrmBuzzPlugin/components/ProfileImage';
 import useInfiniteScroll from '@/core/util/composable/useInfiniteScroll';
 import useEmployeeNameTranslate from '@/core/util/composable/useEmployeeNameTranslate';
+import {OxdDialog, OxdIcon, OxdSheet, OxdSpinner} from '@ohrm/oxd';
 
 export default {
   name: 'PostStatsModal',
 
   components: {
-    'oxd-icon': Icon,
-    'oxd-sheet': Sheet,
-    'oxd-dialog': Dialog,
+    'oxd-icon': OxdIcon,
+    'oxd-sheet': OxdSheet,
+    'oxd-dialog': OxdDialog,
     'profile-image': ProfileImage,
-    'oxd-loading-spinner': Spinner,
+    'oxd-loading-spinner': OxdSpinner,
   },
 
   props: {
@@ -119,11 +116,11 @@ export default {
 
     switch (props.type) {
       case 'likes':
-        apiPath = `api/v2/buzz/shares/${props.postId}/likes`;
+        apiPath = `/api/v2/buzz/shares/${props.postId}/likes`;
         break;
 
       case 'shares':
-        apiPath = `api/v2/buzz/posts/${props.postId}/shares`;
+        apiPath = `/api/v2/buzz/posts/${props.postId}/shares`;
         break;
 
       default:
@@ -146,11 +143,11 @@ export default {
           limit: EMPLOYEE_LIMIT,
           offset: state.offset,
         })
-        .then(response => {
+        .then((response) => {
           const {data, meta} = response.data;
           state.total = meta?.total || 0;
           if (Array.isArray(data)) {
-            const _data = data.map(user => {
+            const _data = data.map((user) => {
               const {employee} = user;
               return {
                 employee,

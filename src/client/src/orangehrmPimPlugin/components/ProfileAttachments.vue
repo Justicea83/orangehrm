@@ -37,10 +37,7 @@
       @close="onEditModalClose"
     ></edit-attachment>
     <template v-else>
-      <div
-        class="orangehrm-horizontal-padding
-        orangehrm-vertical-padding"
-      >
+      <div class="orangehrm-horizontal-padding orangehrm-vertical-padding">
         <profile-action-header
           :action-button-shown="$can.create(`${screen}_attachment`)"
           @click="onClickAdd"
@@ -114,13 +111,13 @@ export default {
   setup(props) {
     const http = new APIService(
       window.appGlobal.baseUrl,
-      `api/v2/pim/employees/${props.employeeId}/screen/${props.screen}/attachments`,
+      `/api/v2/pim/employees/${props.employeeId}/screen/${props.screen}/attachments`,
     );
     const {jsDateFormat} = useDateFormat();
     const {locale} = useLocale();
 
-    const attachmentDataNormalizer = data => {
-      return data.map(item => {
+    const attachmentDataNormalizer = (data) => {
+      return data.map((item) => {
         return {
           ...item,
           attachedDate: formatDate(parseDate(item.attachedDate), jsDateFormat, {
@@ -233,17 +230,17 @@ export default {
 
   methods: {
     onClickDeleteSelected() {
-      const ids = this.checkedItems.map(index => {
+      const ids = this.checkedItems.map((index) => {
         return this.items?.data[index].id;
       });
-      this.$refs.deleteDialog.showDialog().then(confirmation => {
+      this.$refs.deleteDialog.showDialog().then((confirmation) => {
         if (confirmation === 'ok') {
           this.deleteItems(ids);
         }
       });
     },
     onClickDelete(item) {
-      this.$refs.deleteDialog.showDialog().then(confirmation => {
+      this.$refs.deleteDialog.showDialog().then((confirmation) => {
         if (confirmation === 'ok') {
           this.deleteItems([item.id]);
         }
@@ -300,5 +297,9 @@ export default {
 .oxd-divider {
   margin-top: 0;
   margin-bottom: 0;
+}
+.orangehrm-attachment {
+  border-bottom-right-radius: 1.2rem;
+  overflow: hidden;
 }
 </style>

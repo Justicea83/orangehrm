@@ -141,7 +141,7 @@ class UserRole implements TenantAwareInterface
     /**
      * @var int|null
      *
-     * @ORM\Column(name="org_id", type="integer",nullable=true)
+     * @ORM\Column(name="org_id", type="integer", nullable=true)
      */
     private ?int $orgId = null;
 

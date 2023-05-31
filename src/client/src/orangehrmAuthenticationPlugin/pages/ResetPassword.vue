@@ -24,7 +24,7 @@
           ref="resetForm"
           method="post"
           :action="submitUrl"
-          @submitValid="onSubmit"
+          @submit-valid="onSubmit"
         >
           <oxd-text tag="h6">
             {{ $t('auth.reset_password') }}
@@ -38,44 +38,48 @@
           <oxd-form-row>
             <oxd-input-field
               :value="username"
-              name="username"
               :label="$t('auth.username')"
-              label-icon="person"
               readonly
+              name="username"
+              label-icon="person"
             />
           </oxd-form-row>
-          <oxd-form-row>
+          <oxd-form-row class="orangehrm-forgot-password-row">
+            <password-strength-indicator
+              v-if="user.newPassword"
+              :password-strength="passwordStrength"
+            ></password-strength-indicator>
             <oxd-input-field
               v-model="user.newPassword"
-              name="password"
-              :label="$t('auth.new_password')"
-              label-icon="key"
-              :placeholder="$t('auth.password')"
-              type="password"
               :rules="rules.newPassword"
+              :label="$t('auth.new_password')"
+              :placeholder="$t('auth.password')"
+              name="password"
+              type="password"
+              label-icon="key"
               autocomplete="off"
             />
           </oxd-form-row>
           <oxd-form-row>
             <oxd-input-field
               v-model="user.confirmPassword"
-              name="confirmPassword"
-              :label="$t('general.confirm_password')"
-              label-icon="key"
-              :placeholder="$t('auth.password')"
-              type="password"
               :rules="rules.confirmPassword"
+              :placeholder="$t('auth.password')"
+              :label="$t('general.confirm_password')"
+              type="password"
+              label-icon="key"
               autocomplete="off"
+              name="confirmPassword"
             />
           </oxd-form-row>
           <oxd-divider />
           <div class="orangehrm-forgot-password-buttons">
             <oxd-button
-              class="orangehrm-forgot-password-button"
-              display-type="secondary"
+              :label="$t('general.save')"
               size="large"
-              :label="$t('auth.reset_password')"
               type="submit"
+              display-type="secondary"
+              class="orangehrm-forgot-password-button"
             />
           </div>
         </oxd-form>
@@ -86,19 +90,25 @@
 </template>
 
 <script>
-import CardNote from '../components/CardNote';
-import {checkPassword} from '@ohrm/core/util/helper/password';
 import {
   required,
   shouldNotExceedCharLength,
 } from '@ohrm/core/util/validation/rules';
+import {promiseDebounce} from '@ohrm/oxd';
+import CardNote from '../components/CardNote';
 import {urlFor} from '@/core/util/helper/url';
+import {APIService} from '@/core/util/services/api.service';
+import usePasswordPolicy from '@/core/util/composable/usePasswordPolicy';
+import PasswordStrengthIndicator from '@/core/components/labels/PasswordStrengthIndicator';
 
 export default {
   name: 'ResetPassword',
+
   components: {
     'card-note': CardNote,
+    'password-strength-indicator': PasswordStrengthIndicator,
   },
+
   props: {
     username: {
       type: String,
@@ -109,6 +119,18 @@ export default {
       required: true,
     },
   },
+
+  setup() {
+    const http = new APIService(window.appGlobal.baseUrl, '');
+    const {passwordStrength, validatePassword} = usePasswordPolicy(http);
+
+    return {
+      http,
+      passwordStrength,
+      validatePassword,
+    };
+  },
+
   data() {
     return {
       user: {
@@ -117,20 +139,28 @@ export default {
         confirmPassword: '',
       },
       rules: {
-        newPassword: [required, shouldNotExceedCharLength(64), checkPassword],
+        newPassword: [
+          required,
+          shouldNotExceedCharLength(64),
+          promiseDebounce(this.validatePassword, 500),
+        ],
         confirmPassword: [
           required,
           shouldNotExceedCharLength(64),
-          v => (!!v && v === this.user.newPassword) || 'Passwords do not match',
+          (v) =>
+            (!!v && v === this.user.newPassword) ||
+            this.$t('general.passwords_do_not_match'),
         ],
       },
     };
   },
+
   computed: {
     submitUrl() {
       return urlFor('/auth/resetPassword');
     },
   },
+
   methods: {
     onSubmit() {
       this.$refs.resetForm.$el.submit();

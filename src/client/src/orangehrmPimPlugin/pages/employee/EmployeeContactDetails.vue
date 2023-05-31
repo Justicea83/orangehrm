@@ -25,7 +25,7 @@
         $t('pim.contact_details')
       }}</oxd-text>
       <oxd-divider />
-      <oxd-form :loading="isLoading" @submitValid="onSave">
+      <oxd-form :loading="isLoading" @submit-valid="onSave">
         <oxd-text class="orangehrm-sub-title" tag="h6">{{
           $t('admin.address')
         }}</oxd-text>
@@ -149,7 +149,7 @@ import {
   validPhoneNumberFormat,
   validEmailFormat,
 } from '@ohrm/core/util/validation/rules';
-import promiseDebounce from '@ohrm/oxd/utils/promiseDebounce';
+import {promiseDebounce} from '@ohrm/oxd';
 
 const contactDetailsModel = {
   street1: '',
@@ -184,10 +184,10 @@ export default {
   setup(props) {
     const http = new APIService(
       window.appGlobal.baseUrl,
-      `api/v2/pim/employee/${props.empNumber}/contact-details`,
+      `/api/v2/pim/employee/${props.empNumber}/contact-details`,
     );
     http.setIgnorePath(
-      'api/v2/pim/employees/[0-9]+/contact-details/validation/(work-emails|other-emails)',
+      '/api/v2/pim/employees/[0-9]+/contact-details/validation/(work-emails|other-emails)',
     );
     return {
       http,
@@ -225,7 +225,7 @@ export default {
     this.isLoading = true;
     this.http
       .getAll()
-      .then(response => {
+      .then((response) => {
         this.updateModel(response);
       })
       .finally(() => {
@@ -244,7 +244,7 @@ export default {
             countryCode: this.contact.countryCode?.id,
           },
         })
-        .then(response => {
+        .then((response) => {
           this.updateModel(response);
           return this.$toast.updateSuccess();
         })
@@ -254,19 +254,19 @@ export default {
     },
 
     validateWorkEmail(contact) {
-      return new Promise(resolve => {
+      return new Promise((resolve) => {
         if (contact) {
           const sameAsOtherEmail =
             this.contact.workEmail === this.contact.otherEmail;
           this.http
             .request({
               method: 'GET',
-              url: `api/v2/pim/employees/${this.empNumber}/contact-details/validation/work-emails`,
+              url: `/api/v2/pim/employees/${this.empNumber}/contact-details/validation/work-emails`,
               params: {
                 workEmail: this.contact.workEmail,
               },
             })
-            .then(response => {
+            .then((response) => {
               const {data} = response.data;
               if (data.valid === true) {
                 return sameAsOtherEmail
@@ -286,19 +286,19 @@ export default {
     },
 
     validateOtherEmail(contact) {
-      return new Promise(resolve => {
+      return new Promise((resolve) => {
         if (contact) {
           const sameAsWorkEmail =
             this.contact.otherEmail === this.contact.workEmail;
           this.http
             .request({
               method: 'GET',
-              url: `api/v2/pim/employees/${this.empNumber}/contact-details/validation/other-emails`,
+              url: `/api/v2/pim/employees/${this.empNumber}/contact-details/validation/other-emails`,
               params: {
                 otherEmail: this.contact.otherEmail,
               },
             })
-            .then(response => {
+            .then((response) => {
               const {data} = response.data;
               if (data.valid === true) {
                 return sameAsWorkEmail
@@ -318,7 +318,7 @@ export default {
     },
 
     validateEmailDifferent(email) {
-      return v => {
+      return (v) => {
         const resolvedEmail = email();
         if (resolvedEmail === null || resolvedEmail === '') {
           return true;
@@ -334,7 +334,7 @@ export default {
       const {data} = response.data;
       this.contact = {...contactDetailsModel, ...data};
       this.contact.countryCode = this.countries.find(
-        item => item.id === data.countryCode,
+        (item) => item.id === data.countryCode,
       );
     },
   },

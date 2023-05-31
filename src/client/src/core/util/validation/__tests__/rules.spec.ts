@@ -126,17 +126,17 @@ describe('core/util/validation/rules::required', () => {
   });
 
   test('required::object', () => {
-    // @ts-expect-error
+    // @ts-expect-error: forcing unsupported type for testing
     let result = required({test: 'Object'});
     expect(result).toBeTruthy();
 
-    // @ts-expect-error
+    // @ts-expect-error: forcing unsupported type for testing
     result = required(null);
     expect(result).toBe('Required');
   });
 
   test('required::unsupported type', () => {
-    // @ts-expect-error
+    // @ts-expect-error: forcing unsupported type for testing
     const result = required(true);
     expect(result).toBe('Required');
   });
@@ -246,6 +246,11 @@ describe('core/util/validation/rules::validEmailFormat', () => {
     expect(result).toBe('Expected format: admin@example.com');
   });
 
+  test('validEmailFormat:invalid character at first', () => {
+    const result = validEmailFormat('>test@deviohrm.com');
+    expect(result).toBe('Expected format: admin@example.com');
+  });
+
   test('validEmailFormat:noAtSign', () => {
     const result = validEmailFormat('deviohrm.com');
     expect(result).toBe('Expected format: admin@example.com');
@@ -276,12 +281,12 @@ describe('core/util/validation/rules::validEmailFormat', () => {
     expect(result).toBe('Expected format: admin@example.com');
   });
 
-  test('validEmailFormat:validEmail', () => {
+  test('validEmailFormat:validEmail main domain', () => {
     const result = validEmailFormat('devi@ohrm.com');
     expect(result).toStrictEqual(true);
   });
 
-  test('validEmailFormat:validEmail2', () => {
+  test('validEmailFormat:validEmail sub domain', () => {
     const result = validEmailFormat('devi@ohrm.co.uk');
     expect(result).toStrictEqual(true);
   });
@@ -750,7 +755,7 @@ describe('core/util/validation/rules::validHexFormat', () => {
 describe('core/util/validation/rules::imageShouldHaveDimensions', () => {
   // Mock Image class methods since jsdom is not supported
   const mockDomImage = (width: number, height: number) => {
-    Image.prototype.decode = function() {
+    Image.prototype.decode = function () {
       this.width = width;
       this.height = height;
       return Promise.resolve();

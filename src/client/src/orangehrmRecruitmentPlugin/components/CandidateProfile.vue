@@ -35,7 +35,7 @@
 
       <oxd-divider v-show="!isLoading" />
 
-      <oxd-form :loading="isLoading" @submitValid="onSave">
+      <oxd-form :loading="isLoading" @submit-valid="onSave">
         <oxd-form-row>
           <oxd-grid :cols="1" class="orangehrm-full-width-grid">
             <oxd-grid-item>
@@ -116,9 +116,9 @@
               <oxd-input-field
                 v-model="profile.keywords"
                 :label="$t('recruitment.keywords')"
-                :placeholder="
-                  `${$t('recruitment.enter_comma_seperated_words')}...`
-                "
+                :placeholder="`${$t(
+                  'recruitment.enter_comma_seperated_words',
+                )}...`"
                 :rules="rules.keywords"
                 :disabled="!editable"
               />
@@ -193,12 +193,12 @@ import {
 import {urlFor} from '@ohrm/core/util/helper/url';
 import DateInput from '@/core/components/inputs/DateInput';
 import {APIService} from '@/core/util/services/api.service';
-import SwitchInput from '@ohrm/oxd/core/components/Input/SwitchInput';
 import FileUploadInput from '@/core/components/inputs/FileUploadInput';
 import FullNameInput from '@/orangehrmPimPlugin/components/FullNameInput';
 import VacancyDropdown from '@/orangehrmRecruitmentPlugin/components/VacancyDropdown';
 import useDateFormat from '@/core/util/composable/useDateFormat';
 import ConfirmationDialog from '@/core/components/dialogs/ConfirmationDialog';
+import {OxdSwitchInput} from '@ohrm/oxd';
 
 const CandidateProfileModel = {
   firstName: '',
@@ -228,7 +228,7 @@ export default {
   name: 'CandidateProfile',
   components: {
     DateInput,
-    'oxd-switch-input': SwitchInput,
+    'oxd-switch-input': OxdSwitchInput,
     'full-name-input': FullNameInput,
     'vacancy-dropdown': VacancyDropdown,
     'file-upload-input': FileUploadInput,
@@ -299,7 +299,7 @@ export default {
         this.candidate.vacancy?.id &&
         this.candidate.vacancy?.id !== this.vacancy?.id
       ) {
-        this.$refs.confirmDialog.showDialog().then(confirmation => {
+        this.$refs.confirmDialog.showDialog().then((confirmation) => {
           if (confirmation === 'ok') this.updateCandidate();
         });
       } else {

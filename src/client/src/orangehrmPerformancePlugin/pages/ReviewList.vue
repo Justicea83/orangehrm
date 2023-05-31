@@ -21,7 +21,7 @@
 <template>
   <div class="orangehrm-background-container">
     <oxd-table-filter :filter-title="$t('performance.employee_reviews')">
-      <oxd-form @submitValid="filterItems" @reset="filterItems">
+      <oxd-form @submit-valid="filterItems" @reset="filterItems">
         <oxd-grid :cols="4" class="orangehrm-full-width-grid">
           <oxd-grid-item>
             <employee-autocomplete
@@ -134,6 +134,7 @@ import useDateFormat from '@/core/util/composable/useDateFormat';
 import useLocale from '@/core/util/composable/useLocale';
 import IncludeEmployeeDropdown from '@/core/components/dropdown/IncludeEmployeeDropdown';
 import ReviewPeriodCell from '@/orangehrmPerformancePlugin/components/ReviewPeriodCell';
+import {tableScreenStateKey} from '@ohrm/oxd';
 
 const defaultSortOrder = {
   'employee.lastName': 'DEFAULT',
@@ -168,11 +169,11 @@ export default {
     const {jsDateFormat, userDateFormat} = useDateFormat();
     const {locale} = useLocale();
 
-    const reviewListDateFormat = date =>
+    const reviewListDateFormat = (date) =>
       formatDate(parseDate(date), jsDateFormat, {locale});
 
-    const reviewListNormalizer = data => {
-      return data.map(item => {
+    const reviewListNormalizer = (data) => {
+      return data.map((item) => {
         return {
           id: item.id,
           employee: `${item.employee?.firstName} ${item.employee?.lastName} ${
@@ -236,7 +237,7 @@ export default {
 
     const http = new APIService(
       window.appGlobal.baseUrl,
-      'api/v2/performance/employees/reviews',
+      '/api/v2/performance/employees/reviews',
     );
 
     const {
@@ -342,7 +343,7 @@ export default {
   methods: {
     actionCellRenderer(...[, , , row]) {
       const cellConfig = {};
-      const screenState = inject('screenState');
+      const screenState = inject(tableScreenStateKey);
 
       if (screenState.screenType === 'lg' || screenState.screenType === 'xl') {
         if (row.statusId === 4) {

@@ -26,7 +26,7 @@
       </oxd-text>
     </div>
     <oxd-divider />
-    <oxd-form :loading="isLoading" @submitValid="onSave">
+    <oxd-form :loading="isLoading" @submit-valid="onSave">
       <oxd-form-row>
         <project-autocomplete
           v-model="project"
@@ -69,14 +69,14 @@
 
 <script>
 import {APIService} from '@/core/util/services/api.service';
-import Dialog from '@ohrm/oxd/core/components/Dialog/Dialog';
+import {OxdDialog} from '@ohrm/oxd';
 import {required, validSelection} from '@ohrm/core/util/validation/rules';
 import ProjectAutocomplete from '@/orangehrmTimePlugin/components/ProjectAutocomplete.vue';
 
 export default {
   name: 'CopyActivityModal',
   components: {
-    'oxd-dialog': Dialog,
+    'oxd-dialog': OxdDialog,
     'project-autocomplete': ProjectAutocomplete,
   },
   props: {
@@ -110,7 +110,7 @@ export default {
               this.selectedActivities.length === 0
             ) {
               const hasUnique = this.activities.find(
-                activity => activity.unique === true,
+                (activity) => activity.unique === true,
               );
               return hasUnique
                 ? this.$t('time.no_activities_selected')
@@ -132,16 +132,16 @@ export default {
         this.http
           .request({
             method: 'GET',
-            url: `api/v2/time/projects/${this.projectId}/activities/copy/${value.id}`,
+            url: `/api/v2/time/projects/${this.projectId}/activities/copy/${value.id}`,
             params: {limit: 0},
           })
-          .then(response => {
+          .then((response) => {
             const {data} = response.data;
             this.activities = data;
             this.selectedActivities = Array.isArray(data)
               ? data
-                  .filter(activity => activity.unique === true)
-                  .map(activity => activity.id)
+                  .filter((activity) => activity.unique === true)
+                  .map((activity) => activity.id)
               : [];
             this.isLoading = false;
           });
@@ -154,7 +154,7 @@ export default {
       this.http
         .request({
           method: 'POST',
-          url: `api/v2/time/projects/${this.projectId}/activities/copy/${this.project.id}`,
+          url: `/api/v2/time/projects/${this.projectId}/activities/copy/${this.project.id}`,
           data: {
             activityIds: this.selectedActivities,
           },
@@ -172,7 +172,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import '@ohrm/oxd/styles/_mixins.scss';
 .orangehrm-activites-container {
   max-height: 180px;
   overflow-y: auto;

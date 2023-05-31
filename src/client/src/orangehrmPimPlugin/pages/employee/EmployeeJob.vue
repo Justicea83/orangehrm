@@ -30,7 +30,7 @@
         {{ $t('pim.job_details') }}
       </oxd-text>
       <oxd-divider />
-      <oxd-form :loading="isLoading" @submitValid="onSave">
+      <oxd-form :loading="isLoading" @submit-valid="onSave">
         <oxd-form-row>
           <oxd-grid :cols="3" class="orangehrm-full-width-grid">
             <oxd-grid-item>
@@ -153,29 +153,30 @@
       </oxd-form>
     </div>
 
-    <oxd-divider v-if="hasUpdatePermissions" />
+    <oxd-divider v-if="hasUpdatePermissions && !isLoading" />
 
     <div
-      v-if="hasUpdatePermissions"
+      v-if="hasUpdatePermissions && !isLoading"
       class="orangehrm-horizontal-padding orangehrm-vertical-padding"
     >
       <profile-action-header
         icon-name=""
         :display-type="terminationActionType"
         :label="terminationActionLabel"
+        :title="terminationActionLabel"
         class="--termination-button"
         @click="onClickTerminate"
       >
         {{ $t('pim.employee_termination_activation') }}
+        <oxd-text
+          v-if="termination && termination.id"
+          tag="p"
+          class="orangehrm-terminate-date"
+          @click="openTerminateModal"
+        >
+          {{ $t('pim.terminated_on') }}: {{ terminationDate }}
+        </oxd-text>
       </profile-action-header>
-      <oxd-text
-        v-if="termination && termination.id"
-        tag="p"
-        class="orangehrm-terminate-date"
-        @click="openTerminateModal"
-      >
-        {{ $t('pim.terminated_on') }}: {{ terminationDate }}
-      </oxd-text>
     </div>
     <terminate-modal
       v-if="showTerminateModal"
@@ -190,7 +191,6 @@
 <script>
 import {APIService} from '@ohrm/core/util/services/api.service';
 import FileUploadInput from '@/core/components/inputs/FileUploadInput';
-import SwitchInput from '@ohrm/oxd/core/components/Input/SwitchInput';
 import EditEmployeeLayout from '@/orangehrmPimPlugin/components/EditEmployeeLayout';
 import JobSpecDownload from '@/orangehrmPimPlugin/components/JobSpecDownload';
 import ProfileActionHeader from '@/orangehrmPimPlugin/components/ProfileActionHeader';
@@ -205,6 +205,7 @@ import {
 import useDateFormat from '@/core/util/composable/useDateFormat';
 import {formatDate, parseDate} from '@/core/util/helper/datefns';
 import useLocale from '@/core/util/composable/useLocale';
+import {OxdSwitchInput} from '@ohrm/oxd';
 
 const jobDetailsModel = {
   joinedDate: '',
@@ -226,7 +227,7 @@ const contractDetailsModel = {
 export default {
   components: {
     'edit-employee-layout': EditEmployeeLayout,
-    'oxd-switch-input': SwitchInput,
+    'oxd-switch-input': OxdSwitchInput,
     'job-spec-download': JobSpecDownload,
     'file-upload-input': FileUploadInput,
     'profile-action-header': ProfileActionHeader,
@@ -275,7 +276,7 @@ export default {
   setup(props) {
     const http = new APIService(
       window.appGlobal.baseUrl,
-      `api/v2/pim/employees/${props.empNumber}/job-details`,
+      `/api/v2/pim/employees/${props.empNumber}/job-details`,
     );
     const {jsDateFormat, userDateFormat} = useDateFormat();
     const {locale} = useLocale();
@@ -304,7 +305,7 @@ export default {
           endDateShouldBeAfterStartDate(() => this.contract.startDate),
         ],
         contractAttachment: [
-          v => {
+          (v) => {
             if (this.contract.method == 'replaceCurrent') {
               return required(v);
             } else {
@@ -335,7 +336,7 @@ export default {
       return this.$can.update(`job_details`);
     },
     normalizedJobTitles() {
-      return this.jobTitles.map(jobTitle => {
+      return this.jobTitles.map((jobTitle) => {
         return {
           id: jobTitle.id,
           label: jobTitle?.deleted
@@ -357,16 +358,16 @@ export default {
     this.isLoading = true;
     this.http
       .getAll()
-      .then(response => {
+      .then((response) => {
         this.updateJobModel(response);
       })
       .then(() => {
         return this.http.request({
           method: 'GET',
-          url: `api/v2/pim/employees/${this.empNumber}/employment-contract`,
+          url: `/api/v2/pim/employees/${this.empNumber}/employment-contract`,
         });
       })
-      .then(response => {
+      .then((response) => {
         this.updateContractModel(response);
       })
       .finally(() => {
@@ -389,11 +390,11 @@ export default {
             locationId: this.job.locationId?.id,
           },
         })
-        .then(response => {
+        .then((response) => {
           this.updateJobModel(response);
           return this.http.request({
             method: 'PUT',
-            url: `api/v2/pim/employees/${this.empNumber}/employment-contract`,
+            url: `/api/v2/pim/employees/${this.empNumber}/employment-contract`,
             data: {
               startDate: this.contract.startDate,
               endDate: this.contract.endDate,
@@ -406,7 +407,7 @@ export default {
             },
           });
         })
-        .then(response => {
+        .then((response) => {
           if (response) {
             this.updateContractModel(response);
           }
@@ -419,17 +420,16 @@ export default {
 
     onClickTerminate() {
       if (this.termination?.id) {
-        this.$loader.startLoading();
+        this.isLoading = true;
         this.http
           .request({
             method: 'DELETE',
-            url: `api/v2/pim/employees/${this.empNumber}/terminations`,
+            url: `/api/v2/pim/employees/${this.empNumber}/terminations`,
           })
           .then(() => {
             return this.$toast.updateSuccess();
           })
           .then(() => {
-            this.$loader.endLoading();
             location.reload();
           });
       } else {
@@ -468,19 +468,19 @@ export default {
       const {data} = response.data;
       this.job.joinedDate = data.joinedDate;
       this.job.jobTitleId = this.normalizedJobTitles.find(
-        item => item.id === data.jobTitle?.id,
+        (item) => item.id === data.jobTitle?.id,
       );
       this.job.jobCategoryId = this.jobCategories.find(
-        item => item.id === data.jobCategory?.id,
+        (item) => item.id === data.jobCategory?.id,
       );
       this.job.subunitId = this.subunits.find(
-        item => item.id === data.subunit?.id,
+        (item) => item.id === data.subunit?.id,
       );
       this.job.empStatusId = this.employmentStatuses.find(
-        item => item.id === data.empStatus?.id,
+        (item) => item.id === data.empStatus?.id,
       );
       this.job.locationId = this.locations.find(
-        item => item.id === data.location?.id,
+        (item) => item.id === data.location?.id,
       );
       this.termination = data.employeeTerminationRecord;
     },

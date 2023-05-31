@@ -25,7 +25,7 @@
         {{ $t('time.add_customer') }}
       </oxd-text>
       <oxd-divider />
-      <oxd-form :loading="isLoading" @submitValid="onSave">
+      <oxd-form :loading="isLoading" @submit-valid="onSave">
         <oxd-form-row>
           <oxd-input-field
             v-model="customer.name"
@@ -65,7 +65,7 @@ import {
   required,
   shouldNotExceedCharLength,
 } from '@ohrm/core/util/validation/rules';
-import promiseDebounce from '@ohrm/oxd/utils/promiseDebounce';
+import {promiseDebounce} from '@ohrm/oxd';
 
 const customerModel = {
   id: '',
@@ -79,7 +79,7 @@ export default {
       window.appGlobal.baseUrl,
       '/api/v2/time/customers',
     );
-    http.setIgnorePath('api/v2/time/validation/customer-name');
+    http.setIgnorePath('/api/v2/time/validation/customer-name');
     return {
       http,
     };
@@ -117,17 +117,17 @@ export default {
       navigate('/time/viewCustomers');
     },
     validateCustomerName(customer) {
-      return new Promise(resolve => {
+      return new Promise((resolve) => {
         if (customer) {
           this.http
             .request({
               method: 'GET',
-              url: `api/v2/time/validation/customer-name`,
+              url: `/api/v2/time/validation/customer-name`,
               params: {
                 customerName: this.customer.name.trim(),
               },
             })
-            .then(response => {
+            .then((response) => {
               const {data} = response.data;
               return data.valid === true
                 ? resolve(true)

@@ -54,7 +54,7 @@ export default {
   setup() {
     const http = new APIService(
       window.appGlobal.baseUrl,
-      'api/v2/time/projects',
+      '/api/v2/time/projects',
     );
     return {
       http,
@@ -62,7 +62,7 @@ export default {
   },
   methods: {
     async loadProjects(serachParam) {
-      return new Promise(resolve => {
+      return new Promise((resolve) => {
         if (serachParam.trim()) {
           const params = {
             name: this.excludeCustomerName ? serachParam.trim() : undefined,
@@ -78,7 +78,7 @@ export default {
           };
           this.http.getAll(params).then(({data}) => {
             resolve(
-              data.data.map(project => {
+              data.data.map((project) => {
                 return {
                   id: project.id,
                   label: this.excludeCustomerName

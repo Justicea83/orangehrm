@@ -22,7 +22,7 @@
   <oxd-table-filter
     :filter-title="$t('attendance.employee_attendance_records')"
   >
-    <oxd-form @submitValid="onClickView">
+    <oxd-form @submit-valid="onClickView">
       <oxd-form-row>
         <oxd-grid :cols="4" class="orangehrm-full-width-grid">
           <oxd-grid-item>
@@ -110,17 +110,23 @@ import {
   validSelection,
   validDateFormat,
 } from '@/core/util/validation/rules';
+import {
+  freshDate,
+  parseDate,
+  parseTime,
+  formatTime,
+  formatDate,
+  getStandardTimezone,
+} from '@/core/util/helper/datefns';
 import {navigate} from '@/core/util/helper/navigation';
+import {yearRange} from '@/core/util/helper/year-range';
+import useLocale from '@/core/util/composable/useLocale';
 import {APIService} from '@/core/util/services/api.service';
 import usePaginate from '@ohrm/core/util/composable/usePaginate';
-import {freshDate, formatDate, parseDate} from '@ohrm/core/util/helper/datefns';
+import useDateFormat from '@/core/util/composable/useDateFormat';
 import RecordCell from '@/orangehrmAttendancePlugin/components/RecordCell.vue';
 import EmployeeAutocomplete from '@/core/components/inputs/EmployeeAutocomplete';
 import DeleteConfirmationDialog from '@ohrm/components/dialogs/DeleteConfirmationDialog';
-import {yearRange} from '@/core/util/helper/year-range';
-import {getStandardTimezone} from '@/core/util/helper/datefns';
-import useDateFormat from '@/core/util/composable/useDateFormat';
-import useLocale from '@/core/util/composable/useLocale';
 
 export default {
   components: {
@@ -164,43 +170,54 @@ export default {
 
     const http = new APIService(
       window.appGlobal.baseUrl,
-      `api/v2/attendance/employees/${props.employee.empNumber}/records`,
+      `/api/v2/attendance/employees/${props.employee.empNumber}/records`,
     );
     const {locale} = useLocale();
-    const {jsDateFormat, userDateFormat} = useDateFormat();
+    const {jsDateFormat, userDateFormat, timeFormat, jsTimeFormat} =
+      useDateFormat();
 
     const rules = {
       date: [required, validDateFormat(userDateFormat)],
       employee: [validSelection],
     };
 
-    const attendanceRecordNormalizer = data => {
-      return data.map(item => {
+    const attendanceRecordNormalizer = (data) => {
+      return data.map((item) => {
         const {punchIn, punchOut} = item;
         const punchInDate = formatDate(
           parseDate(punchIn?.userDate),
           jsDateFormat,
           {locale},
         );
+        const punchInTime = formatTime(
+          parseTime(punchIn?.userTime, timeFormat),
+          jsTimeFormat,
+        );
         const punchOutDate = formatDate(
           parseDate(punchOut?.userDate),
           jsDateFormat,
           {locale},
+        );
+        const punchOutTime = formatTime(
+          parseTime(punchOut?.userTime, timeFormat),
+          jsTimeFormat,
         );
 
         return {
           id: item.id,
           punchIn: {
             ...punchIn,
+            userTime: punchInTime,
             userDate: punchInDate,
           },
           punchOut: {
             ...punchOut,
+            userTime: punchOutTime,
             userDate: punchOutDate,
           },
+          duration: item.duration,
           punchInNote: punchIn.note,
           punchOutNote: punchOut.note,
-          duration: item.duration,
         };
       });
     };
@@ -255,6 +272,7 @@ export default {
         {
           name: 'punchInNote',
           slot: 'title',
+          cellType: 'oxd-table-cell-truncate',
           title: this.$t('attendance.punch_in_note'),
           style: {flex: 1},
         },
@@ -268,6 +286,7 @@ export default {
         {
           name: 'punchOutNote',
           slot: 'title',
+          cellType: 'oxd-table-cell-truncate',
           title: this.$t('attendance.punch_out_note'),
           style: {flex: 1},
         },
@@ -319,17 +338,17 @@ export default {
       };
     },
     onClickDeleteSelected() {
-      const ids = this.checkedItems.map(index => {
+      const ids = this.checkedItems.map((index) => {
         return this.items?.data[index].id;
       });
-      this.$refs.deleteDialog.showDialog().then(confirmation => {
+      this.$refs.deleteDialog.showDialog().then((confirmation) => {
         if (confirmation === 'ok') {
           this.deleteItems(ids);
         }
       });
     },
     onClickDelete(item) {
-      this.$refs.deleteDialog.showDialog().then(confirmation => {
+      this.$refs.deleteDialog.showDialog().then((confirmation) => {
         if (confirmation === 'ok') {
           this.deleteItems([item.id]);
         }

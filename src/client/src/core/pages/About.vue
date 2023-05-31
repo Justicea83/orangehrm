@@ -44,7 +44,7 @@
         </oxd-text>
       </oxd-grid-item>
       <!--   Version   -->
-<!--      <oxd-grid-item>
+      <!--      <oxd-grid-item>
         <oxd-text tag="p" class="orangehrm-about-title">
           {{ $t('general.version') }}:
         </oxd-text>
@@ -84,17 +84,16 @@
 
 <script>
 import {APIService} from '@/core/util/services/api.service';
-import Spinner from '@ohrm/oxd/core/components/Loader/Spinner';
-import Dialog from '@ohrm/oxd/core/components/Dialog/Dialog';
+import {OxdDialog, OxdSpinner} from '@ohrm/oxd';
 
 export default {
   components: {
-    'oxd-loading-spinner': Spinner,
-    'oxd-dialog': Dialog,
+    'oxd-loading-spinner': OxdSpinner,
+    'oxd-dialog': OxdDialog,
   },
   emits: ['close'],
   setup() {
-    const http = new APIService(window.appGlobal.baseUrl, 'api/v2/core/about');
+    const http = new APIService(window.appGlobal.baseUrl, '/api/v2/core/about');
     return {
       http,
     };
@@ -109,7 +108,7 @@ export default {
     this.isLoading = true;
     this.http
       .getAll()
-      .then(response => {
+      .then((response) => {
         const {data} = response.data;
         this.data = {...data};
       })

@@ -176,6 +176,11 @@ final class Services
      */
     public const CSRF_TOKEN_STORAGE = 'auth.csrf_token_storage';
 
+    /**
+     * @see \OrangeHRM\Authentication\Service\PasswordStrengthService
+     */
+    public const PASSWORD_STRENGTH_SERVICE = 'auth.password_strength_service';
+
     ///////////////////////////////////////////////////////////////
     /// Admin plugin services
     ///////////////////////////////////////////////////////////////
@@ -408,4 +413,32 @@ final class Services
      * @see \OrangeHRM\Buzz\Service\BuzzService
      */
     public const BUZZ_SERVICE = 'buzz.buzz_service';
+
+    ///////////////////////////////////////////////////////////////
+    /// Claim plugin services
+    ///////////////////////////////////////////////////////////////
+
+    /**
+     * @see \OrangeHRM\Claim\Service\ClaimService
+     */
+    public const CLAIM_SERVICE = 'claim.claim_service';
+
+    ///////////////////////////////////////////////////////////////
+    /// OAuth plugin services
+    ///////////////////////////////////////////////////////////////
+
+    /**
+     * @see \OrangeHRM\OAuth\Service\PsrHttpFactoryHelper
+     */
+    public const PSR_HTTP_FACTORY_HELPER = 'oauth.psr_http_factory_helper';
+
+    /**
+     * @see \OrangeHRM\OAuth\Server\OAuthServer
+     */
+    public const OAUTH_SERVER = 'oauth.authorization_server';
+
+    /**
+     * @see \OrangeHRM\OAuth\Service\OAuthService
+     */
+    public const OAUTH_SERVICE = 'oauth.oauth_service';
 }

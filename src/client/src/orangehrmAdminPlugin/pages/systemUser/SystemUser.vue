@@ -21,7 +21,7 @@
 <template>
   <div class="orangehrm-background-container">
     <oxd-table-filter :filter-title="$t('admin.system_users')">
-      <oxd-form @submitValid="filterItems">
+      <oxd-form @submit-valid="filterItems">
         <oxd-form-row>
           <oxd-grid :cols="4" class="orangehrm-full-width-grid">
             <oxd-grid-item>
@@ -153,9 +153,11 @@ export default {
   setup(props) {
     const {$t} = usei18n();
     const {$tEmpName} = useEmployeeNameTranslate();
-    const userdataNormalizer = data => {
-      return data.map(item => {
-        const selectable = props.unselectableIds.findIndex(id => id == item.id);
+    const userdataNormalizer = (data) => {
+      return data.map((item) => {
+        const selectable = props.unselectableIds.findIndex(
+          (id) => id == item.id,
+        );
         return {
           id: item.id,
           userName: item.userName,
@@ -185,7 +187,10 @@ export default {
         sortOrder: sortOrder.value,
       };
     });
-    const http = new APIService(window.appGlobal.baseUrl, 'api/v2/admin/users');
+    const http = new APIService(
+      window.appGlobal.baseUrl,
+      '/api/v2/admin/users',
+    );
     const {
       showPaginator,
       currentPage,
@@ -274,7 +279,7 @@ export default {
       ],
       userStatuses: [
         {id: 1, label: this.$t('general.enabled')},
-        {id: 2, label: this.$t('general.disabled')},
+        {id: 0, label: this.$t('general.disabled')},
       ],
       checkedItems: [],
       rules: {
@@ -291,21 +296,23 @@ export default {
       navigate('/admin/saveSystemUser/{id}', {id: item.id});
     },
     onClickDeleteSelected() {
-      const ids = this.checkedItems.map(index => {
+      const ids = this.checkedItems.map((index) => {
         return this.items?.data[index].id;
       });
-      this.$refs.deleteDialog.showDialog().then(confirmation => {
+      this.$refs.deleteDialog.showDialog().then((confirmation) => {
         if (confirmation === 'ok') {
           this.deleteItems(ids);
         }
       });
     },
     onClickDelete(item) {
-      const isSelectable = this.unselectableIds.findIndex(id => id == item.id);
+      const isSelectable = this.unselectableIds.findIndex(
+        (id) => id == item.id,
+      );
       if (isSelectable > -1) {
         return this.$toast.cannotDelete();
       }
-      this.$refs.deleteDialog.showDialog().then(confirmation => {
+      this.$refs.deleteDialog.showDialog().then((confirmation) => {
         if (confirmation === 'ok') {
           this.deleteItems([item.id]);
         }

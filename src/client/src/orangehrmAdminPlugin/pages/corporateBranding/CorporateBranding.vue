@@ -27,7 +27,7 @@
 
       <oxd-divider />
 
-      <oxd-form ref="formRef" :loading="isLoading" @submitValid="onFormSubmit">
+      <oxd-form ref="formRef" :loading="isLoading" @submit-valid="onFormSubmit">
         <oxd-form-row>
           <oxd-grid :cols="4" class="orangehrm-full-width-grid">
             <oxd-grid-item>
@@ -201,9 +201,9 @@ import useForm from '@/core/util/composable/useForm';
 import useToast from '@/core/util/composable/useToast';
 import {APIService} from '@/core/util/services/api.service';
 import {reloadPage} from '@ohrm/core/util/helper/navigation';
-import SwitchInput from '@ohrm/oxd/core/components/Input/SwitchInput';
 import FileUploadInput from '@/core/components/inputs/FileUploadInput';
 import InlineColorInput from '@/orangehrmAdminPlugin/components/InlineColorInput';
+import {OxdSwitchInput} from '@ohrm/oxd';
 
 const colorModel = {
   primaryColor: null,
@@ -222,7 +222,7 @@ const fileUploadModel = {
 
 export default {
   components: {
-    'oxd-switch-input': SwitchInput,
+    'oxd-switch-input': OxdSwitchInput,
     'file-upload-input': FileUploadInput,
     'inline-color-input': InlineColorInput,
   },
@@ -241,7 +241,10 @@ export default {
     },
   },
   setup(props) {
-    const http = new APIService(window.appGlobal.baseUrl, `api/v2/admin/theme`);
+    const http = new APIService(
+      window.appGlobal.baseUrl,
+      `/api/v2/admin/theme`,
+    );
 
     const {saveSuccess} = useToast();
     const {formRef, invalid, validate} = useForm();
@@ -266,7 +269,7 @@ export default {
     const rules = {
       color: [required, validHexFormat],
       clientLogo: [
-        v =>
+        (v) =>
           state.clientLogo.method === 'replaceCurrent' ? required(v) : true,
         maxFileSize(1024 * 1024),
         imageShouldHaveDimensions(
@@ -276,7 +279,7 @@ export default {
         validFileTypes(props.allowedImageTypes),
       ],
       clientBanner: [
-        v =>
+        (v) =>
           state.clientBanner.method === 'replaceCurrent' ? required(v) : true,
         maxFileSize(1024 * 1024),
         imageShouldHaveDimensions(
@@ -286,7 +289,7 @@ export default {
         validFileTypes(props.allowedImageTypes),
       ],
       loginBanner: [
-        v =>
+        (v) =>
           state.loginBanner.method === 'replaceCurrent' ? required(v) : true,
         maxFileSize(1024 * 1024),
         imageShouldHaveDimensions(
@@ -298,7 +301,7 @@ export default {
     };
 
     const onFormSubmit = () => {
-      const getAttachment = fileUploadModel => {
+      const getAttachment = (fileUploadModel) => {
         if (
           fileUploadModel.method === null ||
           fileUploadModel.method === 'replaceCurrent'
@@ -351,7 +354,7 @@ export default {
               ...state.colors,
             },
           })
-          .then(response => {
+          .then((response) => {
             const {data} = response.data;
             for (const key in data) {
               const value = data[key];
@@ -366,7 +369,7 @@ export default {
       state.isLoading = true;
       http
         .getAll()
-        .then(response => {
+        .then((response) => {
           const {data} = response.data;
           const {
             clientLogo,

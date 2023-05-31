@@ -27,7 +27,7 @@
           <post-filters
             :mobile="true"
             :filter="sortField"
-            @updatePriority="onUpdatePriority"
+            @update-priority="onUpdatePriority"
           ></post-filters>
         </news-feed>
       </oxd-tab-panel>
@@ -46,7 +46,7 @@
       <news-feed :employee="employee" :sort-field="sortField">
         <post-filters
           :filter="sortField"
-          @updatePriority="onUpdatePriority"
+          @update-priority="onUpdatePriority"
         ></post-filters>
       </news-feed>
     </oxd-grid-item>
@@ -60,7 +60,7 @@
     <oxd-grid-item>
       <post-filters
         :filter="sortField"
-        @updatePriority="onUpdatePriority"
+        @update-priority="onUpdatePriority"
       ></post-filters>
     </oxd-grid-item>
     <oxd-grid-item>
@@ -73,25 +73,25 @@
 </template>
 
 <script>
+import {
+  OxdTabPanel,
+  DEVICE_TYPES,
+  useResponsive,
+  OxdTabContainer,
+} from '@ohrm/oxd';
 import {computed, ref} from 'vue';
-import useResponsive, {
-  DEVICE_LG,
-  DEVICE_XL,
-} from '@ohrm/oxd/composables/useResponsive';
 import usei18n from '@/core/util/composable/usei18n';
 import useSwipe from '@/core/util/composable/useSwipe';
-import TabPanel from '@ohrm/oxd/core/components/Tab/TabPanel';
 import NewsFeed from '@/orangehrmBuzzPlugin/components/NewsFeed.vue';
-import TabContainer from '@ohrm/oxd/core/components/Tab/TabContainer';
 import PostFilters from '@/orangehrmBuzzPlugin/components/PostFilters.vue';
 import UpcomingAnniversaries from '@/orangehrmBuzzPlugin/components/UpcomingAnniversaries.vue';
 
 export default {
   components: {
     'news-feed': NewsFeed,
-    'oxd-tab-panel': TabPanel,
+    'oxd-tab-panel': OxdTabPanel,
     'post-filters': PostFilters,
-    'oxd-tab-container': TabContainer,
+    'oxd-tab-container': OxdTabContainer,
     'upcoming-anniversaries': UpcomingAnniversaries,
   },
 
@@ -110,14 +110,14 @@ export default {
 
     const isMobile = computed(() => {
       return !(
-        responsiveState.screenType === DEVICE_LG ||
-        responsiveState.screenType === DEVICE_XL
+        responsiveState.screenType === DEVICE_TYPES.DEVICE_LG ||
+        responsiveState.screenType === DEVICE_TYPES.DEVICE_XL
       );
     });
 
     const width = computed(() => responsiveState.windowWidth);
 
-    const {swipeContainer} = useSwipe($event => {
+    const {swipeContainer} = useSwipe(($event) => {
       const direction = $event.offsetDirection;
       // swipe right
       if (direction === 2) {
@@ -130,7 +130,7 @@ export default {
       }
     });
 
-    const onUpdatePriority = $event => {
+    const onUpdatePriority = ($event) => {
       if ($event) sortField.value = $event;
     };
 

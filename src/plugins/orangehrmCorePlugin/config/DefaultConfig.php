@@ -35,7 +35,14 @@ class DefaultConfig
         'email_config.sendmail_path' => '/usr/sbin/sendmail -bs',
         'help.url' => 'https://starterhelp.orangehrm.com',
         'help.processorClass' => 'ZendeskHelpProcessor',
-        'dashboard.employees_on_leave_today.show_only_accessible' => '0'
+        'dashboard.employees_on_leave_today.show_only_accessible' => '0',
+        'auth.password_policy.min_password_length' => '8',
+        'auth.password_policy.min_uppercase_letters' => '1',
+        'auth.password_policy.min_lowercase_letters' => '1',
+        'auth.password_policy.min_numbers_in_password' => '1',
+        'auth.password_policy.min_special_characters' => '1',
+        'auth.password_policy.default_required_password_strength' => 'strong',
+        'auth.password_policy.is_spaces_allowed' => 'false'
     ];
 
     public static function getDefaultValue(string $key): ?string

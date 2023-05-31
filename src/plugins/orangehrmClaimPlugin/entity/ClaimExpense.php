@@ -23,13 +23,14 @@ use DateTime;
 use Doctrine\ORM\Mapping as ORM;
 use OrangeHRM\Entity\Decorator\ClaimExpenseDecorator;
 use OrangeHRM\Entity\Decorator\DecoratorTrait;
+use OrangeHRM\ORM\Tenancy\TenantAware;
 
 /**
  * @method ClaimExpenseDecorator getDecorator()
  * @ORM\Table(name="ohrm_expense")
  * @ORM\Entity
  */
-class ClaimExpense
+class ClaimExpense extends TenantAware
 {
     use DecoratorTrait;
 

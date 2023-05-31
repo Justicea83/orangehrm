@@ -22,6 +22,7 @@ namespace OrangeHRM\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use OrangeHRM\Entity\Decorator\ClaimEventDecorator;
 use OrangeHRM\Entity\Decorator\DecoratorTrait;
+use OrangeHRM\ORM\Tenancy\TenantAware;
 
 /**
  * @method ClaimEventDecorator getDecorator()
@@ -29,7 +30,7 @@ use OrangeHRM\Entity\Decorator\DecoratorTrait;
  * @ORM\Table(name="ohrm_claim_event")
  * @ORM\Entity
  */
-class ClaimEvent
+class ClaimEvent extends TenantAware
 {
     use DecoratorTrait;
     /**

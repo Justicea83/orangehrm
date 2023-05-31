@@ -22,6 +22,7 @@ namespace OrangeHRM\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use OrangeHRM\Entity\Decorator\DecoratorTrait;
 use OrangeHRM\Entity\Decorator\ExpenseTypeDecorator;
+use OrangeHRM\ORM\Tenancy\TenantAware;
 
 /**
  * @method ExpenseTypeDecorator getDecorator()
@@ -29,7 +30,7 @@ use OrangeHRM\Entity\Decorator\ExpenseTypeDecorator;
  * @ORM\Table(name="ohrm_expense_type")
  * @ORM\Entity
  */
-class ExpenseType
+class ExpenseType extends TenantAware
 {
     use DecoratorTrait;
 

@@ -22,7 +22,6 @@ namespace OrangeHRM\Installer\Migration\V5_0_0;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Exception;
 use Doctrine\DBAL\Query\QueryBuilder;
-use OrangeHRM\Installer\Util\Logger;
 use OrangeHRM\Installer\Util\V1\Dto\TransUnit;
 use Symfony\Component\Yaml\Yaml;
 

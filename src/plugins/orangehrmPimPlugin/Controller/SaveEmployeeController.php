@@ -24,7 +24,6 @@ use OrangeHRM\Core\Controller\AbstractVueController;
 use OrangeHRM\Core\Service\IDGeneratorService;
 use OrangeHRM\Core\Vue\Component;
 use OrangeHRM\Core\Vue\Prop;
-use OrangeHRM\Entity\Employee;
 use OrangeHRM\Entity\EmpPicture;
 use OrangeHRM\Framework\Http\Request;
 

@@ -72,7 +72,7 @@ class LoginController extends AbstractVueController implements PublicControllerI
             );
         }
 
-        if($this->getAuthUser()->hasFlash(AuthUser::FLASH_SUCCESS_REGISTRATION)) {
+        if ($this->getAuthUser()->hasFlash(AuthUser::FLASH_SUCCESS_REGISTRATION)) {
             $success = $this->getAuthUser()->getFlash(AuthUser::FLASH_SUCCESS_REGISTRATION);
             $component->addProp(
                 new Prop(

@@ -23,6 +23,7 @@ use DateTime;
 use Doctrine\ORM\Mapping as ORM;
 use OrangeHRM\Entity\Decorator\ClaimRequestDecorator;
 use OrangeHRM\Entity\Decorator\DecoratorTrait;
+use OrangeHRM\ORM\Tenancy\TenantAware;
 
 /**
  * @method ClaimRequestDecorator getDecorator()
@@ -30,7 +31,7 @@ use OrangeHRM\Entity\Decorator\DecoratorTrait;
  * @ORM\Table(name="ohrm_claim_request")
  * @ORM\Entity
  */
-class ClaimRequest
+class ClaimRequest extends TenantAware
 {
     use DecoratorTrait;
 

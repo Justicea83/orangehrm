@@ -119,7 +119,7 @@ class AppSetupUtility
      */
     public function connectToDatabaseServer(): DatabaseConnectionWrapper
     {
-        return DatabaseConnectionWrapper::establishConnection(fn() => DatabaseServerConnection::getConnection());
+        return DatabaseConnectionWrapper::establishConnection(fn () => DatabaseServerConnection::getConnection());
     }
 
     /**
@@ -165,7 +165,7 @@ class AppSetupUtility
      */
     public function connectToDatabase(): DatabaseConnectionWrapper
     {
-        return DatabaseConnectionWrapper::establishConnection(fn() => Connection::getConnection());
+        return DatabaseConnectionWrapper::establishConnection(fn () => Connection::getConnection());
     }
 
     /**
@@ -440,8 +440,7 @@ class AppSetupUtility
         string  $ohrmDbUser,
         ?string $ohrmDbPassword,
         string  $grantHost
-    ): array
-    {
+    ): array {
         $conn = Connection::getConnection();
         $dbName = $conn->quoteIdentifier($dbName);
         $ohrmDbUser = $conn->quote($ohrmDbUser);
@@ -490,8 +489,7 @@ class AppSetupUtility
         string  $fromVersion,
         ?string $toVersion = null,
         bool    $includeFromVersion = true
-    ): array
-    {
+    ): array {
         $isIn = false;
         $versions = [];
         foreach (self::MIGRATIONS_MAP as $version => $migration) {

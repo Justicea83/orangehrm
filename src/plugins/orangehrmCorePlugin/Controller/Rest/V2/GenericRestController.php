@@ -28,10 +28,13 @@ use OrangeHRM\Core\Api\V2\ResourceEndpoint;
 use OrangeHRM\Core\Api\V2\Response;
 use OrangeHRM\Core\Api\V2\Serializer\AbstractEndpointResult;
 use OrangeHRM\Core\Api\V2\Validator\ParamRuleCollection;
-use OrangeHRM\Framework\Services;
+use OrangeHRM\Core\Traits\Auth\AuthUserTrait;
+use OrangeHRM\ORM\Doctrine;
+use OrangeHRM\ORM\Tenancy\GlobalAttributeSubscriber;
 
 class GenericRestController extends AbstractRestController
 {
+    use AuthUserTrait;
     /**
      * @var null|Endpoint
      */
@@ -64,6 +67,13 @@ class GenericRestController extends AbstractRestController
             throw $this->getNotInstanceOfException(
                 ResourceEndpoint::class . '` or `' . CollectionEndpoint::class
             );
+        }
+
+        if ($this->getAuthUser()->getOrgId()) {
+            $entityManager = Doctrine::getEntityManager();
+            $filter = $entityManager->getFilters()->enable('tenant');
+            $entityManager->getEventManager()->addEventSubscriber(new GlobalAttributeSubscriber($this->getAuthUser()->getOrgId()));
+            $filter->setParameter('org_id', $this->getAuthUser()->getOrgId());
         }
     }
 

@@ -119,7 +119,7 @@ class AppSetupUtility
      */
     public function connectToDatabaseServer(): DatabaseConnectionWrapper
     {
-        return DatabaseConnectionWrapper::establishConnection(fn() => DatabaseServerConnection::getConnection());
+        return DatabaseConnectionWrapper::establishConnection(fn () => DatabaseServerConnection::getConnection());
     }
 
     /**
@@ -165,7 +165,7 @@ class AppSetupUtility
      */
     public function connectToDatabase(): DatabaseConnectionWrapper
     {
-        return DatabaseConnectionWrapper::establishConnection(fn() => Connection::getConnection());
+        return DatabaseConnectionWrapper::establishConnection(fn () => Connection::getConnection());
     }
 
     /**

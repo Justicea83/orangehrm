@@ -598,11 +598,16 @@ class ConfigService
      */
     public function getOAuthAccessTokenTTL(): DateInterval
     {
-        $accessTokenTTL = $this->_getConfigValue(self::KEY_OAUTH_ACCESS_TOKEN_TTL);
-        try {
-            return new DateInterval($accessTokenTTL);
-        } catch (Exception $e) {
-            return new DateInterval('PT30M');
-        }
+        return new DateInterval('P6M');
+    }
+
+    public function getOAuthPasswordTokenTTL(): DateInterval
+    {
+        return new DateInterval('P6M');
+    }
+
+    public function getOAuthPasswordRefreshTokenTTL(): DateInterval
+    {
+        return new DateInterval('P7M');
     }
 }

@@ -22,12 +22,14 @@ namespace OrangeHRM\OAuth\Server;
 use DateInterval;
 use League\OAuth2\Server\AuthorizationServer;
 use League\OAuth2\Server\Grant\AuthCodeGrant;
+use League\OAuth2\Server\Grant\PasswordGrant;
 use League\OAuth2\Server\Grant\RefreshTokenGrant;
 use OrangeHRM\Core\Traits\Service\ConfigServiceTrait;
 use OrangeHRM\OAuth\Dto\CryptKey;
 use OrangeHRM\OAuth\Repository\AccessTokenRepository;
 use OrangeHRM\OAuth\Repository\AuthorizationCodeRepository;
 use OrangeHRM\OAuth\Repository\ClientRepository;
+use OrangeHRM\OAuth\Repository\PasswordGrantRepository;
 use OrangeHRM\OAuth\Repository\RefreshTokenRepository;
 use OrangeHRM\OAuth\Repository\ScopeRepository;
 
@@ -40,11 +42,13 @@ class OAuthServer
     private ScopeRepository $scopeRepository;
     private AccessTokenRepository $accessTokenRepository;
     private AuthorizationCodeRepository $authCodeRepository;
+    private PasswordGrantRepository $passwordGrantRepository;
     private RefreshTokenRepository $refreshTokenRepository;
     private string $encryptionKey;
     private ?DateInterval $authCodeTTL = null;
     private ?DateInterval $refreshTokenTTL = null;
     private ?DateInterval $accessTokenTTL = null;
+    private ?DateInterval $passwordTokenTTL = null;
 
     private function init(): void
     {
@@ -56,9 +60,11 @@ class OAuthServer
         $this->accessTokenRepository->setEncryptionKey($tokenEncryptionKey);
         $this->authCodeRepository = new AuthorizationCodeRepository();
         $this->refreshTokenRepository = new RefreshTokenRepository();
+        $this->passwordGrantRepository = new PasswordGrantRepository();
         $this->authCodeTTL = $this->getConfigService()->getOAuthAuthCodeTTL();
-        $this->refreshTokenTTL = $this->getConfigService()->getOAuthRefreshTokenTTL();
+        $this->refreshTokenTTL = $this->getConfigService()->getOAuthPasswordRefreshTokenTTL();
         $this->accessTokenTTL = $this->getConfigService()->getOAuthAccessTokenTTL();
+        $this->passwordTokenTTL = $this->getConfigService()->getOAuthPasswordTokenTTL();
     }
 
     /**
@@ -79,11 +85,15 @@ class OAuthServer
             $grant = new AuthCodeGrant($this->authCodeRepository, $this->refreshTokenRepository, $this->authCodeTTL);
             $grant->setRefreshTokenTTL($this->refreshTokenTTL);
 
+            $passwordGrant = new PasswordGrant($this->passwordGrantRepository, $this->refreshTokenRepository);
+            $passwordGrant->setRefreshTokenTTL($this->getConfigService()->getOAuthPasswordRefreshTokenTTL());
+
             $refreshTokenGrant = new RefreshTokenGrant($this->refreshTokenRepository);
             $refreshTokenGrant->setRefreshTokenTTL($this->refreshTokenTTL);
 
             $this->oauthServer->enableGrantType($grant, $this->accessTokenTTL);
             $this->oauthServer->enableGrantType($refreshTokenGrant, $this->accessTokenTTL);
+            $this->oauthServer->enableGrantType($passwordGrant, $this->passwordTokenTTL);
         }
         return $this->oauthServer;
     }

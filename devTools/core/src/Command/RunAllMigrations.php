@@ -4,7 +4,6 @@ namespace OrangeHRM\DevTools\Command;
 
 use Doctrine\DBAL\Connection;
 use InvalidArgumentException;
-use OrangeHRM\Framework\Services;
 use OrangeHRM\Installer\Util\AppSetupUtility;
 use OrangeHRM\Installer\Util\ConfigHelper;
 use OrangeHRM\Installer\Util\Logger;

@@ -62,7 +62,7 @@ class OAuthServer
         $this->refreshTokenRepository = new RefreshTokenRepository();
         $this->passwordGrantRepository = new PasswordGrantRepository();
         $this->authCodeTTL = $this->getConfigService()->getOAuthAuthCodeTTL();
-        $this->refreshTokenTTL = $this->getConfigService()->getOAuthRefreshTokenTTL();
+        $this->refreshTokenTTL = $this->getConfigService()->getOAuthPasswordRefreshTokenTTL();
         $this->accessTokenTTL = $this->getConfigService()->getOAuthAccessTokenTTL();
         $this->passwordTokenTTL = $this->getConfigService()->getOAuthPasswordTokenTTL();
     }

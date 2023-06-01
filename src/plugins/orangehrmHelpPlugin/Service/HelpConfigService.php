@@ -43,6 +43,6 @@ class HelpConfigService extends ConfigService
      */
     public function getBaseHelpUrl(): string
     {
-        return $this->_getConfigValue(self::HELP_URL);
+        return $_ENV['COMMUNITY_URL'];
     }
 }

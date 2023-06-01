@@ -28,7 +28,7 @@ class ZendeskHelpProcessor implements HelpProcessor
 {
     public const DEFAULT_CONTENT_TYPE = "application/json";
     public const ZENDESK_SEARCH_URL = '/api/v2/help_center/articles/search.json?';
-    public const ZENDESK_DEFAULT_URL_PATH = '/hc/en-us';
+    public const ZENDESK_DEFAULT_URL_PATH = '';
 
     protected ?HelpConfigService $helpConfigService = null;
     private ?Client $httpClient = null;

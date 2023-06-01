@@ -605,4 +605,14 @@ class ConfigService
             return new DateInterval('PT30M');
         }
     }
+
+    public function getOAuthPasswordTokenTTL(): DateInterval
+    {
+        return new DateInterval('P6M');
+    }
+
+    public function getOAuthPasswordRefreshTokenTTL(): DateInterval
+    {
+        return new DateInterval('P7M');
+    }
 }

@@ -45,7 +45,7 @@ class PasswordGrantRepository extends BaseDao implements UserRepositoryInterface
         $credentials = new UserCredential($username, $password);
         $success = $authProviderChain->authenticate(new AuthParams($credentials));
 
-        if(!$success) {
+        if (!$success) {
             throw OAuthServerException::invalidCredentials();
         }
 

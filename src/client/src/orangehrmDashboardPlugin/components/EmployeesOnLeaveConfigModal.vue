@@ -32,7 +32,7 @@
       </div>
     </div>
     <oxd-divider />
-    <oxd-form :loading="isLoading" @submitValid="onSave">
+    <oxd-form :loading="isLoading" @submit-valid="onSave">
       <oxd-form-row class="orangehrm-config-checkbox">
         <oxd-input-field
           v-model="showAccessibleEmployeesOnly"
@@ -59,21 +59,20 @@
 </template>
 
 <script>
-import Icon from '@ohrm/oxd/core/components/Icon/Icon.vue';
 import {APIService} from '@/core/util/services/api.service';
-import Dialog from '@ohrm/oxd/core/components/Dialog/Dialog';
+import {OxdDialog, OxdIcon} from '@ohrm/oxd';
 
 export default {
   name: 'EmployeesOnLeaveConfigModal',
   components: {
-    'oxd-icon': Icon,
-    'oxd-dialog': Dialog,
+    'oxd-icon': OxdIcon,
+    'oxd-dialog': OxdDialog,
   },
   emits: ['close'],
   setup() {
     const http = new APIService(
       window.appGlobal.baseUrl,
-      'api/v2/dashboard/config/employee-on-leave-today',
+      '/api/v2/dashboard/config/employee-on-leave-today',
     );
     return {
       http,
@@ -89,7 +88,7 @@ export default {
     this.isLoading = true;
     this.http
       .getAll()
-      .then(response => {
+      .then((response) => {
         const {data} = response.data;
         this.showAccessibleEmployeesOnly =
           data.showOnlyAccessibleEmployeesOnLeaveToday;
@@ -103,8 +102,8 @@ export default {
         .request({
           method: 'PUT',
           data: {
-            showOnlyAccessibleEmployeesOnLeaveToday: this
-              .showAccessibleEmployeesOnly,
+            showOnlyAccessibleEmployeesOnLeaveToday:
+              this.showAccessibleEmployeesOnly,
           },
         })
         .then(() => {

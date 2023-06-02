@@ -41,7 +41,7 @@
           <template #content>
             <post-body
               :post="post"
-              @selectPhoto="onSelectPhoto($event, index)"
+              @select-photo="onSelectPhoto($event, index)"
             ></post-body>
           </template>
           <template #actionButton>
@@ -118,7 +118,6 @@
 <script>
 import useToast from '@/core/util/composable/useToast';
 import {APIService} from '@/core/util/services/api.service';
-import Spinner from '@ohrm/oxd/core/components/Loader/Spinner';
 import {onBeforeMount, reactive, ref, toRefs, watch} from 'vue';
 import PostBody from '@/orangehrmBuzzPlugin/components/PostBody.vue';
 import PostStats from '@/orangehrmBuzzPlugin/components/PostStats.vue';
@@ -132,6 +131,7 @@ import PostContainer from '@/orangehrmBuzzPlugin/components/PostContainer.vue';
 import SharePostModal from '@/orangehrmBuzzPlugin/components/SharePostModal.vue';
 import DeleteConfirmationDialog from '@ohrm/components/dialogs/DeleteConfirmationDialog';
 import PostCommentContainer from '@/orangehrmBuzzPlugin/components/PostCommentContainer.vue';
+import {OxdSpinner} from '@ohrm/oxd';
 
 export default {
   name: 'NewsFeed',
@@ -141,7 +141,7 @@ export default {
     'post-stats': PostStats,
     'create-post': CreatePost,
     'post-actions': PostActions,
-    'oxd-loading-spinner': Spinner,
+    'oxd-loading-spinner': OxdSpinner,
     'photo-carousel': PhotoCarousel,
     'post-container': PostContainer,
     'edit-post-modal': EditPostModal,
@@ -172,7 +172,7 @@ export default {
     const {fetchPosts, deletePost} = useBuzzAPIs(
       new APIService(window.appGlobal.baseUrl, ''),
     );
-    const noPostsPic = `${window.appGlobal.baseUrl}/../images/buzz_no_posts.svg`;
+    const noPostsPic = `${window.appGlobal.publicPath}/images/buzz_no_posts.svg`;
 
     const state = reactive({
       total: 0,
@@ -190,7 +190,7 @@ export default {
     const fetchData = () => {
       state.isLoading = true;
       fetchPosts(POST_LIMIT, state.offset, 'DESC', props.sortField)
-        .then(response => {
+        .then((response) => {
           const {data, meta} = response.data;
           state.total = meta.total || 0;
           if (Array.isArray(data)) {
@@ -206,7 +206,7 @@ export default {
       fetchData();
     });
 
-    const onLike = index => {
+    const onLike = (index) => {
       state.posts[index].liked = !state.posts[index].liked;
       if (state.posts[index].liked) {
         state.posts[index].stats.numOfLikes++;
@@ -215,7 +215,7 @@ export default {
       }
     };
 
-    const onEdit = index => {
+    const onEdit = (index) => {
       state.showEditModal = true;
       state.editModalState = {
         postIndex: index,
@@ -224,13 +224,13 @@ export default {
       document.body.style.overflow = 'hidden';
     };
 
-    const onShare = index => {
+    const onShare = (index) => {
       state.showShareModal = true;
       state.shareModalState = state.posts[index];
       document.body.style.overflow = 'hidden';
     };
 
-    const onComment = index => {
+    const onComment = (index) => {
       if (state.posts[index].showComments) {
         state.posts[index].showComments = false;
       } else {
@@ -260,14 +260,14 @@ export default {
       document.body.style.overflow = 'auto';
     };
 
-    const onCloseShareModal = $event => {
+    const onCloseShareModal = ($event) => {
       state.showShareModal = false;
       state.shareModalState = null;
       document.body.style.overflow = 'auto';
       if ($event) resetFeed();
     };
 
-    const onCloseEditModal = $event => {
+    const onCloseEditModal = ($event) => {
       const {data} = $event;
       if (data) state.posts[state.editModalState.postIndex] = {...data};
       state.showEditModal = false;
@@ -275,8 +275,8 @@ export default {
       document.body.style.overflow = 'auto';
     };
 
-    const onDelete = index => {
-      deleteDialog.value.showDialog().then(confirmation => {
+    const onDelete = (index) => {
+      deleteDialog.value.showDialog().then((confirmation) => {
         if (confirmation === 'ok') {
           deletePost(state.posts[index].id).then(() => {
             resetFeed();
@@ -286,11 +286,11 @@ export default {
       });
     };
 
-    const onCreateComment = index => {
+    const onCreateComment = (index) => {
       state.posts[index].stats.numOfComments++;
     };
 
-    const onDeleteComment = index => {
+    const onDeleteComment = (index) => {
       state.posts[index].stats.numOfComments--;
     };
 

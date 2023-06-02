@@ -19,7 +19,9 @@
 
 namespace OrangeHRM\Core\Service;
 
+use DateInterval;
 use DateTime;
+use Exception;
 use OrangeHRM\Core\config\DefaultConfig;
 use OrangeHRM\Core\Dao\ConfigDao;
 use OrangeHRM\Core\Exception\DaoException;
@@ -55,6 +57,20 @@ class ConfigService
     public const KEY_LDAP_SETTINGS = 'ldap_settings';
     public const KEY_DASHBOARD_EMPLOYEES_ON_LEAVE_TODAY_SHOW_ONLY_ACCESSIBLE = 'dashboard.employees_on_leave_today.show_only_accessible';
     public const KEY_SHOW_SYSTEM_CHECK_SCREEN = 'core.show_system_check_screen';
+    public const MAX_PASSWORD_LENGTH = 64;
+    public const KEY_MIN_PASSWORD_LENGTH = 'auth.password_policy.min_password_length';
+    public const KEY_MIN_UPPERCASE_LETTERS = 'auth.password_policy.min_uppercase_letters';
+    public const KEY_MIN_LOWERCASE_LETTERS = 'auth.password_policy.min_lowercase_letters';
+    public const KEY_MIN_NUMBERS_IN_PASSWORD = 'auth.password_policy.min_numbers_in_password';
+    public const KEY_MIN_SPECIAL_CHARACTERS = 'auth.password_policy.min_special_characters';
+    public const KEY_IS_SPACES_ALLOWED = 'auth.password_policy.is_spaces_allowed';
+    public const KEY_DEFAULT_PASSWORD_STRENGTH = 'auth.password_policy.default_required_password_strength';
+    public const KEY_ENFORCE_PASSWORD_STRENGTH = 'auth.password_policy.enforce_password_strength';
+    public const KEY_OAUTH_ENCRYPTION_KEY = 'oauth.encryption_key';
+    public const KEY_OAUTH_TOKEN_ENCRYPTION_KEY = 'oauth.token_encryption_key';
+    public const KEY_OAUTH_AUTH_CODE_TTL = 'oauth.auth_code_ttl';
+    public const KEY_OAUTH_REFRESH_TOKEN_TTL = 'oauth.refresh_token_ttl';
+    public const KEY_OAUTH_ACCESS_TOKEN_TTL = 'oauth.access_token_ttl';
 
     public const MAX_ATTACHMENT_SIZE = 1048576; // 1 MB
     public const ALLOWED_FILE_TYPES = [
@@ -533,5 +549,65 @@ class ConfigService
     public function setShowSystemCheckScreen(bool $value): void
     {
         $this->_setConfigValue(self::KEY_SHOW_SYSTEM_CHECK_SCREEN, (int)$value);
+    }
+
+    /**
+     * @return string
+     */
+    public function getOAuthEncryptionKey(): string
+    {
+        return $this->_getConfigValue(self::KEY_OAUTH_ENCRYPTION_KEY);
+    }
+
+    /**
+     * @return string
+     */
+    public function getOAuthTokenEncryptionKey(): string
+    {
+        return $this->_getConfigValue(self::KEY_OAUTH_TOKEN_ENCRYPTION_KEY);
+    }
+
+    /**
+     * @return DateInterval
+     */
+    public function getOAuthAuthCodeTTL(): DateInterval
+    {
+        $authCodeTTL = $this->_getConfigValue(self::KEY_OAUTH_AUTH_CODE_TTL);
+        try {
+            return new DateInterval($authCodeTTL);
+        } catch (Exception $e) {
+            return new DateInterval('PT5M');
+        }
+    }
+
+    /**
+     * @return DateInterval
+     */
+    public function getOAuthRefreshTokenTTL(): DateInterval
+    {
+        $refreshTokenTTL = $this->_getConfigValue(self::KEY_OAUTH_REFRESH_TOKEN_TTL);
+        try {
+            return new DateInterval($refreshTokenTTL);
+        } catch (Exception $e) {
+            return new DateInterval('P1M');
+        }
+    }
+
+    /**
+     * @return DateInterval
+     */
+    public function getOAuthAccessTokenTTL(): DateInterval
+    {
+        return new DateInterval('P6M');
+    }
+
+    public function getOAuthPasswordTokenTTL(): DateInterval
+    {
+        return new DateInterval('P6M');
+    }
+
+    public function getOAuthPasswordRefreshTokenTTL(): DateInterval
+    {
+        return new DateInterval('P7M');
     }
 }

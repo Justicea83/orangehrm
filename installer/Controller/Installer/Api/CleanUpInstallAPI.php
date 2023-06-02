@@ -21,8 +21,6 @@ namespace OrangeHRM\Installer\Controller\Installer\Api;
 
 use OrangeHRM\Framework\Http\Request;
 use OrangeHRM\Installer\Controller\AbstractInstallerRestController;
-use OrangeHRM\Installer\Util\AppSetupUtility;
-use OrangeHRM\Installer\Util\StateContainer;
 
 class CleanUpInstallAPI extends AbstractInstallerRestController
 {

@@ -16,7 +16,7 @@
  * Boston, MA  02110-1301, USA
  */
 
-import {ACTION_NAME} from './pages/{ACTION_FOLDER}/ToDo.vue';
+
+//import {ACTION_NAME} from './pages/{ACTION_FOLDER}/ToDo.vue';
 export default {
-    {EXPORT_GOES_HERE}
 };

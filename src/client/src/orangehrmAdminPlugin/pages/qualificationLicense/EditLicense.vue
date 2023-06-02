@@ -21,13 +21,13 @@
 <template>
   <div class="orangehrm-background-container">
     <div class="orangehrm-card-container">
-      <oxd-text tag="h6" class="orangehrm-main-title">{{
-        $t('general.edit_license')
-      }}</oxd-text>
+      <oxd-text tag="h6" class="orangehrm-main-title">
+        {{ $t('general.edit_license') }}
+      </oxd-text>
 
       <oxd-divider />
 
-      <oxd-form :loading="isLoading" @submitValid="onSave">
+      <oxd-form :loading="isLoading" @submit-valid="onSave">
         <oxd-form-row>
           <oxd-input-field
             v-model="license.name"
@@ -96,17 +96,20 @@ export default {
     this.isLoading = true;
     this.http
       .get(this.licenseId)
-      .then(response => {
+      .then((response) => {
         const {data} = response.data;
         this.license.id = data.id;
         this.license.name = data.name;
         // Fetch list data for unique test
-        return this.http.getAll();
+        return this.http.getAll({limit: 0});
       })
-      .then(response => {
+      .then((response) => {
         const {data} = response.data;
-        this.rules.name.push(v => {
-          const index = data.findIndex(item => item.name === v);
+        this.rules.name.push((v) => {
+          const index = data.findIndex(
+            (item) =>
+              String(item.name).toLowerCase() == String(v).toLowerCase(),
+          );
           if (index > -1) {
             const {id} = data[index];
             return id !== this.license.id

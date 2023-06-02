@@ -27,7 +27,7 @@
 
       <oxd-divider />
 
-      <oxd-form :loading="isLoading" @submitValid="onSave">
+      <oxd-form :loading="isLoading" @submit-valid="onSave">
         <oxd-form-row>
           <oxd-text class="orangehrm-sub-title" tag="h6">
             {{ $t('pim.show_deprecated_fields') }}
@@ -88,7 +88,7 @@
 
 <script>
 import {APIService} from '@ohrm/core/util/services/api.service';
-import SwitchInput from '@ohrm/oxd/core/components/Input/SwitchInput';
+import {OxdSwitchInput} from '@ohrm/oxd';
 
 const optionalFieldModel = {
   pimShowDeprecatedFields: false,
@@ -99,7 +99,7 @@ const optionalFieldModel = {
 
 export default {
   components: {
-    'oxd-switch-input': SwitchInput,
+    'oxd-switch-input': OxdSwitchInput,
   },
 
   setup() {
@@ -122,7 +122,7 @@ export default {
     this.isLoading = true;
     this.http
       .getAll()
-      .then(response => {
+      .then((response) => {
         const {data} = response.data;
         this.optionalField = {...data};
       })
@@ -139,7 +139,7 @@ export default {
           method: 'PUT',
           data: {...this.optionalField},
         })
-        .then(response => {
+        .then((response) => {
           const {data} = response.data;
           this.optionalField = {...data};
           this.$toast.saveSuccess();
@@ -151,7 +151,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import '@ohrm/oxd/styles/_mixins.scss';
 .orangehrm-optional-field-row {
   grid-column-start: 1;
   display: flex;

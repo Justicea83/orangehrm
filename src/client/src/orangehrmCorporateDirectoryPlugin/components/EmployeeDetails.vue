@@ -87,15 +87,21 @@
     </div>
   </div>
   <oxd-divider v-show="employeeWorkEmail"></oxd-divider>
+  <qr-code
+    v-if="qrPayload && (employeeWorkTelephone || employeeWorkEmail)"
+    :value="qrPayload"
+  ></qr-code>
 </template>
 
 <script>
-import OxdDivider from '@ohrm/oxd/core/components/Divider/Divider';
+import {OxdDivider} from '@ohrm/oxd';
 import {APIService} from '@/core/util/services/api.service';
+import QRCode from '@/orangehrmCorporateDirectoryPlugin/components/QRCode';
 
 export default {
   name: 'EmployeeDetails',
   components: {
+    'qr-code': QRCode,
     'oxd-divider': OxdDivider,
   },
   props: {
@@ -111,7 +117,7 @@ export default {
   setup() {
     const http = new APIService(
       window.appGlobal.baseUrl,
-      'api/v2/directory/employees',
+      '/api/v2/directory/employees',
     );
     return {
       http,
@@ -124,10 +130,12 @@ export default {
       showTelephoneClip: false,
       showEmailClip: false,
       toGoEmail: null,
+      qrPayload: null,
+      employeeName: null,
     };
   },
   watch: {
-    employeeId: function() {
+    employeeId: function () {
       this.callEmployeeDetailsApi();
     },
   },
@@ -148,19 +156,35 @@ export default {
       navigator.clipboard?.writeText(this.employeeWorkTelephone);
     },
     callEmployeeDetailsApi() {
-      this.http.get(this.employeeId, {model: 'detailed'}).then(response => {
+      this.http.get(this.employeeId, {model: 'detailed'}).then((response) => {
         const {data} = response.data;
-        this.employeeWorkTelephone = data.contactInfo?.workTelephone;
+        this.employeeName = {
+          firstName: data.firstName,
+          middleName: data.middleName,
+          lastName: data.lastName,
+        };
         this.employeeWorkEmail = data.contactInfo?.workEmail;
+        this.employeeWorkTelephone = data.contactInfo?.workTelephone;
+        this.generateQrPayload();
       });
+    },
+    generateQrPayload() {
+      let content = '';
+      content += `N:${this.employeeName?.lastName || ''};`;
+      content += `${this.employeeName?.firstName || ''};`;
+      content += `${this.employeeName?.middleName || ''};\n`;
+      if (this.employeeWorkTelephone)
+        content += `TEL;CELL:${this.employeeWorkTelephone}\n`;
+      if (this.employeeWorkEmail)
+        content += `EMAIL;WORK;INTERNET:${this.employeeWorkEmail}\n`;
+
+      this.qrPayload = `BEGIN:VCARD\nVERSION:3.0\n${content}END:VCARD\n`;
     },
   },
 };
 </script>
 
 <style lang="scss" scoped>
-@import '@ohrm/oxd/styles/_mixins.scss';
-
 .orangehrm-directory-card {
   height: auto;
   overflow: hidden;

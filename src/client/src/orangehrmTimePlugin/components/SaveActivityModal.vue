@@ -26,7 +26,7 @@
       </oxd-text>
     </div>
     <oxd-divider />
-    <oxd-form :loading="isLoading" @submitValid="onSave">
+    <oxd-form :loading="isLoading" @submit-valid="onSave">
       <oxd-form-row>
         <oxd-input-field
           v-model="name"
@@ -57,12 +57,12 @@ import {
   shouldNotExceedCharLength,
 } from '@ohrm/core/util/validation/rules';
 import {APIService} from '@/core/util/services/api.service';
-import Dialog from '@ohrm/oxd/core/components/Dialog/Dialog';
+import {OxdDialog} from '@ohrm/oxd';
 
 export default {
   name: 'SaveActivityModal',
   components: {
-    'oxd-dialog': Dialog,
+    'oxd-dialog': OxdDialog,
   },
   props: {
     projectId: {
@@ -93,12 +93,12 @@ export default {
     this.isLoading = true;
     this.http
       .getAll({limit: 0})
-      .then(response => {
+      .then((response) => {
         const {data} = response.data;
         if (data) {
-          this.rules.name.push(v => {
+          this.rules.name.push((v) => {
             const index = data.findIndex(
-              item =>
+              (item) =>
                 String(item.name).toLowerCase() == String(v).toLowerCase(),
             );
             if (index > -1) {

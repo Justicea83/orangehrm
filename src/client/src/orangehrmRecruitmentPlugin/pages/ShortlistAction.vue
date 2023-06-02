@@ -24,7 +24,7 @@
       v-model:loading="isLoading"
       :candidate-id="candidateId"
       :title="$t('recruitment.shortlist_candidate')"
-      @submitValid="onSave"
+      @submit-valid="onSave"
     >
       <oxd-form-row>
         <oxd-grid :cols="3">
@@ -73,7 +73,7 @@ export default {
   setup(props) {
     const http = new APIService(
       window.appGlobal.baseUrl,
-      `api/v2/recruitment/candidates/${props.candidateId}/shortlist`,
+      `/api/v2/recruitment/candidates/${props.candidateId}/shortlist`,
     );
 
     return {

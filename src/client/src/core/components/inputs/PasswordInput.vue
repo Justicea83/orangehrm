@@ -23,19 +23,19 @@
   <oxd-form-row class="user-password-row">
     <oxd-grid :cols="2" class="orangehrm-full-width-grid">
       <oxd-grid-item class="user-password-cell">
-        <oxd-chip
+        <password-strength-indicator
           v-if="password"
-          :class="chipClasses"
-          :label="passwordStrength"
-        />
+          :password-strength="passwordStrength"
+        >
+        </password-strength-indicator>
         <oxd-input-field
-          :label="$t('general.password')"
           type="password"
+          autocomplete="off"
+          :required="true"
           :model-value="password"
           :rules="rules.password"
-          autocomplete="off"
-          required
-          @update:modelValue="$emit('update:password', $event)"
+          :label="$t('general.password')"
+          @update:model-value="$emit('update:password', $event)"
         />
         <oxd-text class="user-password-hint" tag="p">
           {{ $t('general.password_strength_message') }}
@@ -45,13 +45,13 @@
       <oxd-grid-item>
         <oxd-input-field
           ref="passwordConfirm"
-          :label="$t('general.confirm_password')"
           type="password"
+          autocomplete="off"
+          :required="true"
           :model-value="passwordConfirm"
           :rules="rules.passwordConfirm"
-          autocomplete="off"
-          required
-          @update:modelValue="$emit('update:passwordConfirm', $event)"
+          :label="$t('general.confirm_password')"
+          @update:model-value="$emit('update:passwordConfirm', $event)"
         />
       </oxd-grid-item>
     </oxd-grid>
@@ -59,17 +59,19 @@
 </template>
 
 <script>
-import Chip from '@ohrm/oxd/core/components/Chip/Chip.vue';
-import {checkPassword, getPassLevel} from '@ohrm/core/util/helper/password';
 import {
   required,
   shouldNotExceedCharLength,
 } from '@ohrm/core/util/validation/rules';
+import {promiseDebounce} from '@ohrm/oxd';
+import {APIService} from '@/core/util/services/api.service';
+import usePasswordPolicy from '@/core/util/composable/usePasswordPolicy';
+import PasswordStrengthIndicator from '@/core/components/labels/PasswordStrengthIndicator';
 
 export default {
   name: 'PasswordInput',
   components: {
-    'oxd-chip': Chip,
+    'password-strength-indicator': PasswordStrengthIndicator,
   },
   props: {
     password: {
@@ -82,45 +84,32 @@ export default {
     },
   },
   emits: ['update:password', 'update:passwordConfirm'],
+  setup() {
+    const http = new APIService(window.appGlobal.baseUrl, '');
+    const {passwordStrength, validatePassword} = usePasswordPolicy(http);
+
+    return {
+      passwordStrength,
+      validatePassword,
+    };
+  },
   data() {
     return {
       rules: {
-        password: [required, shouldNotExceedCharLength(64), checkPassword],
+        password: [
+          required,
+          shouldNotExceedCharLength(64),
+          promiseDebounce(this.validatePassword, 500),
+        ],
         passwordConfirm: [
           required,
           shouldNotExceedCharLength(64),
-          v =>
+          (v) =>
             (!!v && v === this.password) ||
             this.$t('general.passwords_do_not_match'),
         ],
       },
     };
-  },
-
-  computed: {
-    passwordStrength() {
-      let strength = 0;
-      strength = getPassLevel(this.password).reduce((acc, val) => acc + val, 0);
-      if (this.password.trim().length < 8) {
-        strength = 0;
-      }
-      switch (strength) {
-        case 2:
-          return this.$t('general.weak');
-        case 3:
-          return this.$t('general.better');
-        case 4:
-          return this.$t('general.strongest');
-        default:
-          return this.$t('general.very_weak');
-      }
-    },
-    chipClasses() {
-      return {
-        'user-password-chip': true,
-        '--green': this.passwordStrength === 'Strongest',
-      };
-    },
   },
 
   watch: {
@@ -142,23 +131,16 @@ export default {
     padding: 10px;
     background-color: $oxd-background-white-shadow-color;
     border-radius: 0.75rem;
+    ::v-deep(.orangehrm-password-chip) {
+      top: -5px;
+      right: 8px;
+    }
   }
   &-hint {
     font-size: 0.75rem;
   }
   &-cell {
     position: relative;
-  }
-  &-chip {
-    font-family: $oxd-font-family;
-    font-weight: 600;
-    font-size: 0.75rem;
-    position: absolute;
-    right: 8px;
-    top: -5px;
-    &.--green {
-      background-color: #93b40f;
-    }
   }
 }
 </style>

@@ -25,9 +25,6 @@
     :options="options"
     :show-empty-selector="showEmptySelector"
   >
-    <template #afterSelected="{data}">
-      <template v-if="data.isDeleted">{{ $t('general.deleted') }}</template>
-    </template>
     <template #option="{data}">
       <span>{{ data.label }}</span>
       <div v-if="data.isDeleted" class="deleted-tag">
@@ -65,7 +62,7 @@ export default {
     const options = ref([]);
     const http = new APIService(
       window.appGlobal.baseUrl,
-      `api/v2/leave/leave-types${props.eligibleOnly ? '/eligible' : ''}`,
+      `/api/v2/leave/leave-types${props.eligibleOnly ? '/eligible' : ''}`,
     );
 
     watchEffect(async () => {
@@ -83,7 +80,7 @@ export default {
           ...(props.eligibleOnly === false && {limit: 0}),
         })
         .then(({data}) => {
-          options.value = data.data.map(item => {
+          options.value = data.data.map((item) => {
             return {
               id: item.id,
               label: item.name,

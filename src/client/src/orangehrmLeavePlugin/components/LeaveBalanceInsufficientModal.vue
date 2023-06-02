@@ -84,7 +84,7 @@
 </template>
 
 <script>
-import Dialog from '@ohrm/oxd/core/components/Dialog/Dialog';
+import {OxdDialog} from '@ohrm/oxd';
 import useDateFormat from '@/core/util/composable/useDateFormat';
 import {formatDate, parseDate} from '@/core/util/helper/datefns';
 import useLocale from '@/core/util/composable/useLocale';
@@ -92,7 +92,7 @@ import useLocale from '@/core/util/composable/useLocale';
 export default {
   name: 'LeaveBalanceInsufficientModal',
   components: {
-    'oxd-dialog': Dialog,
+    'oxd-dialog': OxdDialog,
   },
   props: {
     data: {
@@ -138,9 +138,9 @@ export default {
   computed: {
     items() {
       if (this.data.length > 0) {
-        const leavePeriods = this.data.map(item => item.period);
+        const leavePeriods = this.data.map((item) => item.period);
         return leavePeriods.flatMap((period, index) => {
-          return this.data[index].leaves.map(leave => {
+          return this.data[index].leaves.map((leave) => {
             const startDate = formatDate(
               parseDate(period.startDate),
               this.jsDateFormat,

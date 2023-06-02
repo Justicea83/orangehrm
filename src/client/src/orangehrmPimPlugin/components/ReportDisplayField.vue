@@ -27,10 +27,10 @@
   </oxd-grid-item>
 
   <oxd-grid-item>
-    <oxd-mutliselect-chips
+    <oxd-multiselect-chips
       :selected="selectedFields"
-      @chipRemoved="onRemoveSelected"
-    ></oxd-mutliselect-chips>
+      @chip-removed="onRemoveSelected"
+    ></oxd-multiselect-chips>
   </oxd-grid-item>
 
   <oxd-grid-item class="orangehrm-report-field">
@@ -39,21 +39,20 @@
     </oxd-text>
     <oxd-switch-input
       :model-value="includeHeader"
-      @update:modelValue="$emit('update:includeHeader', $event)"
+      @update:model-value="$emit('update:includeHeader', $event)"
     />
   </oxd-grid-item>
 </template>
 
 <script>
-import SwitchInput from '@ohrm/oxd/core/components/Input/SwitchInput';
-import MultiSelectChips from '@ohrm/oxd/core/components/Input/MultiSelect/MultiSelectChips';
+import {OxdSwitchInput, OxdMultiSelectChips} from '@ohrm/oxd';
 
 export default {
   name: 'ReportDisplayField',
 
   components: {
-    'oxd-switch-input': SwitchInput,
-    'oxd-mutliselect-chips': MultiSelectChips,
+    'oxd-switch-input': OxdSwitchInput,
+    'oxd-multiselect-chips': OxdMultiSelectChips,
   },
 
   props: {
@@ -74,11 +73,11 @@ export default {
   emits: ['delete', 'deleteChip', 'update:includeHeader'],
 
   setup(_, context) {
-    const onClickDelete = $event => {
+    const onClickDelete = ($event) => {
       context.emit('delete', $event);
     };
 
-    const onRemoveSelected = $event => {
+    const onRemoveSelected = ($event) => {
       context.emit('deleteChip', $event);
     };
 

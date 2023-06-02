@@ -30,7 +30,7 @@
       </oxd-text>
     </div>
     <oxd-divider />
-    <oxd-form :loading="loading" @submitValid="onSubmit">
+    <oxd-form :loading="loading" @submit-valid="onSubmit">
       <div class="orangehrm-buzz-post-modal-header">
         <profile-image :employee="employee"></profile-image>
         <div class="orangehrm-buzz-post-modal-header-text">
@@ -50,14 +50,14 @@
 </template>
 
 <script>
-import Dialog from '@ohrm/oxd/core/components/Dialog/Dialog';
 import ProfileImage from '@/orangehrmBuzzPlugin/components/ProfileImage';
+import {OxdDialog} from '@ohrm/oxd';
 
 export default {
   name: 'PostModal',
 
   components: {
-    'oxd-dialog': Dialog,
+    'oxd-dialog': OxdDialog,
     'profile-image': ProfileImage,
   },
 

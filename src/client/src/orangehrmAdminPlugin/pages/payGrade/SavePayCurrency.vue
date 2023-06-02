@@ -23,7 +23,7 @@
       {{ $t('admin.add_currency') }}
     </oxd-text>
     <oxd-divider />
-    <oxd-form :loading="isLoading" @submitValid="onSave">
+    <oxd-form :loading="isLoading" @submit-valid="onSave">
       <oxd-form-row>
         <oxd-grid :cols="2" class="orangehrm-full-width-grid">
           <oxd-grid-item>
@@ -100,7 +100,7 @@ export default {
   setup(props) {
     const http = new APIService(
       window.appGlobal.baseUrl,
-      `api/v2/admin/pay-grades/${props.payGradeId}/currencies`,
+      `/api/v2/admin/pay-grades/${props.payGradeId}/currencies`,
     );
     return {http};
   },
@@ -129,14 +129,14 @@ export default {
     this.http
       .request({
         method: 'GET',
-        url: `api/v2/admin/pay-grades/${this.payGradeId}/currencies/allowed`,
+        url: `/api/v2/admin/pay-grades/${this.payGradeId}/currencies/allowed`,
         params: {
           limit: 0,
         },
       })
-      .then(response => {
+      .then((response) => {
         const {data} = response.data;
-        this.currencies = data.map(item => {
+        this.currencies = data.map((item) => {
           return {
             id: item.id,
             label: item.id + ' - ' + item.name,

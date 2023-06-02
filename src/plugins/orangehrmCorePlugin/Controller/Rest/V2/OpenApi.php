@@ -74,17 +74,21 @@ use OpenApi\Annotations as OA;
  *     )
  * )
  * @OA\Info(
- *     title="OrangeHRM Open Source : REST API v2 docs",
- *     version="2.2.0",
+ *     title="TaskflowHR Open Source : REST API v2 docs",
+ *     version=\OrangeHRM\Config\Config::ORANGEHRM_API_VERSION,
  * )
  * @OA\Server(
- *     url="{orangehrm-url}",
+ *     url="{APP_URL}",
  *     variables={
  *         @OA\ServerVariable(
- *             serverVariable="orangehrm-url",
- *             default="https://opensource-demo.orangehrmlive.com/index.php"
+ *             serverVariable="APP_URL",
+ *             default="https://hr.taskflowhr.com/web/index.php"
  *         )
  *     }
+ * )
+ *
+ * @OA\Server(
+ *     url="http://localhost:8000/web/index.php",
  * )
  *
  * @OA\SecurityScheme(

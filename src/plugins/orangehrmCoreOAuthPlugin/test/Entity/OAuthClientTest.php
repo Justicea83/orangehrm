@@ -37,20 +37,22 @@ class OAuthClientTest extends EntityTestCase
     public function testOAuthClientEntity(): void
     {
         $oauthClient = new OAuthClient();
+        $oauthClient->setName('OAuth Client');
         $oauthClient->setClientId('TestOAuth');
         $oauthClient->setClientSecret('TestOAuthSecret');
         $oauthClient->setRedirectUri('https://facebook.com');
-        $oauthClient->setGrantTypes('password');
-        $oauthClient->setScope('user');
+        $oauthClient->setConfidential(false);
+        $oauthClient->setEnabled(true);
         $this->persist($oauthClient);
 
-        /** @var OAuthClient[] $oauthClient */
+        /** @var OAuthClient[] $oauthClientObjects */
         $oauthClientObjects = $this->getRepository(OAuthClient::class)->findBy(['clientId' => 'TestOAuth']);
         $oauthClientObj = $oauthClientObjects[0];
+        $this->assertEquals('OAuth Client', $oauthClientObj->getName());
         $this->assertEquals('TestOAuth', $oauthClientObj->getClientId());
         $this->assertEquals('TestOAuthSecret', $oauthClientObj->getClientSecret());
         $this->assertEquals('https://facebook.com', $oauthClientObj->getRedirectUri());
-        $this->assertEquals('password', $oauthClientObj->getGrantTypes());
-        $this->assertEquals('user', $oauthClientObj->getScope());
+        $this->assertFalse($oauthClientObj->isConfidential());
+        $this->assertTrue($oauthClientObj->isEnabled());
     }
 }

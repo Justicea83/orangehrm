@@ -26,7 +26,7 @@
       </oxd-text>
       <oxd-divider />
 
-      <oxd-form :loading="isLoading" @submitValid="onSave">
+      <oxd-form :loading="isLoading" @submit-valid="onSave">
         <oxd-form-row>
           <oxd-grid :cols="2" class="orangehrm-full-width-grid">
             <oxd-grid-item>
@@ -165,26 +165,29 @@ export default {
     this.isLoading = true;
     this.http
       .get(this.workShiftId)
-      .then(response => {
+      .then((response) => {
         const {data} = response.data;
         this.workShift.id = data.id;
         this.workShift.name = data.name;
         this.workShift.hoursPerDay = data.hoursPerDay;
         this.workShift.startTime = data.startTime;
         this.workShift.endTime = data.endTime;
-        this.workShift.empNumbers = data.employees.map(employee => {
+        this.workShift.empNumbers = data.employees.map((employee) => {
           return {
             id: employee.empNumber,
             label: `${employee.firstName} ${employee.middleName} ${employee.lastName}`,
             isPastEmployee: employee.terminationId ? true : false,
           };
         });
-        return this.http.getAll();
+        return this.http.getAll({limit: 0});
       })
-      .then(response => {
+      .then((response) => {
         const {data} = response.data;
-        this.rules.name.push(v => {
-          const index = data.findIndex(item => item.name == v);
+        this.rules.name.push((v) => {
+          const index = data.findIndex(
+            (item) =>
+              String(item.name).toLowerCase() == String(v).toLowerCase(),
+          );
           if (index > -1) {
             const {id} = data[index];
             return id != this.workShift.id
@@ -207,7 +210,7 @@ export default {
         hoursPerDay: this.selectedTimeDuration,
         startTime: this.workShift.startTime,
         endTime: this.workShift.endTime,
-        empNumbers: this.workShift.empNumbers.map(employee => employee.id),
+        empNumbers: this.workShift.empNumbers.map((employee) => employee.id),
       };
       this.http
         .update(this.workShiftId, payload)

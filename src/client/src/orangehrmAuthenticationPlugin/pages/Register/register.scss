@@ -1,5 +1,5 @@
-@import '@ohrm/oxd/styles/_mixins.scss';
-@import '@ohrm/oxd/core/components/Button/_variables.scss';
+//@import '@ohrm/oxd/styles/_mixins.scss';
+//@import '@ohrm/oxd/core/components/Button/_variables.scss';
 
 .orangehrm-card-container {
   box-shadow: 3px 3px 10px $oxd-interface-gray-color;
@@ -95,7 +95,6 @@
   display: flex;
   justify-content: space-between;
   margin-top: 1rem;
-  font-size: $oxd-button-font-size--medium;
   &-header {
     cursor: pointer;
     color: $oxd-primary-one-color;
@@ -106,7 +105,6 @@
   display: flex;
   justify-content: flex-end;
   margin-top: 1rem;
-  font-size: $oxd-button-font-size--medium;
   &-header {
     cursor: pointer;
     color: $oxd-primary-one-color;

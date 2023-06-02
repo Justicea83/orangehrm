@@ -76,7 +76,7 @@ export default {
   setup() {
     const http = new APIService(
       window.appGlobal.baseUrl,
-      `api/v2/core/system-check`,
+      `/api/v2/core/system-check`,
     );
     return {
       http,
@@ -98,7 +98,7 @@ export default {
       this.isLoading = true;
       this.http
         .getAll()
-        .then(response => {
+        .then((response) => {
           const {data, meta} = response.data;
           this.items = data;
           this.isInterrupted = meta.isInterrupted;

@@ -14,7 +14,6 @@
 // if not, write to the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor,
 // Boston, MA  02110-1301, USA
 
-@import '@ohrm/oxd/styles/_mixins.scss';
 
 .orangehrm-employee-container {
   display: flex;
@@ -89,7 +88,9 @@
 }
 
 ::v-deep(.--termination-button) {
-  white-space: unset !important;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
 }
 
 .orangehrm-terminate-date {

@@ -51,7 +51,9 @@
           />
           <div class="orangehrm-buzz-anniversary-durations-text">
             <oxd-text tag="p" class="orangehrm-buzz-anniversary-duration-years">
-              {{ anniversary.anniversaryYear }} <br />
+              {{ anniversary.anniversaryYear }}
+            </oxd-text>
+            <oxd-text tag="p" class="orangehrm-buzz-anniversary-duration-years">
               {{ $t('buzz.n_year', {yearsCount: anniversary.anniversaryYear}) }}
             </oxd-text>
             <oxd-text tag="p" class="orangehrm-buzz-anniversary-duration-date">
@@ -95,12 +97,12 @@ export default {
   setup() {
     const {locale} = useLocale();
     const {$tEmpName} = useEmployeeNameTranslate();
-    const celebrationPic = `${window.appGlobal.baseUrl}/../images/year_celebration.png`;
-    const noContentPic = `${window.appGlobal.baseUrl}/../images/buzz_no_anniversaries.png`;
+    const celebrationPic = `${window.appGlobal.publicPath}/images/year_celebration.png`;
+    const noContentPic = `${window.appGlobal.publicPath}/images/buzz_no_anniversaries.png`;
 
     const http = new APIService(
       window.appGlobal.baseUrl,
-      'api/v2/buzz/anniversaries',
+      '/api/v2/buzz/anniversaries',
     );
 
     return {
@@ -149,9 +151,9 @@ export default {
       this.isLoading = true;
       this.http
         .getAll({limit: this.anniversariesLimit})
-        .then(response => {
+        .then((response) => {
           const {data, meta} = response.data;
-          this.anniversaries = data.map(item => {
+          this.anniversaries = data.map((item) => {
             const {employee, jobTitle, joinedDate} = item;
             return {
               empNumber: employee.empNumber,

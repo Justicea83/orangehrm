@@ -23,7 +23,7 @@
     <div class="orangehrm-buzz-create-post-header">
       <profile-image :employee="employee"></profile-image>
       <div class="orangehrm-buzz-create-post-header-text">
-        <oxd-form @submitValid="onSubmit">
+        <oxd-form @submit-valid="onSubmit">
           <oxd-buzz-post-input
             v-model="post"
             :rules="rules"
@@ -64,13 +64,11 @@
 
 <script>
 import {ref} from 'vue';
+import {OxdBuzzPostInput, OxdGlassButton, OxdSheet} from '@ohrm/oxd';
 import useToast from '@/core/util/composable/useToast';
-import Sheet from '@ohrm/oxd/core/components/Sheet/Sheet';
 import {APIService} from '@/core/util/services/api.service';
 import {shouldNotExceedCharLength} from '@/core/util/validation/rules';
-import GlassButton from '@ohrm/oxd/core/components/Button/GlassButton';
 import ProfileImage from '@/orangehrmBuzzPlugin/components/ProfileImage';
-import BuzzPostInput from '@ohrm/oxd/core/components/Buzz/BuzzPostInput';
 import ShareVideoModal from '@/orangehrmBuzzPlugin/components/ShareVideoModal';
 import SharePhotoModal from '@/orangehrmBuzzPlugin/components/SharePhotoModal';
 
@@ -78,10 +76,10 @@ export default {
   name: 'CreatePost',
 
   components: {
-    'oxd-sheet': Sheet,
+    'oxd-sheet': OxdSheet,
     'profile-image': ProfileImage,
-    'oxd-glass-button': GlassButton,
-    'oxd-buzz-post-input': BuzzPostInput,
+    'oxd-glass-button': OxdGlassButton,
+    'oxd-buzz-post-input': OxdBuzzPostInput,
     'share-video-modal': ShareVideoModal,
     'share-photo-modal': SharePhotoModal,
   },
@@ -101,7 +99,7 @@ export default {
     const showVideoModal = ref(false);
     const showPhotoModal = ref(false);
     const rules = [shouldNotExceedCharLength(65530)];
-    const http = new APIService(window.appGlobal.baseUrl, 'api/v2/buzz/posts');
+    const http = new APIService(window.appGlobal.baseUrl, '/api/v2/buzz/posts');
 
     const onSubmit = () => {
       if (post.value === null || String(post.value).trim() === '') return;
@@ -125,7 +123,7 @@ export default {
       showVideoModal.value = true;
     };
 
-    const onCloseVideoModal = $event => {
+    const onCloseVideoModal = ($event) => {
       showVideoModal.value = false;
       if ($event) {
         saveSuccess();
@@ -133,7 +131,7 @@ export default {
       }
     };
 
-    const onClosePhotoModal = $event => {
+    const onClosePhotoModal = ($event) => {
       showPhotoModal.value = false;
       if ($event) {
         saveSuccess();

@@ -59,13 +59,13 @@
 </template>
 
 <script>
-import Dialog from '@ohrm/oxd/core/components/Dialog/Dialog';
 import {APIService} from '@ohrm/core/util/services/api.service';
+import {OxdDialog} from '@ohrm/oxd';
 
 export default {
   name: 'EntitlementUpdateModal',
   components: {
-    'oxd-dialog': Dialog,
+    'oxd-dialog': OxdDialog,
   },
   props: {
     data: {
@@ -93,7 +93,7 @@ export default {
       return this.http
         .request({
           method: 'GET',
-          url: `api/v2/leave/employees/${this.data.employee?.id}/leave-entitlements`,
+          url: `/api/v2/leave/employees/${this.data.employee?.id}/leave-entitlements`,
           params: {
             leaveTypeId: this.data.leaveType?.id,
             fromDate: this.data.leavePeriod?.startDate,
@@ -101,7 +101,7 @@ export default {
             entitlement: this.data.entitlement,
           },
         })
-        .then(response => {
+        .then((response) => {
           const {data} = response.data;
           this.current = data.entitlement?.current
             ? parseFloat(data.entitlement.current).toFixed(2)

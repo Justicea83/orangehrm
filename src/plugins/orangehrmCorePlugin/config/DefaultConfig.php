@@ -18,7 +18,7 @@ class DefaultConfig
         'leave.entitlement_consumption_algorithm' => 'FIFOEntitlementConsumptionStrategy',
         'leave.work_schedule_implementation' => 'BasicWorkSchedule',
         'themeName' => 'default',
-        self::DEFAULT_THEME_VARIABLES => '{"primaryColor":"#5A45E5","primaryFontColor":"#FFFFFF","secondaryColor":"#5039ee","secondaryFontColor":"#FFFFFF","primaryGradientStartColor":"#5A45E5","primaryGradientEndColor":"#5A45E5"}', 'login_banner' => '', 'show_social_media_icons' => '1', 'client_banner' => NULL, 'client_logo_filename' => NULL, 'client_logo_file_type' => NULL, 'client_logo_file_size' => NULL, 'client_banner_filename' => NULL, 'client_banner_file_type' => NULL,
+        self::DEFAULT_THEME_VARIABLES => '{"primaryColor":"#5A45E5","primaryFontColor":"#FFFFFF","secondaryColor":"#5039ee","secondaryFontColor":"#FFFFFF","primaryGradientStartColor":"#5A45E5","primaryGradientEndColor":"#5A45E5"}', 'login_banner' => '', 'show_social_media_icons' => '1', 'client_banner' => null, 'client_logo_filename' => null, 'client_logo_file_type' => null, 'client_logo_file_size' => null, 'client_banner_filename' => null, 'client_banner_file_type' => null,
         'leave.leavePeriodStatus' => '1',
         'leave.include_pending_leave_in_balance' => '1',
         'admin.default_workshift_start_time' => '09:00',
@@ -31,11 +31,20 @@ class DefaultConfig
         'authentication.status' => 'Enable',
         'authentication.enforce_password_strength' => 'on',
         'authentication.default_required_password_strength' => 'strong',
-        'base_url' => 'https://marketplace.orangehrm.com',
+        'base_url' => 'https://hr.taskflowhr.com',
         'email_config.sendmail_path' => '/usr/sbin/sendmail -bs',
-        'help.url' => 'https://starterhelp.orangehrm.com',
+        'help.url' => 'https://community.taskflowhr.com',
         'help.processorClass' => 'ZendeskHelpProcessor',
-        'dashboard.employees_on_leave_today.show_only_accessible' => '0'
+        'dashboard.employees_on_leave_today.show_only_accessible' => '0',
+        'auth.password_policy.min_password_length' => '8',
+        'auth.password_policy.min_uppercase_letters' => '1',
+        'auth.password_policy.min_lowercase_letters' => '1',
+        'auth.password_policy.min_numbers_in_password' => '1',
+        'auth.password_policy.min_special_characters' => '1',
+        'auth.password_policy.default_required_password_strength' => 'strong',
+        'auth.password_policy.is_spaces_allowed' => 'false',
+        'oauth.encryption_key' => 'uAJNtUuwOTZ46YgZo6cXwKrLeKDSVUmBman05wAOPVM=',
+        'oauth.token_encryption_key' => 'uAJNtUuwOTZ46YgZo6cXwKrLeKDSVUmBman05wAOPVM=',
     ];
 
     public static function getDefaultValue(string $key): ?string

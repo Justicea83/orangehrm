@@ -21,12 +21,12 @@
 <template>
   <oxd-dialog class="orangehrm-dialog-modal" @update:show="onCancel">
     <div class="orangehrm-modal-header">
-      <oxd-text type="card-title">{{
-        $t('admin.add_organization_unit')
-      }}</oxd-text>
+      <oxd-text type="card-title">
+        {{ $t('admin.add_organization_unit') }}
+      </oxd-text>
     </div>
     <oxd-divider />
-    <oxd-form :loading="isLoading" @submitValid="onSave">
+    <oxd-form :loading="isLoading" @submit-valid="onSave">
       <oxd-form-row>
         <oxd-input-field
           v-model="orgUnit.unitId"
@@ -52,7 +52,10 @@
         />
       </oxd-form-row>
       <oxd-text tag="p" class="level-label">
-        {{ $t('admin.this_unit_will_be_added_under') }} <b>{{ data?.name }}</b>
+        {{ $t('admin.this_unit_will_be_added_under') }}
+        <b>
+          {{ data?.unitId ? `${data.unitId}: ${data?.name}` : `${data?.name}` }}
+        </b>
       </oxd-text>
       <oxd-divider />
 
@@ -72,11 +75,11 @@
 
 <script>
 import {APIService} from '@/core/util/services/api.service';
-import Dialog from '@ohrm/oxd/core/components/Dialog/Dialog';
 import {
   required,
   shouldNotExceedCharLength,
 } from '@ohrm/core/util/validation/rules';
+import {OxdDialog} from '@ohrm/oxd';
 
 const orgUnitModel = {
   unitId: '',
@@ -87,7 +90,7 @@ const orgUnitModel = {
 export default {
   name: 'SaveOrgUnit',
   components: {
-    'oxd-dialog': Dialog,
+    'oxd-dialog': OxdDialog,
   },
   props: {
     data: {
@@ -99,7 +102,7 @@ export default {
   setup() {
     const http = new APIService(
       window.appGlobal.baseUrl,
-      'api/v2/admin/subunits',
+      '/api/v2/admin/subunits',
     );
     return {
       http,
@@ -120,12 +123,12 @@ export default {
     this.isLoading = true;
     this.http
       .getAll()
-      .then(response => {
+      .then((response) => {
         const {data} = response.data;
         if (data) {
-          this.rules.name.push(v => {
+          this.rules.name.push((v) => {
             const index = data.findIndex(
-              item =>
+              (item) =>
                 String(item.name).toLowerCase() == String(v).toLowerCase(),
             );
             if (index > -1) {

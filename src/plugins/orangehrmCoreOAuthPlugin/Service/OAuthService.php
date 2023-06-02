@@ -19,76 +19,53 @@
 
 namespace OrangeHRM\OAuth\Service;
 
-use OrangeHRM\Core\Exception\DaoException;
 use OrangeHRM\Entity\OAuthClient;
 use OrangeHRM\OAuth\Dao\OAuthClientDao;
 
 class OAuthService
 {
     public const PUBLIC_MOBILE_CLIENT_ID = 'orangehrm_mobile_app';
+
     /**
      * @var OAuthClientDao|null
      */
-    private ?OAuthClientDao $oAuthClientDao = null;
+    private ?OAuthClientDao $oauthClientDao = null;
 
     /**
      * @return OAuthClientDao
      */
     public function getOAuthClientDao(): OAuthClientDao
     {
-        if (!($this->oAuthClientDao instanceof OAuthClientDao)) {
-            $this->oAuthClientDao = new OAuthClientDao();
+        return $this->oauthClientDao ??= new OAuthClientDao();
+    }
+
+    /**
+     * @param bool $enabled
+     */
+    public function updateMobileClientStatus(bool $enabled): void
+    {
+        $client = $this->getOAuthClientDao()->getOAuthClientByClientId(self::PUBLIC_MOBILE_CLIENT_ID);
+        if ($client instanceof OAuthClient) {
+            $client->setEnabled($enabled);
+            $this->getOAuthClientDao()->saveOAuthClient($client);
         }
-        return $this->oAuthClientDao;
     }
 
     /**
-     * @param OAuthClientDao $oAuthClientDao
+     * @return bool
      */
-    public function setOAuthClientDao(OAuthClientDao $oAuthClientDao): void
+    public function getMobileClientStatus(): bool
     {
-        $this->oAuthClientDao = $oAuthClientDao;
+        $client = $this->getOAuthClientDao()->getOAuthClientByClientId(self::PUBLIC_MOBILE_CLIENT_ID);
+        return $client instanceof OAuthClient && $client->isEnabled();
     }
 
     /**
-     * Will return the OAuthClient doctrine object for a particular id
-     *
-     * @param string $oAuthClientId
-     * @return OAuthClient|null
-     * @throws DaoException
+     * @return int|null
      */
-    public function getOAuthClientByClientId(string $oAuthClientId): ?OAuthClient
+    public function getMobileClientId(): ?int
     {
-        return $this->getOAuthClientDao()->getOAuthClientByClientId($oAuthClientId);
-    }
-
-    /**
-     * @param array $toDeleteIds
-     * @return int
-     * @throws DaoException
-     */
-    public function deleteOAuthClients(array $toDeleteIds): int
-    {
-        return $this->getOAuthClientDao()->deleteOAuthClients($toDeleteIds);
-    }
-
-    /**
-     * @param OAuthClient $authClient
-     * @return OAuthClient
-     * @throws DaoException
-     */
-    public function saveOAuthClient(OAuthClient $authClient): OAuthClient
-    {
-        return $this->getOAuthClientDao()->saveOAuthClient($authClient);
-    }
-
-    /**
-     * Create OAuth mobile client
-     *
-     * @return OAuthClient
-     */
-    public function createMobileClient()
-    {
-        return $this->getOAuthClientDao()->createMobileClient();
+        $client = $this->getOAuthClientDao()->getOAuthClientByClientId(self::PUBLIC_MOBILE_CLIENT_ID);
+        return $client ? $client->getId() : null;
     }
 }

@@ -33,7 +33,7 @@
         :data="comm"
       ></leave-comment>
     </div>
-    <oxd-form :loading="isLoading" @submitValid="onSave">
+    <oxd-form :loading="isLoading" @submit-valid="onSave">
       <oxd-form-row>
         <oxd-input-field
           v-model="comment"
@@ -58,7 +58,7 @@
 
 <script>
 import {APIService} from '@/core/util/services/api.service';
-import Dialog from '@ohrm/oxd/core/components/Dialog/Dialog';
+import {OxdDialog} from '@ohrm/oxd';
 import {
   required,
   shouldNotExceedCharLength,
@@ -68,7 +68,7 @@ import LeaveComment from '@/orangehrmLeavePlugin/components/LeaveComment';
 export default {
   name: 'LeaveCommentModal',
   components: {
-    'oxd-dialog': Dialog,
+    'oxd-dialog': OxdDialog,
     'leave-comment': LeaveComment,
   },
   props: {
@@ -87,7 +87,7 @@ export default {
     const apiPath = props.leaveRequest ? 'leave-requests' : 'leaves';
     const http = new APIService(
       window.appGlobal.baseUrl,
-      `api/v2/leave/${apiPath}/${props.id}/leave-comments`,
+      `/api/v2/leave/${apiPath}/${props.id}/leave-comments`,
     );
     return {
       http,
@@ -107,7 +107,7 @@ export default {
     this.isLoading = true;
     this.http
       .getAll({limit: 0})
-      .then(response => {
+      .then((response) => {
         const {data} = response.data;
         this.comments = data;
       })

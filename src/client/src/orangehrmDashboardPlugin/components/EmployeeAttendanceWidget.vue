@@ -91,26 +91,24 @@ import {
 } from '@/core/util/helper/datefns';
 import {navigate} from '@/core/util/helper/navigation';
 import useLocale from '@/core/util/composable/useLocale';
-import Icon from '@ohrm/oxd/core/components/Icon/Icon.vue';
 import {APIService} from '@/core/util/services/api.service';
-import BarChart from '@ohrm/oxd/core/components/Chart/BarChart.vue';
-import {COLOR_HEAT_WAVE} from '@ohrm/oxd/core/components/Chart/types';
 import BaseWidget from '@/orangehrmDashboardPlugin/components/BaseWidget.vue';
+import {OxdBarChart, OxdIcon, CHART_COLORS} from '@ohrm/oxd';
 
 export default {
   name: 'EmployeeAttendanceWidget',
 
   components: {
-    'oxd-icon': Icon,
+    'oxd-icon': OxdIcon,
     'base-widget': BaseWidget,
-    'oxd-bar-chart': BarChart,
+    'oxd-bar-chart': OxdBarChart,
   },
 
   setup() {
     const {locale} = useLocale();
     const http = new APIService(
       window.appGlobal.baseUrl,
-      'api/v2/dashboard/employees/time-at-work',
+      '/api/v2/dashboard/employees/time-at-work',
     );
 
     return {
@@ -203,21 +201,24 @@ export default {
     fetchWidgetData() {
       this.isLoading = true;
       const currentDate = freshDate();
-      const timezoneOffset = (currentDate.getTimezoneOffset() / 60) * -1;
+      const timezoneOffset = (
+        (currentDate.getTimezoneOffset() / 60) *
+        -1
+      ).toFixed(4);
       this.http
         .getAll({
           timezoneOffset,
           currentDate: formatDate(currentDate, 'yyyy-MM-dd'),
           currentTime: formatDate(new Date(), 'HH:mm'),
         })
-        .then(response => {
+        .then((response) => {
           const {data, meta} = response.data;
-          this.dataset = data.map(item => ({
+          this.dataset = data.map((item) => ({
             value: item.totalTime.hours + item.totalTime.minutes / 60,
             label: this.$t(
               `general.${new String(item.workDay.day).toLowerCase()}`,
             ),
-            color: COLOR_HEAT_WAVE,
+            color: CHART_COLORS.COLOR_HEAT_WAVE,
           }));
 
           const {lastAction, currentDay, currentWeek, currentUser} = meta;

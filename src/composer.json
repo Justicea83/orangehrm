@@ -18,6 +18,7 @@
         "ext-simplexml": "*",
         "ext-gd": "*",
         "ext-ldap": "*",
+        "ext-openssl": "*",
         "symfony/http-foundation": "~5.4.0",
         "symfony/routing": "~5.4.0",
         "symfony/http-kernel": "~5.4.0",
@@ -42,12 +43,17 @@
         "symfony/ldap": "~5.4.0",
         "symfony/console": "~5.4.0",
         "crunzphp/crunz": "~3.4.0",
+        "bjeavons/zxcvbn-php": "~1.3.1",
+        "league/oauth2-server": "~8.3.6",
+        "psr/http-message": "~1.0.1",
+        "symfony/psr-http-message-bridge": "~2.1.4",
+        "nyholm/psr7": "~1.5.0",
         "vlucas/phpdotenv": "^5.5",
         "nesbot/carbon": "^2.66"
     },
     "require-dev": {
         "phpunit/phpunit": "^9.5",
-        "zircote/swagger-php": "^4.5"
+        "zircote/swagger-php": "~4.7.9"
     },
     "autoload": {
         "psr-4": {
@@ -77,6 +83,8 @@
             "OrangeHRM\\CorporateBranding\\": "./plugins/orangehrmCorporateBrandingPlugin",
             "OrangeHRM\\LDAP\\": "./plugins/orangehrmLDAPAuthenticationPlugin",
             "OrangeHRM\\SystemCheck\\": "./plugins/orangehrmSystemCheckPlugin",
+            "OrangeHRM\\Claim\\": "./plugins/orangehrmClaimPlugin",
+            "OrangeHRM\\Mobile\\": "./plugins/orangehrmMobilePlugin",
             "OrangeHRM\\Installer\\": "../installer",
             "OrangeHRM\\Entity\\": [
                 "./plugins/orangehrmAdminPlugin/entity",
@@ -93,7 +101,8 @@
                 "./plugins/orangehrmCorporateBrandingPlugin/entity",
                 "./plugins/orangehrmLDAPAuthenticationPlugin/entity",
                 "./plugins/orangehrmBuzzPlugin/entity",
-                "./plugins/onboardingPlugin/entity"
+                "./plugins/onboardingPlugin/entity",
+                "./plugins/orangehrmClaimPlugin/entity"
             ]
         }
     },
@@ -117,13 +126,17 @@
             "OrangeHRM\\Tests\\Dashboard\\": "./plugins/orangehrmDashboardPlugin/test",
             "OrangeHRM\\Tests\\LDAP\\": "./plugins/orangehrmLDAPAuthenticationPlugin/test",
             "OrangeHRM\\Tests\\Buzz\\": "./plugins/orangehrmBuzzPlugin/test",
-            "OrangeHRM\\Tests\\Onboarding\\": "./plugins/onboardingPlugin/test"
+            "OrangeHRM\\Tests\\Onboarding\\": "./plugins/onboardingPlugin/test",
+            "OrangeHRM\\Tests\\Help\\": "./plugins/orangehrmHelpPlugin/test",
+            "OrangeHRM\\Tests\\Claim\\": "./plugins/orangehrmClaimPlugin/test",
+            "OrangeHRM\\Tests\\Mobile\\": "./plugins/orangehrmMobilePlugin/test"
         }
     },
     "scripts": {
         "test": "cd ../ && phpunit",
         "post-autoload-dump": [
-            "php ../bin/console orm:generate-proxies"
+            "php ../bin/console orm:generate-proxies",
+            "php ../bin/console cache:clear"
         ]
     }
 }

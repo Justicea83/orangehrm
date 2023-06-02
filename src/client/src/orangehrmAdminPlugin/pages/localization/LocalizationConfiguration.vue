@@ -26,7 +26,7 @@
       </oxd-text>
       <oxd-divider />
 
-      <oxd-form :loading="isLoading" @submitValid="onSave">
+      <oxd-form :loading="isLoading" @submit-valid="onSave">
         <oxd-form-row>
           <oxd-grid :cols="2" class="orangehrm-full-width-grid">
             <oxd-grid-item>
@@ -80,7 +80,7 @@ export default {
   setup() {
     const http = new APIService(
       window.appGlobal.baseUrl,
-      'api/v2/admin/localization',
+      '/api/v2/admin/localization',
     );
     return {
       http,
@@ -100,13 +100,13 @@ export default {
     this.isLoading = true;
     this.http
       .getAll()
-      .then(response => {
+      .then((response) => {
         const {data} = response.data;
         this.configuration.language = this.languageList.find(
-          item => item.id === data.language,
+          (item) => item.id === data.language,
         );
         this.configuration.dateFormat = this.dateFormatList.find(
-          item => item.id === data.dateFormat,
+          (item) => item.id === data.dateFormat,
         );
       })
       .finally(() => (this.isLoading = false));
@@ -115,10 +115,14 @@ export default {
   methods: {
     onSave() {
       this.isLoading = true;
-      this.http.http
-        .put('api/v2/admin/localization', {
-          language: this.configuration.language?.id,
-          dateFormat: this.configuration.dateFormat?.id,
+      this.http
+        .request({
+          method: 'PUT',
+          url: '/api/v2/admin/localization',
+          data: {
+            language: this.configuration.language?.id,
+            dateFormat: this.configuration.dateFormat?.id,
+          },
         })
         .then(() => {
           return this.$toast.updateSuccess();

@@ -9,7 +9,7 @@ abstract class TenantAware implements TenantAwareInterface
     /**
      * @var int|null
      *
-     * @ORM\Column(name="org_id", type="integer",nullable=true)
+     * @ORM\Column(name="org_id", type="integer", nullable=true)
      */
     protected ?int $orgId = null;
 

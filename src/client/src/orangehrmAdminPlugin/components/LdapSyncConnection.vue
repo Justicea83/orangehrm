@@ -51,18 +51,18 @@
 <script>
 import {formatDate, parseDate} from '@/core/util/helper/datefns';
 import {APIService} from '@/core/util/services/api.service';
-import Spinner from '@ohrm/oxd/core/components/Loader/Spinner';
 import useDateFormat from '@/core/util/composable/useDateFormat';
+import {OxdSpinner} from '@ohrm/oxd';
 
 export default {
   name: 'LdapSyncConnection',
   components: {
-    'oxd-loading-spinner': Spinner,
+    'oxd-loading-spinner': OxdSpinner,
   },
   setup() {
     const http = new APIService(
       window.appGlobal.baseUrl,
-      'api/v2/admin/ldap/user-sync',
+      '/api/v2/admin/ldap/user-sync',
     );
     const {jsDateFormat} = useDateFormat();
 
@@ -111,7 +111,7 @@ export default {
       this.isLoading = true;
       this.http
         .getAll()
-        .then(response => {
+        .then((response) => {
           const {data} = response.data;
           this.lastSyncStatus = data.syncStatus;
           this.lastSyncDate =
@@ -127,7 +127,7 @@ export default {
       this.isLoading = true;
       this.http
         .create()
-        .then(response => {
+        .then((response) => {
           const {data} = response.data;
           this.lastSyncStatus = data.syncStatus;
           this.lastSyncDate =

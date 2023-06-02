@@ -50,7 +50,7 @@ export default {
     const {$t} = usei18n();
     const http = new APIService(
       window.appGlobal.baseUrl,
-      'api/v2/recruitment/vacancies',
+      '/api/v2/recruitment/vacancies',
     );
     onBeforeMount(() => {
       const params = {model: 'summary', limit: 0};
@@ -59,7 +59,7 @@ export default {
       }
       params.excludeInterviewers = props.excludeInterviewers;
       http.getAll(params).then(({data}) => {
-        options.value = data.data.map(item => {
+        options.value = data.data.map((item) => {
           return {
             id: item.id,
             label:

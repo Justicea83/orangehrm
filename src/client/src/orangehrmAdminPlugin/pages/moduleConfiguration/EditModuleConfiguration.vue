@@ -27,7 +27,7 @@
 
       <oxd-divider />
 
-      <oxd-form :loading="isLoading" @submitValid="onSave">
+      <oxd-form :loading="isLoading" @submit-valid="onSave">
         <oxd-form-row>
           <oxd-grid :cols="3" class="orangehrm-full-width-grid">
             <div class="orangehrm-module-field-row">
@@ -110,9 +110,9 @@
 </template>
 
 <script>
-import SwitchInput from '@ohrm/oxd/core/components/Input/SwitchInput';
 import {APIService} from '@/core/util/services/api.service';
 import {reloadPage} from '@/core/util/helper/navigation';
+import {OxdSwitchInput} from '@ohrm/oxd';
 
 const modulesModel = {
   admin: false,
@@ -131,12 +131,12 @@ const modulesModel = {
 
 export default {
   components: {
-    'oxd-switch-input': SwitchInput,
+    'oxd-switch-input': OxdSwitchInput,
   },
   setup() {
     const http = new APIService(
       window.appGlobal.baseUrl,
-      'api/v2/admin/modules',
+      '/api/v2/admin/modules',
     );
     return {
       http,
@@ -152,7 +152,7 @@ export default {
     this.isLoading = true;
     this.http
       .getAll()
-      .then(response => {
+      .then((response) => {
         const {data} = response.data;
         this.modules.admin = data.admin;
         this.modules.pim = data.pim;
@@ -190,7 +190,7 @@ export default {
           method: 'PUT',
           data: payload,
         })
-        .then(response => {
+        .then((response) => {
           const {data} = response.data;
           this.modules = data;
           return this.$toast.saveSuccess();
@@ -204,8 +204,6 @@ export default {
 };
 </script>
 <style lang="scss" scoped>
-@import '@ohrm/oxd/styles/_mixins.scss';
-
 .orangehrm-module-field-row {
   grid-column-start: 1;
   display: flex;

@@ -31,22 +31,20 @@
       :has-error="hasError"
       :model-value="modelValue"
       dropdown-position="left"
-      @update:modelValue="$emit('update:modelValue', $event)"
+      @update:model-value="$emit('update:modelValue', $event)"
     />
   </oxd-input-group>
 </template>
 
 <script>
 import {toRef, nextTick, computed} from 'vue';
-import useField from '@ohrm/oxd/composables/useField';
-import Label from '@ohrm/oxd/core/components/Label/Label';
-import ColorInput from '@ohrm/oxd/core/components/Input/Color/ColorInput';
+import {OxdColorInput, OxdLabel, useField} from '@ohrm/oxd';
 
 export default {
   name: 'InlineColorInput',
   components: {
-    'oxd-label': Label,
-    'oxd-color-input': ColorInput,
+    'oxd-label': OxdLabel,
+    'oxd-color-input': OxdColorInput,
   },
   inheritAttrs: false,
   props: {

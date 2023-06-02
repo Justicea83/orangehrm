@@ -114,13 +114,13 @@ export default {
   setup(props) {
     const http = new APIService(
       window.appGlobal.baseUrl,
-      `api/v2/pim/employees/${props.empNumber}/memberships`,
+      `/api/v2/pim/employees/${props.empNumber}/memberships`,
     );
     const {jsDateFormat} = useDateFormat();
     const {locale} = useLocale();
 
-    const membershipNormalizer = data => {
-      return data.map(item => {
+    const membershipNormalizer = (data) => {
+      return data.map((item) => {
         return {
           id: item.id,
           membershipId: item.membership.id,
@@ -241,17 +241,17 @@ export default {
 
   methods: {
     onClickDeleteSelected() {
-      const ids = this.checkedItems.map(index => {
+      const ids = this.checkedItems.map((index) => {
         return this.items?.data[index].id;
       });
-      this.$refs.deleteDialog.showDialog().then(confirmation => {
+      this.$refs.deleteDialog.showDialog().then((confirmation) => {
         if (confirmation === 'ok') {
           this.deleteItems(ids);
         }
       });
     },
     onClickDelete(item) {
-      this.$refs.deleteDialog.showDialog().then(confirmation => {
+      this.$refs.deleteDialog.showDialog().then((confirmation) => {
         if (confirmation === 'ok') {
           this.deleteItems([item.id]);
         }

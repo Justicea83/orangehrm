@@ -104,11 +104,11 @@ export default {
   setup(props) {
     const http = new APIService(
       window.appGlobal.baseUrl,
-      `api/v2/pim/employees/${props.empNumber}/supervisors`,
+      `/api/v2/pim/employees/${props.empNumber}/supervisors`,
     );
     const {$t} = usei18n();
-    const supervisorNormalizer = data => {
-      return data.map(item => {
+    const supervisorNormalizer = (data) => {
+      return data.map((item) => {
         return {
           name: `${item.supervisor?.firstName} ${item.supervisor?.lastName} ${
             item.supervisor.terminationId ? $t('general.past_employee') : ''
@@ -118,7 +118,7 @@ export default {
         };
       });
     };
-    const supervisorEndpoint = `api/v2/pim/employees/${props.empNumber}/supervisors/`;
+    const supervisorEndpoint = `/api/v2/pim/employees/${props.empNumber}/supervisors/`;
     const {
       showPaginator,
       currentPage,
@@ -206,17 +206,17 @@ export default {
 
   methods: {
     onClickDeleteSelected() {
-      const ids = this.checkedItems.map(index => {
+      const ids = this.checkedItems.map((index) => {
         return this.items?.data[index].supervisorEmpNumber;
       });
-      this.$refs.deleteDialog.showDialog().then(confirmation => {
+      this.$refs.deleteDialog.showDialog().then((confirmation) => {
         if (confirmation === 'ok') {
           this.deleteItems(ids);
         }
       });
     },
     onClickDelete(item) {
-      this.$refs.deleteDialog.showDialog().then(confirmation => {
+      this.$refs.deleteDialog.showDialog().then((confirmation) => {
         if (confirmation === 'ok') {
           this.deleteItems([item.supervisorEmpNumber]);
         }

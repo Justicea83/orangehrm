@@ -79,7 +79,7 @@ export default function useLeaveActions(
   const processLeaveAction = (id: number, actionType: string) => {
     return http.request({
       method: 'PUT',
-      url: `api/v2/leave/leaves/${id}`,
+      url: `/api/v2/leave/leaves/${id}`,
       data: {
         action: actionType,
       },
@@ -89,7 +89,7 @@ export default function useLeaveActions(
   const processLeaveRequestAction = (id: number, actionType: string) => {
     return http.request({
       method: 'PUT',
-      url: `api/v2/leave/employees/leave-requests/${id}`,
+      url: `/api/v2/leave/employees/leave-requests/${id}`,
       data: {
         action: actionType,
       },
@@ -99,9 +99,9 @@ export default function useLeaveActions(
   const processLeaveRequestBulkAction = (ids: number[], actionType: string) => {
     return http.request({
       method: 'PUT',
-      url: 'api/v2/leave/employees/leave-requests/bulk',
+      url: '/api/v2/leave/employees/leave-requests/bulk',
       data: {
-        data: ids.map(id => {
+        data: ids.map((id) => {
           return {
             leaveRequestId: id,
             action: actionType,

@@ -74,8 +74,8 @@ import SaveLanguage from '@/orangehrmPimPlugin/components/SaveLanguage';
 import EditLanguage from '@/orangehrmPimPlugin/components/EditLanguage';
 import DeleteConfirmationDialog from '@ohrm/components/dialogs/DeleteConfirmationDialog';
 
-const languageNormalizer = data => {
-  return data.map(item => {
+const languageNormalizer = (data) => {
+  return data.map((item) => {
     return {
       language: item.language.name,
       languageId: item.language.id,
@@ -115,10 +115,10 @@ export default {
   setup(props) {
     const http = new APIService(
       window.appGlobal.baseUrl,
-      `api/v2/pim/employees/${props.employeeId}/languages`,
+      `/api/v2/pim/employees/${props.employeeId}/languages`,
     );
 
-    const languagesEndpoint = `api/v2/pim/employees/${props.employeeId}/languages/allowed`;
+    const languagesEndpoint = `/api/v2/pim/employees/${props.employeeId}/languages/allowed`;
 
     const {
       showPaginator,
@@ -205,20 +205,20 @@ export default {
 
   methods: {
     onClickDeleteSelected() {
-      const ids = this.checkedItems.map(index => {
+      const ids = this.checkedItems.map((index) => {
         return {
           languageId: this.items?.data[index].languageId,
           fluencyId: this.items?.data[index].fluencyId,
         };
       });
-      this.$refs.deleteDialog.showDialog().then(confirmation => {
+      this.$refs.deleteDialog.showDialog().then((confirmation) => {
         if (confirmation === 'ok') {
           this.deleteItems(ids);
         }
       });
     },
     onClickDelete(item) {
-      this.$refs.deleteDialog.showDialog().then(confirmation => {
+      this.$refs.deleteDialog.showDialog().then((confirmation) => {
         if (confirmation === 'ok') {
           this.deleteItems([
             {

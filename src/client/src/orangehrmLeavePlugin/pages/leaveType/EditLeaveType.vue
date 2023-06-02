@@ -27,7 +27,7 @@
 
       <oxd-divider />
 
-      <oxd-form :loading="isLoading" @submitValid="onSave">
+      <oxd-form :loading="isLoading" @submit-valid="onSave">
         <oxd-form-row>
           <oxd-input-field
             v-model="leaveType.name"
@@ -98,8 +98,8 @@ import {
   required,
   shouldNotExceedCharLength,
 } from '@ohrm/core/util/validation/rules';
-import Label from '@ohrm/oxd/core/components/Label/Label';
 import EntitlementSituationalModal from '@/orangehrmLeavePlugin/components/EntitlementSituationalModal';
+import {OxdLabel} from '@ohrm/oxd';
 
 const leaveTypeModel = {
   id: '',
@@ -109,7 +109,7 @@ const leaveTypeModel = {
 
 export default {
   components: {
-    'oxd-label': Label,
+    'oxd-label': OxdLabel,
     'entitlement-situational-modal': EntitlementSituationalModal,
   },
   props: {
@@ -143,7 +143,7 @@ export default {
     this.isLoading = true;
     this.http
       .get(this.leaveTypeId)
-      .then(response => {
+      .then((response) => {
         const {data} = response.data;
         this.leaveType.id = data.id;
         this.leaveType.name = data.name;
@@ -152,10 +152,10 @@ export default {
         // Fetch list data for unique test
         return this.http.getAll();
       })
-      .then(response => {
+      .then((response) => {
         const {data} = response.data;
-        this.rules.name.push(v => {
-          const index = data.findIndex(item => item.name == v);
+        this.rules.name.push((v) => {
+          const index = data.findIndex((item) => item.name == v);
           if (index > -1) {
             const {id} = data[index];
             return id != this.leaveTypeId

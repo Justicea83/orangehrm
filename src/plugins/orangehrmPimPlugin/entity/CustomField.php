@@ -26,7 +26,7 @@ use OrangeHRM\ORM\Tenancy\TenantAware;
  * @ORM\Table(name="hs_hr_custom_fields")
  * @ORM\Entity
  */
-class CustomField  extends TenantAware
+class CustomField extends TenantAware
 {
     public const FIELD_TYPE_STRING = 0;
     public const FIELD_TYPE_SELECT = 1;

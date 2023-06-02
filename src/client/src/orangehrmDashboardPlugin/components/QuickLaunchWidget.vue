@@ -63,7 +63,7 @@ export default {
   setup() {
     const http = new APIService(
       window.appGlobal.baseUrl,
-      'api/v2/dashboard/shortcuts',
+      '/api/v2/dashboard/shortcuts',
     );
 
     return {
@@ -133,7 +133,7 @@ export default {
 
     this.http
       .getAll()
-      .then(response => {
+      .then((response) => {
         const {data} = response.data;
         for (const key in data) {
           if (data[key]) {

@@ -27,7 +27,7 @@
 
       <oxd-divider />
 
-      <oxd-form :loading="isLoading" @submitValid="onSave">
+      <oxd-form :loading="isLoading" @submit-valid="onSave">
         <oxd-form-row>
           <oxd-input-field
             v-model="category.name"
@@ -73,7 +73,7 @@ export default {
   setup() {
     const http = new APIService(
       window.appGlobal.baseUrl,
-      'api/v2/admin/job-categories',
+      '/api/v2/admin/job-categories',
     );
     return {
       http,
@@ -97,17 +97,20 @@ export default {
     this.isLoading = true;
     this.http
       .get(this.jobCategoryId)
-      .then(response => {
+      .then((response) => {
         const {data} = response.data;
         this.category.id = data.id;
         this.category.name = data.name;
         // Fetch list data for unique test
-        return this.http.getAll();
+        return this.http.getAll({limit: 0});
       })
-      .then(response => {
+      .then((response) => {
         const {data} = response.data;
-        this.rules.name.push(v => {
-          const index = data.findIndex(item => item.name == v);
+        this.rules.name.push((v) => {
+          const index = data.findIndex(
+            (item) =>
+              String(item.name).toLowerCase() == String(v).toLowerCase(),
+          );
           if (index > -1) {
             const {id} = data[index];
             return id != this.category.id

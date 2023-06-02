@@ -5,7 +5,7 @@ module.exports = {
   css: {
     loaderOptions: {
       sass: {
-        prependData: `@import "@/core/styles/_variables.scss";`,
+        additionalData: `@import "@/core/styles";`,
       },
     },
     extract: true,
@@ -14,18 +14,15 @@ module.exports = {
     resolve: {
       alias: {
         '@ohrm/core': '@/core',
-        '@ohrm/util': '@/core/util',
         '@ohrm/components': '@/core/components',
-        assets: '@ohrm/oxd/assets',
       },
     },
     plugins: [new DumpBuildTimestampPlugin()],
   },
-  chainWebpack: config => {
+  chainWebpack: (config) => {
     config.plugins.delete('html');
     config.plugins.delete('preload');
     config.plugins.delete('prefetch');
-    config.plugins.delete('fork-ts-checker');
   },
   publicPath: '.',
   filenameHashing: false,

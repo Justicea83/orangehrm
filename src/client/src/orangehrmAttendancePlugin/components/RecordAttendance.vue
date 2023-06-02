@@ -19,7 +19,7 @@
  -->
 
 <template>
-  <oxd-form :loading="isLoading" @submitValid="onSave">
+  <oxd-form :loading="isLoading" @submit-valid="onSave">
     <oxd-form-row>
       <oxd-grid :cols="4" class="orangehrm-full-width-grid">
         <template v-if="attendanceRecord.previousRecord">
@@ -31,7 +31,7 @@
             <oxd-input-group :label="$t('attendance.punched_in_time')">
               <oxd-text type="subtitle-2">
                 {{ previousAttendanceRecordDate }} -
-                {{ attendanceRecord.previousRecord.userTime }}
+                {{ previousAttendanceRecordTime }}
                 <oxd-text
                   tag="span"
                   class="orangehrm-attendance-punchedIn-timezone"
@@ -119,18 +119,20 @@ import {
   shouldNotExceedCharLength,
 } from '@/core/util/validation/rules';
 import {
+  parseTime,
   parseDate,
+  formatTime,
   formatDate,
   guessTimezone,
   setClockInterval,
   getStandardTimezone,
 } from '@/core/util/helper/datefns';
-import {reloadPage, navigate} from '@/core/util/helper/navigation';
-import promiseDebounce from '@ohrm/oxd/utils/promiseDebounce';
-import {APIService} from '@ohrm/core/util/services/api.service';
-import TimezoneDropdown from '@/orangehrmAttendancePlugin/components/TimezoneDropdown.vue';
-import useDateFormat from '@/core/util/composable/useDateFormat';
+import {promiseDebounce} from '@ohrm/oxd';
 import useLocale from '@/core/util/composable/useLocale';
+import {APIService} from '@ohrm/core/util/services/api.service';
+import useDateFormat from '@/core/util/composable/useDateFormat';
+import {reloadPage, navigate} from '@/core/util/helper/navigation';
+import TimezoneDropdown from '@/orangehrmAttendancePlugin/components/TimezoneDropdown.vue';
 
 const attendanceRecordModal = {
   date: null,
@@ -172,11 +174,14 @@ export default {
       ? `/api/v2/attendance/employees/${props.employeeId}/records`
       : '/api/v2/attendance/records';
     const http = new APIService(window.appGlobal.baseUrl, apiPath);
-    const {jsDateFormat, userDateFormat} = useDateFormat();
+    const {jsDateFormat, userDateFormat, timeFormat, jsTimeFormat} =
+      useDateFormat();
     const {locale} = useLocale();
     return {
       http,
       locale,
+      timeFormat,
+      jsTimeFormat,
       jsDateFormat,
       userDateFormat,
     };
@@ -204,6 +209,16 @@ export default {
         parseDate(this.attendanceRecord.previousRecord.userDate),
         this.jsDateFormat,
         {locale: this.locale},
+      );
+    },
+    previousAttendanceRecordTime() {
+      if (!this.attendanceRecord?.previousRecord) return null;
+      return formatTime(
+        parseTime(
+          this.attendanceRecord.previousRecord.userTime,
+          this.timeFormat,
+        ),
+        this.jsTimeFormat,
       );
     },
   },
@@ -236,7 +251,7 @@ export default {
           : null;
       })
 
-      .then(response => {
+      .then((response) => {
         if (response) {
           const {data} = response.data;
           this.attendanceRecord.previousRecord = data.punchIn;
@@ -285,7 +300,7 @@ export default {
       return new Promise((resolve, reject) => {
         this.http
           .request({method: 'GET', url: '/api/v2/attendance/current-datetime'})
-          .then(res => {
+          .then((res) => {
             const {utcDate, utcTime} = res.data.data;
             const currentDate = parseDate(
               `${utcDate} ${utcTime} +00:00`,
@@ -296,7 +311,7 @@ export default {
             this.attendanceRecord.time = formatDate(currentDate, 'HH:mm');
             resolve();
           })
-          .catch(error => reject(error));
+          .catch((error) => reject(error));
       });
     },
     validateDate() {
@@ -307,7 +322,7 @@ export default {
         return true;
       }
       const tzOffset = (new Date().getTimezoneOffset() / 60) * -1;
-      return new Promise(resolve => {
+      return new Promise((resolve) => {
         this.http
           .request({
             method: 'GET',
@@ -322,11 +337,11 @@ export default {
               empNumber: this.employeeId,
             },
             // Prevent triggering response interceptor on 400
-            validateStatus: status => {
+            validateStatus: (status) => {
               return (status >= 200 && status < 300) || status == 400;
             },
           })
-          .then(res => {
+          .then((res) => {
             const {data, error} = res.data;
             if (error) {
               return resolve(error.message);

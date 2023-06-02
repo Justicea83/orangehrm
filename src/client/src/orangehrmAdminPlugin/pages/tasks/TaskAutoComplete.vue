@@ -34,14 +34,14 @@ export default {
   },
   methods: {
     async loadTasks(searchParams) {
-      return new Promise(resolve => {
+      return new Promise((resolve) => {
         if (searchParams.trim()) {
           this.http
             .getAll({
               title: searchParams.trim(),
             })
             .then(({data}) => {
-              const formattedData = data.data.map(task => {
+              const formattedData = data.data.map((task) => {
                 return {
                   id: task.id,
                   label: task.title,

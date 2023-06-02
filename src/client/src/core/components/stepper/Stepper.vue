@@ -32,7 +32,7 @@ export default {
     startIndex: {
       type: Number,
       default: 0,
-      validator: value => value >= 0,
+      validator: (value) => value >= 0,
     },
     tabs: {
       type: Array,
@@ -64,7 +64,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import '@ohrm/oxd/styles/_variables.scss';
+@import '@ohrm/oxd/variables.scss';
 
 ::v-deep(.form-wizard-vue) {
   .fw-step-active {

@@ -1,9 +1,7 @@
 <template>
   <div class="orangehrm-background-container">
     <div class="orangehrm-card-container">
-      <oxd-text tag="h6" class="orangehrm-main-title">
-        Edit Task
-      </oxd-text>
+      <oxd-text tag="h6" class="orangehrm-main-title"> Edit Task </oxd-text>
 
       <oxd-divider />
 
@@ -121,7 +119,7 @@ export default {
     this.isLoading = true;
     this.http
       .get(this.taskId)
-      .then(response => {
+      .then((response) => {
         const {data} = response.data;
         this.task.title = data.title;
         this.task.notes = data.notes;
@@ -134,10 +132,10 @@ export default {
         // Fetch list data for unique test
         return this.http.getAll({limit: 0});
       })
-      .then(response => {
+      .then((response) => {
         const {data} = response.data;
-        this.rules.title.push(v => {
-          const index = data.findIndex(item => item.title === v);
+        this.rules.title.push((v) => {
+          const index = data.findIndex((item) => item.title === v);
           if (index > -1) {
             const {id} = data[index];
             return id !== this.taskId

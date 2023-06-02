@@ -117,10 +117,10 @@ export default {
   setup(props) {
     const {$t} = usei18n();
 
-    const dataNormalizer = data => {
-      return data.map(item => {
+    const dataNormalizer = (data) => {
+      return data.map((item) => {
         const selectable = props.unSelectableTaskIds.findIndex(
-          id => id === item.id,
+          (id) => id === item.id,
         );
         return {
           ...item,
@@ -261,7 +261,7 @@ export default {
       }
     },
     onClickDelete(item) {
-      this.$refs.deleteDialog.showDialog().then(confirmation => {
+      this.$refs.deleteDialog.showDialog().then((confirmation) => {
         if (confirmation === 'ok') {
           this.deleteItems([item.id]);
         }
@@ -272,10 +272,10 @@ export default {
     },
     onClickDeleteSelected() {
       const ids = [];
-      this.checkedItems.forEach(index => {
+      this.checkedItems.forEach((index) => {
         ids.push(this.items?.data[index].id);
       });
-      this.$refs.deleteDialog.showDialog().then(confirmation => {
+      this.$refs.deleteDialog.showDialog().then((confirmation) => {
         if (confirmation === 'ok') {
           this.deleteItems(ids);
         }

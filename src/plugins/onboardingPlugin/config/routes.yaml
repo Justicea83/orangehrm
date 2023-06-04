@@ -1,13 +1,3 @@
-onboarding_index:
-  path: /onboarding/viewOnboarding
-  controller: OrangeHRM\Onboarding\Controller\OnboardingController::handle
-  methods: [ GET ]
-
-onboarding_create:
-  path: /onboarding/createOnboarding
-  controller: OrangeHRM\Onboarding\Controller\CreateOnboardingController::handle
-  methods: [ GET ]
-
 apiv2_onboarding_task:
   path: /api/v2/onboarding/tasks/{id}
   controller: OrangeHRM\Core\Controller\Rest\V2\GenericRestController::handle
@@ -21,3 +11,17 @@ apiv2_onboarding_tasks:
   methods: [ GET, POST, DELETE ]
   defaults:
     _api: OrangeHRM\Onboarding\Api\TaskAPI
+
+##########################
+#        Screens
+##########################
+
+onboarding_index:
+  path: /onboarding/viewOnboarding
+  controller: OrangeHRM\Onboarding\Controller\OnboardingController::handle
+  methods: [ GET ]
+
+onboarding_create:
+  path: /onboarding/createOnboarding
+  controller: OrangeHRM\Onboarding\Controller\CreateOnboardingController::handle
+  methods: [ GET ]

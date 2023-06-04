@@ -20,7 +20,6 @@
 </template>
 
 <script>
-import 'form-wizard-vue3/dist/form-wizard-vue3.css';
 import Wizard from 'form-wizard-vue3';
 
 export default {
@@ -64,6 +63,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+@import 'form-wizard-vue3/dist/form-wizard-vue3.css';
 @import '@ohrm/oxd/variables.scss';
 
 ::v-deep(.form-wizard-vue) {

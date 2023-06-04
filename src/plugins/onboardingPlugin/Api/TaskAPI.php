@@ -78,6 +78,15 @@ class TaskAPI extends Endpoint implements CrudEndpoint
             self::FILTER_TASK_TITLE
         );
 
+        $type = $this->getRequestParams()->getStringOrNull(
+            RequestParams::PARAM_TYPE_QUERY,
+            self::FILTER_TASK_TYPE
+        );
+
+        if(!is_null($type)){
+            $filterParams->setType($type);
+        }
+
         if (!is_null($title)) {
             $filterParams->setTitle($title);
         }

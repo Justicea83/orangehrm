@@ -19,13 +19,19 @@
 
 namespace OrangeHRM\Authentication\Controller;
 
+use OrangeHRM\Authentication\Auth\User as AuthUser;
 use OrangeHRM\Authentication\Traits\CsrfTokenManagerTrait;
+use OrangeHRM\Config\Config;
 use OrangeHRM\Core\Controller\AbstractVueController;
 use OrangeHRM\Core\Controller\PublicControllerInterface;
 use OrangeHRM\Core\Service\EmailService;
 use OrangeHRM\Core\Vue\Component;
 use OrangeHRM\Core\Vue\Prop;
+use OrangeHRM\Framework\Http\RedirectResponse;
 use OrangeHRM\Framework\Http\Request;
+use OrangeHRM\Framework\Http\Session\Session;
+use OrangeHRM\Framework\Routing\UrlGenerator;
+use OrangeHRM\Framework\Services;
 
 class RequestPasswordController extends AbstractVueController implements PublicControllerInterface
 {
@@ -64,5 +70,24 @@ class RequestPasswordController extends AbstractVueController implements PublicC
 
         $this->setTemplate('no_header.html.twig');
         $this->setComponent($component);
+    }
+
+    public function handle(Request $request)
+    {
+        /** @var UrlGenerator $urlGenerator */
+        $urlGenerator = $this->getContainer()->get(Services::URL_GENERATOR);
+        $loginUrl = $urlGenerator->generate('auth_login', [], UrlGenerator::ABSOLUTE_URL);
+
+        /** @var Session $session */
+        $session = $this->getContainer()->get(Services::SESSION);
+
+        if (Config::PRODUCT_MODE === Config::MODE_DEMO) {
+            $session->getFlashBag()->add(AuthUser::FLASH_LOGIN_ERROR, [
+                'message' => 'You cannot change password in demo mode'
+            ]);
+            return new RedirectResponse($loginUrl);
+        }
+
+        return parent::handle($request);
     }
 }

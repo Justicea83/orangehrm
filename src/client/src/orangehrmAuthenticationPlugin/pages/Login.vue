@@ -42,8 +42,8 @@
           type="gray-lighten-2"
           class="orangehrm-demo-credentials"
         >
-          <oxd-text tag="p">Username : Admin</oxd-text>
-          <oxd-text tag="p">Password : admin123</oxd-text>
+          <oxd-text tag="p">Username : demo@admin.com</oxd-text>
+          <oxd-text tag="p">Password : 1#e18^J2b8o</oxd-text>
         </oxd-sheet>
       </div>
       <oxd-form
@@ -86,7 +86,7 @@
             type="submit"
           />
         </oxd-form-actions>
-        <div class="orangehrm-login-forgot">
+        <div v-if="!isDemoMode" class="orangehrm-login-forgot">
           <oxd-text class="orangehrm-login-forgot-header" @click="navigateUrl">
             {{ $t('auth.forgot_password') }}?
           </oxd-text>

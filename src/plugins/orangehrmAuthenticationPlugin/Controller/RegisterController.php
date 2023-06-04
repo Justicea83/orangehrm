@@ -16,6 +16,9 @@ use OrangeHRM\CorporateBranding\Traits\ThemeServiceTrait;
 use OrangeHRM\Framework\Http\RedirectResponse;
 use OrangeHRM\Framework\Http\Request;
 use OrangeHRM\Framework\Http\Response;
+use OrangeHRM\Framework\Http\Session\Session;
+use OrangeHRM\Framework\Routing\UrlGenerator;
+use OrangeHRM\Framework\Services;
 use OrangeHRM\Installer\Util\InstanceCreationHelper;
 
 class RegisterController extends AbstractVueController implements PublicControllerInterface
@@ -99,6 +102,20 @@ class RegisterController extends AbstractVueController implements PublicControll
             $homePagePath = $this->getHomePageService()->getHomePagePath();
             return $this->redirect($homePagePath);
         }
+        /** @var UrlGenerator $urlGenerator */
+        $urlGenerator = $this->getContainer()->get(Services::URL_GENERATOR);
+        $loginUrl = $urlGenerator->generate('auth_login', [], UrlGenerator::ABSOLUTE_URL);
+
+        /** @var Session $session */
+        $session = $this->getContainer()->get(Services::SESSION);
+
+        if (Config::PRODUCT_MODE === Config::MODE_DEMO) {
+            $session->getFlashBag()->add(AuthUser::FLASH_LOGIN_ERROR, [
+                'message' => 'You cannot create an account in demo mode'
+            ]);
+            return new RedirectResponse($loginUrl);
+        }
+
         return parent::handle($request);
     }
 }

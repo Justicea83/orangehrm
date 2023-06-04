@@ -1,0 +1,73 @@
+version: "3.7"
+services:
+  nginx:
+    build:
+      context: "./docker/server/nginx"
+    ports:
+      - "${NGINX_PORT}:80"
+      - "${NGINX_SSL_PORT}:443"
+    volumes:
+      - ${LOCAL_SRC}:${REMOTE_SRC}
+    networks:
+      - sail
+    restart: always
+    container_name: os_nginx
+
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin
+    restart: always
+    ports:
+      - "8078:80"
+    environment:
+      #- PMA_ARBITRARY=1
+      - PMA_HOST=mariadb
+    networks:
+      - sail
+    container_name: phpmyadmin
+
+  mariadb:
+    image: 'mysql/mysql-server:8.0'
+    ports:
+      - "${FORWARD_DB_PORT:-3307}:3306"
+    environment:
+      MYSQL_ROOT_PASSWORD: '${DB_PASSWORD}'
+      MYSQL_ROOT_HOST: '%'
+      MYSQL_DATABASE: '${DB_DATABASE}'
+      MYSQL_PASSWORD: '${DB_PASSWORD}'
+      MYSQL_ALLOW_EMPTY_PASSWORD: 1
+    command:
+      --sql_mode=STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION
+    volumes:
+      - mariadb-data:/var/lib/mysql/
+    mem_swappiness: 1
+    networks:
+      - sail
+      - shared
+    restart: always
+    container_name: mariadb_10
+
+  php-8.2:
+    build:
+      context: "./docker/php/php82"
+    working_dir: ${REMOTE_SRC}
+    environment:
+      HIST_FILE: /root/.bash_history
+    volumes:
+      - ${LOCAL_SRC}:${REMOTE_SRC}
+      - $HOME/.bash_history:/root/.bash_history
+    depends_on:
+      - nginx
+    networks:
+      - sail
+    restart: always
+    container_name: os_dev_php82
+
+networks:
+  sail:
+    driver: bridge
+  shared:
+    driver: bridge
+volumes:
+  sail-mysql:
+    driver: local
+  mariadb-data:

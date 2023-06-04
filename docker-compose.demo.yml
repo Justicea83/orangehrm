@@ -11,7 +11,7 @@ services:
     networks:
       - sail
     restart: always
-    container_name: os_nginx
+    container_name: demo_os_nginx
 
   phpmyadmin:
     image: phpmyadmin/phpmyadmin
@@ -23,9 +23,9 @@ services:
       - PMA_HOST=mariadb
     networks:
       - sail
-    container_name: phpmyadmin
+    container_name: demo_phpmyadmin
 
-  mariadb:
+  demo_db:
     image: 'mysql/mysql-server:8.0'
     ports:
       - "${FORWARD_DB_PORT:-3307}:3306"
@@ -44,7 +44,7 @@ services:
       - sail
       - shared
     restart: always
-    container_name: mariadb_10
+    container_name: demo_db
 
   php-8.2:
     build:
@@ -60,7 +60,7 @@ services:
     networks:
       - sail
     restart: always
-    container_name: os_dev_php82
+    container_name: demo_os_dev_php82
 
 networks:
   sail:

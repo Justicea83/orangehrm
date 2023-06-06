@@ -21,6 +21,7 @@
 
 <script>
 import Wizard from 'form-wizard-vue3';
+import './form-wizard-vue3.scss';
 
 export default {
   name: 'Stepper',
@@ -63,8 +64,13 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import 'form-wizard-vue3/dist/form-wizard-vue3.css';
 @import '@ohrm/oxd/variables.scss';
+
+* {
+  margin: 0;
+  box-sizing: border-box;
+  padding: 0;
+}
 
 ::v-deep(.form-wizard-vue) {
   .fw-step-active {

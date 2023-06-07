@@ -3,13 +3,22 @@
     <div class="orangehrm-background-container">
       <div class="orangehrm-card-container">
         <oxd-text tag="h6" class="orangehrm-main-title">
-          Create an ELP Event
+          Create a boarding event
         </oxd-text>
 
         <oxd-divider />
 
-        <oxd-form :loading="isLoading" @submitValid="onCreateOnboarding">
-          <stepper :tabs="tabs" @completed="complete">
+        <oxd-form
+          ref="form"
+          :loading="isLoading"
+          @submitValid="onCreateOnboarding"
+        >
+          <stepper
+            :tabs="tabs"
+            @before-mount="beforeMount"
+            @after-change="beforeChange"
+            @completed="complete"
+          >
             <template #0>
               <onboarding-details
                 :rules="rules.onboardingDetails"
@@ -17,7 +26,11 @@
               />
             </template>
             <template #1>
-              <onboarding-tasks :activity="activity" />
+              <onboarding-tasks
+                :activity="activity"
+                :type="activityType"
+                :data="tasksData"
+              />
             </template>
           </stepper>
         </oxd-form>
@@ -47,6 +60,7 @@ const initialActivity = {
 };
 
 import Stepper from '@/core/components/stepper/Stepper';
+import {APIService} from '@/core/util/services/api.service';
 
 export default {
   name: 'CreateOnboarding',
@@ -55,10 +69,21 @@ export default {
     OnboardingDetails,
     OnboardingTasks,
   },
+  setup() {
+    const http = new APIService(
+      window.appGlobal.baseUrl,
+      '/api/v2/onboarding/tasks',
+    );
+    return {
+      http,
+    };
+  },
   data() {
     return {
       isLoading: false,
       activity: {...initialActivity},
+      fetchedTasks: {},
+      tasksData: {},
       rules: {
         onboardingDetails: {
           employee: [required],
@@ -93,8 +118,7 @@ export default {
               ),
             ),
           ],
-          tasks: [required],
-          notes: [required],
+          type: [required],
         },
       },
       tabs: [
@@ -109,8 +133,10 @@ export default {
       ],
     };
   },
-  mounted() {
-    console.log('called from here');
+  computed: {
+    activityType() {
+      return this.activity.type;
+    },
   },
   methods: {
     complete() {
@@ -118,6 +144,42 @@ export default {
     },
     onCreateOnboarding() {
       console.log('subbb');
+    },
+    beforeChange({index, ref}) {
+      const {validate} = this.$refs.form;
+      if (index > 0) {
+        validate();
+      }
+      // TODO uncomment after testing
+      /*setTimeout(() => {
+        if (index >= 0 && this.$refs.form.isFromInvalid) {
+          ref.changeTab(index - 1);
+        }
+      }, 10);*/
+    },
+    beforeMount(index) {
+      if (index === 1) {
+        const activityId = this.activityType?.id;
+        if (activityId === null) {
+          return;
+        }
+
+        if (this.fetchedTasks[activityId]) {
+          this.tasksData = this.fetchedTasks[activityId];
+          return;
+        }
+
+        this.http
+          .request({
+            params: {
+              taskType: this.activityType?.id,
+            },
+          })
+          .then(({data}) => {
+            this.fetchedTasks[activityId] = data;
+            this.tasksData = data;
+          });
+      }
     },
   },
 };

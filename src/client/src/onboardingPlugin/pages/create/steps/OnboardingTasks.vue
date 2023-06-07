@@ -77,6 +77,10 @@
 </template>
 
 <script>
+export const defaultTaskFilters = {
+  taskType: '',
+};
+
 import {APIService} from '@/core/util/services/api.service';
 import {EllipsisHorizontalIcon} from '@heroicons/vue/24/solid';
 import Draggable from 'vuedraggable';
@@ -92,6 +96,16 @@ export default {
     Draggable,
     DropdownMenu,
     TaskListItem,
+  },
+  props: {
+    type: {
+      type: Object,
+      default: null,
+    },
+    data: {
+      type: Object,
+      default: null,
+    },
   },
   setup() {
     const http = new APIService(
@@ -114,15 +128,12 @@ export default {
       ],
     };
   },
-  mounted() {
-    if (localStorage.getItem('tasks')) {
-      this.tasks = JSON.parse(localStorage.getItem('tasks'));
-      console.log(this.tasks);
-    } else {
-      this.http.getAll().then(({data}) => {
-        localStorage.setItem('tasks', JSON.stringify(data.data));
-      });
-    }
+  watch: {
+    data(newData) {
+      console.log('[newData]', newData);
+      const {data} = newData;
+      this.tasks = data;
+    },
   },
   methods: {
     elpTasksMenuItemClicked({title}) {

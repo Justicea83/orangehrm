@@ -1,13 +1,15 @@
 <template>
   <div class="wizard-wrapper">
     <wizard
+      ref="wizard"
       :start-index="startIndex"
       :custom-tabs="tabs"
+      :before-mount="beforeMount"
       @change="stepChanged"
       @complete:wizard="completed"
     >
       <div
-        v-for="(key, index) in tabs.length"
+        v-for="(_, index) in tabs.length"
         :key="index"
         class="stepper-content"
       >
@@ -34,6 +36,10 @@ export default {
       default: 0,
       validator: (value) => value >= 0,
     },
+    formRef: {
+      type: Object,
+      default: null,
+    },
     tabs: {
       type: Array,
       default: Array.from([
@@ -46,18 +52,26 @@ export default {
       ]),
     },
   },
-  emits: ['completed'],
+  emits: ['completed', 'beforeChange', 'afterChange', 'beforeMount'],
   data() {
     return {
-      currentStep: 1,
+      currentStep: 0,
+      nextButton: {
+        disabled: true,
+      },
     };
   },
   methods: {
     stepChanged(index) {
+      this.$emit('beforeChange', {index, ref: this.$refs.wizard});
       this.currentStep = index;
+      this.$emit('afterChange', {index, ref: this.$refs.wizard});
     },
     completed() {
       this.$emit('completed');
+    },
+    beforeMount() {
+      this.$emit('beforeMount', this.currentStep);
     },
   },
 };

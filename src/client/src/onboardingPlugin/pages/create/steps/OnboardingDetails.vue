@@ -6,14 +6,16 @@
           <employee-autocomplete
             v-model="activityModel.employee"
             label="Employee"
+            name="employee"
             required
             :rules="rules.employee"
           />
         </oxd-grid-item>
         <oxd-grid-item>
-          <supervisor-auto-complete
+          <employee-autocomplete
             v-model="activityModel.supervisor"
             label="Supervisor"
+            name="supervisor"
             required
             :rules="rules.supervisor"
           />
@@ -22,6 +24,7 @@
           <onboarding-type-dropdown
             v-model="activityModel.type"
             required
+            name="type"
             label="Type"
             :rules="rules.type"
           />
@@ -35,6 +38,7 @@
           <date-input
             v-model="activityModel.startDate"
             label="Start Date"
+            name="startDate"
             :rules="rules.startDate"
             required
           />
@@ -43,6 +47,7 @@
           <date-input
             v-model="activityModel.endDate"
             label="End Date"
+            name="endDate"
             :rules="rules.endDate"
             required
           />
@@ -51,6 +56,7 @@
           <date-input
             v-model="activityModel.dueDate"
             label="Due Date"
+            name="dueDate"
             :rules="rules.dueDate"
             required
           />
@@ -60,7 +66,9 @@
 
     <oxd-form-row>
       <oxd-input-field
+        v-model="activityModel.notes"
         type="textarea"
+        name="notes"
         :label="$t('general.note')"
         :placeholder="$t('general.add_note')"
         label-icon="pencil-square"
@@ -83,14 +91,12 @@
 <script>
 import OnboardingTypeDropdown from '@/orangehrmPimPlugin/components/OnboardingTypeDropdown';
 import EmployeeAutocomplete from '@/core/components/inputs/EmployeeAutocomplete';
-import SupervisorAutoComplete from '@/orangehrmPerformancePlugin/components/SupervisorAutoComplete';
 
 export default {
   name: 'OnboardingDetails',
   components: {
     OnboardingTypeDropdown,
     EmployeeAutocomplete,
-    SupervisorAutoComplete,
   },
   props: {
     activity: {

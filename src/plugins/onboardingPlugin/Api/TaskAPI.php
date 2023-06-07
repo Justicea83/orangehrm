@@ -114,7 +114,11 @@ class TaskAPI extends Endpoint implements CrudEndpoint
         return new EndpointCollectionResult(
             $this->getModelClass(),
             $tasks,
-            new ParameterBag([CommonParams::PARAMETER_TOTAL => $count])
+            new ParameterBag([
+                CommonParams::PARAMETER_TOTAL => $count,
+                CommonParams::PARAMETER_LIMIT => $filterParams->getLimit(),
+                CommonParams::PARAMETER_OFFSET => $filterParams->getOffset()
+            ])
         );
     }
 

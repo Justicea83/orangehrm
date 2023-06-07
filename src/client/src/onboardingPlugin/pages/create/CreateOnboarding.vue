@@ -30,6 +30,7 @@
                 :activity="activity"
                 :type="activityType"
                 :data="tasksData"
+                @tasks-changed="tasksChanged"
               />
             </template>
           </stepper>
@@ -139,6 +140,9 @@ export default {
     },
   },
   methods: {
+    tasksChanged(tasks) {
+      console.log(tasks);
+    },
     complete() {
       console.log('done');
     },

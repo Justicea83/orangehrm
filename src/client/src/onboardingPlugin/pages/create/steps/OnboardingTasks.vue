@@ -9,7 +9,7 @@
 
             <dropdown-menu
               :menu-items="dropdownMenuItems"
-              @menuItemClicked="tasksMenuItemClicked"
+              @menu-item-clicked="tasksMenuItemClicked"
             >
               <template #icon>
                 <button type="button" class="gray-background">
@@ -20,7 +20,12 @@
           </div>
 
           <!--    Board Tasks      -->
-          <div class="board-group-body">
+          <div
+            v-infinite-scroll="loadMoreTasks"
+            class="board-group-body"
+            infinite-scroll-distance="10"
+            :infinite-scroll-disabled="loadMore"
+          >
             <draggable
               v-model="tasks"
               item-key="id"
@@ -41,10 +46,10 @@
         <div class="flex flex-col w-full">
           <!--    header      -->
           <div class="board-group-header">
-            <h4>ELP Tasks</h4>
+            <h4>Boarding Tasks</h4>
             <dropdown-menu
               :menu-items="dropdownMenuItems"
-              @menuItemClicked="elpTasksMenuItemClicked"
+              @menu-item-clicked="elpTasksMenuItemClicked"
             >
               <template #icon>
                 <button type="button" class="gray-background">
@@ -57,16 +62,20 @@
           <!--    Board Tasks      -->
           <div class="board-group-body">
             <draggable
-              v-model="elpTasks"
+              v-model="elpTasks[type?.id]"
               group="tasks"
               tag="ul"
               item-key="id"
               class="empty-drag-container"
               drag-class="drag"
               ghost-class="ghost"
+              @change="boardingTasksChanged"
             >
               <template #item="{element}">
-                <task-list-item :task="element" />
+                <task-list-item
+                  :task="element"
+                  @task-detail-changed="emitTasksChanged"
+                />
               </template>
             </draggable>
           </div>
@@ -77,20 +86,18 @@
 </template>
 
 <script>
-export const defaultTaskFilters = {
-  taskType: '',
-};
-
 import {APIService} from '@/core/util/services/api.service';
 import {EllipsisHorizontalIcon} from '@heroicons/vue/24/solid';
 import Draggable from 'vuedraggable';
 import DropdownMenu from '@/core/components/dropdown/DropdownMenu';
 import TaskListItem from '@/onboardingPlugin/pages/create/components/task-list-item/TaskListItem';
+import infiniteScroll from 'vue3-infinite-scroll-good';
 
 const MENU_ITEM_MOVE_ALL = 'Move all';
 
 export default {
   name: 'OnboardingTasks',
+  directives: {infiniteScroll},
   components: {
     EllipsisHorizontalIcon,
     Draggable,
@@ -107,6 +114,7 @@ export default {
       default: null,
     },
   },
+  emits: ['tasksChanged'],
   setup() {
     const http = new APIService(
       window.appGlobal.baseUrl,
@@ -119,7 +127,13 @@ export default {
   data() {
     return {
       tasks: [],
-      elpTasks: [],
+      meta: {},
+      elpTasks: {
+        0: [],
+        1: [],
+      },
+      loadMore: false,
+      hasMoreTasks: true,
       menuItems: ['Reset', 'Move All'],
       dropdownMenuItems: [
         {
@@ -130,25 +144,82 @@ export default {
   },
   watch: {
     data(newData) {
-      console.log('[newData]', newData);
-      const {data} = newData;
-      this.tasks = data;
+      const elpTasksIds = this.elpTasks[this.type?.id].map(
+        (elpTask) => elpTask.id,
+      );
+      const {data, meta} = newData;
+      this.meta = meta;
+      this.hasMoreTasks = true;
+
+      if (elpTasksIds.length > 0) {
+        this.tasks = [...data].filter((task) => !elpTasksIds.includes(task.id));
+      } else {
+        this.tasks = [...data];
+      }
     },
   },
   methods: {
+    loadMoreTasks() {
+      this.hasMoreTasks =
+        this.meta.total >
+        this.tasks?.length + this.elpTasks[this.type?.id].length;
+      console.log('[this.meta.total]', this.meta.total);
+      console.log('[this.tasks.length]', this.tasks.length);
+      console.log(
+        '[this.elpTasks[this.type?.id]?.length]',
+        this.elpTasks[this.type?.id]?.length,
+      );
+      console.log(
+        '[this.tasks.length + this.elpTasks.length]',
+        this.tasks.length + this.elpTasks[this.type?.id]?.length,
+      );
+      if (this.type && this.hasMoreTasks) {
+        this.http
+          .request({
+            params: {
+              taskType: this.type?.id,
+              offset: this.tasks.length + this.elpTasks[this.type?.id]?.length,
+            },
+          })
+          .then(({data}) => {
+            const {data: tasks, meta} = data;
+
+            const elpTasksIds = this.elpTasks[this.type?.id].map(
+              (elpTask) => elpTask.id,
+            );
+
+            this.tasks = [
+              ...this.tasks,
+              ...tasks.filter((task) => !elpTasksIds.includes(task.id)),
+            ];
+            this.meta = meta;
+          });
+      }
+    },
+    emitTasksChanged() {
+      this.$emit('tasksChanged', this.elpTasks[this.type?.id]);
+    },
+    boardingTasksChanged() {
+      this.emitTasksChanged();
+    },
     elpTasksMenuItemClicked({title}) {
       switch (title) {
         case MENU_ITEM_MOVE_ALL: {
-          this.tasks = [...this.elpTasks];
-          this.elpTasks = [];
+          this.tasks = [...this.tasks, ...this.elpTasks[this.type?.id]];
+          this.elpTasks[this.type?.id] = [];
         }
       }
     },
     tasksMenuItemClicked({title}) {
       switch (title) {
         case MENU_ITEM_MOVE_ALL: {
-          this.elpTasks = [...this.tasks];
+          this.elpTasks[this.type?.id] = [
+            ...this.elpTasks[this.type?.id],
+            ...this.tasks,
+          ];
           this.tasks = [];
+
+          this.emitTasksChanged();
         }
       }
     },

@@ -68,6 +68,7 @@ export default {
       required: true,
     },
   },
+  emits: ['taskDetailChanged'],
   data() {
     return {
       dueDate: null,
@@ -92,13 +93,21 @@ export default {
         this.$emit('update:prop', value);
       },
     },
+    taskDueDate() {
+      return this.task.dueDate;
+    },
+  },
+  watch: {
+    taskDueDate() {
+      this.$emit('taskDetailChanged');
+    },
   },
   methods: {
     listItemClick() {
       this.$refs.appDialog.showDialog();
     },
     onDialogSubmit() {
-      console.log(this.dueDate);
+      this.$emit('taskDetailChanged');
     },
   },
 };

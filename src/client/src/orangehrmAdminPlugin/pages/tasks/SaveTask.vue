@@ -26,14 +26,6 @@
         </oxd-form-row>
 
         <oxd-form-row>
-          <jobtitle-dropdown
-            v-model="task.jobTitleId"
-            :rules="rules.jobTitleId"
-            required
-          />
-        </oxd-form-row>
-
-        <oxd-form-row>
           <oxd-input-field
             v-model="task.notes"
             type="textarea"
@@ -80,7 +72,6 @@ const initialTask = {
 export default {
   name: 'SaveTask',
   components: {
-    'jobtitle-dropdown': JobtitleDropdown,
     OnboardingTypeDropdown,
   },
   props: {
@@ -110,7 +101,6 @@ export default {
       task: {...initialTask},
       rules: {
         title: [required, shouldNotExceedCharLength(100)],
-        jobTitleId: [required],
         type: [required],
         notes: [shouldNotExceedCharLength(1000)],
       },

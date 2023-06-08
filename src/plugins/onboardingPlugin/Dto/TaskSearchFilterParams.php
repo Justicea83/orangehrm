@@ -9,12 +9,10 @@ class TaskSearchFilterParams extends FilterParams
     public const ALLOWED_SORT_FIELDS = [
         'task.title',
         'task.type',
-        'jobTitle.jobTitleName',
     ];
 
     protected ?string $title = null;
     protected ?int $type = null;
-    protected ?int $jobTitleId = null;
 
     public function __construct()
     {
@@ -51,21 +49,5 @@ class TaskSearchFilterParams extends FilterParams
     public function setType(?int $type): void
     {
         $this->type = $type;
-    }
-
-    /**
-     * @return int|null
-     */
-    public function getJobTitleId(): ?int
-    {
-        return $this->jobTitleId;
-    }
-
-    /**
-     * @param int|null $jobTitleId
-     */
-    public function setJobTitleId(?int $jobTitleId): void
-    {
-        $this->jobTitleId = $jobTitleId;
     }
 }

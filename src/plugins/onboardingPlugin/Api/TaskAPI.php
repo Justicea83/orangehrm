@@ -90,15 +90,6 @@ class TaskAPI extends Endpoint implements CrudEndpoint
             $filterParams->setTitle($title);
         }
 
-        $jobTitleId = $this->getRequestParams()->getIntOrNull(
-            RequestParams::PARAM_TYPE_QUERY,
-            self::FILTER_JOB_TITLE_ID
-        );
-
-        if (!is_null($jobTitleId)) {
-            $filterParams->setJobTitleId($jobTitleId);
-        }
-
         $taskType = $this->getRequestParams()->getIntOrNull(
             RequestParams::PARAM_TYPE_QUERY,
             self::FILTER_TASK_TYPE
@@ -198,15 +189,7 @@ class TaskAPI extends Endpoint implements CrudEndpoint
             new Rule(
                 Rules::REQUIRED,
             ),
-            new Rule(Rules::BETWEEN, [0, 1])
-        );
-    }
-
-    private function getJobTitleIdRule(): ParamRule
-    {
-        return new ParamRule(
-            self::PARAMETER_JOB_TITLE_ID,
-            new Rule(Rules::POSITIVE),
+            new Rule(Rules::INT_VAL)
         );
     }
 
@@ -227,7 +210,6 @@ class TaskAPI extends Endpoint implements CrudEndpoint
             $this->getTitleRule(),
             $this->getTypeRule(),
             $this->getNotesRule(),
-            $this->getJobTitleIdRule(),
         );
     }
 
@@ -282,9 +264,9 @@ class TaskAPI extends Endpoint implements CrudEndpoint
             )
         );
         $task->getDecorator()->setTaskTypeById(
-            $this->getRequestParams()->getStringOrNull(
+            $this->getRequestParams()->getIntOrNull(
                 RequestParams::PARAM_TYPE_BODY,
-                self::FILTER_TASK_TYPE
+                self::PARAMETER_TYPE
             )
         );
         $task->setUpdatedAt(Carbon::now()->toDateTimeString());
@@ -328,7 +310,6 @@ class TaskAPI extends Endpoint implements CrudEndpoint
             $this->getTitleRule(true),
             $this->getTypeRule(),
             $this->getNotesRule(),
-            $this->getJobTitleIdRule(),
         );
     }
 }

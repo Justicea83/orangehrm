@@ -26,14 +26,6 @@
         </oxd-form-row>
 
         <oxd-form-row>
-          <jobtitle-dropdown
-            v-model="task.jobTitleId"
-            :rules="rules.jobTitleId"
-            required
-          />
-        </oxd-form-row>
-
-        <oxd-form-row>
           <oxd-input-field
             v-model="task.notes"
             type="textarea"
@@ -67,13 +59,11 @@ import {
   shouldNotExceedCharLength,
 } from '@/core/util/validation/rules';
 import OnboardingTypeDropdown from '@/orangehrmPimPlugin/components/OnboardingTypeDropdown';
-import JobtitleDropdown from '@/orangehrmPimPlugin/components/JobtitleDropdown';
 import {navigate} from '@/core/util/helper/navigation';
 
 const initialTask = {
   title: '',
   notes: '',
-  jobTitleId: null,
   type: null,
 };
 
@@ -81,7 +71,6 @@ export default {
   name: 'EditTask',
 
   components: {
-    'jobtitle-dropdown': JobtitleDropdown,
     OnboardingTypeDropdown,
   },
 

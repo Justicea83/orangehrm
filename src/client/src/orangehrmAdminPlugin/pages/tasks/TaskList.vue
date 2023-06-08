@@ -124,9 +124,7 @@ export default {
         );
         return {
           ...item,
-          jobTitle: item.jobTitle?.isDeleted
-            ? item.jobTitle.title + $t('general.deleted')
-            : item.jobTitle?.title,
+          taskType: item.taskType?.name,
           isSelectable: selectable === -1,
         };
       });
@@ -209,16 +207,10 @@ export default {
           style: {flex: 1},
         },
         {
-          name: 'typeText',
-          slot: 'typeText',
+          name: 'taskType',
+          slot: 'taskType',
           title: 'Type',
-          sortField: 'task.typeText',
-          style: {flex: 1},
-        },
-        {
-          name: 'jobTitle',
-          title: this.$t('general.job_title'),
-          sortField: 'jobTitle.jobTitleName',
+          sortField: 'taskType.name',
           style: {flex: 1},
         },
         {

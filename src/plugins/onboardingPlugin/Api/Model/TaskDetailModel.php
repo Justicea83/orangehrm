@@ -15,29 +15,23 @@ class TaskDetailModel implements Normalizable
         $this->setEntity($task);
         $this->setFilters([
             'title',
-            'type',
             'notes',
             'id',
             'createdAt',
             'updatedAt',
-            ['getJobTitle', 'getId'],
-            ['getJobTitle', 'getJobTitleName'],
-            ['getJobTitle', 'isDeleted'],
-            ['getTypeText']
+            ['getTaskType', 'getId'],
+            ['getTaskType', 'getName'],
         ]);
 
         $this->setAttributeNames(
             [
                 'title',
-                'type',
                 'notes',
                 'id',
                 'createdAt',
                 'updatedAt',
-                ['jobTitle', 'id'],
-                ['jobTitle', 'title'],
-                ['jobTitle', 'isDeleted'],
-                ['typeText']
+                ['taskType', 'id'],
+                ['taskType', 'name'],
             ]
         );
     }

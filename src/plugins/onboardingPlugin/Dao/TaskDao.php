@@ -28,7 +28,7 @@ class TaskDao extends BaseDao
     {
         $q = $this->createQueryBuilder(Task::class, 'task');
         $q->distinct();
-        $q->leftJoin('task.jobTitle', 'jobTitle');
+        $q->leftJoin('task.taskType', 'taskType');
 
         $this->setSortingAndPaginationParams($q, $taskSearchFilterParams);
 
@@ -42,17 +42,8 @@ class TaskDao extends BaseDao
         }
 
         if (!is_null($taskSearchFilterParams->getType())) {
-            $q->andWhere(
-                $q->expr()->orX(
-                    $q->expr()->eq('task.type', ':type'),
-                )
-            );
-            $q->setParameter('type', $taskSearchFilterParams->getType());
-        }
-
-        if (!is_null($taskSearchFilterParams->getJobTitleId())) {
-            $q->andWhere('jobTitle.id = :jobTitleId')
-                ->setParameter('jobTitleId', $taskSearchFilterParams->getJobTitleId());
+            $q->andWhere('taskType.id = :taskTypeId')
+                ->setParameter('taskTypeId', $taskSearchFilterParams->getType());
         }
 
         $q->orderBy('task.id', ListSorter::DESCENDING);

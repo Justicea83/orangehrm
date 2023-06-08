@@ -9,6 +9,9 @@
 </template>
 
 <script>
+import {onBeforeMount, ref} from 'vue';
+import {APIService} from '@/core/util/services/api.service';
+
 export default {
   name: 'OnboardingTypeDropdown',
   props: {
@@ -23,18 +26,24 @@ export default {
       default: false,
     },
   },
-  data() {
+  setup() {
+    const options = ref([]);
+    const http = new APIService(
+      window.appGlobal.baseUrl,
+      '/api/v2/onboarding/task-types',
+    );
+    onBeforeMount(() => {
+      http.getAll().then(({data}) => {
+        options.value = data.data.map((item) => {
+          return {
+            id: item.id,
+            label: item.name,
+          };
+        });
+      });
+    });
     return {
-      options: [
-        {
-          id: 0,
-          label: 'Onboarding',
-        },
-        {
-          id: 1,
-          label: 'Offboarding',
-        },
-      ],
+      options,
     };
   },
 };

@@ -88,8 +88,6 @@ class Task extends TenantAwareWithTimeStamps
         $this->notes = $notes;
     }
 
-
-
     /**
      * @return TaskType|null
      */

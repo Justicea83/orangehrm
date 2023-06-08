@@ -26,21 +26,19 @@ class TaskModel implements Normalizable
         $this->setEntity($task);
         $this->setFilters([
             'title',
-            'type',
             'id',
             'notes',
-            ['getJobTitle', 'getId'],
-            ['getJobTitle', 'getJobTitleName'],
+            ['getTaskType', 'getId'],
+            ['getTaskType', 'getName'],
         ]);
 
         $this->setAttributeNames(
             [
                 'title',
-                'type',
                 'id',
                 'notes',
-                ['jobTitle', 'id'],
-                ['jobTitle', 'label'],
+                ['taskType', 'id'],
+                ['taskType', 'name'],
             ]
         );
     }

@@ -5,6 +5,13 @@ apiv2_onboarding_task:
   defaults:
     _api: OrangeHRM\Onboarding\Api\TaskAPI
 
+apiv2_onboarding_task_types:
+  path: /api/v2/onboarding/task-types
+  controller: OrangeHRM\Core\Controller\Rest\V2\GenericRestController::handle
+  methods: [ GET, POST, DELETE ]
+  defaults:
+    _api: OrangeHRM\Onboarding\Api\TaskTypeAPI
+
 apiv2_onboarding_tasks:
   path: /api/v2/onboarding/tasks
   controller: OrangeHRM\Core\Controller\Rest\V2\GenericRestController::handle

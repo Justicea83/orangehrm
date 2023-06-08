@@ -76,7 +76,9 @@ class TaskDao extends BaseDao
         $q = $this->createQueryBuilder(Task::class, 't');
 
         if ($includeDisabled) {
-            $q->andWhere($q->expr()->eq('t.disabled', 0));
+            $q->andWhere(
+                $q->expr()->isNull('t.deleted_at')
+            );
         }
 
         return $this->count($q);

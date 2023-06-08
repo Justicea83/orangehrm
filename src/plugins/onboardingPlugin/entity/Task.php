@@ -17,8 +17,6 @@ class Task extends TenantAwareWithTimeStamps
 {
     use DecoratorTrait;
 
-    public const TYPE_ONBOARDING = 0;
-    public const TYPE_OFFBOARDING = 1;
     /**
      * @var int
      *
@@ -38,31 +36,15 @@ class Task extends TenantAwareWithTimeStamps
     /**
      * @var string|null
      *
-     * @ORM\Column(name="notes", type="string")
+     * @ORM\Column(name="notes", type="string", nullable=true)
      */
     private ?string $notes;
 
     /**
-     * @var integer
-     *
-     * @ORM\Column(name="type", type="integer")
+     * @ORM\ManyToOne(targetEntity="OrangeHRM\Entity\TaskType", inversedBy="tasks")
+     * @ORM\JoinColumn(name="type", referencedColumnName="id", nullable=true)
      */
-    private int $type = self::TYPE_ONBOARDING;
-
-    /**
-     * @var bool
-     *
-     * @ORM\Column(name="disabled", type="integer")
-     */
-    private bool $disabled = false;
-
-    /**
-     * @var JobTitle|null
-     *
-     * @ORM\ManyToOne(targetEntity="OrangeHRM\Entity\JobTitle", inversedBy="tasks")
-     * @ORM\JoinColumn(name="job_id", referencedColumnName="id", nullable=true)
-     */
-    private ?JobTitle $jobTitle = null;
+    private ?TaskType $taskType = null;
 
     /**
      * @return int
@@ -106,63 +88,21 @@ class Task extends TenantAwareWithTimeStamps
         $this->notes = $notes;
     }
 
+
+
     /**
-     * @return int
+     * @return TaskType|null
      */
-    public function getType(): int
+    public function getTaskType(): ?TaskType
     {
-        return $this->type;
+        return $this->taskType;
     }
 
     /**
-     * @param int $type
+     * @param TaskType|null $taskType
      */
-    public function setType(int $type): void
+    public function setTaskType(?TaskType $taskType): void
     {
-        $this->type = $type;
+        $this->taskType = $taskType;
     }
-
-    /**
-     * @return bool
-     */
-    public function isDisabled(): bool
-    {
-        return $this->disabled;
-    }
-
-    /**
-     * @param bool $disabled
-     */
-    public function setDisabled(bool $disabled): void
-    {
-        $this->disabled = $disabled;
-    }
-
-    /**
-     * @return JobTitle|null
-     */
-    public function getJobTitle(): ?JobTitle
-    {
-        return $this->jobTitle;
-    }
-
-    /**
-     * @param JobTitle|null $jobTitle
-     */
-    public function setJobTitle(?JobTitle $jobTitle): void
-    {
-        $this->jobTitle = $jobTitle;
-    }
-
-    /**
-     * @return string
-     */
-    public function getTypeText(): string
-    {
-        if ($this->type === self::TYPE_ONBOARDING) {
-            return 'Onboarding';
-        }
-        return 'Offboarding';
-    }
-
 }

@@ -10,6 +10,7 @@ use OrangeHRM\Core\Api\V2\Endpoint;
 use OrangeHRM\Core\Api\V2\EndpointCollectionResult;
 use OrangeHRM\Core\Api\V2\EndpointResourceResult;
 use OrangeHRM\Core\Api\V2\EndpointResult;
+use OrangeHRM\Core\Api\V2\Exception\InvalidParamException;
 use OrangeHRM\Core\Api\V2\Exception\RecordNotFoundException;
 use OrangeHRM\Core\Api\V2\Model\ArrayModel;
 use OrangeHRM\Core\Api\V2\ParameterBag;
@@ -46,9 +47,7 @@ class TaskAPI extends Endpoint implements CrudEndpoint
     public const FILTER_TASK_TYPE = 'taskType';
     public const FILTER_JOB_TITLE_ID = 'jobTitleId';
 
-    public const PARAM_RULE_EMP_PICTURE_FILE_NAME_MAX_LENGTH = 100;
     public const PARAM_RULE_FILTER_NAME_MAX_LENGTH = 100;
-    public const PARAM_RULE_FILTER_NAME_OR_ID_MAX_LENGTH = 100;
 
     public const MODEL_MAP = [
         self::MODEL_DEFAULT => TaskModel::class,
@@ -152,8 +151,6 @@ class TaskAPI extends Endpoint implements CrudEndpoint
     public function create(): EndpointResourceResult
     {
         $task = $this->setParamsToTask();
-        $jobTitleId = $this->getRequestParams()->getStringOrNull(RequestParams::PARAM_TYPE_BODY, self::PARAMETER_JOB_TITLE_ID);
-        $task->getDecorator()->setJobTitleById($jobTitleId);
 
         $this->getTaskService()->saveTask($task);
         return new EndpointResourceResult(TaskModel::class, $task);
@@ -188,7 +185,7 @@ class TaskAPI extends Endpoint implements CrudEndpoint
         $task = new Task();
         $task->setTitle($title);
         $task->setNotes($notes);
-        $task->setType($taskType);
+        $task->getDecorator()->setTaskTypeById($taskType);
         $task->setCreatedAt(Carbon::now()->toDateTimeString());
         $task->setUpdatedAt(Carbon::now()->toDateTimeString());
         return $task;
@@ -278,22 +275,16 @@ class TaskAPI extends Endpoint implements CrudEndpoint
                 self::PARAMETER_TITLE
             )
         );
-        $task->setType(
-            $this->getRequestParams()->getStringOrNull(
-                RequestParams::PARAM_TYPE_BODY,
-                self::PARAMETER_TYPE
-            )
-        );
         $task->setNotes(
             $this->getRequestParams()->getStringOrNull(
                 RequestParams::PARAM_TYPE_BODY,
                 self::PARAMETER_NOTES
             )
         );
-        $task->getDecorator()->setJobTitleById(
+        $task->getDecorator()->setTaskTypeById(
             $this->getRequestParams()->getStringOrNull(
                 RequestParams::PARAM_TYPE_BODY,
-                self::FILTER_JOB_TITLE_ID
+                self::FILTER_TASK_TYPE
             )
         );
         $task->setUpdatedAt(Carbon::now()->toDateTimeString());
@@ -302,7 +293,7 @@ class TaskAPI extends Endpoint implements CrudEndpoint
     /**
      * @throws DaoException
      * @throws RecordNotFoundException
-     * @throws NormalizeException
+     * @throws NormalizeException|InvalidParamException
      */
     public function update(): EndpointResult
     {

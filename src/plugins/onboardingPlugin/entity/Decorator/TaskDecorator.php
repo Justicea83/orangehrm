@@ -4,8 +4,8 @@ namespace OrangeHRM\Entity\Decorator;
 
 use OrangeHRM\Core\Traits\ORM\EntityManagerHelperTrait;
 use OrangeHRM\Core\Traits\Service\DateTimeHelperTrait;
-use OrangeHRM\Entity\JobTitle;
 use OrangeHRM\Entity\Task;
+use OrangeHRM\Entity\TaskType;
 
 class TaskDecorator
 {
@@ -33,14 +33,14 @@ class TaskDecorator
         return $this->getDateTimeHelper()->formatDate($date);
     }
 
-    public function setJobTitleById(?int $id): void
+    public function setTaskTypeById(?int $id): void
     {
         if (!$id) {
             return;
         }
-        /** @var JobTitle|null $jobTitle */
-        $jobTitle = $this->getReference(JobTitle::class, $id);
-        $this->getTask()->setJobTitle($jobTitle);
+        /** @var TaskType|null $taskType */
+        $taskType = $this->getReference(TaskType::class, $id);
+        $this->getTask()->setTaskType($taskType);
     }
 
     public function getUpdatedAt(): ?string

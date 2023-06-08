@@ -19,14 +19,6 @@ class TaskService
         return $this->taskDao;
     }
 
-    /**
-     * @param TaskDao|null $taskDao
-     */
-    public function setTaskDao(?TaskDao $taskDao): void
-    {
-        $this->taskDao = $taskDao;
-    }
-
     public function getTaskList(TaskSearchFilterParams $taskSearchFilterParams): array
     {
         return $this->getTaskDao()->getTaskList($taskSearchFilterParams);

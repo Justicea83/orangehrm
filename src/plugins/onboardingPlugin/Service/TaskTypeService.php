@@ -3,6 +3,7 @@
 namespace OrangeHRM\Onboarding\Service;
 
 use OrangeHRM\Core\Exception\DaoException;
+use OrangeHRM\Entity\Task;
 use OrangeHRM\Entity\TaskType;
 use OrangeHRM\Onboarding\Dao\TaskTypeDao;
 
@@ -16,6 +17,14 @@ class TaskTypeService
             $this->taskTypeDao = new TaskTypeDao();
         }
         return $this->taskTypeDao;
+    }
+
+    /**
+     * @throws DaoException
+     */
+    public function getTaskTypeById(int $id): ?TaskType
+    {
+        return $this->getTaskTypeDao()->getTaskTypeById($id);
     }
 
     public function saveTaskType(TaskType $Task): TaskType

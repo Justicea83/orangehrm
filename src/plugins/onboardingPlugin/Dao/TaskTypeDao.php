@@ -6,6 +6,7 @@ use Carbon\Carbon;
 use Exception;
 use OrangeHRM\Core\Dao\BaseDao;
 use OrangeHRM\Core\Exception\DaoException;
+use OrangeHRM\Entity\Task;
 use OrangeHRM\Entity\TaskType;
 
 class TaskTypeDao extends BaseDao
@@ -23,6 +24,21 @@ class TaskTypeDao extends BaseDao
     {
         $this->persist($taskType);
         return $taskType;
+    }
+
+    /**
+     * @throws DaoException
+     */
+    public function getTaskTypeById(int $id) : ?TaskType{
+        try {
+            $taskType = $this->getRepository(TaskType::class)->find($id);
+            if ($taskType instanceof TaskType) {
+                return $taskType;
+            }
+            return null;
+        } catch (Exception $e) {
+            throw new DaoException($e->getMessage());
+        }
     }
 
     /**

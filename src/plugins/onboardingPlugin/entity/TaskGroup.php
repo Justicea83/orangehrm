@@ -42,6 +42,11 @@ class TaskGroup
     private ?TaskAssignment $taskAssignment = null;
 
     /**
+     * @ORM\Column(name="priority", type="integer")
+     */
+    private int $priority;
+
+    /**
      * @return int
      */
     public function getId(): int
@@ -103,5 +108,21 @@ class TaskGroup
     public function setTask(?Task $task): void
     {
         $this->task = $task;
+    }
+
+    /**
+     * @return int
+     */
+    public function getPriority(): int
+    {
+        return $this->priority;
+    }
+
+    /**
+     * @param int $priority
+     */
+    public function setPriority(int $priority): void
+    {
+        $this->priority = $priority;
     }
 }

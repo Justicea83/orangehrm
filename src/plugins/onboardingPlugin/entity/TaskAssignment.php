@@ -5,6 +5,7 @@ namespace OrangeHRM\Entity;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use OrangeHRM\ORM\Utils\CreatedBy;
 use OrangeHRM\ORM\Utils\SoftDeletes;
 use OrangeHRM\ORM\Utils\TenantAwareWithTimeStamps;
 
@@ -15,7 +16,7 @@ use OrangeHRM\ORM\Utils\TenantAwareWithTimeStamps;
  */
 class TaskAssignment extends TenantAwareWithTimeStamps
 {
-    use SoftDeletes;
+    use SoftDeletes, CreatedBy;
 
     public function __construct() {
         $this->taskGroups = new ArrayCollection();
@@ -36,9 +37,6 @@ class TaskAssignment extends TenantAwareWithTimeStamps
      */
     private ?string $notes;
 
-    /**
-     * @ORM\Column(name="name", type="string", length=255)
-     */
     private ?string $name;
 
     /**
@@ -95,15 +93,12 @@ class TaskAssignment extends TenantAwareWithTimeStamps
      */
     public function getName(): ?string
     {
-        return $this->name;
-    }
+        $name = match ($this->type) {
+            Task::TYPE_ONBOARDING => 'Onboarding',
+            Task::TYPE_OFFBOARDING => 'Offboarding',
+        };
 
-    /**
-     * @param string|null $name
-     */
-    public function setName(?string $name): void
-    {
-        $this->name = $name;
+        return sprintf('%s %s', $name, 'Tasks');
     }
 
     /**

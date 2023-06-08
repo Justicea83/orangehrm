@@ -5,6 +5,7 @@ namespace OrangeHRM\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use OrangeHRM\Entity\Decorator\DecoratorTrait;
 use OrangeHRM\Entity\Decorator\GroupAssignmentDecorator;
+use OrangeHRM\ORM\Utils\CreatedBy;
 use OrangeHRM\ORM\Utils\SoftDeletes;
 use OrangeHRM\ORM\Utils\TenantAwareWithTimeStamps;
 
@@ -16,7 +17,7 @@ use OrangeHRM\ORM\Utils\TenantAwareWithTimeStamps;
  */
 class GroupAssignment extends TenantAwareWithTimeStamps
 {
-    use SoftDeletes, DecoratorTrait;
+    use SoftDeletes, DecoratorTrait, CreatedBy;
 
     /**
      * @var int

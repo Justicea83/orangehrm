@@ -8,6 +8,7 @@ use OrangeHRM\Core\Api\V2\Validator\ParamRule;
 use OrangeHRM\Core\Api\V2\Validator\ParamRuleCollection;
 use OrangeHRM\Core\Api\V2\Validator\Rule;
 use OrangeHRM\Core\Api\V2\Validator\Rules;
+use OrangeHRM\Core\Traits\Auth\AuthUserTrait;
 use OrangeHRM\Entity\GroupAssignment;
 use OrangeHRM\Entity\Task;
 use OrangeHRM\Entity\TaskAssignment;
@@ -17,6 +18,8 @@ use OrangeHRM\Core\Api\V2\RequestParams;
 
 trait TaskAssignmentValidation
 {
+    use AuthUserTrait;
+
     public function getValidationRuleForGetAll(): ParamRuleCollection
     {
         // TODO: Implement getValidationRuleForGetAll() method.
@@ -158,17 +161,20 @@ trait TaskAssignmentValidation
 
         $taskAssignment->setNotes($notes);
         $taskAssignment->setType($type);
-        $taskAssignment->setName($this->getTaskAssignmentName($type));
         $taskAssignment->setCreatedAt($now);
         $taskAssignment->setUpdatedAt($now);
+        $taskAssignment->setCreatorById($this->getAuthUser()->getEmpNumber());
 
+        $priority = 1;
         foreach ($tasks as $task) {
             $taskGroup = new TaskGroup();
             $taskGroup->setDueDate($task['dueDate']);
             $taskGroup->getDecorator()->setTaskById($task['id']);
             $taskGroup->setTaskAssignment($taskAssignment);
+            $taskGroup->setPriority($priority);
 
             $taskAssignment->getTaskGroups()->add($taskGroup);
+            $priority++;
         }
 
         $taskGroupAssignment = new GroupAssignment();
@@ -180,18 +186,9 @@ trait TaskAssignmentValidation
         $taskGroupAssignment->setTaskAssignment($taskAssignment);
         $taskGroupAssignment->setCreatedAt($now);
         $taskGroupAssignment->setUpdatedAt($now);
+        $taskGroupAssignment->setCreatorById($this->getAuthUser()->getEmpNumber());
 
         $taskAssignment->getGroupAssignments()->add($taskGroupAssignment);
         return $taskAssignment;
-    }
-
-    private function getTaskAssignmentName(int $type): string
-    {
-        $name = match ($type) {
-            Task::TYPE_ONBOARDING => 'Onboarding',
-            Task::TYPE_OFFBOARDING => 'Offboarding',
-        };
-
-        return sprintf('%s %s', $name, 'Tasks');
     }
 }

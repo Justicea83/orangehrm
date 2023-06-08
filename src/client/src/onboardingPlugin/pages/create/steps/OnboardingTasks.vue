@@ -163,16 +163,7 @@ export default {
       this.hasMoreTasks =
         this.meta.total >
         this.tasks?.length + this.elpTasks[this.type?.id].length;
-      console.log('[this.meta.total]', this.meta.total);
-      console.log('[this.tasks.length]', this.tasks.length);
-      console.log(
-        '[this.elpTasks[this.type?.id]?.length]',
-        this.elpTasks[this.type?.id]?.length,
-      );
-      console.log(
-        '[this.tasks.length + this.elpTasks.length]',
-        this.tasks.length + this.elpTasks[this.type?.id]?.length,
-      );
+
       if (this.type && this.hasMoreTasks) {
         this.http
           .request({

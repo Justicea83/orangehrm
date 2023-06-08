@@ -15,7 +15,6 @@
         >
           <stepper
             :tabs="tabs"
-            @before-mount="beforeMount"
             @after-change="beforeChange"
             @completed="complete"
           >
@@ -139,31 +138,10 @@ export default {
       return this.activity.type;
     },
   },
-  methods: {
-    tasksChanged(tasks) {
-      console.log(tasks);
-    },
-    complete() {
-      console.log('done');
-    },
-    onCreateOnboarding() {
-      console.log('subbb');
-    },
-    beforeChange({index, ref}) {
-      const {validate} = this.$refs.form;
-      if (index > 0) {
-        validate();
-      }
-      // TODO uncomment after testing
-      /*setTimeout(() => {
-        if (index >= 0 && this.$refs.form.isFromInvalid) {
-          ref.changeTab(index - 1);
-        }
-      }, 10);*/
-    },
-    beforeMount(index) {
-      if (index === 1) {
-        const activityId = this.activityType?.id;
+  watch: {
+    activityType(newType) {
+      if (newType) {
+        const activityId = newType?.id;
         if (activityId === null) {
           return;
         }
@@ -176,7 +154,7 @@ export default {
         this.http
           .request({
             params: {
-              taskType: this.activityType?.id,
+              taskType: activityId?.id,
             },
           })
           .then(({data}) => {
@@ -184,6 +162,62 @@ export default {
             this.tasksData = data;
           });
       }
+    },
+  },
+  methods: {
+    tasksChanged(tasks) {
+      this.activity.tasks = tasks;
+    },
+    complete() {
+      console.log(this.activity);
+      if (!this.activity.tasks || this.activity.tasks.length === 0) {
+        this.$toast.unexpectedError('Tasks cannot be empty!');
+        return;
+      }
+
+      const {
+        dueDate,
+        endDate,
+        startDate,
+        notes,
+        type,
+        tasks,
+        employee,
+        supervisor,
+      } = this.activity;
+
+      const payload = {
+        dueDate,
+        endDate,
+        startDate,
+        notes,
+        type: type?.id,
+        supervisorId: supervisor?.id,
+        employeeId: employee?.id,
+        tasks: tasks.map((task) => {
+          const {dueDate, id} = task;
+          return {
+            dueDate: dueDate ?? null,
+            id,
+          };
+        }),
+      };
+
+      console.log(payload);
+    },
+    onCreateOnboarding() {
+      console.log('subbb');
+    },
+    beforeChange({index, ref}) {
+      const {validate} = this.$refs.form;
+      if (index > 0) {
+        validate();
+      }
+      setTimeout(() => {
+        if (index >= 0 && this.$refs.form.isFromInvalid) {
+          ref.changeTab(index - 1);
+        }
+      }, 10);
     },
   },
 };

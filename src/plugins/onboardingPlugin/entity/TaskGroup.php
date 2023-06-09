@@ -30,7 +30,7 @@ class TaskGroup
     private ?string $dueDate = null;
 
     /**
-     * @ORM\ManyToOne(targetEntity="OrangeHRM\Entity\Task", inversedBy="task_groups", cascade={"persist","remove"})
+     * @ORM\ManyToOne(targetEntity="OrangeHRM\Entity\Task")
      * @ORM\JoinColumn(name="task_id", referencedColumnName="id", nullable=true)
      */
     private ?Task $task = null;

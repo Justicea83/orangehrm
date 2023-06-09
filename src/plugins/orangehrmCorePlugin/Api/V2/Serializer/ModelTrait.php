@@ -156,14 +156,36 @@ trait ModelTrait
             $obj = [];
             foreach ($methodNames as $i => $getterMethod) {
                 if (!is_null($object)) {
-                    $value = call_user_func([$object, $getterMethod]);
+                    if(is_array($getterMethod)) {
+                        $obj[$keys[$i][0]] = $this->normalizeLevel3Collection($object, $getterMethod, $keys[$i]);
+                    }else{
+                        $value = call_user_func([$object, $getterMethod]);
+                        $obj[$keys[$i]] = $value;
+                    }
                 }
-                $obj[$keys[$i]] = $value;
             }
 
             $values[] = $obj;
         }
 
         return $values;
+    }
+
+    /**
+     * @param mixed $object
+     * @param array $getterMethod
+     * @param $keys
+     * @return array
+     */
+    public function normalizeLevel3Collection(mixed $object, array $getterMethod, $keys): array
+    {
+        $nestedObject = call_user_func([$object, $getterMethod[0]]);
+        $objectAttributes = array_slice($getterMethod, 1);
+        $nestedObjectKeys = array_slice($keys, 1);
+        $value = [];
+        foreach ($objectAttributes as $k => $objectAttribute) {
+            $value[$nestedObjectKeys[$k]] = call_user_func([$nestedObject, $objectAttribute]);
+        }
+        return $value;
     }
 }

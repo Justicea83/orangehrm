@@ -55,14 +55,24 @@ class GroupAssignment extends TenantAwareWithTimeStamps
     private bool $completed = false;
 
     /**
-     * @ORM\Column(name="name", type="string", length=255)
+     * @ORM\Column(name="name", type="string", length=255, nullable=true)
      */
-    private string $name;
+    private ?string $name;
 
     /**
      * @ORM\Column(name="notes", type="string",  nullable=true)
      */
     private ?string $notes;
+
+    /**
+     * @ORM\Column(name="emp_number", type="integer")
+     */
+    private ?string $empNumber;
+
+    /**
+     * @ORM\Column(name="supervisor_number", type="integer")
+     */
+    private ?string $supervisorNumber;
 
     /**
      * @var Collection<int, TaskGroup>
@@ -181,7 +191,7 @@ class GroupAssignment extends TenantAwareWithTimeStamps
     /**
      * @return bool
      */
-    public function isCompleted(): bool
+    public function getCompleted(): bool
     {
         return $this->completed;
     }

@@ -6,7 +6,7 @@ use OrangeHRM\Core\Api\V2\Serializer\ModelTrait;
 use OrangeHRM\Core\Api\V2\Serializer\Normalizable;
 use OrangeHRM\Entity\GroupAssignment;
 
-class GroupAssignmentModel implements Normalizable
+class GroupAssignmentDetailModel implements Normalizable
 {
     use ModelTrait;
 
@@ -22,6 +22,16 @@ class GroupAssignmentModel implements Normalizable
             'endDate',
             'completed',
             'dueDate',
+            [
+                'getTaskGroups',
+                [
+                    'getId',
+                    'isCompleted',
+                    'getDueDate',
+                    'getPriority',
+                    ['getTask', 'getId', 'getTitle', 'getNotes']
+                ]
+            ],
         ]);
 
         $this->setAttributeNames([
@@ -32,6 +42,16 @@ class GroupAssignmentModel implements Normalizable
             'endDate',
             'completed',
             'dueDate',
+            [
+                'taskGroups',
+                [
+                    'id',
+                    'isCompleted',
+                    'dueDate',
+                    'priority',
+                    ['task', 'id', 'title', 'notes'],
+                ]
+            ],
         ]);
     }
 }

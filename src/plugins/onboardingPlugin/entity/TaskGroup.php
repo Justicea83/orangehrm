@@ -36,10 +36,15 @@ class TaskGroup
     private ?Task $task = null;
 
     /**
-     * @ORM\ManyToOne(targetEntity="OrangeHRM\Entity\TaskAssignment", inversedBy="taskGroups", cascade={"persist","remove"})
-     * @ORM\JoinColumn(name="task_assignment_id", referencedColumnName="id", nullable=true)
+     * @ORM\ManyToOne(targetEntity="OrangeHRM\Entity\GroupAssignment", inversedBy="taskGroups", cascade={"persist","remove"})
+     * @ORM\JoinColumn(name="group_assignment_id", referencedColumnName="id", nullable=true)
      */
-    private ?TaskAssignment $taskAssignment = null;
+    private ?GroupAssignment $groupAssignment = null;
+
+    /**
+     * @ORM\Column(name="completed", type="boolean", options={"default" : 0})
+     */
+    private bool $completed = false;
 
     /**
      * @ORM\Column(name="priority", type="integer")
@@ -79,22 +84,6 @@ class TaskGroup
     }
 
     /**
-     * @return TaskAssignment|null
-     */
-    public function getTaskAssignment(): ?TaskAssignment
-    {
-        return $this->taskAssignment;
-    }
-
-    /**
-     * @param TaskAssignment|null $taskAssignment
-     */
-    public function setTaskAssignment(?TaskAssignment $taskAssignment): void
-    {
-        $this->taskAssignment = $taskAssignment;
-    }
-
-    /**
      * @return Task|null
      */
     public function getTask(): ?Task
@@ -124,5 +113,37 @@ class TaskGroup
     public function setPriority(int $priority): void
     {
         $this->priority = $priority;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isCompleted(): bool
+    {
+        return $this->completed;
+    }
+
+    /**
+     * @param bool $completed
+     */
+    public function setCompleted(bool $completed): void
+    {
+        $this->completed = $completed;
+    }
+
+    /**
+     * @return GroupAssignment|null
+     */
+    public function getGroupAssignment(): ?GroupAssignment
+    {
+        return $this->groupAssignment;
+    }
+
+    /**
+     * @param GroupAssignment|null $groupAssignment
+     */
+    public function setGroupAssignment(?GroupAssignment $groupAssignment): void
+    {
+        $this->groupAssignment = $groupAssignment;
     }
 }

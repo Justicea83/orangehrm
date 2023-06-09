@@ -4,7 +4,6 @@ namespace OrangeHRM\Entity\Decorator;
 
 use OrangeHRM\Core\Traits\ORM\EntityManagerHelperTrait;
 use OrangeHRM\Entity\Task;
-use OrangeHRM\Entity\TaskAssignment;
 use OrangeHRM\Entity\TaskGroup;
 
 class TaskGroupDecorator
@@ -18,16 +17,6 @@ class TaskGroupDecorator
         $this->taskGroup = $task;
     }
 
-
-    public function setTaskAssignmentById(?int $id): void
-    {
-        if (!$id) {
-            return;
-        }
-        /** @var TaskAssignment|null $taskAssignment */
-        $taskAssignment = $this->getReference(TaskAssignment::class, $id);
-        $this->getTaskGroup()->setTaskAssignment($taskAssignment);
-    }
 
     public function setTaskById(?int $id): void
     {

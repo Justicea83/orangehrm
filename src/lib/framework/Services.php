@@ -277,7 +277,7 @@ final class Services
 
     public const TASK_TYPE_SERVICE = 'onboarding.task_type_service';
 
-    public const TASK_ASSIGNMENT_SERVICE = 'onboarding.task_assignment_service';
+    public const GROUP_ASSIGNMENT_SERVICE = 'onboarding.group_assignment_service';
 
     /**
      * @see \OrangeHRM\Pim\Service\EmployeeSalaryService

@@ -2,6 +2,8 @@
 
 namespace OrangeHRM\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use OrangeHRM\Entity\Decorator\DecoratorTrait;
 use OrangeHRM\Entity\Decorator\GroupAssignmentDecorator;
@@ -18,6 +20,10 @@ use OrangeHRM\ORM\Utils\TenantAwareWithTimeStamps;
 class GroupAssignment extends TenantAwareWithTimeStamps
 {
     use SoftDeletes, DecoratorTrait, CreatedBy;
+
+    public function __construct() {
+        $this->taskGroups = new ArrayCollection();
+    }
 
     /**
      * @var int
@@ -44,10 +50,25 @@ class GroupAssignment extends TenantAwareWithTimeStamps
     private ?string $dueDate = null;
 
     /**
-     * @ORM\ManyToOne(targetEntity="OrangeHRM\Entity\TaskAssignment", inversedBy="groupAssignments", cascade={"persist","remove"})
-     * @ORM\JoinColumn(name="task_assignment_id", referencedColumnName="id", nullable=true)
+     * @ORM\Column(name="completed", type="boolean", options={"default" : 0})
      */
-    private ?TaskAssignment $taskAssignment = null;
+    private bool $completed = false;
+
+    /**
+     * @ORM\Column(name="name", type="string", length=255)
+     */
+    private string $name;
+
+    /**
+     * @ORM\Column(name="notes", type="string",  nullable=true)
+     */
+    private ?string $notes;
+
+    /**
+     * @var Collection<int, TaskGroup>
+     * @ORM\OneToMany(targetEntity="OrangeHRM\Entity\TaskGroup", mappedBy="groupAssignment", cascade={"persist","remove"})
+     */
+    private Collection $taskGroups;
 
     /**
      * @ORM\ManyToOne(targetEntity="OrangeHRM\Entity\Employee", inversedBy="group_assignments")
@@ -126,22 +147,6 @@ class GroupAssignment extends TenantAwareWithTimeStamps
     }
 
     /**
-     * @return TaskAssignment|null
-     */
-    public function getTaskAssignment(): ?TaskAssignment
-    {
-        return $this->taskAssignment;
-    }
-
-    /**
-     * @param TaskAssignment|null $taskAssignment
-     */
-    public function setTaskAssignment(?TaskAssignment $taskAssignment): void
-    {
-        $this->taskAssignment = $taskAssignment;
-    }
-
-    /**
      * @return Employee|null
      */
     public function getEmployee(): ?Employee
@@ -171,5 +176,69 @@ class GroupAssignment extends TenantAwareWithTimeStamps
     public function setSupervisor(?Employee $supervisor): void
     {
         $this->supervisor = $supervisor;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isCompleted(): bool
+    {
+        return $this->completed;
+    }
+
+    /**
+     * @param bool $completed
+     */
+    public function setCompleted(bool $completed): void
+    {
+        $this->completed = $completed;
+    }
+
+    /**
+     * @return Collection
+     */
+    public function getTaskGroups(): Collection
+    {
+        return $this->taskGroups;
+    }
+
+    /**
+     * @param Collection $taskGroups
+     */
+    public function setTaskGroups(Collection $taskGroups): void
+    {
+        $this->taskGroups = $taskGroups;
+    }
+
+    /**
+     * @return string
+     */
+    public function getName(): string
+    {
+        return $this->name;
+    }
+
+    /**
+     * @param string $name
+     */
+    public function setName(string $name): void
+    {
+        $this->name = $name;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getNotes(): ?string
+    {
+        return $this->notes;
+    }
+
+    /**
+     * @param string|null $notes
+     */
+    public function setNotes(?string $notes): void
+    {
+        $this->notes = $notes;
     }
 }

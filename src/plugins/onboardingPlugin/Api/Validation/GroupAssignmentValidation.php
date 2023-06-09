@@ -10,13 +10,11 @@ use OrangeHRM\Core\Api\V2\Validator\Rule;
 use OrangeHRM\Core\Api\V2\Validator\Rules;
 use OrangeHRM\Core\Traits\Auth\AuthUserTrait;
 use OrangeHRM\Entity\GroupAssignment;
-use OrangeHRM\Entity\Task;
-use OrangeHRM\Entity\TaskAssignment;
 use OrangeHRM\Entity\TaskGroup;
-use OrangeHRM\Onboarding\Api\TaskAssignmentAPI;
+use OrangeHRM\Onboarding\Api\GroupAssignmentAPI;
 use OrangeHRM\Core\Api\V2\RequestParams;
 
-trait TaskAssignmentValidation
+trait GroupAssignmentValidation
 {
     use AuthUserTrait;
 
@@ -35,7 +33,7 @@ trait TaskAssignmentValidation
             $this->getTasksRule(),
             $this->getSupervisorIdRule(),
             $this->getEndDateRule(),
-            $this->getTypeRule(),
+            $this->getNameRule(),
         );
     }
 
@@ -57,7 +55,7 @@ trait TaskAssignmentValidation
     protected function getDueDateRule(): ParamRule
     {
         return new ParamRule(
-            TaskAssignmentAPI::PARAMETER_DUE_DATE,
+            GroupAssignmentAPI::PARAMETER_DUE_DATE,
             new Rule(Rules::STRING_TYPE),
             new Rule(Rules::REQUIRED),
         );
@@ -66,17 +64,8 @@ trait TaskAssignmentValidation
     protected function getStartDateRule(): ParamRule
     {
         return new ParamRule(
-            TaskAssignmentAPI::PARAMETER_START_DATE,
+            GroupAssignmentAPI::PARAMETER_START_DATE,
             new Rule(Rules::STRING_TYPE),
-            new Rule(Rules::REQUIRED),
-        );
-    }
-
-    protected function getTypeRule(): ParamRule
-    {
-        return new ParamRule(
-            TaskAssignmentAPI::PARAMETER_TYPE,
-            new Rule(Rules::INT_TYPE),
             new Rule(Rules::REQUIRED),
         );
     }
@@ -84,7 +73,16 @@ trait TaskAssignmentValidation
     protected function getEndDateRule(): ParamRule
     {
         return new ParamRule(
-            TaskAssignmentAPI::PARAMETER_END_DATE,
+            GroupAssignmentAPI::PARAMETER_END_DATE,
+            new Rule(Rules::STRING_TYPE),
+            new Rule(Rules::REQUIRED),
+        );
+    }
+
+    protected function getNameRule(): ParamRule
+    {
+        return new ParamRule(
+            GroupAssignmentAPI::PARAMETER_NAME,
             new Rule(Rules::STRING_TYPE),
             new Rule(Rules::REQUIRED),
         );
@@ -93,7 +91,7 @@ trait TaskAssignmentValidation
     protected function getEmployeeIdRule(): ParamRule
     {
         return new ParamRule(
-            TaskAssignmentAPI::PARAMETER_EMPLOYEE_ID,
+            GroupAssignmentAPI::PARAMETER_EMPLOYEE_ID,
             new Rule(Rules::POSITIVE),
             new Rule(Rules::REQUIRED),
         );
@@ -102,7 +100,7 @@ trait TaskAssignmentValidation
     protected function getSupervisorIdRule(): ParamRule
     {
         return new ParamRule(
-            TaskAssignmentAPI::PARAMETER_SUPERVISOR_ID,
+            GroupAssignmentAPI::PARAMETER_SUPERVISOR_ID,
             new Rule(Rules::POSITIVE),
             new Rule(Rules::REQUIRED),
         );
@@ -111,7 +109,7 @@ trait TaskAssignmentValidation
     protected function getNotesRule(): ParamRule
     {
         return new ParamRule(
-            TaskAssignmentAPI::PARAMETER_NOTES,
+            GroupAssignmentAPI::PARAMETER_NOTES,
             new Rule(Rules::STRING_TYPE),
         );
     }
@@ -119,21 +117,21 @@ trait TaskAssignmentValidation
     protected function getTasksRule(): ParamRule
     {
         return new ParamRule(
-            TaskAssignmentAPI::PARAMETER_TASKS,
+            GroupAssignmentAPI::PARAMETER_TASKS,
             new Rule(Rules::ARRAY_TYPE),
             new Rule(Rules::EACH, [
                 new Rules\Composite\AllOf(
                     new Rule(
                         Rules::KEY,
                         [
-                            TaskAssignmentAPI::PARAMETER_DUE_DATE,
+                            GroupAssignmentAPI::PARAMETER_DUE_DATE,
                             new Rules\Composite\OneOf(new Rule(Rules::STRING_TYPE), new Rule(Rules::NOT_REQUIRED, [true]))
                         ]
                     ),
                     new Rule(
                         Rules::KEY,
                         [
-                            TaskAssignmentAPI::PARAMETER_ID,
+                            GroupAssignmentAPI::PARAMETER_ID,
                             new Rules\Composite\AllOf(new Rule(Rules::POSITIVE))
                         ]
                     ),
@@ -145,50 +143,44 @@ trait TaskAssignmentValidation
     /**
      * @throws InvalidParamException
      */
-    protected function setParamsToTaskAssignment(): TaskAssignment
+    protected function setParamsToGroupAssignment(): GroupAssignment
     {
-        $dueDate = $this->getRequestParams()->getString(RequestParams::PARAM_TYPE_BODY, TaskAssignmentAPI::PARAMETER_DUE_DATE);
-        $employeeId = $this->getRequestParams()->getInt(RequestParams::PARAM_TYPE_BODY, TaskAssignmentAPI::PARAMETER_EMPLOYEE_ID);
-        $endDate = $this->getRequestParams()->getString(RequestParams::PARAM_TYPE_BODY, TaskAssignmentAPI::PARAMETER_END_DATE);
-        $type = $this->getRequestParams()->getInt(RequestParams::PARAM_TYPE_BODY, TaskAssignmentAPI::PARAMETER_TYPE);
-        $notes = $this->getRequestParams()->getStringOrNull(RequestParams::PARAM_TYPE_BODY, TaskAssignmentAPI::PARAMETER_NOTES);
-        $startDate = $this->getRequestParams()->getString(RequestParams::PARAM_TYPE_BODY, TaskAssignmentAPI::PARAMETER_START_DATE);
-        $supervisorId = $this->getRequestParams()->getInt(RequestParams::PARAM_TYPE_BODY, TaskAssignmentAPI::PARAMETER_SUPERVISOR_ID);
-        $tasks = $this->getRequestParams()->getArray(RequestParams::PARAM_TYPE_BODY, TaskAssignmentAPI::PARAMETER_TASKS);
+        $dueDate = $this->getRequestParams()->getString(RequestParams::PARAM_TYPE_BODY, GroupAssignmentAPI::PARAMETER_DUE_DATE);
+        $employeeId = $this->getRequestParams()->getInt(RequestParams::PARAM_TYPE_BODY, GroupAssignmentAPI::PARAMETER_EMPLOYEE_ID);
+        $endDate = $this->getRequestParams()->getString(RequestParams::PARAM_TYPE_BODY, GroupAssignmentAPI::PARAMETER_END_DATE);
+        $name = $this->getRequestParams()->getStringOrNull(RequestParams::PARAM_TYPE_BODY, GroupAssignmentAPI::PARAMETER_NAME);
+        $notes = $this->getRequestParams()->getStringOrNull(RequestParams::PARAM_TYPE_BODY, GroupAssignmentAPI::PARAMETER_NOTES);
+        $startDate = $this->getRequestParams()->getString(RequestParams::PARAM_TYPE_BODY, GroupAssignmentAPI::PARAMETER_START_DATE);
+        $supervisorId = $this->getRequestParams()->getInt(RequestParams::PARAM_TYPE_BODY, GroupAssignmentAPI::PARAMETER_SUPERVISOR_ID);
+        $tasks = $this->getRequestParams()->getArray(RequestParams::PARAM_TYPE_BODY, GroupAssignmentAPI::PARAMETER_TASKS);
 
-        $taskAssignment = new TaskAssignment();
         $now = Carbon::now()->toDateTimeString();
 
-        $taskAssignment->setNotes($notes);
-        $taskAssignment->setType($type);
-        $taskAssignment->setCreatedAt($now);
-        $taskAssignment->setUpdatedAt($now);
-        $taskAssignment->setCreatorById($this->getAuthUser()->getEmpNumber());
+        $groupAssignment = new GroupAssignment();
+        $groupAssignment->setDueDate($dueDate);
+        $groupAssignment->setEndDate($endDate);
+        $groupAssignment->setStartDate($startDate);
+        $groupAssignment->getDecorator()->setEmployeeById($employeeId);
+        $groupAssignment->getDecorator()->setSupervisorById($supervisorId);
+        $groupAssignment->setCreatedAt($now);
+        $groupAssignment->setName($name);
+        $groupAssignment->setNotes($notes);
+        $groupAssignment->setUpdatedAt($now);
+        $groupAssignment->setCreatorById($this->getAuthUser()->getEmpNumber());
 
         $priority = 1;
         foreach ($tasks as $task) {
             $taskGroup = new TaskGroup();
             $taskGroup->setDueDate($task['dueDate']);
             $taskGroup->getDecorator()->setTaskById($task['id']);
-            $taskGroup->setTaskAssignment($taskAssignment);
             $taskGroup->setPriority($priority);
+            $taskGroup->setGroupAssignment($groupAssignment);
+            $groupAssignment->getTaskGroups()->add($taskGroup);
 
-            $taskAssignment->getTaskGroups()->add($taskGroup);
             $priority++;
         }
 
-        $taskGroupAssignment = new GroupAssignment();
-        $taskGroupAssignment->setDueDate($dueDate);
-        $taskGroupAssignment->setEndDate($endDate);
-        $taskGroupAssignment->setStartDate($startDate);
-        $taskGroupAssignment->getDecorator()->setEmployeeById($employeeId);
-        $taskGroupAssignment->getDecorator()->setSupervisorById($supervisorId);
-        $taskGroupAssignment->setTaskAssignment($taskAssignment);
-        $taskGroupAssignment->setCreatedAt($now);
-        $taskGroupAssignment->setUpdatedAt($now);
-        $taskGroupAssignment->setCreatorById($this->getAuthUser()->getEmpNumber());
 
-        $taskAssignment->getGroupAssignments()->add($taskGroupAssignment);
-        return $taskAssignment;
+        return $groupAssignment;
     }
 }

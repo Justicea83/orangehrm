@@ -4,7 +4,7 @@ use OrangeHRM\Core\Traits\ServiceContainerTrait;
 use OrangeHRM\Framework\Http\Request;
 use OrangeHRM\Framework\PluginConfigurationInterface;
 use OrangeHRM\Framework\Services;
-use OrangeHRM\Onboarding\Service\TaskAssignmentService;
+use OrangeHRM\Onboarding\Service\GroupAssignmentService;
 use OrangeHRM\Onboarding\Service\TaskService;
 use OrangeHRM\Onboarding\Service\TaskTypeService;
 
@@ -20,8 +20,8 @@ class OnboardingPluginConfiguration implements PluginConfigurationInterface
         );
 
         $this->getContainer()->register(
-            Services::TASK_ASSIGNMENT_SERVICE,
-            TaskAssignmentService::class
+            Services::GROUP_ASSIGNMENT_SERVICE,
+            GroupAssignmentService::class
         );
 
         $this->getContainer()->register(

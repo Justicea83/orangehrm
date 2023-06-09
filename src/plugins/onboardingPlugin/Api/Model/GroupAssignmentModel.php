@@ -4,14 +4,14 @@ namespace OrangeHRM\Onboarding\Api\Model;
 
 use OrangeHRM\Core\Api\V2\Serializer\ModelTrait;
 use OrangeHRM\Core\Api\V2\Serializer\Normalizable;
-use OrangeHRM\Entity\TaskAssignment;
+use OrangeHRM\Entity\GroupAssignment;
 
-class TaskAssignmentModel implements Normalizable
+class GroupAssignmentModel implements Normalizable
 {
     use ModelTrait;
 
-    public function __construct(TaskAssignment $taskAssignment) {
-        $this->setEntity($taskAssignment);
+    public function __construct(GroupAssignment $groupAssignment) {
+        $this->setEntity($groupAssignment);
 
         $this->setFilters([
             'id',

@@ -47,7 +47,6 @@ class GroupAssignmentAPI extends Endpoint implements CrudEndpoint
     public function create(): EndpointResult
     {
         $groupAssignment = $this->setParamsToGroupAssignment();
-        //dd($groupAssignment);
         $this->getGroupAssignmentService()->saveGroupAssignment($groupAssignment);
 
         return new EndpointResourceResult(GroupAssignmentModel::class, $groupAssignment);

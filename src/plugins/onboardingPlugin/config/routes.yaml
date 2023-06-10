@@ -61,6 +61,13 @@ apiv2_onboarding_task_groups:
   defaults:
     _api: OrangeHRM\Onboarding\Api\TaskGroupAPI
 
+apiv2_onboarding_task_group_action:
+  path: /api/v2/onboarding/task-groups/actions
+  controller: OrangeHRM\Core\Controller\Rest\V2\GenericRestController::handle
+  methods: [ PUT ]
+  defaults:
+    _api: OrangeHRM\Onboarding\Api\TaskGroupActionAPI
+
 ##########################
 #        Screens
 ##########################

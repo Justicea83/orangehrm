@@ -23,6 +23,8 @@ class TaskGroupAPI extends Endpoint implements CrudEndpoint
     use TaskGroupValidation, TaskGroupServiceTrait;
 
     public const FILTER_GROUP_ASSIGNMENT = 'groupAssignmentId';
+    public const PARAMETER_DUE_DATE = 'dueDate';
+    public const PARAMETER_ID = 'id';
 
 
     public function getAll(): EndpointResult

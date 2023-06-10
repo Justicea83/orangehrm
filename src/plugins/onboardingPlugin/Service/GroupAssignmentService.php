@@ -61,4 +61,12 @@ class GroupAssignmentService
     {
         return $this->getGroupAssignmentDao()->getGroupAssignmentById($id);
     }
+
+    /**
+     * @throws DaoException
+     */
+    public function deleteGroupAssignmentById(array $ids): int
+    {
+        return $this->getGroupAssignmentDao()->deleteGroupAssignmentById($ids);
+    }
 }

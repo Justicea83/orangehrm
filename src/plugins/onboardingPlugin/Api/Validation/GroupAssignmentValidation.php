@@ -46,12 +46,14 @@ trait GroupAssignmentValidation
 
     public function getValidationRuleForDelete(): ParamRuleCollection
     {
-        // TODO: Implement getValidationRuleForDelete() method.
+        return new ParamRuleCollection(
+            new ParamRule(CommonParams::PARAMETER_IDS),
+        );
     }
 
     public function getValidationRuleForGetOne(): ParamRuleCollection
     {
-        // TODO: Implement getValidationRuleForGetOne() method.
+        throw $this->getNotImplementedException();
     }
 
     public function getValidationRuleForUpdate(): ParamRuleCollection

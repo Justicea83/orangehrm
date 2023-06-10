@@ -4,7 +4,6 @@ namespace OrangeHRM\ORM\Utils;
 
 use OrangeHRM\Core\Traits\ORM\EntityManagerHelperTrait;
 use OrangeHRM\Entity\Employee;
-use OrangeHRM\Entity\TaskAssignment;
 
 trait CreatedBy
 {
@@ -15,6 +14,11 @@ trait CreatedBy
      * @ORM\JoinColumn(name="created_by", referencedColumnName="emp_number", nullable=true)
      */
     private ?Employee $createdBy = null;
+
+    /**
+     * @ORM\Column(name="created_by", type="integer", nullable=true)
+     */
+    private ?int $creatorId = null;
 
     /**
      * @return Employee|null
@@ -29,9 +33,9 @@ trait CreatedBy
         if (!$id) {
             return;
         }
-        /** @var TaskAssignment|null $taskAssignment */
-        $taskAssignment = $this->getReference(Employee::class, $id);
-        $this->setCreatedBy($taskAssignment);
+        /** @var Employee|null $employee */
+        $employee = $this->getReference(Employee::class, $id);
+        $this->setCreatedBy($employee);
     }
 
     /**

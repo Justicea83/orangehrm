@@ -95,4 +95,36 @@ class GroupAssignmentDao extends BaseDao
             throw new DaoException($e->getMessage());
         }
     }
+
+    /**
+     * @throws DaoException
+     */
+    public function deleteGroupAssignmentById(array $ids): int
+    {
+        $q = $this->createQueryBuilder(GroupAssignment::class, 'g');
+        $q->distinct();
+        $q->andWhere(
+            $q->expr()->in('g.id', ':ids')
+        )->setParameter('ids', $ids);
+        $q->andWhere('g.creatorId = :creatorId')
+            ->setParameter('creatorId', $this->getAuthUser()->getEmpNumber());
+
+        $results = $q->getQuery()->execute();
+
+        $idsToDelete = array_map(fn(GroupAssignment $groupAssignment) => $groupAssignment->getId(), $results);
+
+        if (count($idsToDelete) === 0) {
+            return 0;
+        }
+
+        try {
+            $q = $this->createQueryBuilder(GroupAssignment::class, 'g');
+            $q->delete()
+                ->where($q->expr()->in('g.id', ':ids'))
+                ->setParameter('ids', $idsToDelete);
+            return $q->getQuery()->execute();
+        } catch (Exception $e) {
+            throw new DaoException($e->getMessage());
+        }
+    }
 }

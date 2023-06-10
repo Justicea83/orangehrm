@@ -43,8 +43,8 @@ class DefaultConfig
         'auth.password_policy.min_special_characters' => '1',
         'auth.password_policy.default_required_password_strength' => 'strong',
         'auth.password_policy.is_spaces_allowed' => 'false',
-        'oauth.encryption_key' => 'uAJNtUuwOTZ46YgZo6cXwKrLeKDSVUmBman05wAOPVM=',
-        'oauth.token_encryption_key' => 'uAJNtUuwOTZ46YgZo6cXwKrLeKDSVUmBman05wAOPVM=',
+        'oauth.encryption_key' => 'EwZJQ4KvnzTda225jA5HeiB/NF6Fnkxq+/1QtvKmwMA=',
+        'oauth.token_encryption_key' => 'EwZJQ4KvnzTda225jA5HeiB/NF6Fnkxq+/1QtvKmwMA=',
     ];
 
     public static function getDefaultValue(string $key): ?string

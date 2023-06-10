@@ -2,13 +2,26 @@
 
 namespace OrangeHRM\Onboarding\Api\Validation;
 
+use OrangeHRM\Core\Api\V2\Validator\ParamRule;
 use OrangeHRM\Core\Api\V2\Validator\ParamRuleCollection;
+use OrangeHRM\Core\Api\V2\Validator\Rule;
+use OrangeHRM\Core\Api\V2\Validator\Rules;
+use OrangeHRM\Onboarding\Api\TaskGroupAPI;
+use OrangeHRM\Onboarding\Dto\TaskGroupSearchFilterParams;
 
 trait TaskGroupValidation
 {
     public function getValidationRuleForGetAll(): ParamRuleCollection
     {
-        // TODO: Implement getValidationRuleForGetAll() method.
+        return new ParamRuleCollection(
+            $this->getValidationDecorator()->notRequiredParamRule(
+                new ParamRule(
+                    TaskGroupAPI::FILTER_GROUP_ASSIGNMENT,
+                    new Rule(Rules::INT_VAL),
+                ),
+            ),
+            ...$this->getSortingAndPaginationParamsRules(TaskGroupSearchFilterParams::ALLOWED_SORT_FIELDS)
+        );
     }
 
     public function getValidationRuleForCreate(): ParamRuleCollection

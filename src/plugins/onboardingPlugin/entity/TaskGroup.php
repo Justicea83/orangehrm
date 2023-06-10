@@ -42,6 +42,11 @@ class TaskGroup
     private ?GroupAssignment $groupAssignment = null;
 
     /**
+     * @ORM\Column(name="group_assignment_id", type="integer")
+     */
+    private ?int $groupAssignmentId = null;
+
+    /**
      * @ORM\Column(name="completed", type="boolean", options={"default" : 0})
      */
     private bool $completed = false;

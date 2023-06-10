@@ -15,23 +15,27 @@ class TaskGroupDetailModel implements Normalizable
         $this->setEntity($taskGroup);
 
         $this->setFilters([
-            [
-                'getId',
-                'isCompleted',
-                'getDueDate',
-                'getPriority',
-                ['getTask', 'getId', 'getTitle', 'getNotes']
-            ]
+            'id',
+            'isCompleted',
+            'dueDate',
+            'priority',
+            ['getTask', 'getId',],
+            ['getTask', 'getTitle',],
+            ['getTask', 'getNotes'],
+            ['getTask', 'getCreatedAt'],
+
         ]);
 
         $this->setAttributeNames([
-            [
-                'id',
-                'isCompleted',
-                'dueDate',
-                'priority',
-                ['task', 'id', 'title', 'notes'],
-            ]
+
+            'id',
+            'completed',
+            'dueDate',
+            'priority',
+            ['task', 'id'],
+            ['task', 'title',],
+            ['task', 'notes'],
+            ['task', 'createdAt'],
         ]);
     }
 }

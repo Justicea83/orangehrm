@@ -44,7 +44,7 @@ class TenantAwareWithTimeStamps extends TenantAware
      */
     public function getCreatedAt(): ?string
     {
-        return Carbon::parse($this->createdAt)->toDateString();
+        return Carbon::parse($this->createdAt)->toDateTimeString();
     }
 
     /**
@@ -52,6 +52,6 @@ class TenantAwareWithTimeStamps extends TenantAware
      */
     public function getUpdatedAt(): ?string
     {
-        return Carbon::parse($this->updatedAt)->toDateString();
+        return Carbon::parse($this->updatedAt)->toDateTimeString();
     }
 }

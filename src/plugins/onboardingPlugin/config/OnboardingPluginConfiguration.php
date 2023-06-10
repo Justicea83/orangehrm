@@ -5,6 +5,7 @@ use OrangeHRM\Framework\Http\Request;
 use OrangeHRM\Framework\PluginConfigurationInterface;
 use OrangeHRM\Framework\Services;
 use OrangeHRM\Onboarding\Service\GroupAssignmentService;
+use OrangeHRM\Onboarding\Service\TaskGroupService;
 use OrangeHRM\Onboarding\Service\TaskService;
 use OrangeHRM\Onboarding\Service\TaskTypeService;
 
@@ -27,6 +28,10 @@ class OnboardingPluginConfiguration implements PluginConfigurationInterface
         $this->getContainer()->register(
             Services::TASK_TYPE_SERVICE,
             TaskTypeService::class
+        );
+        $this->getContainer()->register(
+            Services::TASK_GROUP_SERVICE,
+            TaskGroupService::class
         );
     }
 }

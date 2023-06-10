@@ -19,6 +19,8 @@
 
 namespace OrangeHRM\Core\Api\V2\Serializer;
 
+use Throwable;
+
 trait ModelTrait
 {
     /**
@@ -110,7 +112,11 @@ trait ModelTrait
                 } else {
                     // Only work with camel cased get methods with particular attribute
                     $getMethodName = "get" . ucfirst($attribute);
-                    $value = $this->entity->$getMethodName();
+                    try {
+                        $value = $this->entity->$getMethodName();
+                    } catch (Throwable) {
+                        $value = $this->entity->$attribute();
+                    }
                 }
 
                 if (is_array($key)) {
@@ -156,9 +162,9 @@ trait ModelTrait
             $obj = [];
             foreach ($methodNames as $i => $getterMethod) {
                 if (!is_null($object)) {
-                    if(is_array($getterMethod)) {
+                    if (is_array($getterMethod)) {
                         $obj[$keys[$i][0]] = $this->normalizeLevel3Collection($object, $getterMethod, $keys[$i]);
-                    }else{
+                    } else {
                         $value = call_user_func([$object, $getterMethod]);
                         $obj[$keys[$i]] = $value;
                     }

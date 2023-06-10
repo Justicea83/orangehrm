@@ -12,6 +12,7 @@ use OrangeHRM\ORM\QueryBuilderWrapper;
 class GroupAssignmentDao extends BaseDao
 {
     use AuthUserTrait;
+
     public function saveTaskAssignment(GroupAssignment $groupAssignment): GroupAssignment
     {
         $this->persist($groupAssignment);

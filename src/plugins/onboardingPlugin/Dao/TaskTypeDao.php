@@ -26,10 +26,24 @@ class TaskTypeDao extends BaseDao
         return $taskType;
     }
 
+    public function getTaskTypesById(array $ids): array
+    {
+        $q = $this->createQueryBuilder(TaskType::class, 't');
+        $q->andWhere(
+            $q->expr()->isNull('t.deletedAt')
+        );
+        $q->andWhere(
+            $q->expr()->in('t.id', ':ids')
+        )->setParameter('ids', $ids);
+
+        return $q->getQuery()->execute();
+    }
+
     /**
      * @throws DaoException
      */
-    public function getTaskTypeById(int $id) : ?TaskType{
+    public function getTaskTypeById(int $id): ?TaskType
+    {
         try {
             $taskType = $this->getRepository(TaskType::class)->find($id);
             if ($taskType instanceof TaskType) {

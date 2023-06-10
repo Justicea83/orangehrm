@@ -34,6 +34,7 @@ trait GroupAssignmentValidation
             $this->getSupervisorIdRule(),
             $this->getEndDateRule(),
             $this->getNameRule(),
+            $this->getTypesRule(),
         );
     }
 
@@ -83,6 +84,15 @@ trait GroupAssignmentValidation
     {
         return new ParamRule(
             GroupAssignmentAPI::PARAMETER_NAME,
+            new Rule(Rules::STRING_TYPE),
+            new Rule(Rules::REQUIRED),
+        );
+    }
+
+    protected function getTypesRule(): ParamRule
+    {
+        return new ParamRule(
+            GroupAssignmentAPI::PARAMETER_TYPES,
             new Rule(Rules::STRING_TYPE),
             new Rule(Rules::REQUIRED),
         );
@@ -153,6 +163,7 @@ trait GroupAssignmentValidation
         $startDate = $this->getRequestParams()->getString(RequestParams::PARAM_TYPE_BODY, GroupAssignmentAPI::PARAMETER_START_DATE);
         $supervisorId = $this->getRequestParams()->getInt(RequestParams::PARAM_TYPE_BODY, GroupAssignmentAPI::PARAMETER_SUPERVISOR_ID);
         $tasks = $this->getRequestParams()->getArray(RequestParams::PARAM_TYPE_BODY, GroupAssignmentAPI::PARAMETER_TASKS);
+        $types = $this->getRequestParams()->getString(RequestParams::PARAM_TYPE_BODY, GroupAssignmentAPI::PARAMETER_TYPES);
 
         $now = Carbon::now()->toDateTimeString();
 
@@ -165,6 +176,7 @@ trait GroupAssignmentValidation
         $groupAssignment->setCreatedAt($now);
         $groupAssignment->setName($name);
         $groupAssignment->setNotes($notes);
+        $groupAssignment->setTypes($types);
         $groupAssignment->setUpdatedAt($now);
         $groupAssignment->setCreatorById($this->getAuthUser()->getEmpNumber());
 

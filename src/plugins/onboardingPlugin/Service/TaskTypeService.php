@@ -44,4 +44,9 @@ class TaskTypeService
     {
         $this->getTaskTypeDao()->deleteTaskTypeById($ids);
     }
+
+    public function getTaskTypesById(array $ids): array
+    {
+       return  $this->getTaskTypeDao()->getTaskTypesById($ids);
+    }
 }

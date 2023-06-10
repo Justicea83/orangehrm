@@ -46,6 +46,12 @@ class TaskDao extends BaseDao
                 ->setParameter('taskTypeId', $taskSearchFilterParams->getType());
         }
 
+        if (!is_null($taskSearchFilterParams->getTypes())) {
+            $q->andWhere(
+                $q->expr()->in('taskType.id', ':ids')
+            )->setParameter('ids', explode(',', $taskSearchFilterParams->getTypes()));
+        }
+
         $q->orderBy('task.id', ListSorter::DESCENDING);
 
         return $this->getQueryBuilderWrapper($q);
@@ -78,7 +84,8 @@ class TaskDao extends BaseDao
     /**
      * @throws DaoException
      */
-    public function getTaskById(int $id) : ?Task{
+    public function getTaskById(int $id): ?Task
+    {
         try {
             $task = $this->getRepository(Task::class)->find($id);
             if ($task instanceof Task) {
@@ -93,7 +100,7 @@ class TaskDao extends BaseDao
     /**
      * @throws DaoException
      */
-    public function deleteTaskById(array $ids) : int
+    public function deleteTaskById(array $ids): int
     {
         try {
             $q = $this->createQueryBuilder(Task::class, 't');

@@ -13,6 +13,7 @@ class TaskSearchFilterParams extends FilterParams
 
     protected ?string $title = null;
     protected ?int $type = null;
+    protected ?string $types = null;
 
     public function __construct()
     {
@@ -49,5 +50,21 @@ class TaskSearchFilterParams extends FilterParams
     public function setType(?int $type): void
     {
         $this->type = $type;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getTypes(): ?string
+    {
+        return $this->types;
+    }
+
+    /**
+     * @param string|null $types
+     */
+    public function setTypes(?string $types): void
+    {
+        $this->types = $types;
     }
 }

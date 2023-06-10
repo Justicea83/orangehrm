@@ -45,6 +45,7 @@ class TaskAPI extends Endpoint implements CrudEndpoint
 
     public const FILTER_TASK_TITLE = 'title';
     public const FILTER_TASK_TYPE = 'taskType';
+    public const FILTER_TASK_TYPES = 'taskTypes';
     public const FILTER_JOB_TITLE_ID = 'jobTitleId';
 
     public const PARAM_RULE_FILTER_NAME_MAX_LENGTH = 100;
@@ -77,6 +78,11 @@ class TaskAPI extends Endpoint implements CrudEndpoint
             self::FILTER_TASK_TITLE
         );
 
+        $types = $this->getRequestParams()->getStringOrNull(
+            RequestParams::PARAM_TYPE_QUERY,
+            self::FILTER_TASK_TYPES
+        );
+
         $type = $this->getRequestParams()->getStringOrNull(
             RequestParams::PARAM_TYPE_QUERY,
             self::FILTER_TASK_TYPE
@@ -89,6 +95,7 @@ class TaskAPI extends Endpoint implements CrudEndpoint
         if (!is_null($title)) {
             $filterParams->setTitle($title);
         }
+        $filterParams->setTypes($types);
 
         $taskType = $this->getRequestParams()->getIntOrNull(
             RequestParams::PARAM_TYPE_QUERY,
@@ -121,6 +128,12 @@ class TaskAPI extends Endpoint implements CrudEndpoint
                     self::FILTER_TASK_TITLE,
                     new Rule(Rules::STRING_TYPE),
                     new Rule(Rules::LENGTH, [null, self::PARAM_RULE_FILTER_NAME_MAX_LENGTH]),
+                ),
+            ),
+            $this->getValidationDecorator()->notRequiredParamRule(
+                new ParamRule(
+                    self::FILTER_TASK_TYPES,
+                    new Rule(Rules::STRING_TYPE),
                 ),
             ),
             $this->getValidationDecorator()->notRequiredParamRule(

@@ -22,6 +22,7 @@ class GroupAssignmentDetailModel implements Normalizable
             'endDate',
             'completed',
             'dueDate',
+            ['getTaskTypes', ['getId', 'getName']],
             [
                 'getTaskGroups',
                 [
@@ -42,6 +43,7 @@ class GroupAssignmentDetailModel implements Normalizable
             'endDate',
             'completed',
             'dueDate',
+            ['taskTypes', ['id', 'name']],
             [
                 'taskGroups',
                 [

@@ -21,6 +21,7 @@ class GroupAssignmentAPI extends Endpoint implements CrudEndpoint
     public const PARAMETER_END_DATE = 'endDate';
     public const PARAMETER_ID = 'id';
     public const PARAMETER_NAME = 'name';
+    public const PARAMETER_TYPES = 'types';
     public const PARAMETER_NOTES = 'notes';
     public const PARAMETER_START_DATE = 'startDate';
     public const PARAMETER_SUPERVISOR_ID = 'supervisorId';

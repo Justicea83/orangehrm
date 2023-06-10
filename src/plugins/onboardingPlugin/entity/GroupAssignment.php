@@ -7,6 +7,7 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use OrangeHRM\Entity\Decorator\DecoratorTrait;
 use OrangeHRM\Entity\Decorator\GroupAssignmentDecorator;
+use OrangeHRM\Onboarding\Traits\Service\TaskTypeServiceTrait;
 use OrangeHRM\ORM\Utils\CreatedBy;
 use OrangeHRM\ORM\Utils\SoftDeletes;
 use OrangeHRM\ORM\Utils\TenantAwareWithTimeStamps;
@@ -19,9 +20,10 @@ use OrangeHRM\ORM\Utils\TenantAwareWithTimeStamps;
  */
 class GroupAssignment extends TenantAwareWithTimeStamps
 {
-    use SoftDeletes, DecoratorTrait, CreatedBy;
+    use SoftDeletes, DecoratorTrait, CreatedBy, TaskTypeServiceTrait;
 
-    public function __construct() {
+    public function __construct()
+    {
         $this->taskGroups = new ArrayCollection();
     }
 
@@ -38,6 +40,11 @@ class GroupAssignment extends TenantAwareWithTimeStamps
      * @ORM\Column(name="start_date", type="string", nullable=true)
      */
     private ?string $startDate = null;
+
+    /**
+     * @ORM\Column(name="types", type="string", nullable=true)
+     */
+    private ?string $types = null;
 
     /**
      * @ORM\Column(name="end_date", type="string", nullable=true)
@@ -250,5 +257,29 @@ class GroupAssignment extends TenantAwareWithTimeStamps
     public function setNotes(?string $notes): void
     {
         $this->notes = $notes;
+    }
+
+    public function getTaskTypes(): array
+    {
+        if(!$this->getTypes()) {
+            return [];
+        }
+        return $this->getTaskTypeService()->getTaskTypesById(explode(',', $this->getTypes()));
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getTypes(): ?string
+    {
+        return $this->types;
+    }
+
+    /**
+     * @param string|null $types
+     */
+    public function setTypes(?string $types): void
+    {
+        $this->types = $types;
     }
 }

@@ -57,7 +57,7 @@ apiv2_onboarding_group_assignments:
 apiv2_onboarding_task_groups:
   path: /api/v2/onboarding/task-groups
   controller: OrangeHRM\Core\Controller\Rest\V2\GenericRestController::handle
-  methods: [ GET, POST ]
+  methods: [ GET, POST, DELETE ]
   defaults:
     _api: OrangeHRM\Onboarding\Api\TaskGroupAPI
 

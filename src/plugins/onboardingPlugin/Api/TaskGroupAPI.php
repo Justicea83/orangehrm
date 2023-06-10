@@ -6,9 +6,13 @@ use OrangeHRM\Core\Api\CommonParams;
 use OrangeHRM\Core\Api\V2\CrudEndpoint;
 use OrangeHRM\Core\Api\V2\Endpoint;
 use OrangeHRM\Core\Api\V2\EndpointCollectionResult;
+use OrangeHRM\Core\Api\V2\EndpointResourceResult;
 use OrangeHRM\Core\Api\V2\EndpointResult;
+use OrangeHRM\Core\Api\V2\Model\ArrayModel;
 use OrangeHRM\Core\Api\V2\ParameterBag;
 use OrangeHRM\Core\Api\V2\RequestParams;
+use OrangeHRM\Core\Api\V2\Serializer\NormalizeException;
+use OrangeHRM\Core\Exception\DaoException;
 use OrangeHRM\Onboarding\Api\Model\TaskGroupDetailModel;
 use OrangeHRM\Onboarding\Api\Validation\TaskGroupValidation;
 use OrangeHRM\Onboarding\Dto\TaskGroupSearchFilterParams;
@@ -48,9 +52,15 @@ class TaskGroupAPI extends Endpoint implements CrudEndpoint
         // TODO: Implement create() method.
     }
 
+    /**
+     * @throws NormalizeException
+     * @throws DaoException
+     */
     public function delete(): EndpointResult
     {
-        // TODO: Implement delete() method.
+        $ids = $this->getRequestParams()->getArray(RequestParams::PARAM_TYPE_BODY, CommonParams::PARAMETER_IDS);
+        $this->getTaskGroupService()->deleteTaskGroup($ids);
+        return new EndpointResourceResult(ArrayModel::class, $ids);
     }
 
     public function getOne(): EndpointResult

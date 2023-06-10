@@ -2,7 +2,9 @@
 
 namespace OrangeHRM\Onboarding\Dao;
 
+use Exception;
 use OrangeHRM\Core\Dao\BaseDao;
+use OrangeHRM\Core\Exception\DaoException;
 use OrangeHRM\Entity\TaskGroup;
 use OrangeHRM\Onboarding\Dto\TaskGroupSearchFilterParams;
 use OrangeHRM\ORM\ListSorter;
@@ -38,5 +40,21 @@ class TaskGroupDao extends BaseDao
         $q->orderBy('t.id', ListSorter::DESCENDING);
 
         return $this->getQueryBuilderWrapper($q);
+    }
+
+    /**
+     * @throws DaoException
+     */
+    public function deleteTaskGroupById(array $ids) : int
+    {
+        try {
+            $q = $this->createQueryBuilder(TaskGroup::class, 't');
+            $q->delete()
+                ->where($q->expr()->in('t.id', ':ids'))
+                ->setParameter('ids', $ids);
+            return $q->getQuery()->execute();
+        } catch (Exception $e) {
+            throw new DaoException($e->getMessage());
+        }
     }
 }

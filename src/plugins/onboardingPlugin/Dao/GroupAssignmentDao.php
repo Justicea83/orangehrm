@@ -2,7 +2,9 @@
 
 namespace OrangeHRM\Onboarding\Dao;
 
+use Exception;
 use OrangeHRM\Core\Dao\BaseDao;
+use OrangeHRM\Core\Exception\DaoException;
 use OrangeHRM\Core\Traits\Auth\AuthUserTrait;
 use OrangeHRM\Entity\GroupAssignment;
 use OrangeHRM\Onboarding\Dto\GroupAssignmentSearchFilterParams;
@@ -78,4 +80,19 @@ class GroupAssignmentDao extends BaseDao
         return $this->getQueryBuilderWrapper($q);
     }
 
+    /**
+     * @throws DaoException
+     */
+    public function getGroupAssignmentById(int $id): ?GroupAssignment
+    {
+        try {
+            $groupAssignment = $this->getRepository(GroupAssignment::class)->find($id);
+            if ($groupAssignment instanceof GroupAssignment) {
+                return $groupAssignment;
+            }
+            return null;
+        } catch (Exception $e) {
+            throw new DaoException($e->getMessage());
+        }
+    }
 }

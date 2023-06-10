@@ -2,14 +2,24 @@
 
 namespace OrangeHRM\Onboarding\Api;
 
+use OrangeHRM\Core\Api\CommonParams;
 use OrangeHRM\Core\Api\V2\CrudEndpoint;
 use OrangeHRM\Core\Api\V2\Endpoint;
+use OrangeHRM\Core\Api\V2\EndpointCollectionResult;
 use OrangeHRM\Core\Api\V2\EndpointResourceResult;
 use OrangeHRM\Core\Api\V2\EndpointResult;
 use OrangeHRM\Core\Api\V2\Exception\InvalidParamException;
+use OrangeHRM\Core\Api\V2\Exception\RecordNotFoundException;
+use OrangeHRM\Core\Api\V2\ParameterBag;
+use OrangeHRM\Core\Api\V2\RequestParams;
 use OrangeHRM\Core\Api\V2\Serializer\NormalizeException;
+use OrangeHRM\Core\Exception\DaoException;
+use OrangeHRM\Entity\GroupAssignment;
+use OrangeHRM\Entity\Task;
 use OrangeHRM\Onboarding\Api\Model\GroupAssignmentModel;
+use OrangeHRM\Onboarding\Api\Model\TaskModel;
 use OrangeHRM\Onboarding\Api\Validation\GroupAssignmentValidation;
+use OrangeHRM\Onboarding\Dto\GroupAssignmentSearchFilterParams;
 use OrangeHRM\Onboarding\Traits\Service\GroupAssignmentServiceTrait;
 
 class GroupAssignmentAPI extends Endpoint implements CrudEndpoint
@@ -37,9 +47,21 @@ class GroupAssignmentAPI extends Endpoint implements CrudEndpoint
 
     public function getAll(): EndpointResult
     {
-        // TODO: Implement getAll() method.
-    }
+        $filterParams = GroupAssignmentSearchFilterParams::instance();
+        $this->setSortingAndPaginationParams($filterParams);
 
+        $assignments = $this->getGroupAssignmentService()->getGroupAssignments($filterParams);
+        $count = $this->getGroupAssignmentService()->getGroupAssignmentsCount($filterParams);
+        return new EndpointCollectionResult(
+            GroupAssignmentModel::class,
+            $assignments,
+            new ParameterBag([
+                CommonParams::PARAMETER_TOTAL => $count,
+                CommonParams::PARAMETER_LIMIT => $filterParams->getLimit(),
+                CommonParams::PARAMETER_OFFSET => $filterParams->getOffset()
+            ])
+        );
+    }
 
     /**
      * @throws InvalidParamException
@@ -53,26 +75,32 @@ class GroupAssignmentAPI extends Endpoint implements CrudEndpoint
         return new EndpointResourceResult(GroupAssignmentModel::class, $groupAssignment);
     }
 
-
-
     public function delete(): EndpointResult
     {
         // TODO: Implement delete() method.
     }
-
-
 
     public function getOne(): EndpointResult
     {
         // TODO: Implement getOne() method.
     }
 
-
-
+    /**
+     * @throws NormalizeException
+     * @throws InvalidParamException
+     * @throws RecordNotFoundException
+     * @throws DaoException
+     */
     public function update(): EndpointResult
     {
-        // TODO: Implement update() method.
+        $id = $this->getRequestParams()->getInt(RequestParams::PARAM_TYPE_ATTRIBUTE, CommonParams::PARAMETER_ID);
+
+        $groupAssignment = $this->getGroupAssignmentService()->getGroupAssignmentById($id);
+        $this->throwRecordNotFoundExceptionIfNotExist($groupAssignment, GroupAssignment::class);
+        $this->setGroupAssignment($groupAssignment);
+
+        $this->getGroupAssignmentService()->saveGroupAssignment($groupAssignment);
+
+        return new EndpointResourceResult(GroupAssignmentModel::class, $groupAssignment);
     }
-
-
 }

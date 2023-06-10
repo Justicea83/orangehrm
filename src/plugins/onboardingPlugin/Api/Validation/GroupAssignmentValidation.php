@@ -3,24 +3,30 @@
 namespace OrangeHRM\Onboarding\Api\Validation;
 
 use Carbon\Carbon;
+use OrangeHRM\Core\Api\CommonParams;
 use OrangeHRM\Core\Api\V2\Exception\InvalidParamException;
 use OrangeHRM\Core\Api\V2\Validator\ParamRule;
 use OrangeHRM\Core\Api\V2\Validator\ParamRuleCollection;
 use OrangeHRM\Core\Api\V2\Validator\Rule;
 use OrangeHRM\Core\Api\V2\Validator\Rules;
+use OrangeHRM\Core\Exception\DaoException;
 use OrangeHRM\Core\Traits\Auth\AuthUserTrait;
 use OrangeHRM\Entity\GroupAssignment;
 use OrangeHRM\Entity\TaskGroup;
 use OrangeHRM\Onboarding\Api\GroupAssignmentAPI;
 use OrangeHRM\Core\Api\V2\RequestParams;
+use OrangeHRM\Onboarding\Dto\GroupAssignmentSearchFilterParams;
+use OrangeHRM\Onboarding\Traits\Service\TaskGroupServiceTrait;
 
 trait GroupAssignmentValidation
 {
-    use AuthUserTrait;
+    use AuthUserTrait, TaskGroupServiceTrait;
 
     public function getValidationRuleForGetAll(): ParamRuleCollection
     {
-        // TODO: Implement getValidationRuleForGetAll() method.
+        return new ParamRuleCollection(
+            ...$this->getSortingAndPaginationParamsRules(GroupAssignmentSearchFilterParams::ALLOWED_SORT_FIELDS)
+        );
     }
 
     public function getValidationRuleForCreate(): ParamRuleCollection
@@ -50,7 +56,21 @@ trait GroupAssignmentValidation
 
     public function getValidationRuleForUpdate(): ParamRuleCollection
     {
-        // TODO: Implement getValidationRuleForUpdate() method.
+        return new ParamRuleCollection(
+            new ParamRule(
+                CommonParams::PARAMETER_ID,
+                new Rule(Rules::POSITIVE)
+            ),
+            $this->getDueDateRule(),
+            $this->getStartDateRule(),
+            $this->getEmployeeIdRule(),
+            $this->getNotesRule(),
+            $this->getTasksRule(),
+            $this->getSupervisorIdRule(),
+            $this->getEndDateRule(),
+            $this->getNameRule(),
+            $this->getTypesRule(),
+        );
     }
 
     protected function getDueDateRule(): ParamRule
@@ -194,5 +214,51 @@ trait GroupAssignmentValidation
 
 
         return $groupAssignment;
+    }
+
+    /**
+     * @throws InvalidParamException
+     * @throws DaoException
+     */
+    protected function setGroupAssignment(GroupAssignment $groupAssignment): void
+    {
+        $dueDate = $this->getRequestParams()->getString(RequestParams::PARAM_TYPE_BODY, GroupAssignmentAPI::PARAMETER_DUE_DATE);
+        $employeeId = $this->getRequestParams()->getInt(RequestParams::PARAM_TYPE_BODY, GroupAssignmentAPI::PARAMETER_EMPLOYEE_ID);
+        $endDate = $this->getRequestParams()->getString(RequestParams::PARAM_TYPE_BODY, GroupAssignmentAPI::PARAMETER_END_DATE);
+        $name = $this->getRequestParams()->getStringOrNull(RequestParams::PARAM_TYPE_BODY, GroupAssignmentAPI::PARAMETER_NAME);
+        $notes = $this->getRequestParams()->getStringOrNull(RequestParams::PARAM_TYPE_BODY, GroupAssignmentAPI::PARAMETER_NOTES);
+        $startDate = $this->getRequestParams()->getString(RequestParams::PARAM_TYPE_BODY, GroupAssignmentAPI::PARAMETER_START_DATE);
+        $supervisorId = $this->getRequestParams()->getInt(RequestParams::PARAM_TYPE_BODY, GroupAssignmentAPI::PARAMETER_SUPERVISOR_ID);
+        $tasks = $this->getRequestParams()->getArray(RequestParams::PARAM_TYPE_BODY, GroupAssignmentAPI::PARAMETER_TASKS);
+        $types = $this->getRequestParams()->getString(RequestParams::PARAM_TYPE_BODY, GroupAssignmentAPI::PARAMETER_TYPES);
+
+        $now = Carbon::now()->toDateTimeString();
+
+        $groupAssignment->setDueDate($dueDate);
+        $groupAssignment->setEndDate($endDate);
+        $groupAssignment->setStartDate($startDate);
+        $groupAssignment->getDecorator()->setEmployeeById($employeeId);
+        $groupAssignment->getDecorator()->setSupervisorById($supervisorId);
+        $groupAssignment->setName($name);
+        $groupAssignment->setNotes($notes);
+        $groupAssignment->setTypes($types);
+        $groupAssignment->setUpdatedAt($now);
+
+        $ids = array_map(fn(TaskGroup $taskGroup) => $taskGroup->getId(), $groupAssignment->getTaskGroups()->toArray());
+        $this->getTaskGroupService()->deleteTaskGroup($ids);
+
+        $groupAssignment->getTaskGroups()->clear();
+
+        $priority = 1;
+        foreach ($tasks as $task) {
+            $taskGroup = new TaskGroup();
+            $taskGroup->setDueDate($task['dueDate']);
+            $taskGroup->getDecorator()->setTaskById($task['id']);
+            $taskGroup->setPriority($priority);
+            $taskGroup->setGroupAssignment($groupAssignment);
+            $groupAssignment->getTaskGroups()->add($taskGroup);
+
+            $priority++;
+        }
     }
 }

@@ -2,6 +2,7 @@
 
 namespace OrangeHRM\Onboarding\Service;
 
+use OrangeHRM\Core\Exception\DaoException;
 use OrangeHRM\Entity\GroupAssignment;
 use OrangeHRM\Onboarding\Dao\GroupAssignmentDao;
 use OrangeHRM\Onboarding\Dto\GroupAssignmentSearchFilterParams;
@@ -51,5 +52,13 @@ class GroupAssignmentService
     public function getGroupAssignmentsCount(GroupAssignmentSearchFilterParams $filterParams): int
     {
         return $this->getGroupAssignmentDao()->getGroupAssignmentsCount($filterParams);
+    }
+
+    /**
+     * @throws DaoException
+     */
+    public function getGroupAssignmentById(int $id): ?GroupAssignment
+    {
+        return $this->getGroupAssignmentDao()->getGroupAssignmentById($id);
     }
 }

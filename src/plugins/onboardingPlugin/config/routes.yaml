@@ -26,6 +26,13 @@ apiv2_onboarding_tasks:
   defaults:
     _api: OrangeHRM\Onboarding\Api\TaskAPI
 
+apiv2_onboarding_task_assignment:
+  path: /api/v2/onboarding/task-assignments/{id}
+  controller: OrangeHRM\Core\Controller\Rest\V2\GenericRestController::handle
+  methods: [ PUT ]
+  defaults:
+    _api: OrangeHRM\Onboarding\Api\GroupAssignmentAPI
+
 apiv2_onboarding_task_assignments:
   path: /api/v2/onboarding/task-assignments
   controller: OrangeHRM\Core\Controller\Rest\V2\GenericRestController::handle
@@ -46,13 +53,6 @@ apiv2_onboarding_employee_assignments:
   methods: [ GET ]
   defaults:
     _api: OrangeHRM\Onboarding\Api\EmployeeAssignmentsAPI
-
-apiv2_onboarding_group_assignments:
-  path: /api/v2/onboarding/group-assignments
-  controller: OrangeHRM\Core\Controller\Rest\V2\GenericRestController::handle
-  methods: [ GET ]
-  defaults:
-    _api: OrangeHRM\Onboarding\Api\GroupAssignmentsAPI
 
 apiv2_onboarding_task_groups:
   path: /api/v2/onboarding/task-groups

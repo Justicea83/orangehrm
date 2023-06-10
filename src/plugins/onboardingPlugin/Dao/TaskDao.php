@@ -63,24 +63,6 @@ class TaskDao extends BaseDao
         return $task;
     }
 
-    public function findTaskById(int $id)
-    {
-        return $this->getRepository(Task::class)->find($id);
-    }
-
-    public function getNumberOfTasks(bool $includeDisabled = false): int
-    {
-        $q = $this->createQueryBuilder(Task::class, 't');
-
-        if ($includeDisabled) {
-            $q->andWhere(
-                $q->expr()->isNull('t.deleted_at')
-            );
-        }
-
-        return $this->count($q);
-    }
-
     /**
      * @throws DaoException
      */

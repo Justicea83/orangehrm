@@ -43,6 +43,7 @@
 import {
   endDateShouldBeAfterStartDate,
   required,
+  shouldNotExceedCharLength,
   startDateShouldBeBeforeEndDate,
   validDateFormat,
 } from '@/core/util/validation/rules';
@@ -57,6 +58,7 @@ const initialActivity = {
   type: null,
   endDate: null,
   tasks: [],
+  name: null,
 };
 
 import Stepper from '@/core/components/stepper/Stepper';
@@ -80,12 +82,13 @@ export default {
   },
   data() {
     return {
-      isLoading: false,
+      isLoading: true,
       activity: {...initialActivity},
       fetchedTasks: {},
       tasksData: {},
       rules: {
         onboardingDetails: {
+          name: [required, shouldNotExceedCharLength(100)],
           employee: [required],
           supervisor: [required],
           startDate: [
@@ -140,25 +143,16 @@ export default {
   },
   watch: {
     activityType(newType) {
-      if (newType) {
-        const activityId = newType?.id;
-        if (activityId === null) {
-          return;
-        }
-
-        if (this.fetchedTasks[activityId]) {
-          this.tasksData = this.fetchedTasks[activityId];
-          return;
-        }
+      if (newType.length) {
+        const activityIds = newType?.map((t) => t.id).join(',');
 
         this.http
           .request({
             params: {
-              taskType: activityId?.id,
+              taskTypes: activityIds,
             },
           })
           .then(({data}) => {
-            this.fetchedTasks[activityId] = data;
             this.tasksData = data;
           });
       }
@@ -169,7 +163,6 @@ export default {
       this.activity.tasks = tasks;
     },
     complete() {
-      console.log(this.activity);
       if (!this.activity.tasks || this.activity.tasks.length === 0) {
         this.$toast.unexpectedError('Tasks cannot be empty!');
         return;
@@ -183,6 +176,7 @@ export default {
         type,
         tasks,
         employee,
+        name,
         supervisor,
       } = this.activity;
 
@@ -191,7 +185,8 @@ export default {
         endDate,
         startDate,
         notes,
-        type: type?.id,
+        name,
+        types: type?.map((t) => t.id).join(','),
         supervisorId: supervisor?.id,
         employeeId: employee?.id,
         tasks: tasks.map((task) => {
@@ -203,6 +198,7 @@ export default {
         }),
       };
 
+      // TODO payload ready for submission
       console.log(payload);
     },
     onCreateOnboarding() {
@@ -213,11 +209,12 @@ export default {
       if (index > 0) {
         validate();
       }
-      setTimeout(() => {
+      // TODO change this back
+      /*setTimeout(() => {
         if (index >= 0 && this.$refs.form.isFromInvalid) {
           ref.changeTab(index - 1);
         }
-      }, 10);
+      }, 10);*/
     },
   },
 };

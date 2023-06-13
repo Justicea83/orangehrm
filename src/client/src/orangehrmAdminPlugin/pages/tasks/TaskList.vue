@@ -88,7 +88,6 @@ import usePaginate from '@ohrm/core/util/composable/usePaginate';
 import {navigate} from '@ohrm/core/util/helper/navigation';
 import {APIService} from '@/core/util/services/api.service';
 import useSort from '@ohrm/core/util/composable/useSort';
-import usei18n from '@/core/util/composable/usei18n';
 import JobtitleDropdown from '@/orangehrmPimPlugin/components/JobtitleDropdown';
 import OnboardingTypeDropdown from '@/orangehrmPimPlugin/components/OnboardingTypeDropdown';
 import TaskAutoComplete from '@/orangehrmAdminPlugin/pages/tasks/TaskAutoComplete';
@@ -115,8 +114,6 @@ export default {
   },
 
   setup(props) {
-    const {$t} = usei18n();
-
     const dataNormalizer = (data) => {
       return data.map((item) => {
         const selectable = props.unSelectableTaskIds.findIndex(

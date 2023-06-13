@@ -8460,6 +8460,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"moment@npm:^2.29.4":
+  version: 2.29.4
+  resolution: "moment@npm:2.29.4"
+  checksum: 0ec3f9c2bcba38dc2451b1daed5daded747f17610b92427bebe1d08d48d8b7bdd8d9197500b072d14e326dd0ccf3e326b9e3d07c5895d3d49e39b6803b76e80e
+  languageName: node
+  linkType: hard
+
 "mrmime@npm:^1.0.0":
   version: 1.0.1
   resolution: "mrmime@npm:1.0.1"
@@ -8905,6 +8912,7 @@ __metadata:
     hammerjs: ^2.0.8
     intl-messageformat: ^9.11.4
     jest: ^27.1.0
+    moment: ^2.29.4
     prettier: ^2.4.1
     primeicons: ^6.0.1
     qrcode: ^1.5.1
@@ -8913,6 +8921,7 @@ __metadata:
     ts-jest: ^27.0.4
     typescript: ~4.5.5
     vue: ^3.2.45
+    vue3-easy-data-table: ^1.5.45
     vue3-infinite-scroll-good: ^1.0.2
     vuedraggable: ^4.1.0
   languageName: unknown
@@ -11509,6 +11518,15 @@ __metadata:
   version: 1.9.1
   resolution: "vue-template-es2015-compiler@npm:1.9.1"
   checksum: ad1e85662783be3ee262c323b05d12e6a5036fca24f16dc0f7ab92736b675919cb4fa4b79b28753eac73119b709d1b36789bf60e8ae423f50c4db35de9370e8b
+  languageName: node
+  linkType: hard
+
+"vue3-easy-data-table@npm:^1.5.45":
+  version: 1.5.45
+  resolution: "vue3-easy-data-table@npm:1.5.45"
+  dependencies:
+    vue: ^3.2.45
+  checksum: 09a39c4f90e39d39d5f4e31208daa4ecc227a893ee010063f977a1f234d465cbe8696cbd922fae109c11d0e67ee3401f73c12df03a66ab6580ddcc05c570109f
   languageName: node
   linkType: hard
 

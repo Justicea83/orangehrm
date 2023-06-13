@@ -1,6 +1,15 @@
 <template>
   <div>
     <oxd-form-row>
+      <oxd-input-field
+        v-model="activityModel.name"
+        autofocus
+        label="Title"
+        :rules="rules.name"
+        required
+      />
+    </oxd-form-row>
+    <oxd-form-row>
       <oxd-grid :cols="3" class="orangehrm-full-width-grid">
         <oxd-grid-item>
           <employee-autocomplete
@@ -21,12 +30,12 @@
           />
         </oxd-grid-item>
         <oxd-grid-item>
-          <onboarding-type-dropdown
-            v-model="activityModel.type"
+          <task-type-dropdown
             required
             name="type"
             label="Type"
             :rules="rules.type"
+            @options-changed="optionsChanged"
           />
         </oxd-grid-item>
       </oxd-grid>
@@ -89,14 +98,14 @@
 </template>
 
 <script>
-import OnboardingTypeDropdown from '@/orangehrmPimPlugin/components/OnboardingTypeDropdown';
 import EmployeeAutocomplete from '@/core/components/inputs/EmployeeAutocomplete';
+import TaskTypeDropdown from '@/onboardingPlugin/pages/create/components/TaskTypeDropdown';
 
 export default {
   name: 'OnboardingDetails',
   components: {
-    OnboardingTypeDropdown,
     EmployeeAutocomplete,
+    TaskTypeDropdown,
   },
   props: {
     activity: {
@@ -116,6 +125,11 @@ export default {
       set(value) {
         this.$emit('update:prop', value);
       },
+    },
+  },
+  methods: {
+    optionsChanged(options) {
+      this.activityModel.type = options;
     },
   },
 };

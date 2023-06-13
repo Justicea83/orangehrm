@@ -62,7 +62,7 @@
           <!--    Board Tasks      -->
           <div class="board-group-body">
             <draggable
-              v-model="elpTasks[type?.id]"
+              v-model="elpTasks"
               group="tasks"
               tag="ul"
               item-key="id"
@@ -106,7 +106,7 @@ export default {
   },
   props: {
     type: {
-      type: Object,
+      type: Array,
       default: null,
     },
     data: {
@@ -128,10 +128,7 @@ export default {
     return {
       tasks: [],
       meta: {},
-      elpTasks: {
-        0: [],
-        1: [],
-      },
+      elpTasks: [],
       loadMore: false,
       hasMoreTasks: true,
       menuItems: ['Reset', 'Move All'],
@@ -144,9 +141,7 @@ export default {
   },
   watch: {
     data(newData) {
-      const elpTasksIds = this.elpTasks[this.type?.id].map(
-        (elpTask) => elpTask.id,
-      );
+      const elpTasksIds = this.elpTasks.map((elpTask) => elpTask.id);
       const {data, meta} = newData;
       this.meta = meta;
       this.hasMoreTasks = true;
@@ -161,23 +156,20 @@ export default {
   methods: {
     loadMoreTasks() {
       this.hasMoreTasks =
-        this.meta.total >
-        this.tasks?.length + this.elpTasks[this.type?.id].length;
+        this.meta.total > this.tasks?.length + this.elpTasks.length;
 
       if (this.type && this.hasMoreTasks) {
         this.http
           .request({
             params: {
-              taskType: this.type?.id,
-              offset: this.tasks.length + this.elpTasks[this.type?.id]?.length,
+              taskTypes: this.type?.map((t) => t.id).join(','),
+              offset: this.tasks.length + this.elpTasks.length,
             },
           })
           .then(({data}) => {
             const {data: tasks, meta} = data;
 
-            const elpTasksIds = this.elpTasks[this.type?.id].map(
-              (elpTask) => elpTask.id,
-            );
+            const elpTasksIds = this.elpTasks.map((elpTask) => elpTask.id);
 
             this.tasks = [
               ...this.tasks,
@@ -188,7 +180,7 @@ export default {
       }
     },
     emitTasksChanged() {
-      this.$emit('tasksChanged', this.elpTasks[this.type?.id]);
+      this.$emit('tasksChanged', this.elpTasks);
     },
     boardingTasksChanged() {
       this.emitTasksChanged();
@@ -196,18 +188,15 @@ export default {
     elpTasksMenuItemClicked({title}) {
       switch (title) {
         case MENU_ITEM_MOVE_ALL: {
-          this.tasks = [...this.tasks, ...this.elpTasks[this.type?.id]];
-          this.elpTasks[this.type?.id] = [];
+          this.tasks = [...this.tasks, ...this.elpTasks];
+          this.elpTasks = [];
         }
       }
     },
     tasksMenuItemClicked({title}) {
       switch (title) {
         case MENU_ITEM_MOVE_ALL: {
-          this.elpTasks[this.type?.id] = [
-            ...this.elpTasks[this.type?.id],
-            ...this.tasks,
-          ];
+          this.elpTasks = [...this.elpTasks, ...this.tasks];
           this.tasks = [];
 
           this.emitTasksChanged();

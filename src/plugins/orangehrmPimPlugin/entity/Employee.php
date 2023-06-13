@@ -1590,4 +1590,21 @@ class Employee implements TenantAwareInterface
     {
         return $this->orgId;
     }
+
+    public function getFullName(): string
+    {
+        $fullName = '';
+
+        if (!empty($this->getFirstName())) {
+            $fullName .= $this->getFirstName() . ' ';
+        }
+        if (!empty($this->getMiddleName())) {
+            $fullName .= $this->getMiddleName() . ' ';
+        }
+        if (!empty($this->getLastName())) {
+            $fullName .= $this->getFirstName() . ' ';
+        }
+
+        return trim($fullName);
+    }
 }

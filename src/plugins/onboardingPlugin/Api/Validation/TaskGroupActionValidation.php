@@ -35,7 +35,7 @@ trait TaskGroupActionValidation
             TaskGroupActionAPI::PARAMETER_ACTION,
             new Rule(Rules::STRING_TYPE),
             new Rule(Rules::REQUIRED),
-            new Rule(Rules::IN, TaskGroupActionAPI::ALLOWED_ACTIONS),
+            new Rule(Rules::IN, [TaskGroupActionAPI::ALLOWED_ACTIONS]),
         );
     }
 

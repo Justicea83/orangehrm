@@ -2,11 +2,13 @@
 
 namespace OrangeHRM\Onboarding\Dao;
 
+use Carbon\Carbon;
 use Exception;
 use OrangeHRM\Core\Dao\BaseDao;
 use OrangeHRM\Core\Exception\DaoException;
 use OrangeHRM\Core\Traits\Auth\AuthUserTrait;
 use OrangeHRM\Entity\GroupAssignment;
+use OrangeHRM\Entity\TaskGroup;
 use OrangeHRM\Onboarding\Dto\GroupAssignmentSearchFilterParams;
 use OrangeHRM\ORM\ListSorter;
 use OrangeHRM\ORM\QueryBuilderWrapper;
@@ -126,5 +128,62 @@ class GroupAssignmentDao extends BaseDao
         } catch (Exception $e) {
             throw new DaoException($e->getMessage());
         }
+    }
+
+    /**
+     * @throws DaoException
+     */
+    public function markAsComplete(int $id): void
+    {
+        $this->beginTransaction();
+        try {
+            $q = $this->createQueryBuilder(TaskGroup::class, 't');
+            $q->update()
+                ->set('t.completed', true)
+                ->andWhere($q->expr()->eq('t.groupAssignmentId', ':groupAssignmentId'))
+                ->setParameter('groupAssignmentId', $id);
+            $q->getQuery()->execute();
+
+            $q = $this->createQueryBuilder(GroupAssignment::class, 'g');
+            $q->update()
+                ->set('g.completed', true)
+                ->andWhere($q->expr()->eq('g.id', ':id'))
+                ->setParameter('id', $id);
+            $q->getQuery()->execute();
+
+            $this->commitTransaction();
+        } catch (Exception $e) {
+            $this->rollBackTransaction();
+            throw new DaoException($e->getMessage());
+        }
+    }
+
+    /**
+     * @throws DaoException
+     */
+    public function submit(int $id): void
+    {
+        try {
+            $q = $this->createQueryBuilder(GroupAssignment::class, 'g');
+            $q->update()
+                ->set('g.submittedAt', ':date')
+                ->setParameter('date', Carbon::now()->toDateTimeString())
+                ->andWhere($q->expr()->eq('g.id', ':id'))
+                ->setParameter('id', $id);
+            $q->getQuery()->execute();
+        } catch (Exception $e) {
+            throw new DaoException($e->getMessage());
+        }
+    }
+
+    public function changeCompleteState(int $id, bool $state): void
+    {
+        $q = $this->createQueryBuilder(GroupAssignment::class, 'g');
+        $q->update()
+            ->set('g.completed', ':state')
+            ->setParameter('state', $state)
+            ->andWhere($q->expr()->eq('g.id', ':id'))
+            ->setParameter('id', $id);
+        $q->getQuery()->execute();
     }
 }

@@ -5,14 +5,18 @@ namespace OrangeHRM\Onboarding\Dao;
 use Exception;
 use OrangeHRM\Core\Dao\BaseDao;
 use OrangeHRM\Core\Exception\DaoException;
+use OrangeHRM\Entity\GroupAssignment;
 use OrangeHRM\Entity\Task;
 use OrangeHRM\Entity\TaskGroup;
 use OrangeHRM\Onboarding\Dto\TaskGroupSearchFilterParams;
+use OrangeHRM\Onboarding\Traits\Service\GroupAssignmentServiceTrait;
 use OrangeHRM\ORM\ListSorter;
 use OrangeHRM\ORM\QueryBuilderWrapper;
 
 class TaskGroupDao extends BaseDao
 {
+    use GroupAssignmentServiceTrait;
+
     public function getTaskGroupList(TaskGroupSearchFilterParams $filterParams): array
     {
         $qb = $this->getTaskGroupListQueryBuilderWrapper($filterParams)->getQueryBuilder();
@@ -79,9 +83,31 @@ class TaskGroupDao extends BaseDao
                 ->andWhere($q->expr()->eq('t.groupAssignmentId', ':groupAssignmentId'))
                 ->setParameter('taskGroupId', $taskGroupId)
                 ->setParameter('groupAssignmentId', $groupAssignmentId);
-            return $q->getQuery()->execute();
+            $results = $q->getQuery()->execute();
+
+            /** @var GroupAssignment $groupAssignment */
+            $groupAssignment = $this->getRepository(GroupAssignment::class)->find($groupAssignmentId);
+            $totalTasks = $groupAssignment->getTaskGroups()->count();
+            $completedTasks = $groupAssignment->getTaskGroups()->filter(function (TaskGroup $taskGroup) use ($taskGroupId) {
+                if ($taskGroup->getId() === $taskGroupId) {
+                    $this->getEntityManager()->refresh($taskGroup);
+                }
+                return $taskGroup->isCompleted();
+            })->count();
+
+            if ($totalTasks === $completedTasks) {
+                if (!$groupAssignment->getCompleted()) {
+                    $this->getGroupAssignmentService()->changeCompleteState($groupAssignmentId, true);
+                }
+            } else {
+                if ($groupAssignment->getCompleted()) {
+                    $this->getGroupAssignmentService()->changeCompleteState($groupAssignmentId, false);
+                }
+            }
+
+            return $results;
         } catch (Exception $e) {
-            throw new DaoException($e->getMessage());
+            throw new DaoException($e->getTraceAsString());
         }
     }
 

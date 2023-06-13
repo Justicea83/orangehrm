@@ -57,6 +57,11 @@ class GroupAssignment extends TenantAwareWithTimeStamps
     private ?string $dueDate = null;
 
     /**
+     * @ORM\Column(name="submitted_at", type="string", nullable=true)
+     */
+    private ?string $submittedAt = null;
+
+    /**
      * @ORM\Column(name="completed", type="boolean", options={"default" : 0})
      */
     private bool $completed = false;
@@ -281,5 +286,21 @@ class GroupAssignment extends TenantAwareWithTimeStamps
     public function setTypes(?string $types): void
     {
         $this->types = $types;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getSubmittedAt(): ?string
+    {
+        return $this->submittedAt;
+    }
+
+    /**
+     * @param string|null $submittedAt
+     */
+    public function setSubmittedAt(?string $submittedAt): void
+    {
+        $this->submittedAt = $submittedAt;
     }
 }

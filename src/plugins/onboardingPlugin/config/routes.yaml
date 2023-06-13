@@ -81,3 +81,8 @@ onboarding_create:
   path: /onboarding/createOnboarding
   controller: OrangeHRM\Onboarding\Controller\CreateOnboardingController::handle
   methods: [ GET ]
+
+onboarding_my_assignments:
+  path: /onboarding/myAssignments
+  controller: OrangeHRM\Onboarding\Controller\MyAssignmentsController::handle
+  methods: [ GET ]

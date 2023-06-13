@@ -8651,6 +8651,51 @@ button > .icon[data-v-7e3c60fb] {
 [data-v-1e745b21] .fw-btn {
   background: var(--oxd-primary-one-color) !important;
 }
+/*!***********************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** css ./node_modules/css-loader/dist/cjs.js??clonedRuleSet-22.use[1]!./node_modules/vue-loader/dist/stylePostLoader.js!./node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-22.use[2]!./node_modules/sass-loader/dist/cjs.js??clonedRuleSet-22.use[3]!./src/onboardingPlugin/pages/my-assignments/components/assignment.scss?vue&type=style&index=0&id=62790182&lang=scss&scoped=true ***!
+  \***********************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************/
+/* Import OXD Globals */
+.oxd-table-filter[data-v-62790182] {
+  background-color: #ffffff;
+  border-radius: 1.2rem;
+  padding: 25px 25px 25px 25px;
+  margin: 25px 0;
+}
+.oxd-table-filter-title[data-v-62790182] {
+  font-size: 14px;
+  font-weight: 800;
+}
+.oxd-table-filter-header[data-v-62790182] {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  justify-content: space-between;
+}
+.oxd-table-filter-header-options[data-v-62790182] {
+  display: flex;
+}
+.oxd-table-filter-header-options .--toggle[data-v-62790182],
+.oxd-table-filter-header-options .--export[data-v-62790182] {
+  display: flex;
+}
+/*!*********************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** css ./node_modules/css-loader/dist/cjs.js??clonedRuleSet-22.use[1]!./node_modules/vue-loader/dist/stylePostLoader.js!./node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-22.use[2]!./node_modules/sass-loader/dist/cjs.js??clonedRuleSet-22.use[3]!./node_modules/vue-loader/dist/index.js??ruleSet[0].use[0]!./src/onboardingPlugin/pages/my-assignments/components/Assignment.vue?vue&type=style&index=1&id=62790182&lang=scss ***!
+  \*********************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************/
+/* Import OXD Globals */
+.oxd-table-filter-header-options .oxd-icon-button {
+  font-size: 12px;
+  width: 24px !important;
+  height: 24px !important;
+  min-width: unset;
+  min-height: unset;
+  margin-right: 5px;
+}
+.oxd-table-filter-header-options .oxd-button {
+  padding-right: 5px;
+  padding-left: 5px;
+  min-width: unset;
+  margin-right: 5px;
+}
 /*!******************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
   !*** css ./node_modules/css-loader/dist/cjs.js??clonedRuleSet-12.use[1]!./node_modules/vue-loader/dist/stylePostLoader.js!./node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-12.use[2]!./node_modules/vue-loader/dist/index.js??ruleSet[0].use[0]!./src/orangehrmClaimPlugin/components/EventAutocomplete.vue?vue&type=style&index=0&id=eddb74d6&scoped=true&lang=css ***!
   \******************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************/

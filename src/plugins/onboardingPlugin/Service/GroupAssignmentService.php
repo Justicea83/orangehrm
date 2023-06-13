@@ -69,4 +69,25 @@ class GroupAssignmentService
     {
         return $this->getGroupAssignmentDao()->deleteGroupAssignmentById($ids);
     }
+
+    /**
+     * @throws DaoException
+     */
+    public function markAsComplete(int $id): void
+    {
+        $this->getGroupAssignmentDao()->markAsComplete($id);
+    }
+
+    /**
+     * @throws DaoException
+     */
+    public function submit(int $id): void
+    {
+        $this->getGroupAssignmentDao()->submit($id);
+    }
+
+    public function changeCompleteState(int $id, bool $state): void
+    {
+        $this->getGroupAssignmentDao()->changeCompleteState($id, $state);
+    }
 }

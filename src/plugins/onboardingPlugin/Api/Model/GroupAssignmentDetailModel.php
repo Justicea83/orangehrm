@@ -22,6 +22,7 @@ class GroupAssignmentDetailModel implements Normalizable
             'endDate',
             'completed',
             'dueDate',
+            'submittedAt',
             ['getTaskTypes', ['getId', 'getName']],
             [
                 'getTaskGroups',
@@ -33,6 +34,8 @@ class GroupAssignmentDetailModel implements Normalizable
                     ['getTask', 'getId', 'getTitle', 'getNotes']
                 ]
             ],
+            ['getSupervisor', 'getFullName'],
+            ['getCreatedBy', 'getFullName'],
         ]);
 
         $this->setAttributeNames([
@@ -43,6 +46,7 @@ class GroupAssignmentDetailModel implements Normalizable
             'endDate',
             'completed',
             'dueDate',
+            'submittedAt',
             ['taskTypes', ['id', 'name']],
             [
                 'taskGroups',
@@ -54,6 +58,8 @@ class GroupAssignmentDetailModel implements Normalizable
                     ['task', 'id', 'title', 'notes'],
                 ]
             ],
+            ['supervisor', 'name'],
+            ['creator', 'name'],
         ]);
     }
 }

@@ -180,6 +180,7 @@ class GroupAssignmentDao extends BaseDao
     {
         $q = $this->createQueryBuilder(GroupAssignment::class, 'g');
         $q->update()
+            ->set('g.completed', true)
             ->set('g.completed', ':state')
             ->setParameter('state', $state)
             ->andWhere($q->expr()->eq('g.id', ':id'))

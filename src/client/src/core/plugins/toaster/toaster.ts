@@ -37,6 +37,7 @@ export interface ToasterAPI {
   notify: (toast: Toast) => Promise<string>;
   show: (message: ToastMessage) => Promise<string>;
   success: (message: ToastMessage) => Promise<string>;
+  generalSuccess: (message: string) => Promise<string>;
   error: (message: ToastMessage) => Promise<string>;
   info: (message: ToastMessage) => Promise<string>;
   warn: (message: ToastMessage) => Promise<string>;
@@ -195,6 +196,12 @@ export default {
         message: translate('general.successfully_saved'),
       });
 
+    const generalSuccess = (message: string) =>
+      success({
+        title: translate('general.success'),
+        message: message,
+      });
+
     const addSuccess = () =>
       success({
         title: translate('general.success'),
@@ -252,6 +259,7 @@ export default {
       addSuccess,
       updateSuccess,
       deleteSuccess,
+      generalSuccess,
       cannotDelete,
       noRecordsFound,
       unexpectedError,

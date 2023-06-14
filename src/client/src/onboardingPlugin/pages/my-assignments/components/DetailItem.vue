@@ -6,7 +6,14 @@
       <h5 class="text-sm text-gray-400">{{ title }}</h5>
     </div>
 
-    <h4 class="text-gray-500">{{ subTitle }}</h4>
+    <h4
+      class="text-gray-500"
+      :class="{
+        'text-red-400': expiring,
+      }"
+    >
+      {{ subTitle }}
+    </h4>
   </div>
 </template>
 
@@ -21,6 +28,11 @@ export default {
     subTitle: {
       type: String,
       required: true,
+    },
+    expiring: {
+      type: Boolean,
+      default: false,
+      required: false,
     },
   },
 };

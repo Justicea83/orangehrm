@@ -15,14 +15,21 @@
         <check-badge-icon
           class="h-6 cursor-pointer"
           :class="{
-            'text-green-600': item.isCompleted,
-            'text-gray-400': !item.isCompleted,
+            'text-green-600': item.isCompleted || submittedAt,
+            'text-gray-400': !item.isCompleted && !submittedAt,
           }"
           @click="toggleComplete(item)"
         />
       </template>
       <template #item-dueDate="item">
-        <h3>{{ formatDate(item.dueDate) }}</h3>
+        <h3
+          :class="{
+            'text-red-400':
+              !item.isCompleted && isDeadlineApproaching(item.dueDate),
+          }"
+        >
+          {{ formatDate(item.dueDate) }}
+        </h3>
       </template>
     </datatable>
   </div>
@@ -49,6 +56,14 @@ export default {
     },
     taskGroupId: {
       type: Number,
+      required: true,
+    },
+    completed: {
+      type: Boolean,
+      required: true,
+    },
+    submittedAt: {
+      type: Object,
       required: true,
     },
   },
@@ -87,6 +102,9 @@ export default {
   },
   methods: {
     toggleComplete(row: Task) {
+      if (this.submittedAt) {
+        return;
+      }
       this.http
         .request({
           url: '/api/v2/onboarding/task-groups/actions',
@@ -109,6 +127,10 @@ export default {
     },
     formatDate(date: string): string {
       return moment(date).format('DD MMM');
+    },
+    isDeadlineApproaching(date: string): boolean {
+      const dateComponent = date.split(' ')[0];
+      return new Date(dateComponent) < new Date();
     },
   },
 };

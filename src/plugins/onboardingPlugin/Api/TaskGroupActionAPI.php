@@ -44,7 +44,7 @@ class TaskGroupActionAPI extends Endpoint implements ResourceEndpoint
     {
         $action = $this->getRequestParams()->getString(RequestParams::PARAM_TYPE_BODY, TaskGroupActionAPI::PARAMETER_ACTION);
         $groupAssignmentId = $this->getRequestParams()->getString(RequestParams::PARAM_TYPE_BODY, TaskGroupActionAPI::PARAMETER_GROUP_ASSIGNMENT_ID);
-        $taskGroupId = $this->getRequestParams()->getString(RequestParams::PARAM_TYPE_BODY, TaskGroupActionAPI::PARAMETER_TASK_GROUP_ID);
+        $taskGroupId = $this->getRequestParams()->getStringOrNull(RequestParams::PARAM_TYPE_BODY, TaskGroupActionAPI::PARAMETER_TASK_GROUP_ID);
         $results = [];
 
         switch ($action) {

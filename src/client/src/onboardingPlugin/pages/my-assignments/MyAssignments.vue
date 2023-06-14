@@ -1,23 +1,33 @@
 <template>
-  <div
-    class="grid"
-    :class="{'grid-cols-3 gap-4': showDetails, 'grid-cols-2': !showDetails}"
-  >
-    <div class="col-span-2">
+  <div class="flex relative h-full">
+    <div
+      ref="list"
+      :class="{'w-2/3 mr-3': showDetails, 'w-full': !showDetails}"
+    >
       <assignment
         v-for="task in tasks"
         :key="task.id"
         :task-group="task"
+        :class="{active: task.isActive}"
         @open-details="openAssignmentDetail"
+        @toggle-active="toggleActive"
       />
     </div>
-    <div>
+    <div class="fixed top-15 right-3 h-screen w-1/4">
       <assignment-detail
         v-if="selectedTask && showDetails"
         :task-group="selectedTask"
         @on-close="onClose"
+        @on-toggle-mark-complete="onToggleMarkComplete"
+        @on-submit="onSubmit"
       />
     </div>
+    <delete-confirmation
+      ref="deleteDialog"
+      confirm-button-text="Yes, Submit"
+      :with-confirmation-icon="false"
+      :message="submitConfirmation"
+    ></delete-confirmation>
   </div>
 </template>
 
@@ -25,12 +35,17 @@
 import {APIService} from '@/core/util/services/api.service';
 import Assignment from '@/onboardingPlugin/pages/my-assignments/components/Assignment';
 import AssignmentDetail from '@/onboardingPlugin/pages/my-assignments/components/AssignmentDetail';
+import DeleteConfirmationDialog from '@/core/components/dialogs/DeleteConfirmationDialog';
+
+const ACTION_COMPLETE = 'complete_assignment';
+const ACTION_SUBMIT = 'submit';
 
 export default {
   name: 'MyAssignments',
   components: {
     Assignment,
     AssignmentDetail,
+    'delete-confirmation': DeleteConfirmationDialog,
   },
   setup() {
     const http = new APIService(
@@ -46,18 +61,39 @@ export default {
       meta: null,
       tasks: [],
       selectedTask: null,
-      showDetails: false,
+      showDetails: true,
+      submitConfirmation:
+        "The will be submitted and can't be edited again. Are you sure you want to continue?",
     };
   },
   mounted() {
     this.loadData();
   },
   methods: {
+    toggleActive(taskGroup) {
+      const tasks = [...this.tasks];
+      tasks.map((task) => {
+        task.isActive = task.id === taskGroup.id;
+        return task;
+      });
+      this.tasks = tasks;
+      this.selectedTask = taskGroup;
+
+      this.$nextTick(() => {
+        const activeElement = this.$refs.list.querySelector('.active');
+        if (activeElement) {
+          activeElement.scrollIntoView({
+            behavior: 'smooth',
+            block: 'center',
+            inline: 'nearest',
+          });
+        }
+      });
+    },
     onClose() {
       this.showDetails = false;
     },
     openAssignmentDetail(data) {
-      console.log(data);
       this.selectedTask = data;
       this.showDetails = true;
     },
@@ -65,8 +101,74 @@ export default {
       this.http.getAll().then((results) => {
         const {meta, data} = results.data;
         this.meta = meta;
-        this.tasks = data;
+        this.tasks = data.map((task, index) => ({
+          ...task,
+          isActive: index === 0,
+        }));
         this.selectedTask = data[0];
+      });
+    },
+    allTasksComplete() {
+      return this.selectedTask.taskGroups.every((task) => task.isCompleted);
+    },
+    onToggleMarkComplete() {
+      this.http
+        .request({
+          url: '/api/v2/onboarding/task-groups/actions',
+          method: 'PUT',
+          data: {
+            action: ACTION_COMPLETE,
+            groupAssignmentId: this.selectedTask?.id,
+          },
+        })
+        .then(() => {
+          const tasks = this.tasks;
+          const taskIndex = tasks.findIndex(
+            (task) => task.id === this.selectedTask?.id,
+          );
+          tasks[taskIndex].completed = true;
+          tasks[taskIndex].taskGroups = tasks[taskIndex].taskGroups.map(
+            (task) => ({
+              ...task,
+              isCompleted: true,
+            }),
+          );
+          this.tasks = tasks;
+          this.$toast.generalSuccess('Assignment completed successfully');
+        });
+    },
+    submitAssignment() {
+      if (!this.allTasksComplete()) {
+        this.$toast.unexpectedError(
+          'An assignment can only be submitted after all subtasks are completed',
+        );
+        return;
+      }
+      this.http
+        .request({
+          url: '/api/v2/onboarding/task-groups/actions',
+          method: 'PUT',
+          data: {
+            action: ACTION_SUBMIT,
+            groupAssignmentId: this.selectedTask?.id,
+          },
+        })
+        .then(() => {
+          const tasks = this.tasks;
+          const taskIndex = tasks.findIndex(
+            (task) => task.id === this.selectedTask?.id,
+          );
+          tasks[taskIndex].submittedAt = new Date().toISOString();
+
+          this.tasks = tasks;
+          this.$toast.generalSuccess('Assignment submitted successfully');
+        });
+    },
+    onSubmit() {
+      this.$refs.deleteDialog.showDialog().then((confirmation) => {
+        if (confirmation === 'ok') {
+          this.submitAssignment();
+        }
       });
     },
   },

@@ -41,8 +41,8 @@
           @click="onCancel"
         />
         <oxd-button
-          :label="$t('general.yes_delete')"
-          icon-name="trash"
+          :label="confirmButtonText || $t('general.yes_delete')"
+          :icon-name="withConfirmationIcon ? 'trash' : ''"
           display-type="label-danger"
           class="orangehrm-button-margin"
           @click="onDelete"
@@ -63,6 +63,16 @@ export default {
     message: {
       type: String,
       default: null,
+      required: false,
+    },
+    confirmButtonText: {
+      type: String,
+      default: null,
+      required: false,
+    },
+    withConfirmationIcon: {
+      type: Boolean,
+      default: true,
       required: false,
     },
   },

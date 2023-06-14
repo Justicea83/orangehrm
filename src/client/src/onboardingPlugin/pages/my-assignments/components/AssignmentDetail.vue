@@ -2,7 +2,9 @@
   <div class="orangehrm-background-container">
     <div class="orangehrm-paper-container">
       <detail-tools
+        :task-group="taskGroup"
         @on-toggle-mark-complete="onToggleMarkComplete"
+        @on-submit="onSubmit"
         @on-close="onClose"
       />
       <oxd-divider />
@@ -22,11 +24,23 @@
         />
         <detail-item
           title="End Date"
+          :expiring="
+            !taskGroup.isCompleted && isDeadlineApproaching(taskGroup.endDate)
+          "
           :sub-title="formatDate(taskGroup?.endDate)"
         />
         <detail-item
           title="Due Date"
+          :expiring="
+            !taskGroup.isCompleted && isDeadlineApproaching(taskGroup.dueDate)
+          "
           :sub-title="formatDate(taskGroup?.dueDate)"
+        />
+
+        <detail-item
+          v-if="taskGroup.submittedAt"
+          title="Submitted On"
+          :sub-title="formatDate(taskGroup?.submittedAt)"
         />
 
         <div class="flex flex-col mt-3">
@@ -62,7 +76,7 @@ export default {
       required: true,
     },
   },
-emits: ['onToggleMarkComplete', 'onClose'],
+  emits: ['onToggleMarkComplete', 'onClose', 'onSubmit'],
   computed: {
     formatDate() {
       return (date) => {
@@ -71,8 +85,15 @@ emits: ['onToggleMarkComplete', 'onClose'],
     },
   },
   methods: {
+    isDeadlineApproaching(date) {
+      const dateComponent = date.split(' ')[0];
+      return new Date(dateComponent) < new Date();
+    },
     onToggleMarkComplete() {
       this.$emit('onToggleMarkComplete');
+    },
+    onSubmit() {
+      this.$emit('onSubmit');
     },
     onClose() {
       this.$emit('onClose');

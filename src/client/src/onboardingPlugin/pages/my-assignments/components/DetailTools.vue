@@ -1,38 +1,77 @@
 <template>
-  <div class="flex justify-between p-2">
-    <oxd-button
-      label="Mark Complete"
-      class="!flex !flex-row !justify-center !items-center"
-      size="small"
-      display-type="ghost"
-      @click="onToggleMarkComplete"
+  <div class="flex justify-between p-2 items-center">
+    <dropdown-menu
+      v-if="!taskGroup.submittedAt"
+      :menu-items="menuItems"
+      @menu-item-clicked="menuItemClicked"
     >
       <template #icon>
-        <check-badge-icon class="h-4 mr-1" />
+        <ellipsis-vertical-icon class="h-6" />
       </template>
-    </oxd-button>
+    </dropdown-menu>
+    <h1 v-else></h1>
     <oxd-icon-button name="arrow-bar-right" @click="onClose" />
   </div>
 </template>
 
 <script>
-import {OxdIconButton, OxdButton} from '@ohrm/oxd';
-import {CheckBadgeIcon} from '@heroicons/vue/24/solid';
+import {OxdIconButton} from '@ohrm/oxd';
+import {EllipsisVerticalIcon} from '@heroicons/vue/24/solid';
+import DropdownMenu from '@/core/components/dropdown/DropdownMenu';
+
+const MENU_COMPLETE = 'Mark Complete';
+const MENU_SUBMIT = 'Submit';
 
 export default {
   name: 'DetailTools',
   components: {
     OxdIconButton,
-    OxdButton,
-    CheckBadgeIcon,
+    EllipsisVerticalIcon,
+    DropdownMenu,
   },
-  emits: ['onToggleMarkComplete', 'onClose'],
+  props: {
+    taskGroup: {
+      type: Object,
+      required: true,
+    },
+  },
+  emits: ['onToggleMarkComplete', 'onClose', 'onSubmit'],
+  computed: {
+    menuItems() {
+      if (this.taskGroup.completed) {
+        return [
+          {
+            title: MENU_SUBMIT,
+          },
+        ];
+      }
+      return [
+        {
+          title: MENU_COMPLETE,
+        },
+        {
+          title: MENU_SUBMIT,
+        },
+      ];
+    },
+  },
   methods: {
     onToggleMarkComplete() {
       this.$emit('onToggleMarkComplete');
     },
     onClose() {
       this.$emit('onClose');
+    },
+    menuItemClicked({title}) {
+      switch (title) {
+        case MENU_COMPLETE:
+          this.$emit('onToggleMarkComplete');
+          break;
+
+        case MENU_SUBMIT:
+          this.$emit('onSubmit');
+          break;
+      }
     },
   },
 };

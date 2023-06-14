@@ -19,16 +19,18 @@
         </div>
         <div class="--toggle">
           <oxd-icon-button
-            :name="isActive ? 'caret-up-fill' : 'caret-down-fill'"
+            :name="taskGroup.isActive ? 'caret-up-fill' : 'caret-down-fill'"
             @click="toggleFilters"
           />
         </div>
       </div>
     </div>
-    <div v-show="isActive" class="oxd-table-filter-area mt-2">
+    <div v-show="taskGroup.isActive" class="oxd-table-filter-area mt-2">
       <task-group
         :task-list="taskGroup.taskGroups"
         :task-group-id="taskGroup.id"
+        :completed="taskGroup.completed"
+        :submitted-at="taskGroup.submittedAt"
       />
     </div>
   </div>
@@ -51,18 +53,15 @@ export default {
       required: true,
     },
   },
-  emits: ['open-details'],
-  data() {
-    return {
-      isActive: false,
-    };
-  },
+  emits: ['open-details', 'toggleActive'],
+
   methods: {
     openMenu() {
       this.$emit('open-details', this.taskGroup);
+      this.toggleFilters()
     },
     toggleFilters() {
-      this.isActive = !this.isActive;
+      this.$emit('toggleActive', this.taskGroup);
     },
   },
 };

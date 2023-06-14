@@ -7,6 +7,7 @@ use OrangeHRM\Core\Api\V2\Validator\ParamRuleCollection;
 use OrangeHRM\Core\Api\V2\Validator\Rule;
 use OrangeHRM\Core\Api\V2\Validator\Rules;
 use OrangeHRM\Onboarding\Api\TaskGroupActionAPI;
+use OrangeHRM\ORM\ListSorter;
 
 trait TaskGroupActionValidation
 {
@@ -43,8 +44,13 @@ trait TaskGroupActionValidation
     {
         return new ParamRule(
             TaskGroupActionAPI::PARAMETER_TASK_GROUP_ID,
-            new Rule(Rules::POSITIVE),
-            new Rule(Rules::REQUIRED),
+            new Rule(
+                Rules::ONE_OF,
+                [
+                    new Rule(Rules::POSITIVE),
+                    new Rule(Rules::NOT_REQUIRED),
+                ]
+            )
         );
     }
 

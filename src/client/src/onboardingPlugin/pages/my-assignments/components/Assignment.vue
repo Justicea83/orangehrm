@@ -58,7 +58,7 @@ export default {
   methods: {
     openMenu() {
       this.$emit('open-details', this.taskGroup);
-      this.toggleFilters()
+      this.toggleFilters();
     },
     toggleFilters() {
       this.$emit('toggleActive', this.taskGroup);

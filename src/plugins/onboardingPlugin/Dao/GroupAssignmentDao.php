@@ -61,12 +61,16 @@ class GroupAssignmentDao extends BaseDao
     public function getGroupAssignments(GroupAssignmentSearchFilterParams $filterParams): array
     {
         $qb = $this->getGroupAssignmentListQueryBuilderWrapper($filterParams)->getQueryBuilder();
+        $qb->andWhere('g.creatorId = :employeeId')
+            ->setParameter('employeeId', $this->getAuthUser()->getEmpNumber());
         return $qb->getQuery()->execute();
     }
 
     public function getGroupAssignmentsCount(GroupAssignmentSearchFilterParams $filterParams): int
     {
         $qb = $this->getGroupAssignmentListQueryBuilderWrapper($filterParams)->getQueryBuilder();
+        $qb->andWhere('g.creatorId = :employeeId')
+            ->setParameter('employeeId', $this->getAuthUser()->getEmpNumber());
         return $this->getPaginator($qb)->count();
     }
 

@@ -86,3 +86,18 @@ onboarding_my_assignments:
   path: /onboarding/myAssignments
   controller: OrangeHRM\Onboarding\Controller\MyAssignmentsController::handle
   methods: [ GET ]
+
+onboarding_task_groups:
+  path: /onboarding/viewTaskGroups
+  controller: OrangeHRM\Onboarding\Controller\TaskGroupsController::handle
+  methods: [ GET ]
+
+onboarding_employee_task_groups:
+  path: /onboarding/viewEmployeeTaskGroups
+  controller: OrangeHRM\Onboarding\Controller\EmployeeTaskGroupsController::handle
+  methods: [ GET ]
+
+onboarding_task_types:
+  path: /onboarding/viewTaskTypes
+  controller: OrangeHRM\Onboarding\Controller\TaskTypesController::handle
+  methods: [ GET ]

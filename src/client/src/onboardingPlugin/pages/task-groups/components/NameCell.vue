@@ -1,6 +1,6 @@
 <template>
   <h3 class="italic">
-    {{ name['name'] }}
+    {{ name['name'] ?? '' }}
   </h3>
 </template>
 

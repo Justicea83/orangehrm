@@ -16,8 +16,7 @@
             v-model="activityModel.employee"
             label="Employee"
             name="employee"
-            required
-            :rules="rules.employee"
+            :required="false"
           />
         </oxd-grid-item>
         <oxd-grid-item>
@@ -25,8 +24,7 @@
             v-model="activityModel.supervisor"
             label="Supervisor"
             name="supervisor"
-            required
-            :rules="rules.supervisor"
+            :required="false"
           />
         </oxd-grid-item>
         <oxd-grid-item>
@@ -84,28 +82,25 @@
         :rules="rules.notes"
       />
     </oxd-form-row>
-
-    <!--    <oxd-form-actions>
-      <required-text />
-      <oxd-button
-        display-type="ghost"
-        :label="$t('general.cancel')"
-        @click="onCancel"
-      />
-      <submit-button />
-    </oxd-form-actions>-->
   </div>
 </template>
 
 <script>
 import EmployeeAutocomplete from '@/core/components/inputs/EmployeeAutocomplete';
 import TaskTypeDropdown from '@/onboardingPlugin/pages/create/components/TaskTypeDropdown';
+import {OxdFormRow, OxdInputField, OxdGrid, OxdGridItem} from '@ohrm/oxd';
+import DateInput from '@ohrm/components/inputs/DateInput.vue';
 
 export default {
   name: 'OnboardingDetails',
   components: {
     EmployeeAutocomplete,
     TaskTypeDropdown,
+    OxdFormRow,
+    OxdInputField,
+    OxdGrid,
+    OxdGridItem,
+    DateInput,
   },
   props: {
     activity: {
@@ -117,6 +112,7 @@ export default {
       required: true,
     },
   },
+  emits: ['update:prop'],
   computed: {
     activityModel: {
       get() {

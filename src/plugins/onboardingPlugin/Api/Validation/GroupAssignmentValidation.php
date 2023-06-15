@@ -124,8 +124,13 @@ trait GroupAssignmentValidation
     {
         return new ParamRule(
             GroupAssignmentAPI::PARAMETER_EMPLOYEE_ID,
-            new Rule(Rules::POSITIVE),
-            new Rule(Rules::REQUIRED),
+            new Rule(
+                Rules::ONE_OF,
+                [
+                    new Rule(Rules::POSITIVE),
+                    new Rule(Rules::NOT_REQUIRED),
+                ]
+            )
         );
     }
 
@@ -133,8 +138,13 @@ trait GroupAssignmentValidation
     {
         return new ParamRule(
             GroupAssignmentAPI::PARAMETER_SUPERVISOR_ID,
-            new Rule(Rules::POSITIVE),
-            new Rule(Rules::REQUIRED),
+            new Rule(
+                Rules::ONE_OF,
+                [
+                    new Rule(Rules::POSITIVE),
+                    new Rule(Rules::NOT_REQUIRED),
+                ]
+            )
         );
     }
 
@@ -178,7 +188,7 @@ trait GroupAssignmentValidation
     protected function setParamsToGroupAssignment(): GroupAssignment
     {
         $dueDate = $this->getRequestParams()->getString(RequestParams::PARAM_TYPE_BODY, GroupAssignmentAPI::PARAMETER_DUE_DATE);
-        $employeeId = $this->getRequestParams()->getInt(RequestParams::PARAM_TYPE_BODY, GroupAssignmentAPI::PARAMETER_EMPLOYEE_ID);
+        $employeeId = $this->getRequestParams()->getIntOrNull(RequestParams::PARAM_TYPE_BODY, GroupAssignmentAPI::PARAMETER_EMPLOYEE_ID);
         $endDate = $this->getRequestParams()->getString(RequestParams::PARAM_TYPE_BODY, GroupAssignmentAPI::PARAMETER_END_DATE);
         $name = $this->getRequestParams()->getStringOrNull(RequestParams::PARAM_TYPE_BODY, GroupAssignmentAPI::PARAMETER_NAME);
         $notes = $this->getRequestParams()->getStringOrNull(RequestParams::PARAM_TYPE_BODY, GroupAssignmentAPI::PARAMETER_NOTES);
@@ -193,7 +203,7 @@ trait GroupAssignmentValidation
         $groupAssignment->setDueDate($dueDate);
         $groupAssignment->setEndDate($endDate);
         $groupAssignment->setStartDate($startDate);
-        $groupAssignment->getDecorator()->setEmployeeById($employeeId);
+        $groupAssignment->getDecorator()->setEmployeeById($employeeId ?? $this->getAuthUser()->getEmpNumber());
         $groupAssignment->getDecorator()->setSupervisorById($supervisorId);
         $groupAssignment->setCreatedAt($now);
         $groupAssignment->setName($name);

@@ -3,16 +3,12 @@
     <div class="orangehrm-background-container">
       <div class="orangehrm-card-container">
         <oxd-text tag="h6" class="orangehrm-main-title">
-          Create a boarding event
+          Create a task assignment
         </oxd-text>
 
         <oxd-divider />
 
-        <oxd-form
-          ref="form"
-          :loading="isLoading"
-          @submitValid="onCreateOnboarding"
-        >
+        <oxd-form ref="form" :loading="isLoading">
           <stepper
             :tabs="tabs"
             @after-change="beforeChange"
@@ -49,6 +45,10 @@ import {
 } from '@/core/util/validation/rules';
 import OnboardingDetails from '@/onboardingPlugin/pages/create/steps/OnboardingDetails';
 import OnboardingTasks from '@/onboardingPlugin/pages/create/steps/OnboardingTasks';
+import {OxdForm, OxdText, OxdDivider} from '@ohrm/oxd';
+import Stepper from '@/core/components/stepper/Stepper';
+import {APIService} from '@/core/util/services/api.service';
+import {navigate} from '@/core/util/helper/navigation';
 
 const initialActivity = {
   employee: null,
@@ -61,15 +61,15 @@ const initialActivity = {
   name: null,
 };
 
-import Stepper from '@/core/components/stepper/Stepper';
-import {APIService} from '@/core/util/services/api.service';
-
 export default {
   name: 'CreateOnboarding',
   components: {
     Stepper,
     OnboardingDetails,
     OnboardingTasks,
+    OxdText,
+    OxdForm,
+    OxdDivider,
   },
   setup() {
     const http = new APIService(
@@ -82,15 +82,13 @@ export default {
   },
   data() {
     return {
-      isLoading: true,
+      isLoading: false,
       activity: {...initialActivity},
       fetchedTasks: {},
       tasksData: {},
       rules: {
         onboardingDetails: {
           name: [required, shouldNotExceedCharLength(100)],
-          employee: [required],
-          supervisor: [required],
           startDate: [
             required,
             validDateFormat(this.userDateFormat),
@@ -126,7 +124,7 @@ export default {
       },
       tabs: [
         {
-          title: 'ELP Details',
+          title: 'Task Details',
           id: 1,
         },
         {
@@ -168,6 +166,8 @@ export default {
         return;
       }
 
+      this.loading = true;
+
       const {
         dueDate,
         endDate,
@@ -198,23 +198,30 @@ export default {
         }),
       };
 
-      // TODO payload ready for submission
-      console.log(payload);
-    },
-    onCreateOnboarding() {
-      console.log('subbb');
+      this.http
+        .request({
+          url: '/api/v2/onboarding/task-assignments',
+          method: 'POST',
+          data: payload,
+        })
+        .then(() => {
+          this.$toast.saveSuccess();
+          navigate('/onboarding/viewTaskGroups');
+        })
+        .catch(() => {
+          this.loading = false;
+        });
     },
     beforeChange({index, ref}) {
       const {validate} = this.$refs.form;
       if (index > 0) {
         validate();
       }
-      // TODO change this back
-      /*setTimeout(() => {
+      setTimeout(() => {
         if (index >= 0 && this.$refs.form.isFromInvalid) {
           ref.changeTab(index - 1);
         }
-      }, 10);*/
+      }, 10);
     },
   },
 };

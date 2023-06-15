@@ -55,7 +55,7 @@ import DeadlineDate from '@/onboardingPlugin/pages/task-groups/components/Deadli
 import CompleteCell from '@/onboardingPlugin/pages/task-groups/components/CompleteCell.vue';
 import NameCell from '@/onboardingPlugin/pages/task-groups/components/NameCell.vue';
 import {TaskGroup} from '@/onboardingPlugin/models';
-import { navigate } from '@/core/util/helper/navigation';
+import {navigate} from '@/core/util/helper/navigation';
 const defaultSortOrder: SortDefinition = {
   'task.title': 'DEFAULT',
 };

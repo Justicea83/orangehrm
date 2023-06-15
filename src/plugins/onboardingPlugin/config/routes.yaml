@@ -78,7 +78,7 @@ onboarding_index:
   methods: [ GET ]
 
 onboarding_create:
-  path: /onboarding/createOnboarding
+  path: /onboarding/createTasks
   controller: OrangeHRM\Onboarding\Controller\CreateOnboardingController::handle
   methods: [ GET ]
 

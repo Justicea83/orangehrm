@@ -22,6 +22,9 @@ class GroupAssignmentModel implements Normalizable
             'endDate',
             'completed',
             'dueDate',
+            'submittedAt',
+            ['getSupervisor', 'getFullName'],
+            ['getCreatedBy', 'getFullName'],
         ]);
 
         $this->setAttributeNames([
@@ -32,6 +35,9 @@ class GroupAssignmentModel implements Normalizable
             'endDate',
             'completed',
             'dueDate',
+            'submittedAt',
+            ['supervisor', 'name'],
+            ['creator', 'name'],
         ]);
     }
 }

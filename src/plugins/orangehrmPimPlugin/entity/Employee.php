@@ -1602,7 +1602,7 @@ class Employee implements TenantAwareInterface
             $fullName .= $this->getMiddleName() . ' ';
         }
         if (!empty($this->getLastName())) {
-            $fullName .= $this->getFirstName() . ' ';
+            $fullName .= $this->getLastName() . ' ';
         }
 
         return trim($fullName);

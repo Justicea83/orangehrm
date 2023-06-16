@@ -127,6 +127,7 @@ export default {
   },
   methods: {
     onSave() {
+      this.isLoading = true;
       const payload = {
         ...this.task,
         jobTitleId: this.task?.jobTitleId?.id,
@@ -141,7 +142,8 @@ export default {
         })
         .then(() => {
           this.onCancel();
-        });
+        })
+        .catch(() => (this.isLoading = false));
     },
     onCancel() {
       navigate('/taskManagement/viewTasks');

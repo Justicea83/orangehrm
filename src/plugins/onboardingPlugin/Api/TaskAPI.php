@@ -236,6 +236,12 @@ class TaskAPI extends Endpoint implements CrudEndpoint
         );
     }
 
+    /**
+     * @throws NormalizeException
+     * @throws InvalidParamException
+     * @throws RecordNotFoundException
+     * @throws DaoException
+     */
     public function getOne(): EndpointResult
     {
         $id = $this->getRequestParams()->getInt(RequestParams::PARAM_TYPE_ATTRIBUTE, CommonParams::PARAMETER_ID);

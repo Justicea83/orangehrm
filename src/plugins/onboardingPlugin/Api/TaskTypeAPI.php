@@ -14,9 +14,7 @@ use OrangeHRM\Core\Api\V2\Model\ArrayModel;
 use OrangeHRM\Core\Api\V2\RequestParams;
 use OrangeHRM\Core\Api\V2\Serializer\NormalizeException;
 use OrangeHRM\Core\Exception\DaoException;
-use OrangeHRM\Entity\Task;
 use OrangeHRM\Entity\TaskType;
-use OrangeHRM\Onboarding\Api\Model\TaskModel;
 use OrangeHRM\Onboarding\Api\Model\TaskTypeModel;
 use OrangeHRM\Onboarding\Api\Validation\TaskTypeValidation;
 use OrangeHRM\Onboarding\Traits\Service\TaskTypeServiceTrait;
@@ -56,8 +54,23 @@ class TaskTypeAPI extends Endpoint implements CrudEndpoint
         return new EndpointResourceResult(ArrayModel::class, $ids);
     }
 
+    /**
+     * @throws NormalizeException
+     * @throws InvalidParamException
+     * @throws RecordNotFoundException
+     * @throws DaoException
+     */
     public function getOne(): EndpointResult
     {
+        $id = $this->getRequestParams()->getInt(RequestParams::PARAM_TYPE_ATTRIBUTE, CommonParams::PARAMETER_ID);
+        $taskType = $this->getTaskTypeService()->getTaskTypeById($id);
+        if (!$taskType instanceof TaskType) {
+            throw new RecordNotFoundException();
+        }
+        return new EndpointResourceResult(
+            TaskTypeModel::class,
+            $taskType
+        );
     }
 
     /**

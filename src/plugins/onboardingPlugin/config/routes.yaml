@@ -15,7 +15,7 @@ apiv2_task_management_tasks:
 apiv2_task_management_task_type:
   path: /api/v2/task-management/task-types/{id}
   controller: OrangeHRM\Core\Controller\Rest\V2\GenericRestController::handle
-  methods: [ PUT ]
+  methods: [ PUT, GET ]
   defaults:
     _api: OrangeHRM\Onboarding\Api\TaskTypeAPI
 
@@ -92,11 +92,7 @@ task_management_employee_task_groups:
   controller: OrangeHRM\Onboarding\Controller\EmployeeTaskGroupsController::handle
   methods: [ GET ]
 
-task_management_task_types:
-  path: /taskManagement/viewTaskTypes
-  controller: OrangeHRM\Onboarding\Controller\TaskTypesController::handle
-  methods: [ GET ]
-
+# Tasks
 task_management_view_task_list:
   path: /taskManagement/viewTasks
   controller: OrangeHRM\Onboarding\Controller\TasksController::handle
@@ -110,4 +106,19 @@ task_management_save_task:
 task_management_edit_task:
   path: /taskManagement/saveTask/{id}
   controller: OrangeHRM\Onboarding\Controller\SaveTaskController::handle
+  methods: [ GET ]
+
+task_management_task_types:
+  path: /taskManagement/viewTaskTypes
+  controller: OrangeHRM\Onboarding\Controller\TaskTypesController::handle
+  methods: [ GET ]
+
+task_management_save_task_type:
+  path: /taskManagement/saveTaskType
+  controller: OrangeHRM\Onboarding\Controller\SaveTaskTypeController::handle
+  methods: [ GET ]
+
+task_management_edit_task_type:
+  path: /taskManagement/saveTaskType/{id}
+  controller: OrangeHRM\Onboarding\Controller\SaveTaskTypeController::handle
   methods: [ GET ]

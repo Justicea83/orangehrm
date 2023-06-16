@@ -3,7 +3,7 @@
     <div class="orangehrm-paper-container">
       <div class="orangehrm-header-container">
         <oxd-button
-          :label="$t('general.add')"
+          label="Assign"
           icon-name="plus"
           display-type="secondary"
           @click="onClickAdd"

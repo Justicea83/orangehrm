@@ -2,7 +2,7 @@
   <oxd-table-filter filter-title="Task Information">
     <oxd-form @submit-valid="filterItems" @reset="filterItems">
       <oxd-form-row>
-        <oxd-grid :cols="4" class="orangehrm-full-width-grid">
+        <oxd-grid :cols="2" class="orangehrm-full-width-grid">
           <oxd-grid-item>
             <task-auto-complete v-model="filters.task" />
           </oxd-grid-item>

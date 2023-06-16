@@ -23,6 +23,9 @@ trait TaskTypeValidation
         );
     }
 
+    /**
+     * @throws InvalidParamException
+     */
     public function getValidationRuleForCreate(): ParamRuleCollection
     {
         return new ParamRuleCollection(

@@ -77,14 +77,14 @@ class GroupAssignment extends TenantAwareWithTimeStamps
     private ?string $notes;
 
     /**
-     * @ORM\Column(name="emp_number", type="integer")
+     * @ORM\Column(name="emp_number", type="integer", nullable=true)
      */
-    private ?string $empNumber;
+    private ?int $empNumber;
 
     /**
-     * @ORM\Column(name="supervisor_number", type="integer")
+     * @ORM\Column(name="supervisor_number", type="integer", nullable=true)
      */
-    private ?string $supervisorNumber;
+    private ?int $supervisorNumber;
 
     /**
      * @var Collection<int, TaskGroup>
@@ -302,5 +302,18 @@ class GroupAssignment extends TenantAwareWithTimeStamps
     public function setSubmittedAt(?string $submittedAt): void
     {
         $this->submittedAt = $submittedAt;
+    }
+
+    public function setEmpNumber(?int $empNumber): void
+    {
+        $this->empNumber = $empNumber;
+    }
+
+    /**
+     * @param int|null $supervisorNumber
+     */
+    public function setSupervisorNumber(?int $supervisorNumber): void
+    {
+        $this->supervisorNumber = $supervisorNumber;
     }
 }

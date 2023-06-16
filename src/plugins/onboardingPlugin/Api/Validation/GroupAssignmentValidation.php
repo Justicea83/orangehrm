@@ -25,8 +25,101 @@ trait GroupAssignmentValidation
     public function getValidationRuleForGetAll(): ParamRuleCollection
     {
         return new ParamRuleCollection(
+            $this->getValidationDecorator()->notRequiredParamRule(
+                new ParamRule(
+                    GroupAssignmentAPI::PARAMETER_NAME,
+                    new Rule(Rules::STRING_TYPE),
+                ),
+            ),
+            $this->getValidationDecorator()->notRequiredParamRule(
+                new ParamRule(
+                    GroupAssignmentAPI::PARAMETER_START_DATE,
+                    new Rule(Rules::STRING_TYPE),
+                ),
+            ),
+            $this->getValidationDecorator()->notRequiredParamRule(
+                new ParamRule(
+                    GroupAssignmentAPI::PARAMETER_END_DATE,
+                    new Rule(Rules::STRING_TYPE),
+                ),
+            ),
+            $this->getValidationDecorator()->notRequiredParamRule(
+                new ParamRule(
+                    GroupAssignmentAPI::PARAMETER_DUE_DATE,
+                    new Rule(Rules::STRING_TYPE),
+                ),
+            ),
+            $this->getValidationDecorator()->notRequiredParamRule(
+                new ParamRule(
+                    GroupAssignmentAPI::FILTER_SUBMITTED_AT,
+                    new Rule(Rules::STRING_TYPE),
+                ),
+            ),
+            $this->getValidationDecorator()->notRequiredParamRule(
+                new ParamRule(
+                    GroupAssignmentAPI::FILTER_COMPLETED,
+                    new Rule(Rules::STRING_TYPE),
+                ),
+            ),
+            $this->getValidationDecorator()->notRequiredParamRule(
+                new ParamRule(
+                    GroupAssignmentAPI::PARAMETER_EMPLOYEE_ID,
+                    new Rule(Rules::STRING_TYPE),
+                ),
+            ),
+            $this->getValidationDecorator()->notRequiredParamRule(
+                new ParamRule(
+                    GroupAssignmentAPI::PARAMETER_SUPERVISOR_ID,
+                    new Rule(Rules::STRING_TYPE),
+                ),
+            ),
             ...$this->getSortingAndPaginationParamsRules(GroupAssignmentSearchFilterParams::ALLOWED_SORT_FIELDS)
         );
+    }
+
+    public function setGetAllParams(): GroupAssignmentSearchFilterParams
+    {
+        $dueDate = $this->getRequestParams()->getStringOrNull(
+            RequestParams::PARAM_TYPE_QUERY,
+            GroupAssignmentAPI::PARAMETER_DUE_DATE
+        );
+        $startDate = $this->getRequestParams()->getStringOrNull(
+            RequestParams::PARAM_TYPE_QUERY,
+            GroupAssignmentAPI::PARAMETER_START_DATE
+        );
+        $endDate = $this->getRequestParams()->getStringOrNull(
+            RequestParams::PARAM_TYPE_QUERY,
+            GroupAssignmentAPI::PARAMETER_END_DATE
+        );
+        $name = $this->getRequestParams()->getStringOrNull(
+            RequestParams::PARAM_TYPE_QUERY,
+            GroupAssignmentAPI::PARAMETER_NAME
+        );
+        $employeeId = $this->getRequestParams()->getIntOrNull(
+            RequestParams::PARAM_TYPE_QUERY,
+            GroupAssignmentAPI::PARAMETER_EMPLOYEE_ID
+        );
+        $supervisorId = $this->getRequestParams()->getIntOrNull(
+            RequestParams::PARAM_TYPE_QUERY,
+            GroupAssignmentAPI::PARAMETER_SUPERVISOR_ID
+        );
+        $completed = $this->getRequestParams()->getBooleanOrNull(
+            RequestParams::PARAM_TYPE_QUERY,
+            GroupAssignmentAPI::FILTER_COMPLETED
+        );
+        $submittedAt = $this->getRequestParams()->getStringOrNull(
+            RequestParams::PARAM_TYPE_QUERY,
+            GroupAssignmentAPI::FILTER_SUBMITTED_AT
+        );
+
+        return GroupAssignmentSearchFilterParams::instance()
+            ->setDueDate($dueDate)
+            ->setStartDate($startDate)
+            ->setCompleted($completed)
+            ->setSubmittedAt($submittedAt)
+            ->setEndDate($endDate)->setName($name)
+            ->setEmployeeNumber($employeeId)
+            ->setSupervisorNumber($supervisorId);
     }
 
     public function getValidationRuleForCreate(): ParamRuleCollection

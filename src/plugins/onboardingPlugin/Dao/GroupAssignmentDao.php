@@ -81,6 +81,64 @@ class GroupAssignmentDao extends BaseDao
 
         $this->setSortingAndPaginationParams($q, $filterParams);
 
+        if (!is_null($filterParams->getName())) {
+            $q->andWhere(
+                $q->expr()->like('g.name', ':name'),
+            );
+            $q->setParameter('name', '%' . $filterParams->getName() . '%');
+        }
+
+        if (!is_null($filterParams->getSubmittedAt())) {
+            $q->andWhere(
+                $q->expr()->isNotNull('g.submittedAt')
+            )->andWhere(
+                $q->expr()->gte('g.submittedAt', ':submittedAt')
+            );
+            $q->setParameter('submittedAt', $filterParams->getSubmittedAt());
+        }
+
+        if (!is_null($filterParams->getStartDate())) {
+            $q->andWhere(
+                $q->expr()->gte('g.startDate', ':startDate')
+            );
+            $q->setParameter('startDate', $filterParams->getStartDate());
+        }
+
+        if (!is_null($filterParams->getEndDate())) {
+            $q->andWhere(
+                $q->expr()->lte('g.endDate', ':endDate')
+            );
+            $q->setParameter('endDate', $filterParams->getEndDate());
+        }
+
+        if (!is_null($filterParams->getDueDate())) {
+            $q->andWhere(
+                $q->expr()->gte('g.dueDate', ':dueDate')
+            );
+            $q->setParameter('dueDate', $filterParams->getDueDate());
+        }
+
+        if (!is_null($filterParams->getEmployeeNumber())) {
+            $q->andWhere(
+                $q->expr()->eq('g.empNumber', ':empNumber')
+            );
+            $q->setParameter('empNumber', $filterParams->getEmployeeNumber());
+        }
+
+        if (!is_null($filterParams->getSupervisorNumber())) {
+            $q->andWhere(
+                $q->expr()->eq('g.supervisorNumber', ':supervisorNumber')
+            );
+            $q->setParameter('supervisorNumber', $filterParams->getSupervisorNumber());
+        }
+
+        if (!is_null($filterParams->isCompleted())) {
+            $q->andWhere(
+                $q->expr()->eq('g.completed', ':completed')
+            );
+            $q->setParameter('completed', $filterParams->isCompleted());
+        }
+
         $q->orderBy('g.id', ListSorter::DESCENDING);
 
         return $this->getQueryBuilderWrapper($q);

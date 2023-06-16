@@ -1,34 +1,4 @@
 <template>
-  <oxd-table-filter filter-title="Task Types Information">
-    <oxd-form @submit-valid="filterItems" @reset="filterItems">
-      <oxd-form-row>
-        <oxd-grid :cols="4" class="orangehrm-full-width-grid">
-          <oxd-grid-item>
-            <h1>Hello</h1>
-          </oxd-grid-item>
-        </oxd-grid>
-      </oxd-form-row>
-
-      <oxd-divider />
-
-      <oxd-form-actions>
-        <oxd-button
-          display-type="ghost"
-          :label="$t('general.reset')"
-          type="reset"
-        />
-        <oxd-button
-          class="orangehrm-left-space"
-          display-type="secondary"
-          :label="$t('general.search')"
-          type="submit"
-        />
-      </oxd-form-actions>
-    </oxd-form>
-  </oxd-table-filter>
-
-  <br />
-
   <div class="orangehrm-background-container">
     <div class="orangehrm-paper-container">
       <div class="orangehrm-header-container">
@@ -80,18 +50,7 @@ import {navigate} from '@ohrm/core/util/helper/navigation';
 import {APIService} from '@/core/util/services/api.service';
 import useSort from '@ohrm/core/util/composable/useSort';
 import TableHeader from '@/core/components/table/TableHeader';
-import {
-  OxdForm,
-  OxdTableFilter,
-  OxdFormRow,
-  OxdGrid,
-  OxdGridItem,
-  OxdFormActions,
-  OxdButton,
-  OxdDivider,
-  OxdCardTable,
-  OxdPagination,
-} from '@ohrm/oxd';
+import {OxdButton, OxdCardTable, OxdPagination} from '@ohrm/oxd';
 
 const defaultSortOrder = {
   'task.title': 'DEFAULT',
@@ -102,13 +61,6 @@ export default {
   name: 'TaskTypes',
   components: {
     'delete-confirmation': DeleteConfirmationDialog,
-    OxdForm,
-    OxdFormActions,
-    OxdFormRow,
-    OxdGrid,
-    OxdGridItem,
-    OxdDivider,
-    OxdTableFilter,
     OxdButton,
     OxdCardTable,
     OxdPagination,

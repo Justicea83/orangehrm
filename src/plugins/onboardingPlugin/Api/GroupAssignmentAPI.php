@@ -18,7 +18,6 @@ use OrangeHRM\Core\Exception\DaoException;
 use OrangeHRM\Entity\GroupAssignment;
 use OrangeHRM\Onboarding\Api\Model\GroupAssignmentModel;
 use OrangeHRM\Onboarding\Api\Validation\GroupAssignmentValidation;
-use OrangeHRM\Onboarding\Dto\GroupAssignmentSearchFilterParams;
 use OrangeHRM\Onboarding\Traits\Service\GroupAssignmentServiceTrait;
 
 class GroupAssignmentAPI extends Endpoint implements CrudEndpoint
@@ -39,6 +38,9 @@ class GroupAssignmentAPI extends Endpoint implements CrudEndpoint
     public const MODEL_DEFAULT = 'default';
     public const MODEL_DETAILED = 'detailed';
 
+    public const FILTER_SUBMITTED_AT = 'submittedAt';
+    public const FILTER_COMPLETED  = 'completed';
+
     public const MODEL_MAP = [
         self::MODEL_DEFAULT => GroupAssignmentModel::class,
         self::MODEL_DETAILED => GroupAssignmentModel::class,
@@ -46,7 +48,7 @@ class GroupAssignmentAPI extends Endpoint implements CrudEndpoint
 
     public function getAll(): EndpointResult
     {
-        $filterParams = GroupAssignmentSearchFilterParams::instance();
+        $filterParams = $this->setGetAllParams();
         $this->setSortingAndPaginationParams($filterParams);
 
         $assignments = $this->getGroupAssignmentService()->getGroupAssignments($filterParams);

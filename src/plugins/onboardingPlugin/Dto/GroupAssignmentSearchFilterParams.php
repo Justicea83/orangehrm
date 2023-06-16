@@ -7,15 +7,14 @@ use OrangeHRM\Core\Dto\FilterParams;
 class GroupAssignmentSearchFilterParams extends FilterParams
 {
     public const ALLOWED_SORT_FIELDS = [
-        'g.name',
-        'g.start_date',
-        'g.end_date',
-        'g.end_date',
-        'g.due_date',
-        'g.created_by',
-        'g.completed',
-        'g.emp_number',
-        'g.supervisor_number',
+        'name',
+        'startDate',
+        'endDate',
+        'dueDate',
+        'submittedAt',
+        'completed',
+        'empNumber',
+        'supervisorNumber',
     ];
 
     private ?string $startDate = null;
@@ -23,8 +22,9 @@ class GroupAssignmentSearchFilterParams extends FilterParams
     private ?string $dueDate = null;
     private ?bool $completed = null;
     private ?string $name = null;
-    private ?string $employeeNumber = null;
-    private ?string $supervisorNumber = null;
+    private ?int $employeeNumber = null;
+    private ?string $submittedAt = null;
+    private ?int $supervisorNumber = null;
     private ?int $createdBy = null;
 
     public static function instance(): GroupAssignmentSearchFilterParams
@@ -116,18 +116,12 @@ class GroupAssignmentSearchFilterParams extends FilterParams
         return $this->createdBy;
     }
 
-    /**
-     * @return string|null
-     */
-    public function getSupervisorNumber(): ?string
+    public function getSupervisorNumber(): ?int
     {
         return $this->supervisorNumber;
     }
 
-    /**
-     * @return string|null
-     */
-    public function getEmployeeNumber(): ?string
+    public function getEmployeeNumber(): ?int
     {
         return $this->employeeNumber;
     }
@@ -140,10 +134,7 @@ class GroupAssignmentSearchFilterParams extends FilterParams
         return $this->name;
     }
 
-    /**
-     * @return bool
-     */
-    public function isCompleted(): bool
+    public function isCompleted(): ?bool
     {
         return $this->completed;
     }
@@ -170,5 +161,23 @@ class GroupAssignmentSearchFilterParams extends FilterParams
     public function getStartDate(): ?string
     {
         return $this->startDate;
+    }
+
+    /**
+     * @param string|null $submittedAt
+     * @return GroupAssignmentSearchFilterParams
+     */
+    public function setSubmittedAt(?string $submittedAt): GroupAssignmentSearchFilterParams
+    {
+        $this->submittedAt = $submittedAt;
+        return $this;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getSubmittedAt(): ?string
+    {
+        return $this->submittedAt;
     }
 }

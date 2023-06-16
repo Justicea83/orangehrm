@@ -5,7 +5,7 @@
 
       <oxd-divider />
 
-      <oxd-form :loading="isLoading" @submitValid="onSave">
+      <oxd-form :loading="isLoading" @submit-valid="onSave">
         <oxd-form-row>
           <oxd-input-field
             v-model="task.title"
@@ -60,6 +60,17 @@ import {
 } from '@/core/util/validation/rules';
 import OnboardingTypeDropdown from '@/orangehrmPimPlugin/components/OnboardingTypeDropdown';
 import {navigate} from '@/core/util/helper/navigation';
+import {
+  OxdForm,
+  OxdFormRow,
+  OxdFormActions,
+  OxdButton,
+  OxdDivider,
+  OxdText,
+  OxdInputField,
+} from '@ohrm/oxd';
+import SubmitButton from '@ohrm/components/buttons/SubmitButton.vue';
+import RequiredText from '@ohrm/components/labels/RequiredText.vue';
 
 const initialTask = {
   title: '',
@@ -72,6 +83,15 @@ export default {
 
   components: {
     OnboardingTypeDropdown,
+    OxdForm,
+    OxdFormActions,
+    OxdFormRow,
+    OxdDivider,
+    OxdButton,
+    OxdText,
+    OxdInputField,
+    SubmitButton,
+    RequiredText,
   },
 
   props: {
@@ -84,7 +104,7 @@ export default {
   setup() {
     const http = new APIService(
       window.appGlobal.baseUrl,
-      '/api/v2/onboarding/tasks',
+      '/api/v2/task-management/tasks',
     );
     return {
       http,
@@ -113,10 +133,9 @@ export default {
         this.task.title = data.title;
         this.task.notes = data.notes;
         this.task.type = {
-          id: data.type,
-          label: data.type === 0 ? 'Onboarding' : 'Offboarding',
+          id: data.taskType?.id,
+          label: data.taskType?.name,
         };
-        this.task.jobTitleId = data.jobTitle?.id ? data.jobTitle : null;
 
         // Fetch list data for unique test
         return this.http.getAll({limit: 0});
@@ -142,9 +161,9 @@ export default {
 
   methods: {
     onSave() {
+      this.isLoading = true;
       const payload = {
         ...this.task,
-        jobTitleId: this.task?.jobTitleId?.id,
         type: this.task?.type?.id,
       };
       this.http
@@ -156,10 +175,13 @@ export default {
         })
         .then(() => {
           this.onCancel();
+        })
+        .catch(() => {
+          this.isLoading = false;
         });
     },
     onCancel() {
-      navigate('/admin/viewTaskList');
+      navigate('/taskManagement/viewTasks');
     },
   },
 };

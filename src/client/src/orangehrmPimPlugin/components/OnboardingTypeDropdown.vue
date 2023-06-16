@@ -30,7 +30,7 @@ export default {
     const options = ref([]);
     const http = new APIService(
       window.appGlobal.baseUrl,
-      '/api/v2/onboarding/task-types',
+      '/api/v2/task-management/task-types',
     );
     onBeforeMount(() => {
       http.getAll().then(({data}) => {

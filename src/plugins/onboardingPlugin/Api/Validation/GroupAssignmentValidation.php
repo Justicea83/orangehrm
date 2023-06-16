@@ -152,7 +152,13 @@ trait GroupAssignmentValidation
     {
         return new ParamRule(
             GroupAssignmentAPI::PARAMETER_NOTES,
-            new Rule(Rules::STRING_TYPE),
+            new Rule(
+                Rules::ONE_OF,
+                [
+                    new Rule(Rules::STRING_TYPE),
+                    new Rule(Rules::NOT_REQUIRED),
+                ]
+            )
         );
     }
 

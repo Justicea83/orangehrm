@@ -5,7 +5,7 @@
 
       <oxd-divider />
 
-      <oxd-form :loading="isLoading" @submitValid="onSave">
+      <oxd-form :loading="isLoading" @submit-valid="onSave">
         <oxd-form-row>
           <oxd-input-field
             v-model="task.title"
@@ -58,9 +58,19 @@ import {
   shouldNotExceedCharLength,
 } from '@/core/util/validation/rules';
 import {navigate} from '@/core/util/helper/navigation';
-import JobtitleDropdown from '@/orangehrmPimPlugin/components/JobtitleDropdown';
 import OnboardingTypeDropdown from '@/orangehrmPimPlugin/components/OnboardingTypeDropdown';
 import {APIService} from '@/core/util/services/api.service';
+import {
+  OxdForm,
+  OxdFormRow,
+  OxdFormActions,
+  OxdButton,
+  OxdDivider,
+  OxdText,
+  OxdInputField,
+} from '@ohrm/oxd';
+import SubmitButton from '@ohrm/components/buttons/SubmitButton.vue';
+import RequiredText from '@ohrm/components/labels/RequiredText.vue';
 
 const initialTask = {
   title: '',
@@ -73,6 +83,15 @@ export default {
   name: 'SaveTask',
   components: {
     OnboardingTypeDropdown,
+    OxdForm,
+    OxdFormActions,
+    OxdFormRow,
+    OxdDivider,
+    OxdButton,
+    OxdText,
+    OxdInputField,
+    SubmitButton,
+    RequiredText,
   },
   props: {
     allowedFileTypes: {
@@ -88,7 +107,7 @@ export default {
   setup() {
     const http = new APIService(
       window.appGlobal.baseUrl,
-      '/api/v2/onboarding/tasks',
+      '/api/v2/task-management/tasks',
     );
     return {
       http,
@@ -125,7 +144,7 @@ export default {
         });
     },
     onCancel() {
-      navigate('/admin/viewTaskList');
+      navigate('/taskManagement/viewTasks');
     },
   },
 };

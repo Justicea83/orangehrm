@@ -74,7 +74,7 @@ export default {
   setup() {
     const http = new APIService(
       window.appGlobal.baseUrl,
-      '/api/v2/onboarding/tasks',
+      '/api/v2/task-management/tasks',
     );
     return {
       http,
@@ -166,7 +166,7 @@ export default {
         return;
       }
 
-      this.loading = true;
+      this.isLoading = true;
 
       const {
         dueDate,
@@ -200,16 +200,18 @@ export default {
 
       this.http
         .request({
-          url: '/api/v2/onboarding/task-assignments',
+          url: '/api/v2/task-management/task-assignments',
           method: 'POST',
           data: payload,
         })
         .then(() => {
-          this.$toast.saveSuccess();
-          navigate('/onboarding/viewTaskGroups');
+          return this.$toast.saveSuccess();
+        })
+        .then(() => {
+          navigate('/taskManagement/viewTaskGroups');
         })
         .catch(() => {
-          this.loading = false;
+          this.isLoading = false;
         });
     },
     beforeChange({index, ref}) {

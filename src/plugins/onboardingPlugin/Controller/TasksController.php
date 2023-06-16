@@ -1,6 +1,6 @@
 <?php
 
-namespace OrangeHRM\Admin\Controller;
+namespace OrangeHRM\Onboarding\Controller;
 
 use OrangeHRM\Admin\Traits\Service\TaskServiceTrait;
 use OrangeHRM\Core\Controller\AbstractVueController;

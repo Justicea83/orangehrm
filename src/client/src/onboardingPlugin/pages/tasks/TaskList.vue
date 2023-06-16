@@ -1,13 +1,10 @@
 <template>
   <oxd-table-filter filter-title="Task Information">
-    <oxd-form @submitValid="filterItems" @reset="filterItems">
+    <oxd-form @submit-valid="filterItems" @reset="filterItems">
       <oxd-form-row>
         <oxd-grid :cols="4" class="orangehrm-full-width-grid">
           <oxd-grid-item>
             <task-auto-complete v-model="filters.task" />
-          </oxd-grid-item>
-          <oxd-grid-item>
-            <jobtitle-dropdown v-model="filters.jobTitleId" />
           </oxd-grid-item>
           <oxd-grid-item>
             <onboarding-type-dropdown
@@ -88,9 +85,21 @@ import usePaginate from '@ohrm/core/util/composable/usePaginate';
 import {navigate} from '@ohrm/core/util/helper/navigation';
 import {APIService} from '@/core/util/services/api.service';
 import useSort from '@ohrm/core/util/composable/useSort';
-import JobtitleDropdown from '@/orangehrmPimPlugin/components/JobtitleDropdown';
 import OnboardingTypeDropdown from '@/orangehrmPimPlugin/components/OnboardingTypeDropdown';
-import TaskAutoComplete from '@/orangehrmAdminPlugin/pages/tasks/TaskAutoComplete';
+import TaskAutoComplete from './TaskAutoComplete';
+import TableHeader from '@/core/components/table/TableHeader';
+import {
+  OxdForm,
+  OxdTableFilter,
+  OxdFormRow,
+  OxdGrid,
+  OxdGridItem,
+  OxdFormActions,
+  OxdButton,
+  OxdDivider,
+  OxdCardTable,
+  OxdPagination,
+} from '@ohrm/oxd';
 
 const defaultSortOrder = {
   'task.title': 'DEFAULT',
@@ -102,8 +111,18 @@ export default {
   components: {
     'delete-confirmation': DeleteConfirmationDialog,
     TaskAutoComplete,
-    JobtitleDropdown,
     OnboardingTypeDropdown,
+    OxdForm,
+    OxdFormActions,
+    OxdFormRow,
+    OxdGrid,
+    OxdGridItem,
+    OxdDivider,
+    OxdTableFilter,
+    OxdButton,
+    OxdCardTable,
+    OxdPagination,
+    TableHeader,
   },
 
   props: {
@@ -152,7 +171,7 @@ export default {
 
     const http = new APIService(
       window.appGlobal.baseUrl,
-      '/api/v2/onboarding/tasks',
+      '/api/v2/task-management/tasks',
     );
 
     const {
@@ -246,7 +265,7 @@ export default {
   methods: {
     onClickEdit(item) {
       if (item.id) {
-        navigate('/admin/saveTask/{id}', {id: item.id});
+        navigate('/taskManagement/saveTask/{id}', {id: item.id});
       }
     },
     onClickDelete(item) {
@@ -291,7 +310,7 @@ export default {
       await this.execQuery();
     },
     onClickAdd() {
-      navigate('/admin/saveTask');
+      navigate('/taskManagement/saveTask');
     },
   },
 };

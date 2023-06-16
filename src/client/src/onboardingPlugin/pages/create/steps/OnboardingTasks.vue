@@ -118,7 +118,7 @@ export default {
   setup() {
     const http = new APIService(
       window.appGlobal.baseUrl,
-      '/api/v2/onboarding/tasks',
+      '/api/v2/task-management/tasks',
     );
     return {
       http,

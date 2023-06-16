@@ -25,10 +25,10 @@
         <h3
           :class="{
             'text-red-400':
-              !item.isCompleted && isDeadlineApproaching(item.dueDate),
+              !item?.isCompleted && isDeadlineApproaching(item?.dueDate),
           }"
         >
-          {{ formatDate(item.dueDate) }}
+          {{ formatDate(item?.dueDate) }}
         </h3>
       </template>
     </datatable>
@@ -67,6 +67,7 @@ export default {
       required: true,
     },
   },
+  emits: ['update:prop'],
   setup() {
     const http = new APIService(
       (window as any).appGlobal.baseUrl,
@@ -125,10 +126,16 @@ export default {
           this.taskListModel = tableData;
         });
     },
-    formatDate(date: string): string {
+    formatDate(date?: string): string {
+      if (!date) {
+        return '';
+      }
       return moment(date).format('DD MMM');
     },
-    isDeadlineApproaching(date: string): boolean {
+    isDeadlineApproaching(date?: string): boolean {
+      if (!date) {
+        return false;
+      }
       const dateComponent = date.split(' ')[0];
       return new Date(dateComponent) < new Date();
     },

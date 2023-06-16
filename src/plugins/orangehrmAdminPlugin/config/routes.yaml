@@ -357,24 +357,6 @@ admin_module:
   controller: OrangeHRM\Admin\Controller\AdminModuleController::handle
   methods: [ GET ]
 
-# Task List
-view_task_list:
-  path: /admin/viewTaskList
-  controller: OrangeHRM\Admin\Controller\TasksController::handle
-  methods: [ GET ]
-
-save_task:
-  path: /admin/saveTask
-  controller: OrangeHRM\Admin\Controller\SaveTaskController::handle
-  methods: [ GET ]
-
-edit_task:
-  path: /admin/saveTask/{id}
-  controller: OrangeHRM\Admin\Controller\SaveTaskController::handle
-  methods: [ GET ]
-
-# End Task routes
-
 view_job_title:
   path: /admin/viewJobTitleList
   controller: OrangeHRM\Admin\Controller\JobTitleController::handle

@@ -50,7 +50,7 @@ export default {
   setup() {
     const http = new APIService(
       window.appGlobal.baseUrl,
-      '/api/v2/onboarding/my-assignments',
+      '/api/v2/task-management/my-assignments',
     );
     return {
       http,

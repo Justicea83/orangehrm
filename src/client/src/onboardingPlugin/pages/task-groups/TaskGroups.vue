@@ -95,7 +95,7 @@ export default {
 
     const http = new APIService(
       (window as any).appGlobal.baseUrl,
-      '/api/v2/onboarding/task-assignments',
+      '/api/v2/task-management/task-assignments',
     );
 
     const {
@@ -219,7 +219,7 @@ export default {
   },
   methods: {
     onClickAdd() {
-      navigate('/onboarding/createTasks');
+      navigate('/taskManagement/createTask');
     },
     onClickEdit() {
       //navigate('/admin/saveTask');

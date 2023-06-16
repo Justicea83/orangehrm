@@ -13,9 +13,13 @@
 
 <script>
 import {APIService} from '@ohrm/core/util/services/api.service';
+import {OxdInputField} from '@ohrm/oxd';
 
 export default {
   name: 'TaskAutoComplete',
+  components: {
+    OxdInputField,
+  },
   props: {
     params: {
       type: Object,

@@ -96,3 +96,18 @@ task_management_task_types:
   path: /taskManagement/viewTaskTypes
   controller: OrangeHRM\Onboarding\Controller\TaskTypesController::handle
   methods: [ GET ]
+
+task_management_view_task_list:
+  path: /taskManagement/viewTasks
+  controller: OrangeHRM\Onboarding\Controller\TasksController::handle
+  methods: [ GET ]
+
+task_management_save_task:
+  path: /taskManagement/saveTask
+  controller: OrangeHRM\Onboarding\Controller\SaveTaskController::handle
+  methods: [ GET ]
+
+task_management_edit_task:
+  path: /taskManagement/saveTask/{id}
+  controller: OrangeHRM\Onboarding\Controller\SaveTaskController::handle
+  methods: [ GET ]

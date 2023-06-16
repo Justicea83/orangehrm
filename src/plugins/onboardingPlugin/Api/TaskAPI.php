@@ -34,7 +34,6 @@ class TaskAPI extends Endpoint implements CrudEndpoint
     public const PARAMETER_TITLE = 'title';
     public const PARAMETER_NOTES = 'notes';
     public const PARAMETER_TYPE = 'type';
-    public const PARAMETER_JOB_TITLE_ID = 'jobTitleId';
 
     public const PARAM_RULE_TITLE_MAX_LENGTH = 255;
     public const PARAM_RULE_NOTES_MAX_LENGTH = 1000;
@@ -46,7 +45,6 @@ class TaskAPI extends Endpoint implements CrudEndpoint
     public const FILTER_TASK_TITLE = 'title';
     public const FILTER_TASK_TYPE = 'taskType';
     public const FILTER_TASK_TYPES = 'taskTypes';
-    public const FILTER_JOB_TITLE_ID = 'jobTitleId';
 
     public const PARAM_RULE_FILTER_NAME_MAX_LENGTH = 100;
 
@@ -134,12 +132,6 @@ class TaskAPI extends Endpoint implements CrudEndpoint
                 new ParamRule(
                     self::FILTER_TASK_TYPES,
                     new Rule(Rules::STRING_TYPE),
-                ),
-            ),
-            $this->getValidationDecorator()->notRequiredParamRule(
-                new ParamRule(
-                    self::FILTER_JOB_TITLE_ID,
-                    new Rule(Rules::POSITIVE),
                 ),
             ),
             $this->getValidationDecorator()->notRequiredParamRule(

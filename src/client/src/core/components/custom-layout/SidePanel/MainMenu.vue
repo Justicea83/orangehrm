@@ -36,6 +36,7 @@
       :active="menuItem.active"
       :collapsed="toggle"
       :name="menuItem.name"
+      :icon-type="menuItem?.iconType"
       :icon="menuItem.icon"
     ></oxd-main-menu-item>
   </ul>

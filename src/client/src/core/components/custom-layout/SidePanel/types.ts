@@ -22,4 +22,5 @@ export default interface MenuItem {
   url: string;
   icon: string;
   active: boolean;
+  iconType: string | null,
 }

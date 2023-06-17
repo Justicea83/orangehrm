@@ -8921,6 +8921,7 @@ __metadata:
     ts-jest: ^27.0.4
     typescript: ~4.5.5
     vue: ^3.2.45
+    vue3-circle-progress: ^1.0.7
     vue3-easy-data-table: ^1.5.45
     vue3-infinite-scroll-good: ^1.0.2
     vuedraggable: ^4.1.0
@@ -11518,6 +11519,16 @@ __metadata:
   version: 1.9.1
   resolution: "vue-template-es2015-compiler@npm:1.9.1"
   checksum: ad1e85662783be3ee262c323b05d12e6a5036fca24f16dc0f7ab92736b675919cb4fa4b79b28753eac73119b709d1b36789bf60e8ae423f50c4db35de9370e8b
+  languageName: node
+  linkType: hard
+
+"vue3-circle-progress@npm:^1.0.7":
+  version: 1.0.7
+  resolution: "vue3-circle-progress@npm:1.0.7"
+  peerDependencies:
+    core-js: ^3.9.0
+    vue: ^3.0.5
+  checksum: bc6391d5cc08fffddaed6623d7f0db6e77e2a9e1ea3a67721a7595576151fc09670ed81762c589f69b6cd23e2370626b09c8be8cbcdf0c46cfbbd5a0b0b980e3
   languageName: node
   linkType: hard
 

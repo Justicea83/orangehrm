@@ -11,7 +11,11 @@
         :class="{active: task.isActive}"
         @open-details="openAssignmentDetail"
         @toggle-active="toggleActive"
-      />
+      >
+        <template #exportOptions>
+          <task-progress :progress="task.progress" />
+        </template>
+      </assignment>
     </div>
     <div class="fixed top-15 right-3 h-screen w-1/4">
       <assignment-detail
@@ -36,6 +40,7 @@ import {APIService} from '@/core/util/services/api.service';
 import Assignment from '@/onboardingPlugin/pages/my-assignments/components/Assignment';
 import AssignmentDetail from '@/onboardingPlugin/pages/my-assignments/components/AssignmentDetail';
 import DeleteConfirmationDialog from '@/core/components/dialogs/DeleteConfirmationDialog';
+import TaskProgress from '@/onboardingPlugin/pages/task-groups/components/TaskProgress';
 
 const ACTION_COMPLETE = 'complete_assignment';
 const ACTION_SUBMIT = 'submit';
@@ -43,6 +48,7 @@ const ACTION_SUBMIT = 'submit';
 export default {
   name: 'MyAssignments',
   components: {
+    TaskProgress,
     Assignment,
     AssignmentDetail,
     'delete-confirmation': DeleteConfirmationDialog,
@@ -114,7 +120,7 @@ export default {
     onToggleMarkComplete() {
       this.http
         .request({
-          url: '/api/v2/onboarding/task-groups/actions',
+          url: '/api/v2/task-management/task-groups/actions',
           method: 'PUT',
           data: {
             action: ACTION_COMPLETE,
@@ -146,7 +152,7 @@ export default {
       }
       this.http
         .request({
-          url: '/api/v2/onboarding/task-groups/actions',
+          url: '/api/v2/task-management/task-groups/actions',
           method: 'PUT',
           data: {
             action: ACTION_SUBMIT,

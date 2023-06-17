@@ -14,7 +14,7 @@
         <div class="--toggle">
           <slot name="toggleOptions"></slot>
         </div>
-        <div class="--export">
+        <div class="--export mr-2">
           <slot name="exportOptions"></slot>
         </div>
         <div class="--toggle">

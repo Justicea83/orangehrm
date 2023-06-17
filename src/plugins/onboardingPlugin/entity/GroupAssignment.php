@@ -316,4 +316,17 @@ class GroupAssignment extends TenantAwareWithTimeStamps
     {
         $this->supervisorNumber = $supervisorNumber;
     }
+
+    public function getProgress(): float{
+        $completedTasks = $this->getTaskGroups()->filter(function (TaskGroup $taskGroup){
+            return $taskGroup->isCompleted();
+        })->count();
+
+        if($completedTasks === 0) {
+            return 0;
+        }
+        $totalTasks = $this->getTaskGroups()->count();
+
+        return round($completedTasks / $totalTasks * 100, 2);
+    }
 }

@@ -23,6 +23,7 @@ class GroupAssignmentDetailModel implements Normalizable
             'completed',
             'dueDate',
             'submittedAt',
+            'getProgress',
             ['getTaskTypes', ['getId', 'getName']],
             [
                 'getTaskGroups',
@@ -47,6 +48,7 @@ class GroupAssignmentDetailModel implements Normalizable
             'completed',
             'dueDate',
             'submittedAt',
+            'progress',
             ['taskTypes', ['id', 'name']],
             [
                 'taskGroups',

@@ -1,4 +1,64 @@
 <template>
+  <oxd-table-filter filter-title="Filter Assignments">
+    <oxd-form @submit-valid="filterItems" @reset="filterItems">
+      <oxd-form-row>
+        <oxd-grid :cols="2" class="orangehrm-full-width-grid">
+          <oxd-grid-item>
+            <oxd-input-field v-model="filters.name" label="Title" />
+          </oxd-grid-item>
+          <oxd-grid-item>
+            <date-input v-model="filters.submittedAt" label="Submitted At" />
+          </oxd-grid-item>
+        </oxd-grid>
+
+        <oxd-grid :cols="2" class="orangehrm-full-width-grid">
+          <oxd-grid-item>
+            <employee-autocomplete
+              v-model="filters.employee"
+              label="Assignee"
+            />
+          </oxd-grid-item>
+          <oxd-grid-item>
+            <employee-autocomplete
+              v-model="filters.supervisor"
+              label="Supervisor"
+            />
+          </oxd-grid-item>
+        </oxd-grid>
+
+        <oxd-grid :cols="3" class="orangehrm-full-width-grid">
+          <oxd-grid-item>
+            <date-input v-model="filters.startDate" label="Start Date" />
+          </oxd-grid-item>
+          <oxd-grid-item>
+            <date-input v-model="filters.endDate" label="End Date" />
+          </oxd-grid-item>
+          <oxd-grid-item>
+            <date-input v-model="filters.dueDate" label="Due Date" />
+          </oxd-grid-item>
+        </oxd-grid>
+      </oxd-form-row>
+
+      <oxd-divider />
+
+      <oxd-form-actions>
+        <oxd-button
+          display-type="ghost"
+          :label="$t('general.reset')"
+          type="reset"
+        />
+        <oxd-button
+          class="orangehrm-left-space"
+          display-type="secondary"
+          :label="$t('general.search')"
+          type="submit"
+        />
+      </oxd-form-actions>
+    </oxd-form>
+  </oxd-table-filter>
+
+  <br />
+
   <div class="orangehrm-background-container">
     <div class="orangehrm-paper-container">
       <div class="orangehrm-header-container">
@@ -22,7 +82,7 @@
           v-model:order="sortDefinition"
           :headers="headers"
           :items="taskGroups?.data"
-          :selectable="true"
+          :selectable="showActions"
           :clickable="true"
           :loading="isLoading"
           class="orangehrm-employee-list"
@@ -48,7 +108,19 @@ import {computed, ref} from 'vue';
 import useSort, {SortDefinition} from '@/core/util/composable/useSort';
 import usePaginate from '@/core/util/composable/usePaginate';
 import DeleteConfirmationDialog from '@ohrm/components/dialogs/DeleteConfirmationDialog.vue';
-import {OxdCardTable, OxdButton, OxdPagination} from '@ohrm/oxd';
+import {
+  OxdCardTable,
+  OxdButton,
+  OxdPagination,
+  OxdForm,
+  OxdDivider,
+  OxdInputField,
+  OxdTableFilter,
+  OxdFormRow,
+  OxdGrid,
+  OxdGridItem,
+  OxdFormActions,
+} from '@ohrm/oxd';
 import TableHeader from '@ohrm/components/table/TableHeader.vue';
 import {CardHeader} from '@ohrm/oxd/types/components/CardTable/types';
 import DeadlineDate from '@/onboardingPlugin/pages/task-groups/components/DeadlineDate.vue';
@@ -56,6 +128,10 @@ import CompleteCell from '@/onboardingPlugin/pages/task-groups/components/Comple
 import NameCell from '@/onboardingPlugin/pages/task-groups/components/NameCell.vue';
 import {TaskGroup} from '@/onboardingPlugin/models';
 import {navigate} from '@/core/util/helper/navigation';
+import DateInput from '@/core/components/inputs/DateInput.vue';
+import EmployeeAutocomplete from '@/core/components/inputs/EmployeeAutocomplete.vue';
+import TaskProgress from './components/TaskProgress.vue';
+
 const defaultSortOrder: SortDefinition = {
   'task.title': 'DEFAULT',
 };
@@ -67,27 +143,77 @@ interface RowItem {
   isDisabled?: boolean;
 }
 
+type Filters = {
+  name?: string;
+  startDate?: string;
+  endDate?: string;
+  dueDate?: string;
+  submittedAt?: string;
+  completed?: boolean;
+  employee?: {id: number} | null;
+  supervisor?: {id: number} | null;
+};
+
 export default {
   name: 'TaskGroups',
+
   components: {
     'delete-confirmation': DeleteConfirmationDialog,
     OxdCardTable,
     TableHeader,
     OxdPagination,
     OxdButton,
+    OxdForm,
+    OxdTableFilter,
+    OxdFormRow,
+    OxdGrid,
+    OxdGridItem,
+    OxdFormActions,
+    OxdDivider,
+    DateInput,
+    OxdInputField,
+    EmployeeAutocomplete,
   },
-  setup() {
+
+  props: {
+    showActions: {
+      type: Boolean,
+      default: true,
+    },
+    apiUrl: {
+      type: String,
+      default: () => '/api/v2/task-management/task-assignments',
+    },
+    theme: {
+      type: Object,
+      required: true,
+    },
+  },
+
+  setup(props: {apiUrl: string}) {
     const {sortDefinition, sortField, sortOrder, onSort} = useSort({
       sortDefinition: defaultSortOrder,
     });
 
-    const filters = ref({
+    const filters = ref<Filters>({
       name: '',
+      startDate: '',
+      endDate: '',
+      dueDate: '',
+      submittedAt: '',
+      employee: null,
+      supervisor: null,
     });
 
     const serializedFilters = computed(() => {
       return {
         name: filters.value.name,
+        startDate: filters.value.startDate,
+        endDate: filters.value.endDate,
+        dueDate: filters.value.dueDate,
+        employeeId: filters.value.employee?.id,
+        supervisorId: filters.value.supervisor?.id,
+        submittedAt: filters.value.submittedAt,
         sortField: sortField.value,
         sortOrder: sortOrder.value,
       };
@@ -95,7 +221,7 @@ export default {
 
     const http = new APIService(
       (window as any).appGlobal.baseUrl,
-      '/api/v2/task-management/task-assignments',
+      props.apiUrl,
     );
 
     const {
@@ -125,14 +251,16 @@ export default {
       sortDefinition,
     };
   },
+
   data() {
     return {
       checkedItems: [],
     };
   },
+
   computed: {
-    headers() {
-      return [
+    headers(): CardHeader[] {
+      const headers = [
         {
           name: 'name',
           slot: 'name',
@@ -193,6 +321,22 @@ export default {
           cellRenderer: this.renderSupervisorName,
         },
         {
+          name: 'assignee',
+          slot: 'assignee',
+          title: 'Assignee',
+          style: {flex: 1},
+          cellRenderer: this.renderAssigneeName,
+        },
+        {
+          name: 'progress',
+          slot: 'progress',
+          title: 'Progress',
+          style: {flex: 1},
+          cellRenderer: this.renderProgressCell,
+        },
+      ];
+      if (this.showActions) {
+        const newItem: CardHeader = {
           name: 'actions',
           slot: 'action',
           title: this.$t('general.actions'),
@@ -213,10 +357,13 @@ export default {
               },
             },
           },
-        },
-      ];
+        };
+        headers.push(newItem);
+      }
+      return headers;
     },
   },
+
   methods: {
     onClickAdd() {
       navigate('/taskManagement/createTask');
@@ -307,6 +454,20 @@ export default {
         },
       };
     },
+    renderProgressCell(
+      index: number,
+      item: RowItem,
+      header: CardHeader,
+      rowItem: RowItem,
+    ) {
+      return {
+        component: TaskProgress,
+        props: {
+          progress: rowItem?.progress,
+          fillColor: this.theme['--oxd-primary-one-color'] ?? null,
+        },
+      };
+    },
     renderNameCell(
       index: number,
       item: RowItem,
@@ -328,6 +489,14 @@ export default {
       rowItem: RowItem,
     ) {
       return this.renderNameCell(index, item, header, rowItem, 'supervisor');
+    },
+    renderAssigneeName(
+      index: number,
+      item: RowItem,
+      header: CardHeader,
+      rowItem: RowItem,
+    ) {
+      return this.renderNameCell(index, item, header, rowItem, 'assignee');
     },
     renderCreatorName(
       index: number,

@@ -18,7 +18,7 @@ export default {
     },
     isCompleted: {
       type: Boolean,
-      required: true,
+      default: false,
     },
   },
   methods: {

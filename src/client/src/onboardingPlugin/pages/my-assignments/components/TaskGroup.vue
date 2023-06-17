@@ -71,7 +71,7 @@ export default {
   setup() {
     const http = new APIService(
       (window as any).appGlobal.baseUrl,
-      '/api/v2/onboarding/task-groups',
+      '/api/v2/task-management/task-groups',
     );
     return {
       http,
@@ -108,7 +108,7 @@ export default {
       }
       this.http
         .request({
-          url: '/api/v2/onboarding/task-groups/actions',
+          url: '/api/v2/task-management/task-groups/actions',
           method: 'put',
           data: {
             action: 'toggle_complete',

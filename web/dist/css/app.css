@@ -46,12 +46,499 @@
 .orangehrm-about-title[data-v-65788c6a] {
   font-weight: 700;
 }
+/*!************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** css ./node_modules/css-loader/dist/cjs.js??clonedRuleSet-22.use[1]!./node_modules/vue-loader/dist/stylePostLoader.js!./node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-22.use[2]!./node_modules/sass-loader/dist/cjs.js??clonedRuleSet-22.use[3]!./src/core/components/custom-layout/SidePanel/branding.scss?vue&type=style&index=0&id=984d3cf0&lang=scss&scoped=true ***!
+  \************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************/
+/* Import OXD Globals */
+.oxd-brand[data-v-984d3cf0] {
+  display: flex;
+  text-decoration: none;
+  font-size: 1.2rem;
+  font-weight: 600;
+  padding: 1.5rem 1rem;
+  z-index: 1;
+  align-items: center;
+}
+.oxd-brand-logo[data-v-984d3cf0] {
+  display: none;
+  border-style: none;
+}
+.oxd-brand-logo img[data-v-984d3cf0] {
+  height: 50px;
+  width: 50px;
+}
+@media (min-width: 800px) {
+.oxd-brand-logo[data-v-984d3cf0] {
+    display: block;
+}
+}
+.oxd-brand-banner img[data-v-984d3cf0] {
+  height: 50px;
+  width: 182px;
+}
+@media (min-width: 800px) {
+.oxd-brand-banner.toggled[data-v-984d3cf0] {
+    display: none;
+}
+}
+/*!*************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** css ./node_modules/css-loader/dist/cjs.js??clonedRuleSet-22.use[1]!./node_modules/vue-loader/dist/stylePostLoader.js!./node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-22.use[2]!./node_modules/sass-loader/dist/cjs.js??clonedRuleSet-22.use[3]!./src/core/components/custom-layout/SidePanel/main-menu.scss?vue&type=style&index=0&id=647e8c10&lang=scss&scoped=true ***!
+  \*************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************/
+/* Import OXD Globals */
+.oxd-main-menu[data-v-647e8c10] {
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-flow: column;
+  overflow: hidden auto;
+  padding-right: 10px;
+  scrollbar-color: #cfd3de #f6f5fb;
+  scrollbar-width: thin;
+}
+.oxd-main-menu[data-v-647e8c10]::-webkit-scrollbar {
+  width: 0.5rem;
+  height: 0.5rem;
+}
+.oxd-main-menu[data-v-647e8c10]::-webkit-scrollbar-thumb {
+  background: #cfd3de;
+  border-radius: 20px;
+}
+.oxd-main-menu[data-v-647e8c10]::-webkit-scrollbar-track {
+  background: #f6f5fb;
+}
+@media screen and (-ms-high-contrast: active), (-ms-high-contrast: none) {
+.oxd-main-menu[data-v-647e8c10] {
+    scrollbar-face-color: #cfd3de;
+    scrollbar-track-color: #f6f5fb;
+    scrollbar-arrow-color: #929baa;
+}
+}
+.oxd-main-menu-item[data-v-647e8c10] {
+  display: flex;
+  text-align: left;
+  align-items: center;
+  text-decoration: none;
+  color: var(--oxd-interface-gray-darken-1-color, #64728c);
+  padding: 8px 16px 8px 24px;
+}
+.oxd-main-menu-item--icon[data-v-647e8c10], .oxd-main-menu-item--name[data-v-647e8c10] {
+  color: inherit;
+}
+.oxd-main-menu-item--name[data-v-647e8c10] {
+  padding-left: 15px;
+  font-size: 0.85rem;
+  font-weight: 600;
+}
+.oxd-main-menu-item[data-v-647e8c10]:hover {
+  background-color: var(--oxd-primary-one-alpha-10-color, rgba(255, 123, 29, 0.1));
+  transition-timing-function: ease-out;
+  border-top-right-radius: 50px;
+  border-bottom-right-radius: 50px;
+}
+.oxd-main-menu-item.active[data-v-647e8c10] {
+  color: var(--oxd-primary-font-color, #ffffff);
+  background-color: var(--oxd-primary-one-color, #ff7b1d);
+  border-top-right-radius: 50px;
+  border-bottom-right-radius: 50px;
+  background-image: linear-gradient(90deg, var(--oxd-secondary-gradient-start-color) 0%, var(--oxd-secondary-gradient-end-color) 90%);
+}
+@media (min-width: 800px) {
+.oxd-main-menu-item.toggle[data-v-647e8c10] {
+    justify-content: center;
+}
+.oxd-main-menu-item.toggle .oxd-main-menu-item--name[data-v-647e8c10] {
+    display: none;
+}
+}
+.oxd-main-menu hr[data-v-647e8c10] {
+  border: 0;
+}
+.oxd-main-menu-divider[data-v-647e8c10] {
+  border-top: 1px solid rgba(143, 143, 143, 0.15) !important;
+  margin: 5px 1rem;
+}
+.oxd-main-menu-search[data-v-647e8c10] {
+  width: 100%;
+  display: block;
+  text-align: left;
+  overflow: visible;
+  padding: 8px 16px 8px 24px;
+}
+.oxd-main-menu-search .oxd-input[data-v-647e8c10] {
+  border-radius: unset;
+  border: unset;
+  min-height: unset;
+  height: auto;
+  width: auto;
+  padding: unset;
+  display: inline;
+  font-size: 0.85rem;
+  padding-left: 15px;
+}
+.oxd-main-menu-search .oxd-input--active[data-v-647e8c10] {
+  border: unset;
+}
+.oxd-main-menu-search .oxd-input--focus[data-v-647e8c10] {
+  border: unset;
+  box-shadow: unset;
+  outline: 0;
+}
+.oxd-main-menu-search .oxd-input--error[data-v-647e8c10] {
+  border: unset;
+  box-shadow: unset;
+}
+@media (min-width: 0px) {
+.oxd-main-menu-search .toggled[data-v-647e8c10] {
+    display: inline;
+}
+}
+@media (min-width: 800px) {
+.oxd-main-menu-search .toggled[data-v-647e8c10] {
+    display: none;
+}
+}
+.oxd-main-menu-button[data-v-647e8c10] {
+  top: 110px;
+  right: -12px;
+  width: 25px;
+  height: 25px;
+  display: none;
+  min-width: 25px;
+  min-height: 25px;
+  position: absolute;
+  background-color: var(--oxd-primary-one-color, #ff7b1d) !important;
+}
+@media (min-width: 800px) {
+.oxd-main-menu-button[data-v-647e8c10] {
+    display: inline-flex;
+}
+}
+.oxd-main-menu-button[data-v-647e8c10] .oxd-icon {
+  font-size: 10px;
+  color: var(--oxd-primary-font-color, #ffffff);
+}
+.oxd-main-menu.--fixed[data-v-647e8c10] {
+  flex: none;
+}
+/*!*************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** css ./node_modules/css-loader/dist/cjs.js??clonedRuleSet-22.use[1]!./node_modules/vue-loader/dist/stylePostLoader.js!./node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-22.use[2]!./node_modules/sass-loader/dist/cjs.js??clonedRuleSet-22.use[3]!./src/core/components/custom-layout/SidePanel/main-menu.scss?vue&type=style&index=0&id=c0ef0a76&lang=scss&scoped=true ***!
+  \*************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************/
+/* Import OXD Globals */
+.oxd-main-menu[data-v-c0ef0a76] {
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-flow: column;
+  overflow: hidden auto;
+  padding-right: 10px;
+  scrollbar-color: #cfd3de #f6f5fb;
+  scrollbar-width: thin;
+}
+.oxd-main-menu[data-v-c0ef0a76]::-webkit-scrollbar {
+  width: 0.5rem;
+  height: 0.5rem;
+}
+.oxd-main-menu[data-v-c0ef0a76]::-webkit-scrollbar-thumb {
+  background: #cfd3de;
+  border-radius: 20px;
+}
+.oxd-main-menu[data-v-c0ef0a76]::-webkit-scrollbar-track {
+  background: #f6f5fb;
+}
+@media screen and (-ms-high-contrast: active), (-ms-high-contrast: none) {
+.oxd-main-menu[data-v-c0ef0a76] {
+    scrollbar-face-color: #cfd3de;
+    scrollbar-track-color: #f6f5fb;
+    scrollbar-arrow-color: #929baa;
+}
+}
+.oxd-main-menu-item[data-v-c0ef0a76] {
+  display: flex;
+  text-align: left;
+  align-items: center;
+  text-decoration: none;
+  color: var(--oxd-interface-gray-darken-1-color, #64728c);
+  padding: 8px 16px 8px 24px;
+}
+.oxd-main-menu-item--icon[data-v-c0ef0a76], .oxd-main-menu-item--name[data-v-c0ef0a76] {
+  color: inherit;
+}
+.oxd-main-menu-item--name[data-v-c0ef0a76] {
+  padding-left: 15px;
+  font-size: 0.85rem;
+  font-weight: 600;
+}
+.oxd-main-menu-item[data-v-c0ef0a76]:hover {
+  background-color: var(--oxd-primary-one-alpha-10-color, rgba(255, 123, 29, 0.1));
+  transition-timing-function: ease-out;
+  border-top-right-radius: 50px;
+  border-bottom-right-radius: 50px;
+}
+.oxd-main-menu-item.active[data-v-c0ef0a76] {
+  color: var(--oxd-primary-font-color, #ffffff);
+  background-color: var(--oxd-primary-one-color, #ff7b1d);
+  border-top-right-radius: 50px;
+  border-bottom-right-radius: 50px;
+  background-image: linear-gradient(90deg, var(--oxd-secondary-gradient-start-color) 0%, var(--oxd-secondary-gradient-end-color) 90%);
+}
+@media (min-width: 800px) {
+.oxd-main-menu-item.toggle[data-v-c0ef0a76] {
+    justify-content: center;
+}
+.oxd-main-menu-item.toggle .oxd-main-menu-item--name[data-v-c0ef0a76] {
+    display: none;
+}
+}
+.oxd-main-menu hr[data-v-c0ef0a76] {
+  border: 0;
+}
+.oxd-main-menu-divider[data-v-c0ef0a76] {
+  border-top: 1px solid rgba(143, 143, 143, 0.15) !important;
+  margin: 5px 1rem;
+}
+.oxd-main-menu-search[data-v-c0ef0a76] {
+  width: 100%;
+  display: block;
+  text-align: left;
+  overflow: visible;
+  padding: 8px 16px 8px 24px;
+}
+.oxd-main-menu-search .oxd-input[data-v-c0ef0a76] {
+  border-radius: unset;
+  border: unset;
+  min-height: unset;
+  height: auto;
+  width: auto;
+  padding: unset;
+  display: inline;
+  font-size: 0.85rem;
+  padding-left: 15px;
+}
+.oxd-main-menu-search .oxd-input--active[data-v-c0ef0a76] {
+  border: unset;
+}
+.oxd-main-menu-search .oxd-input--focus[data-v-c0ef0a76] {
+  border: unset;
+  box-shadow: unset;
+  outline: 0;
+}
+.oxd-main-menu-search .oxd-input--error[data-v-c0ef0a76] {
+  border: unset;
+  box-shadow: unset;
+}
+@media (min-width: 0px) {
+.oxd-main-menu-search .toggled[data-v-c0ef0a76] {
+    display: inline;
+}
+}
+@media (min-width: 800px) {
+.oxd-main-menu-search .toggled[data-v-c0ef0a76] {
+    display: none;
+}
+}
+.oxd-main-menu-button[data-v-c0ef0a76] {
+  top: 110px;
+  right: -12px;
+  width: 25px;
+  height: 25px;
+  display: none;
+  min-width: 25px;
+  min-height: 25px;
+  position: absolute;
+  background-color: var(--oxd-primary-one-color, #ff7b1d) !important;
+}
+@media (min-width: 800px) {
+.oxd-main-menu-button[data-v-c0ef0a76] {
+    display: inline-flex;
+}
+}
+.oxd-main-menu-button[data-v-c0ef0a76] .oxd-icon {
+  font-size: 10px;
+  color: var(--oxd-primary-font-color, #ffffff);
+}
+.oxd-main-menu.--fixed[data-v-c0ef0a76] {
+  flex: none;
+}
+/*!*************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** css ./node_modules/css-loader/dist/cjs.js??clonedRuleSet-22.use[1]!./node_modules/vue-loader/dist/stylePostLoader.js!./node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-22.use[2]!./node_modules/sass-loader/dist/cjs.js??clonedRuleSet-22.use[3]!./src/core/components/custom-layout/SidePanel/sidepanel.scss?vue&type=style&index=0&id=a74477a0&lang=scss&scoped=true ***!
+  \*************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************/
+/* Import OXD Globals */
+.oxd-navbar-nav[data-v-a74477a0] {
+  display: flex;
+  flex-direction: column;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  height: inherit;
+  overflow: hidden;
+}
+.oxd-sidepanel[data-v-a74477a0] {
+  top: 0;
+  height: 100%;
+  position: fixed;
+  background-color: var(--oxd-white-color, #ffffff);
+  border-bottom-right-radius: 35px;
+  border-top-right-radius: 35px;
+  box-shadow: 0px 25px 35px 0 rgba(0, 0, 0, 0.18);
+  z-index: 230;
+  transition: width 0.3s ease-in-out;
+}
+@media (min-width: 0px) {
+.oxd-sidepanel[data-v-a74477a0] {
+    width: 0;
+}
+}
+@media (min-width: 800px) {
+.oxd-sidepanel[data-v-a74477a0] {
+    width: 16rem;
+}
+}
+@media (min-width: 0px) {
+.oxd-sidepanel.toggled[data-v-a74477a0] {
+    width: 16rem;
+}
+}
+@media (min-width: 800px) {
+.oxd-sidepanel.toggled[data-v-a74477a0] {
+    width: 5.2rem;
+}
+}
+.oxd-sidepanel-header[data-v-a74477a0] {
+  flex: none;
+}
+.oxd-sidepanel-header-close[data-v-a74477a0] {
+  font-size: 1.5rem;
+  right: 20px;
+  top: 38px;
+  position: absolute;
+  cursor: pointer;
+}
+@media (min-width: 0px) {
+.oxd-sidepanel-header-close[data-v-a74477a0] {
+    display: block;
+}
+}
+@media (min-width: 800px) {
+.oxd-sidepanel-header-close[data-v-a74477a0] {
+    display: none;
+}
+}
+.oxd-sidepanel-body[data-v-a74477a0] {
+  flex: 1 1 auto;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  padding-bottom: 30px;
+}
+/*!*******************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** css ./node_modules/css-loader/dist/cjs.js??clonedRuleSet-22.use[1]!./node_modules/vue-loader/dist/stylePostLoader.js!./node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-22.use[2]!./node_modules/sass-loader/dist/cjs.js??clonedRuleSet-22.use[3]!./src/core/components/custom-layout/Layout/layout.scss?vue&type=style&index=0&id=64cc88d8&lang=scss&scoped=true ***!
+  \*******************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************/
+/* Import OXD Globals */
+.oxd-layout[data-v-64cc88d8] {
+  position: relative;
+}
+.oxd-layout-container[data-v-64cc88d8] {
+  position: relative;
+  overflow: hidden;
+  width: calc(100% + 1px);
+  margin-top: 100px;
+}
+@media (min-width: 800px) {
+.oxd-layout-container[data-v-64cc88d8] {
+    overflow: unset;
+    width: calc(100% - 16rem);
+    margin-left: 16rem;
+}
+.oxd-layout-container.--collapse[data-v-64cc88d8] {
+    width: calc(
+        100% - 5.2rem
+);
+    margin-left: 5.2rem;
+}
+}
+.oxd-layout-context[data-v-64cc88d8] {
+  min-height: 75vmin;
+  padding-top: 2rem;
+  padding-left: 20px;
+  padding-right: 20px;
+}
+@media (min-width: 800px) {
+.oxd-layout-context[data-v-64cc88d8] {
+    padding-left: 48px;
+    padding-right: 48px;
+}
+}
+.oxd-layout-footer[data-v-64cc88d8] {
+  margin-top: 2rem;
+  padding-left: 20px;
+  padding-right: 20px;
+}
+@media (min-width: 800px) {
+.oxd-layout-footer[data-v-64cc88d8] {
+    padding-left: 48px;
+    padding-right: 48px;
+}
+}
+.oxd-layout-overlay[data-v-64cc88d8] {
+  z-index: 220;
+}
+@media (min-width: 0px) {
+.oxd-layout-overlay[data-v-64cc88d8] {
+    display: flex;
+}
+}
+@media (min-width: 800px) {
+.oxd-layout-overlay[data-v-64cc88d8] {
+    display: none;
+}
+}
+/*!**************************************************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** css ./node_modules/css-loader/dist/cjs.js??clonedRuleSet-22.use[1]!./node_modules/vue-loader/dist/stylePostLoader.js!./node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-22.use[2]!./node_modules/sass-loader/dist/cjs.js??clonedRuleSet-22.use[3]!./src/core/components/custom-layout/Layout/layout-global.scss?vue&type=style&index=1&lang=scss ***!
+  \**************************************************************************************************************************************************************************************************************************************************************************************************************************************************************/
+/* Import OXD Globals */
+body {
+  display: block;
+  margin: 0;
+}
+html,
+body {
+  height: 100%;
+  background-color: var(--oxd-background-pastel-white-color, #f6f5fb);
+  scrollbar-color: #cfd3de #f6f5fb;
+  scrollbar-width: thin;
+}
+html::-webkit-scrollbar,
+body::-webkit-scrollbar {
+  width: 0.5rem;
+  height: 0.5rem;
+}
+html::-webkit-scrollbar-thumb,
+body::-webkit-scrollbar-thumb {
+  background: #cfd3de;
+  border-radius: 20px;
+}
+html::-webkit-scrollbar-track,
+body::-webkit-scrollbar-track {
+  background: #f6f5fb;
+}
+@media screen and (-ms-high-contrast: active), (-ms-high-contrast: none) {
+html,
+  body {
+    scrollbar-face-color: #cfd3de;
+    scrollbar-track-color: #f6f5fb;
+    scrollbar-arrow-color: #929baa;
+}
+}
+#app,
+#root {
+  height: inherit;
+}
 /*!*******************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
   !*** css ./node_modules/css-loader/dist/cjs.js??clonedRuleSet-22.use[1]!./node_modules/vue-loader/dist/stylePostLoader.js!./node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-22.use[2]!./node_modules/sass-loader/dist/cjs.js??clonedRuleSet-22.use[3]!./node_modules/vue-loader/dist/index.js??ruleSet[0].use[0]!./src/core/pages/ModuleUnderDevelopment.vue?vue&type=style&index=0&id=36c36f81&lang=scss&scoped=true ***!
   \*******************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************/
 /* Import OXD Globals */
 .orangehrm-card-container[data-v-36c36f81] {
-  background: var(--oxd-primary-one-color);
+  background: var(--oxd-primary-one-color, #ff7b1d);
 }
 .wrapper[data-v-36c36f81] {
   display: flex;
@@ -73,11 +560,11 @@
      object-fit: fill;
 }
 .orangehrm-module-under-development-heading[data-v-36c36f81] {
-  color: var(--oxd-secondary-font-color);
+  color: var(--oxd-secondary-font-color, #ffffff);
   font-weight: 300;
 }
 .orangehrm-module-under-development-soon-heading[data-v-36c36f81] {
-  color: var(--oxd-secondary-font-color);
+  color: var(--oxd-secondary-font-color, #ffffff);
   font-weight: 700;
 }
 .orangehrm-module-under-development-text[data-v-36c36f81] {
@@ -88,7 +575,7 @@
 }
 .orangehrm-module-under-development-link[data-v-36c36f81] {
   text-decoration: none;
-  color: var(--oxd-primary-one-color);
+  color: var(--oxd-primary-one-color, #ff7b1d);
 }
 /*!*****************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
   !*** css ./node_modules/css-loader/dist/cjs.js??clonedRuleSet-22.use[1]!./node_modules/vue-loader/dist/stylePostLoader.js!./node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-22.use[2]!./node_modules/sass-loader/dist/cjs.js??clonedRuleSet-22.use[3]!./node_modules/vue-loader/dist/index.js??ruleSet[0].use[0]!./src/core/pages/Disabled.vue?vue&type=style&index=0&id=b54e39a4&lang=scss&scoped=true ***!
@@ -100,13 +587,13 @@
 }
 .orangehrm-module-disabled-heading[data-v-b54e39a4] {
   line-height: normal;
-  color: var(--oxd-primary-one-color);
+  color: var(--oxd-primary-one-color, #ff7b1d);
   font-weight: 800;
 }
 .orangehrm-module-disabled-sub-heading[data-v-b54e39a4] {
   margin-top: -1.5rem;
   padding-bottom: 1rem;
-  color: var(--oxd-primary-one-color);
+  color: var(--oxd-primary-one-color, #ff7b1d);
   font-weight: 600;
 }
 /*!******************************************************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
@@ -172,8 +659,8 @@
   flex-direction: column;
   display: flex;
   align-items: center;
-  border: 1px solid #cfd3de;
-  background-color: #f6f5fb;
+  border: 1px solid var(--oxd-interface-gray-lighten-1-color, #cfd3de);
+  background-color: var(--oxd-background-pastel-white-color, #f6f5fb);
 }
 [data-v-d653c6ae] .--label-right {
   flex-shrink: 0;
@@ -196,7 +683,7 @@
   right: 0px;
   font-weight: 600;
   position: absolute;
-  color: #ffffff;
+  color: var(--oxd-white-color, #ffffff);
   font-family: "Nunito Sans", sans-serif;
 }
 .orangehrm-password-chip.--strength-better[data-v-3576e685] {
@@ -215,7 +702,7 @@
 /* Import OXD Globals */
 .user-password-row[data-v-13a16b6b] {
   padding: 10px;
-  background-color: #fafafc;
+  background-color: var(--oxd-background-white-shadow-color, #fafafc);
   border-radius: 0.75rem;
 }
 .user-password-row[data-v-13a16b6b] .orangehrm-password-chip {
@@ -254,7 +741,7 @@
 }
 .org-root-container .oxd-text.--parent[data-v-8ece474a]::after {
   content: "";
-  border-left: 0.15rem solid var(--oxd-primary-one-color);
+  border-left: 0.15rem solid var(--oxd-primary-one-color, #ff7b1d);
   height: 2rem;
   position: absolute;
   top: 50%;
@@ -262,12 +749,12 @@
 }
 .org-root-container .oxd-text.--parent[data-v-8ece474a]::before {
   content: "";
-  border-top: 0.15rem solid var(--oxd-primary-one-color);
+  border-top: 0.15rem solid var(--oxd-primary-one-color, #ff7b1d);
   width: 1rem;
   margin-right: 0.5rem;
 }
 .org-container[data-v-8ece474a] {
-  background-color: #e8eaef;
+  background-color: var(--oxd-interface-gray-lighten-2-color, #e8eaef);
   padding: 0.5rem 1rem;
 }
 .org-container .loader[data-v-8ece474a] {
@@ -277,7 +764,7 @@
   padding: 10rem 0;
 }
 .org-container .loader .oxd-loading-spinner-container[data-v-8ece474a] {
-  background-color: #ffffff;
+  background-color: var(--oxd-white-color, #ffffff);
 }
 .org-structure-card[data-v-8ece474a] {
   display: flex;
@@ -286,7 +773,7 @@
   border-radius: 0.75rem;
   align-items: center;
   justify-content: space-between;
-  background-color: #ffffff;
+  background-color: var(--oxd-white-color, #ffffff);
 }
 @media (min-width: 800px) {
 .org-structure-card[data-v-8ece474a] {
@@ -359,7 +846,7 @@
   width: 100%;
 }
 .oxd-tree-node-toggle .oxd-icon-button {
-  background-color: #ffffff !important;
+  background-color: var(--oxd-white-color, #ffffff) !important;
 }
 /*!**********************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
   !*** css ./node_modules/css-loader/dist/cjs.js??clonedRuleSet-22.use[1]!./node_modules/vue-loader/dist/stylePostLoader.js!./node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-22.use[2]!./node_modules/sass-loader/dist/cjs.js??clonedRuleSet-22.use[3]!./src/orangehrmAdminPlugin/pages/organizationGeneralInformation/general-info.scss?vue&type=style&index=0&id=f04c3e40&lang=scss&scoped=true ***!
@@ -543,7 +1030,7 @@
   \***********************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************/
 /* Import OXD Globals */
 .addlanguage-note[data-v-614bc4c4] {
-  background-color: #e8eaef;
+  background-color: var(--oxd-interface-gray-lighten-2-color, #e8eaef);
   border-radius: 10px;
   width: 100%;
   margin-top: 20px;
@@ -565,7 +1052,7 @@
   \***********************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************/
 /* Import OXD Globals */
 .addlanguage-note[data-v-5e6f8f99] {
-  background-color: #e8eaef;
+  background-color: var(--oxd-interface-gray-lighten-2-color, #e8eaef);
   border-radius: 10px;
   width: 100%;
   margin-top: 20px;
@@ -680,10 +1167,10 @@
   margin-bottom: 0.2rem;
 }
 .orangehrm-ldap-test-value.--success[data-v-a109e854] {
-  color: #34bc40;
+  color: var(--oxd-feedback-success-color, #34bc40);
 }
 .orangehrm-ldap-test-value.--error[data-v-a109e854] {
-  color: #eb0910;
+  color: var(--oxd-feedback-danger-color, #eb0910);
 }
 .orangehrm-ldap-test-row[data-v-a109e854] {
   width: 100%;
@@ -766,7 +1253,7 @@
   width: 8rem !important;
   height: 8rem !important;
   border-radius: 100% !important;
-  border: 1px solid #e8eaef;
+  border: 1px solid var(--oxd-interface-gray-lighten-2-color, #e8eaef);
 }
 .employee-image-wrapper[data-v-32691153] {
   height: 90%;
@@ -776,7 +1263,7 @@
   border-radius: 100%;
   justify-content: center;
   align-items: flex-start;
-  border: 1px solid #e8eaef;
+  border: 1px solid var(--oxd-interface-gray-lighten-2-color, #e8eaef);
 }
 .employee-image-action[data-v-32691153] {
   right: 0;
@@ -885,7 +1372,7 @@
 }
 .orangehrm-terminate-date[data-v-2fd04746] {
   cursor: pointer;
-  color: var(--oxd-primary-one-color);
+  color: var(--oxd-primary-one-color, #ff7b1d);
   text-decoration: underline;
   font-size: 0.75rem;
   font-weight: 800;
@@ -969,7 +1456,7 @@
 }
 .orangehrm-terminate-date[data-v-c545b180] {
   cursor: pointer;
-  color: var(--oxd-primary-one-color);
+  color: var(--oxd-primary-one-color, #ff7b1d);
   text-decoration: underline;
   font-size: 0.75rem;
   font-weight: 800;
@@ -993,7 +1480,7 @@
   padding: 0rem 1rem;
   border-radius: 0.85rem;
   flex: 100%;
-  color: #64728c;
+  color: var(--oxd-interface-gray-darken-1-color, #64728c);
   text-decoration: none;
   font-size: 14px;
   font-family: "Nunito Sans", sans-serif;
@@ -1002,12 +1489,12 @@
 @media (min-width: 0px) {
 .orangehrm-tabs-item[data-v-6013ffa7] {
     margin-right: 0.25rem;
-    background-color: #f6f5fb;
+    background-color: var(--oxd-background-pastel-white-color, #f6f5fb);
     white-space: nowrap;
 }
 .orangehrm-tabs-item.--active[data-v-6013ffa7], .orangehrm-tabs-item[data-v-6013ffa7]:hover {
-    background-color: var(--oxd-primary-one-color);
-    color: #ffffff;
+    background-color: var(--oxd-primary-one-color, #ff7b1d);
+    color: var(--oxd-white-color, #ffffff);
 }
 }
 @media (min-width: 800px) {
@@ -1018,8 +1505,8 @@
     white-space: wrap;
 }
 .orangehrm-tabs-item.--active[data-v-6013ffa7], .orangehrm-tabs-item[data-v-6013ffa7]:hover {
-    background-color: #f6f5fb;
-    color: #64728c;
+    background-color: var(--oxd-background-pastel-white-color, #f6f5fb);
+    color: var(--oxd-interface-gray-darken-1-color, #64728c);
 }
 }
 @media (min-width: 0px) {
@@ -1145,7 +1632,7 @@
   overflow: hidden;
   justify-content: center;
   box-sizing: border-box;
-  border: 0.5rem solid #f6f5fb;
+  border: 0.5rem solid var(--oxd-background-pastel-white-color, #f6f5fb);
   box-shadow: 1px 1px 18px 11px hsla(238, 13%, 76%, 0.24);
 }
 .orangehrm-edit-employee-imagesection[data-v-20f71dd2] {
@@ -1243,7 +1730,7 @@
 }
 .orangehrm-terminate-date[data-v-2d6e3bb2] {
   cursor: pointer;
-  color: var(--oxd-primary-one-color);
+  color: var(--oxd-primary-one-color, #ff7b1d);
   text-decoration: underline;
   font-size: 0.75rem;
   font-weight: 800;
@@ -1327,7 +1814,7 @@
 }
 .orangehrm-terminate-date[data-v-1eceb9d4] {
   cursor: pointer;
-  color: var(--oxd-primary-one-color);
+  color: var(--oxd-primary-one-color, #ff7b1d);
   text-decoration: underline;
   font-size: 0.75rem;
   font-weight: 800;
@@ -1411,7 +1898,7 @@
 }
 .orangehrm-terminate-date[data-v-b0ba1416] {
   cursor: pointer;
-  color: var(--oxd-primary-one-color);
+  color: var(--oxd-primary-one-color, #ff7b1d);
   text-decoration: underline;
   font-size: 0.75rem;
   font-weight: 800;
@@ -1567,7 +2054,7 @@
 }
 .orangehrm-terminate-date[data-v-57742a0d] {
   cursor: pointer;
-  color: var(--oxd-primary-one-color);
+  color: var(--oxd-primary-one-color, #ff7b1d);
   text-decoration: underline;
   font-size: 0.75rem;
   font-weight: 800;
@@ -1651,7 +2138,7 @@
 }
 .orangehrm-terminate-date[data-v-245ff20c] {
   cursor: pointer;
-  color: var(--oxd-primary-one-color);
+  color: var(--oxd-primary-one-color, #ff7b1d);
   text-decoration: underline;
   font-size: 0.75rem;
   font-weight: 800;
@@ -1735,7 +2222,7 @@
 }
 .orangehrm-terminate-date[data-v-2d01ee36] {
   cursor: pointer;
-  color: var(--oxd-primary-one-color);
+  color: var(--oxd-primary-one-color, #ff7b1d);
   text-decoration: underline;
   font-size: 0.75rem;
   font-weight: 800;
@@ -1856,17 +2343,17 @@
   width: 450px;
 }
 .orangehrm-success-message[data-v-7db9fe6a] {
-  color: #34bc40;
+  color: var(--oxd-feedback-success-color, #34bc40);
 }
 .orangehrm-error-message[data-v-7db9fe6a] {
-  color: #eb0910;
+  color: var(--oxd-feedback-danger-color, #eb0910);
 }
 /*!****************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
   !*** css ./node_modules/css-loader/dist/cjs.js??clonedRuleSet-22.use[1]!./node_modules/vue-loader/dist/stylePostLoader.js!./node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-22.use[2]!./node_modules/sass-loader/dist/cjs.js??clonedRuleSet-22.use[3]!./node_modules/vue-loader/dist/index.js??ruleSet[0].use[0]!./src/orangehrmPimPlugin/pages/dataImport/EmployeeDataImport.vue?vue&type=style&index=0&id=6c39a5a4&lang=scss&scoped=true ***!
   \****************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************/
 /* Import OXD Globals */
 .orangehrm-information-card-container[data-v-6c39a5a4] {
-  background-color: #e8eaef;
+  background-color: var(--oxd-interface-gray-lighten-2-color, #e8eaef);
   border-radius: 1.2rem;
   padding: 1.2rem;
 }
@@ -1876,7 +2363,7 @@
   font-weight: 400;
 }
 .orangehrm-information-card-text .download-link[data-v-6c39a5a4] {
-  color: var(--oxd-primary-one-color);
+  color: var(--oxd-primary-one-color, #ff7b1d);
 }
 /*!*******************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
   !*** css ./node_modules/css-loader/dist/cjs.js??clonedRuleSet-22.use[1]!./node_modules/vue-loader/dist/stylePostLoader.js!./node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-22.use[2]!./node_modules/sass-loader/dist/cjs.js??clonedRuleSet-22.use[3]!./node_modules/vue-loader/dist/index.js??ruleSet[0].use[0]!./src/orangehrmPimPlugin/components/ReportCriterionAutocomplete.vue?vue&type=style&index=0&id=491b8ca0&lang=scss&scoped=true ***!
@@ -2047,7 +2534,7 @@
 }
 .orangehrm-support-link[data-v-7fcd09d0] {
   text-decoration: none;
-  color: var(--oxd-primary-one-color);
+  color: var(--oxd-primary-one-color, #ff7b1d);
 }
 /*!****************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
   !*** css ./node_modules/css-loader/dist/cjs.js??clonedRuleSet-12.use[1]!./node_modules/vue-loader/dist/stylePostLoader.js!./node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-12.use[2]!./node_modules/vue-loader/dist/index.js??ruleSet[0].use[0]!./src/orangehrmTimePlugin/components/ActivityDropdown.vue?vue&type=style&index=0&id=42071ad6&scoped=true&lang=css ***!
@@ -2094,13 +2581,13 @@
 .orangehrm-timesheet-header[data-v-e18e7be8] {
   gap: 0.4rem;
   flex-direction: column;
-  border-bottom: 1px solid #e8eaef;
+  border-bottom: 1px solid var(--oxd-interface-gray-lighten-2-color, #e8eaef);
 }
 .orangehrm-timesheet-header--title[data-v-e18e7be8] {
   width: 100%;
   box-sizing: border-box;
   padding: 0.6rem 1.2rem;
-  border-bottom: 1px solid #e8eaef;
+  border-bottom: 1px solid var(--oxd-interface-gray-lighten-2-color, #e8eaef);
 }
 @media (min-width: 800px) {
 .orangehrm-timesheet-header[data-v-e18e7be8] {
@@ -2128,7 +2615,7 @@
 }
 .orangehrm-timesheet-footer[data-v-e18e7be8] {
   padding: 0.6rem 1.2rem;
-  border-top: 1px solid #e8eaef;
+  border-top: 1px solid var(--oxd-interface-gray-lighten-2-color, #e8eaef);
 }
 .orangehrm-timesheet-footer--options[data-v-e18e7be8] {
   gap: 0.4rem;
@@ -2169,7 +2656,7 @@
 .orangehrm-timesheet-table .--freeze-left[data-v-e18e7be8],
   .orangehrm-timesheet-table .--freeze-right[data-v-e18e7be8] {
     position: sticky;
-    background-color: #ffffff;
+    background-color: var(--oxd-white-color, #ffffff);
     z-index: 209;
 }
 .orangehrm-timesheet-table .--freeze-left[data-v-e18e7be8]::after,
@@ -2184,14 +2671,14 @@
 }
 .orangehrm-timesheet-table .--freeze-left[data-v-e18e7be8]::after {
     right: 0;
-    border-right: 1px solid #e8eaef;
+    border-right: 1px solid var(--oxd-interface-gray-lighten-2-color, #e8eaef);
 }
 .orangehrm-timesheet-table .--freeze-right[data-v-e18e7be8] {
     right: 0;
 }
 .orangehrm-timesheet-table .--freeze-right[data-v-e18e7be8]::after {
     left: 0;
-    border-left: 1px solid #e8eaef;
+    border-left: 1px solid var(--oxd-interface-gray-lighten-2-color, #e8eaef);
 }
 }
 .orangehrm-timesheet-table-header-cell[data-v-e18e7be8] {
@@ -2202,7 +2689,7 @@
   text-align: center;
 }
 .orangehrm-timesheet-table-header-row[data-v-e18e7be8] {
-  border-bottom: 1px solid #e8eaef;
+  border-bottom: 1px solid var(--oxd-interface-gray-lighten-2-color, #e8eaef);
 }
 .orangehrm-timesheet-table-header .--day[data-v-e18e7be8] {
   display: block;
@@ -2215,15 +2702,15 @@
 }
 .orangehrm-timesheet-table-body-cell.--highlight[data-v-e18e7be8] {
   font-weight: 700;
-  background-color: #cfd3de;
+  background-color: var(--oxd-interface-gray-lighten-1-color, #cfd3de);
 }
 .orangehrm-timesheet-table-body-cell.--highlight-2[data-v-e18e7be8] {
   font-weight: 700;
-  color: #ffffff;
-  background-color: #929baa;
+  color: var(--oxd-white-color, #ffffff);
+  background-color: var(--oxd-interface-gray-color, #929baa);
 }
 .orangehrm-timesheet-table-body-cell.--highlight-3[data-v-e18e7be8] {
-  background-color: #f6f5fb;
+  background-color: var(--oxd-background-pastel-white-color, #f6f5fb);
 }
 .orangehrm-timesheet-table-body-cell.--flex[data-v-e18e7be8] {
   display: flex;
@@ -2235,10 +2722,10 @@
 }
 .orangehrm-timesheet-table-body-row[data-v-e18e7be8] {
   vertical-align: baseline;
-  border-bottom: 1px solid #e8eaef;
+  border-bottom: 1px solid var(--oxd-interface-gray-lighten-2-color, #e8eaef);
 }
 .orangehrm-timesheet-table-body-row.--total[data-v-e18e7be8] {
-  background-color: #cfd3de;
+  background-color: var(--oxd-interface-gray-lighten-1-color, #cfd3de);
 }
 .orangehrm-timesheet-table.--editable tr[data-v-e18e7be8] {
   border: unset;
@@ -2263,7 +2750,7 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  background-color: #ffffff;
+  background-color: var(--oxd-white-color, #ffffff);
   z-index: 200;
 }
 .oxd-input-group[data-v-e18e7be8] {
@@ -2536,7 +3023,7 @@
   padding: 0.675rem 0rem;
 }
 .orangehrm-leave-balance-text.--error[data-v-25d16a86] {
-  color: #eb0910;
+  color: var(--oxd-feedback-danger-color, #eb0910);
 }
 /*!******************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
   !*** css ./node_modules/css-loader/dist/cjs.js??clonedRuleSet-12.use[1]!./node_modules/vue-loader/dist/stylePostLoader.js!./node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-12.use[2]!./node_modules/vue-loader/dist/index.js??ruleSet[0].use[0]!./src/orangehrmLeavePlugin/components/LeaveTypeDropdown.vue?vue&type=style&index=0&id=ddb0de4c&scoped=true&lang=css ***!
@@ -2758,7 +3245,7 @@
   justify-content: center;
   box-sizing: border-box;
   border-radius: 100%;
-  border: 0.5rem solid #f6f5fb;
+  border: 0.5rem solid var(--oxd-background-pastel-white-color, #f6f5fb);
 }
 .orangehrm-comment-profile-name p[data-v-ef595e80] {
   font-weight: 700;
@@ -2766,7 +3253,7 @@
 }
 .orangehrm-comment-message[data-v-ef595e80] {
   padding: 0.5rem 1rem;
-  background-color: #f6f5fb;
+  background-color: var(--oxd-background-pastel-white-color, #f6f5fb);
   border-radius: 0.5rem;
   margin-bottom: 0.25rem;
   width: -moz-fit-content;
@@ -2933,12 +3420,12 @@
 }
 @media (min-width: 0px) {
 .orangehrm-login-layout[data-v-7f780453] {
-    background-color: #f1f2f5;
+    background-color: var(--oxd-background-light-gray-color, #f1f2f5);
 }
 }
 @media (min-width: 800px) {
 .orangehrm-login-layout[data-v-7f780453] {
-    background-color: var(--oxd-primary-one-color);
+    background-color: var(--oxd-primary-one-color, #ff7b1d);
 }
 }
 .orangehrm-login-layout-blob[data-v-7f780453] {
@@ -2963,7 +3450,7 @@
             mask-position: bottom left;
     -webkit-mask-repeat: no-repeat;
             mask-repeat: no-repeat;
-    background-color: var(--oxd-primary-one-color);
+    background-color: var(--oxd-primary-one-color, #ff7b1d);
 }
 }
 @media (min-width: 800px) {
@@ -2988,7 +3475,7 @@
   position: absolute;
   right: 15%;
   padding: 1rem;
-  background-color: #f6f5fb;
+  background-color: var(--oxd-background-pastel-white-color, #f6f5fb);
   border-radius: 100%;
   display: none;
 }
@@ -3011,7 +3498,7 @@
 }
 .orangehrm-login-slot-wrapper .orangehrm-login-logo-mobile[data-v-7f780453] {
   padding: 1rem;
-  background-color: #f6f5fb;
+  background-color: var(--oxd-background-pastel-white-color, #f6f5fb);
   border-radius: 100%;
   width: -moz-fit-content;
   width: fit-content;
@@ -3028,7 +3515,7 @@
 }
 }
 .orangehrm-login-slot-wrapper .orangehrm-login-slot[data-v-7f780453] {
-  background-color: #ffffff;
+  background-color: var(--oxd-white-color, #ffffff);
   padding: 2rem 0;
   border-radius: 1rem;
   margin: 0 auto;
@@ -3041,7 +3528,7 @@
 }
 .orangehrm-login-branding[data-v-7f780453] {
   padding: 1.5rem 1rem;
-  background-color: #ffffff;
+  background-color: var(--oxd-white-color, #ffffff);
   border-radius: 1rem;
   text-align: center;
   box-shadow: 0px 16px 35px 0px rgba(0, 0, 0, 0.08);
@@ -3079,7 +3566,7 @@
   \****************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************/
 /* Import OXD Globals */
 .orangehrm-card-container[data-v-eea42fb6] {
-  box-shadow: 3px 3px 10px #929baa;
+  box-shadow: 3px 3px 10px var(--oxd-interface-gray-color, #929baa);
 }
 @media (min-width: 800px) {
 .orangehrm-card-container[data-v-eea42fb6] {
@@ -3140,7 +3627,7 @@
   \******************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************/
 /* Import OXD Globals */
 .orangehrm-attendance-punchedIn-timezone[data-v-230a4068] {
-  color: #929baa;
+  color: var(--oxd-interface-gray-color, #929baa);
 }
 /*!***********************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
   !*** css ./node_modules/css-loader/dist/cjs.js??clonedRuleSet-22.use[1]!./node_modules/vue-loader/dist/stylePostLoader.js!./node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-22.use[2]!./node_modules/sass-loader/dist/cjs.js??clonedRuleSet-22.use[3]!./src/orangehrmAttendancePlugin/pages/edit-attendance.scss?vue&type=style&index=0&id=b97f8b16&lang=scss&scoped=true ***!
@@ -3161,13 +3648,13 @@
 .orangehrm-punch-out-record[data-v-b97f8b16] {
   padding-top: 0.5rem;
   box-sizing: border-box;
-  border-top: 1px solid #e8eaef;
+  border-top: 1px solid var(--oxd-interface-gray-lighten-2-color, #e8eaef);
 }
 @media (min-width: 800px) {
 .orangehrm-punch-out-record[data-v-b97f8b16] {
     border: unset;
     padding-top: unset;
-    border-left: 1px solid #e8eaef;
+    border-left: 1px solid var(--oxd-interface-gray-lighten-2-color, #e8eaef);
 }
 }
 /*!*********************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
@@ -3181,7 +3668,7 @@
   font-weight: 700;
 }
 .oxd-table-card-cell .timezone[data-v-7c735605] {
-  color: #929baa;
+  color: var(--oxd-interface-gray-color, #929baa);
   white-space: nowrap;
 }
 /*!**************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
@@ -3274,7 +3761,7 @@
   overflow: hidden;
   justify-content: center;
   box-sizing: border-box;
-  border: 0.5rem solid #f6f5fb;
+  border: 0.5rem solid var(--oxd-background-pastel-white-color, #f6f5fb);
   box-shadow: 1px 1px 18px 11px hsla(238, 13%, 76%, 0.24);
 }
 .orangehrm-selected-employee-imagesection[data-v-6e1c455d] {
@@ -3324,7 +3811,7 @@
   padding: 1.2rem;
   border-radius: 1.2rem;
   color: #64728c;
-  background-color: #e8eaef;
+  background-color: var(--oxd-interface-gray-lighten-2-color, #e8eaef);
   font-size: 12px;
 }
 .orangehrm-maintenance-note-header[data-v-57dfb53e] {
@@ -3395,7 +3882,7 @@
 .orangehrm-text[data-v-5dfa7e3a] {
   font-size: 12px;
   font-weight: 600;
-  color: #64728c;
+  color: var(--oxd-interface-gray-darken-1-color, #64728c);
 }
 .orangehrm-text-label[data-v-5dfa7e3a] {
   flex: 1;
@@ -3410,7 +3897,7 @@
 .orangehrm-vacancy-links[data-v-5dfa7e3a] {
   padding: 0.5rem;
   border-radius: 0.5rem;
-  background-color: #e8eaef;
+  background-color: var(--oxd-interface-gray-lighten-2-color, #e8eaef);
 }
 /*!***************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
   !*** css ./node_modules/css-loader/dist/cjs.js??clonedRuleSet-22.use[1]!./node_modules/vue-loader/dist/stylePostLoader.js!./node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-22.use[2]!./node_modules/sass-loader/dist/cjs.js??clonedRuleSet-22.use[3]!./node_modules/vue-loader/dist/index.js??ruleSet[0].use[0]!./src/orangehrmRecruitmentPlugin/components/VacancyLinkCard.vue?vue&type=style&index=0&id=daba02d0&lang=scss&scoped=true ***!
@@ -3427,7 +3914,7 @@
   font-size: 12px;
   font-weight: 600;
   padding-right: 0.2rem;
-  color: #64728c;
+  color: var(--oxd-interface-gray-darken-1-color, #64728c);
 }
 .orangehrm-vacancy-link[data-v-daba02d0] {
   font-size: 12px;
@@ -3436,7 +3923,7 @@
   text-decoration: none;
   word-break: break-all;
   font-family: "Nunito Sans", sans-serif;
-  color: var(--oxd-primary-one-color);
+  color: var(--oxd-primary-one-color, #ff7b1d);
 }
 /*!****************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
   !*** css ./node_modules/css-loader/dist/cjs.js??clonedRuleSet-22.use[1]!./node_modules/vue-loader/dist/stylePostLoader.js!./node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-22.use[2]!./node_modules/sass-loader/dist/cjs.js??clonedRuleSet-22.use[3]!./src/orangehrmRecruitmentPlugin/pages/vacancy.scss?vue&type=style&index=0&id=6f04c618&lang=scss&scoped=true ***!
@@ -3495,7 +3982,7 @@
 .orangehrm-text[data-v-6f04c618] {
   font-size: 12px;
   font-weight: 600;
-  color: #64728c;
+  color: var(--oxd-interface-gray-darken-1-color, #64728c);
 }
 .orangehrm-text-label[data-v-6f04c618] {
   flex: 1;
@@ -3510,7 +3997,7 @@
 .orangehrm-vacancy-links[data-v-6f04c618] {
   padding: 0.5rem;
   border-radius: 0.5rem;
-  background-color: #e8eaef;
+  background-color: var(--oxd-interface-gray-lighten-2-color, #e8eaef);
 }
 /*!****************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
   !*** css ./node_modules/css-loader/dist/cjs.js??clonedRuleSet-22.use[1]!./node_modules/vue-loader/dist/stylePostLoader.js!./node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-22.use[2]!./node_modules/sass-loader/dist/cjs.js??clonedRuleSet-22.use[3]!./src/orangehrmRecruitmentPlugin/pages/vacancy.scss?vue&type=style&index=0&id=35ae5cdf&lang=scss&scoped=true ***!
@@ -3569,7 +4056,7 @@
 .orangehrm-text[data-v-35ae5cdf] {
   font-size: 12px;
   font-weight: 600;
-  color: #64728c;
+  color: var(--oxd-interface-gray-darken-1-color, #64728c);
 }
 .orangehrm-text-label[data-v-35ae5cdf] {
   flex: 1;
@@ -3584,7 +4071,7 @@
 .orangehrm-vacancy-links[data-v-35ae5cdf] {
   padding: 0.5rem;
   border-radius: 0.5rem;
-  background-color: #e8eaef;
+  background-color: var(--oxd-interface-gray-lighten-2-color, #e8eaef);
 }
 /*!***********************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
   !*** css ./node_modules/css-loader/dist/cjs.js??clonedRuleSet-22.use[1]!./node_modules/vue-loader/dist/stylePostLoader.js!./node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-22.use[2]!./node_modules/sass-loader/dist/cjs.js??clonedRuleSet-22.use[3]!./node_modules/vue-loader/dist/index.js??ruleSet[0].use[0]!./src/orangehrmRecruitmentPlugin/components/InterviewerAutocomplete.vue?vue&type=style&index=0&id=2f4a5c49&lang=scss&scoped=true ***!
@@ -3700,7 +4187,7 @@
 .orangehrm-applicant-card-anchor-tag[data-v-96454104] {
   cursor: pointer;
   padding-top: 0.5rem;
-  color: var(--oxd-primary-one-color);
+  color: var(--oxd-primary-one-color, #ff7b1d);
 }
 .orangehrm-applicant-container[data-v-96454104] {
   width: 100%;
@@ -3744,7 +4231,7 @@
 }
 .orangehrm-container-loader[data-v-96454104] {
   margin: 0 auto;
-  background-color: #ffffff;
+  background-color: var(--oxd-white-color, #ffffff);
   position: absolute;
   top: 50%;
   left: 0;
@@ -3799,7 +4286,7 @@
   cursor: pointer;
   font-weight: 600;
   padding-top: 0.5rem;
-  color: var(--oxd-primary-one-color);
+  color: var(--oxd-primary-one-color, #ff7b1d);
   font-size: 12px;
 }
 .orangehrm-vacancy-card-body[data-v-96454104] {
@@ -3932,7 +4419,7 @@
 .orangehrm-applicant-card-anchor-tag[data-v-ec5310dc] {
   cursor: pointer;
   padding-top: 0.5rem;
-  color: var(--oxd-primary-one-color);
+  color: var(--oxd-primary-one-color, #ff7b1d);
 }
 .orangehrm-applicant-container[data-v-ec5310dc] {
   width: 100%;
@@ -3976,7 +4463,7 @@
 }
 .orangehrm-container-loader[data-v-ec5310dc] {
   margin: 0 auto;
-  background-color: #ffffff;
+  background-color: var(--oxd-white-color, #ffffff);
   position: absolute;
   top: 50%;
   left: 0;
@@ -4031,7 +4518,7 @@
   cursor: pointer;
   font-weight: 600;
   padding-top: 0.5rem;
-  color: var(--oxd-primary-one-color);
+  color: var(--oxd-primary-one-color, #ff7b1d);
   font-size: 12px;
 }
 .orangehrm-vacancy-card-body[data-v-ec5310dc] {
@@ -4184,7 +4671,7 @@
 .orangehrm-applicant-card-anchor-tag[data-v-98b9ec36] {
   cursor: pointer;
   padding-top: 0.5rem;
-  color: var(--oxd-primary-one-color);
+  color: var(--oxd-primary-one-color, #ff7b1d);
 }
 .orangehrm-applicant-container[data-v-98b9ec36] {
   width: 100%;
@@ -4228,7 +4715,7 @@
 }
 .orangehrm-container-loader[data-v-98b9ec36] {
   margin: 0 auto;
-  background-color: #ffffff;
+  background-color: var(--oxd-white-color, #ffffff);
   position: absolute;
   top: 50%;
   left: 0;
@@ -4283,7 +4770,7 @@
   cursor: pointer;
   font-weight: 600;
   padding-top: 0.5rem;
-  color: var(--oxd-primary-one-color);
+  color: var(--oxd-primary-one-color, #ff7b1d);
   font-size: 12px;
 }
 .orangehrm-vacancy-card-body[data-v-98b9ec36] {
@@ -4396,7 +4883,7 @@
 /* Import OXD Globals */
 .orangehrm-attachment[data-v-563f83aa] {
   border-radius: 1.2rem;
-  background-color: #ffffff;
+  background-color: var(--oxd-white-color, #ffffff);
 }
 .orangehrm-attachment-header[data-v-563f83aa] {
   display: flex;
@@ -4552,13 +5039,13 @@
   vertical-align: bottom;
 }
 .--positive[data-v-495840cc] {
-  color: #34bc40;
+  color: var(--oxd-feedback-success-color, #34bc40);
 }
 .--negative[data-v-495840cc] {
-  color: #eb0910;
+  color: var(--oxd-feedback-danger-color, #eb0910);
 }
 .--deselected[data-v-495840cc] {
-  background-color: #ffffff;
+  background-color: var(--oxd-white-color, #ffffff);
 }
 /*!*******************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
   !*** css ./node_modules/css-loader/dist/cjs.js??clonedRuleSet-22.use[1]!./node_modules/vue-loader/dist/stylePostLoader.js!./node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-22.use[2]!./node_modules/sass-loader/dist/cjs.js??clonedRuleSet-22.use[3]!./src/orangehrmPerformancePlugin/components/tracker-log-modal.scss?vue&type=style&index=0&id=0e9262d1&lang=scss&scoped=true ***!
@@ -4589,7 +5076,7 @@
   display: flex;
   overflow: hidden;
   box-sizing: border-box;
-  border: 0.1rem solid #f6f5fb;
+  border: 0.1rem solid var(--oxd-background-pastel-white-color, #f6f5fb);
 }
 .orangehrm-employee-tracker-log-image-section[data-v-5b02310a] {
   display: flex;
@@ -4602,7 +5089,7 @@
   margin-right: 1.2rem;
 }
 .orangehrm-employee-tracker-log-content-container[data-v-5b02310a] {
-  background-color: #ffffff;
+  background-color: var(--oxd-white-color, #ffffff);
   border-radius: 1.2rem;
   padding: 1.2rem;
   margin-top: 0.3rem;
@@ -4638,10 +5125,10 @@
   min-height: 21px;
 }
 .orangehrm-employee-tracker-log-title-icon.--positive[data-v-5b02310a] {
-  color: #34bc40;
+  color: var(--oxd-feedback-success-color, #34bc40);
 }
 .orangehrm-employee-tracker-log-title-icon.--negative[data-v-5b02310a] {
-  color: #eb0910;
+  color: var(--oxd-feedback-danger-color, #eb0910);
 }
 .orangehrm-employee-tracker-log-body-text[data-v-5b02310a] {
   font-size: 12px;
@@ -4700,7 +5187,7 @@
 }
 .orangehrm-container-loader[data-v-72917e34] {
   margin: 0 auto;
-  background-color: #ffffff;
+  background-color: var(--oxd-white-color, #ffffff);
 }
 .orangehrm-scroll-card[data-v-72917e34] {
   padding: 0.5rem 1rem;
@@ -4735,7 +5222,7 @@
   overflow: hidden;
   justify-content: center;
   box-sizing: border-box;
-  border: 0.5rem solid #f6f5fb;
+  border: 0.5rem solid var(--oxd-background-pastel-white-color, #f6f5fb);
 }
 .orangehrm-employee-tracker-image-section[data-v-72917e34] {
   display: flex;
@@ -4783,7 +5270,7 @@
 }
 .orangehrm-employee-tracker-header-subtitle[data-v-72917e34] {
   font-weight: 700;
-  color: #929baa;
+  color: var(--oxd-interface-gray-color, #929baa);
 }
 .orangehrm-employee-tracker-ratings[data-v-72917e34] {
   display: flex;
@@ -4815,10 +5302,10 @@
   align-items: center;
 }
 .--positive[data-v-72917e34] {
-  color: #34bc40;
+  color: var(--oxd-feedback-success-color, #34bc40);
 }
 .--negative[data-v-72917e34] {
-  color: #eb0910;
+  color: var(--oxd-feedback-danger-color, #eb0910);
 }
 .orangehrm-paper-container[data-v-72917e34] {
   padding-bottom: 2.4rem;
@@ -4840,7 +5327,7 @@
 }
 .orangehrm-performance-review-rating-number[data-v-7af2772d] {
   font-weight: 700;
-  color: var(--oxd-primary-one-color);
+  color: var(--oxd-primary-one-color, #ff7b1d);
 }
 .orangehrm-performance-review-owner[data-v-7af2772d] {
   display: flex;
@@ -4873,7 +5360,7 @@
   word-break: break-word;
 }
 .orangehrm-performance-review-owner-employee-job[data-v-7af2772d] {
-  color: #929baa;
+  color: var(--oxd-interface-gray-color, #929baa);
 }
 .orangehrm-performance-review-final-rating[data-v-7af2772d] {
   align-self: center;
@@ -5245,12 +5732,12 @@
   justify-content: center;
   padding: 0.5rem;
   border-radius: 0.5rem;
-  background-color: #fafafc;
+  background-color: var(--oxd-background-white-shadow-color, #fafafc);
 }
 .orangehrm-directory-card-icon[data-v-44424255] {
   font-size: 24px;
   margin-right: 0.5rem;
-  color: #64728c;
+  color: var(--oxd-interface-gray-darken-1-color, #64728c);
 }
 @media (min-width: 800px) {
 .orangehrm-directory-card[data-v-44424255] {
@@ -5290,7 +5777,7 @@
   border-radius: 1.2rem;
   width: auto;
   height: 64px;
-  box-shadow: 5px 5px 5px 5px #fafafc;
+  box-shadow: 5px 5px 5px 5px var(--oxd-background-white-shadow-color, #fafafc);
 }
 .orangehrm-directory-card-hover[data-v-134567b3] {
   display: flex;
@@ -5312,7 +5799,7 @@
   word-wrap: break-word;
 }
 .orangehrm-directory-card-hover-icon[data-v-134567b3] {
-  color: #64728c;
+  color: var(--oxd-interface-gray-darken-1-color, #64728c);
   font-size: 14px;
   display: flex;
   flex-shrink: 0;
@@ -5320,11 +5807,11 @@
   justify-content: center;
 }
 .orangehrm-directory-card-hover[data-v-134567b3]:hover {
-  background-color: #fafafc;
+  background-color: var(--oxd-background-white-shadow-color, #fafafc);
 }
 .orangehrm-directory-card-icon[data-v-134567b3] {
   margin: 0 0.5rem 0 0;
-  color: #64728c;
+  color: var(--oxd-interface-gray-darken-1-color, #64728c);
   font-size: 24px;
   display: flex;
   justify-content: center;
@@ -5347,7 +5834,7 @@
   max-width: 250px;
   margin-left: 1rem;
   border-radius: 1.2rem;
-  background-color: #ffffff;
+  background-color: var(--oxd-white-color, #ffffff);
 }
 .orangehrm-container[data-v-90f2162a] {
   height: 512px;
@@ -5376,7 +5863,7 @@
 }
 .orangehrm-container-loader[data-v-90f2162a] {
   margin: 0 auto;
-  background-color: #ffffff;
+  background-color: var(--oxd-white-color, #ffffff);
 }
 .oxd-grid-item[data-v-90f2162a] {
   padding: 0.5rem 0.75rem;
@@ -5395,12 +5882,12 @@
 }
 @media (min-width: 0px) {
 .orangehrm-login-layout[data-v-4972d5fc] {
-    background-color: #f1f2f5;
+    background-color: var(--oxd-background-light-gray-color, #f1f2f5);
 }
 }
 @media (min-width: 800px) {
 .orangehrm-login-layout[data-v-4972d5fc] {
-    background-color: var(--oxd-primary-one-color);
+    background-color: var(--oxd-primary-one-color, #ff7b1d);
 }
 }
 .orangehrm-login-layout-blob[data-v-4972d5fc] {
@@ -5425,7 +5912,7 @@
             mask-position: bottom left;
     -webkit-mask-repeat: no-repeat;
             mask-repeat: no-repeat;
-    background-color: var(--oxd-primary-one-color);
+    background-color: var(--oxd-primary-one-color, #ff7b1d);
 }
 }
 @media (min-width: 800px) {
@@ -5450,7 +5937,7 @@
   position: absolute;
   right: 15%;
   padding: 1rem;
-  background-color: #f6f5fb;
+  background-color: var(--oxd-background-pastel-white-color, #f6f5fb);
   border-radius: 100%;
   display: none;
 }
@@ -5473,7 +5960,7 @@
 }
 .orangehrm-login-slot-wrapper .orangehrm-login-logo-mobile[data-v-4972d5fc] {
   padding: 1rem;
-  background-color: #f6f5fb;
+  background-color: var(--oxd-background-pastel-white-color, #f6f5fb);
   border-radius: 100%;
   width: -moz-fit-content;
   width: fit-content;
@@ -5490,7 +5977,7 @@
 }
 }
 .orangehrm-login-slot-wrapper .orangehrm-login-slot[data-v-4972d5fc] {
-  background-color: #ffffff;
+  background-color: var(--oxd-white-color, #ffffff);
   padding: 2rem 0;
   border-radius: 1rem;
   margin: 0 auto;
@@ -5503,7 +5990,7 @@
 }
 .orangehrm-login-branding[data-v-4972d5fc] {
   padding: 1.5rem 1rem;
-  background-color: #ffffff;
+  background-color: var(--oxd-white-color, #ffffff);
   border-radius: 1rem;
   text-align: center;
   box-shadow: 0px 16px 35px 0px rgba(0, 0, 0, 0.08);
@@ -5573,7 +6060,7 @@
   font-weight: 600;
 }
 .orangehrm-login-pwreset a[data-v-bdb1cc74] {
-  color: var(--oxd-primary-one-color);
+  color: var(--oxd-primary-one-color, #ff7b1d);
   text-decoration: none;
 }
 .orangehrm-login-forgot[data-v-bdb1cc74] {
@@ -5584,7 +6071,7 @@
 }
 .orangehrm-login-forgot-header[data-v-bdb1cc74] {
   cursor: pointer;
-  color: var(--oxd-primary-one-color);
+  color: var(--oxd-primary-one-color, #ff7b1d);
 }
 .orangehrm-demo-credentials[data-v-bdb1cc74] {
   margin: 1rem 0;
@@ -5602,7 +6089,7 @@
 .orangehrm-login-footer-sm .orangehrm-sm-icon[data-v-bdb1cc74] {
   width: inherit;
   height: inherit;
-  color: rgba(146, 155, 170, 0.8);
+  color: rgba(var(--oxd-interface-gray-color, #929baa), 0.8);
 }
 @media (min-width: 800px) {
 .orangehrm-login-footer-sm[data-v-bdb1cc74] {
@@ -5616,7 +6103,7 @@
   \*****************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************/
 /* Import OXD Globals */
 .orangehrm-card-container[data-v-c98d36e8] {
-  box-shadow: 3px 3px 10px #929baa;
+  box-shadow: 3px 3px 10px var(--oxd-interface-gray-color, #929baa);
   width: 80vw;
 }
 @media (min-width: 800px) {
@@ -5643,7 +6130,7 @@
   font-size: 12px;
 }
 .register-reset--link[data-v-c98d36e8] {
-  color: var(--oxd-primary-one-color);
+  color: var(--oxd-primary-one-color, #ff7b1d);
 }
 .register-wrapper[data-v-c98d36e8] {
   flex: 1;
@@ -5706,7 +6193,7 @@
 }
 .orangehrm-login-forgot-header[data-v-c98d36e8] {
   cursor: pointer;
-  color: var(--oxd-primary-one-color);
+  color: var(--oxd-primary-one-color, #ff7b1d);
 }
 .orangehrm-login-forgot[data-v-c98d36e8] {
   display: flex;
@@ -5715,7 +6202,7 @@
 }
 .orangehrm-login-forgot-header[data-v-c98d36e8] {
   cursor: pointer;
-  color: var(--oxd-primary-one-color);
+  color: var(--oxd-primary-one-color, #ff7b1d);
 }
 .orangehrm-login-footer-sm[data-v-c98d36e8] {
   display: flex;
@@ -5730,7 +6217,7 @@
 .orangehrm-login-footer-sm .orangehrm-sm-icon[data-v-c98d36e8] {
   width: inherit;
   height: inherit;
-  color: rgba(146, 155, 170, 0.8);
+  color: rgba(var(--oxd-interface-gray-color, #929baa), 0.8);
 }
 @media (min-width: 800px) {
 .orangehrm-login-footer-sm[data-v-c98d36e8] {
@@ -5745,27 +6232,27 @@
 /* Import OXD Globals */
 .orangehrm-card-icon[data-v-1e6cd7ba] {
   font-size: 1.5rem;
-  color: #eb0910;
+  color: var(--oxd-feedback-danger-color, #eb0910);
   padding: 1rem;
 }
 .orangehrm-card-note[data-v-1e6cd7ba] {
   font-size: 12px;
 }
 .orangehrm-card-note-text[data-v-1e6cd7ba] {
-  color: #eb0910;
+  color: var(--oxd-feedback-danger-color, #eb0910);
 }
 .orangehrm-card-note-icon[data-v-1e6cd7ba] {
   flex-shrink: 0;
 }
 .orangehrm-card-note--background[data-v-1e6cd7ba] {
-  background-color: #e8eaef;
+  background-color: var(--oxd-interface-gray-lighten-2-color, #e8eaef);
   border-radius: 1.2rem;
   padding: 1.2rem;
 }
 .orangehrm-card-note--icon[data-v-1e6cd7ba] {
   display: flex;
   align-items: center;
-  background-color: rgba(235, 9, 16, 0.06);
+  background-color: rgba(var(--oxd-feedback-danger-color, #eb0910), 0.06);
   border-radius: 1.2rem;
   padding: 1rem;
 }
@@ -5791,7 +6278,7 @@
  * Boston, MA  02110-1301, USA
  */
 .orangehrm-card-container[data-v-43b8d9e7] {
-  box-shadow: 3px 3px 10px #929baa;
+  box-shadow: 3px 3px 10px var(--oxd-interface-gray-color, #929baa);
   width: 80vw;
 }
 @media (min-width: 800px) {
@@ -5804,7 +6291,7 @@
   font-size: 12px;
 }
 .orangehrm-forgot-password-reset--link[data-v-43b8d9e7] {
-  color: var(--oxd-primary-one-color);
+  color: var(--oxd-primary-one-color, #ff7b1d);
 }
 .orangehrm-forgot-password-wrapper[data-v-43b8d9e7] {
   flex: 1;
@@ -5884,7 +6371,7 @@
  * Boston, MA  02110-1301, USA
  */
 .orangehrm-card-container[data-v-5ea41f7f] {
-  box-shadow: 3px 3px 10px #929baa;
+  box-shadow: 3px 3px 10px var(--oxd-interface-gray-color, #929baa);
   width: 80vw;
 }
 @media (min-width: 800px) {
@@ -5897,7 +6384,7 @@
   font-size: 12px;
 }
 .orangehrm-forgot-password-reset--link[data-v-5ea41f7f] {
-  color: var(--oxd-primary-one-color);
+  color: var(--oxd-primary-one-color, #ff7b1d);
 }
 .orangehrm-forgot-password-wrapper[data-v-5ea41f7f] {
   flex: 1;
@@ -5977,7 +6464,7 @@
  * Boston, MA  02110-1301, USA
  */
 .orangehrm-card-container[data-v-50727291] {
-  box-shadow: 3px 3px 10px #929baa;
+  box-shadow: 3px 3px 10px var(--oxd-interface-gray-color, #929baa);
   width: 80vw;
 }
 @media (min-width: 800px) {
@@ -5990,7 +6477,7 @@
   font-size: 12px;
 }
 .orangehrm-forgot-password-reset--link[data-v-50727291] {
-  color: var(--oxd-primary-one-color);
+  color: var(--oxd-primary-one-color, #ff7b1d);
 }
 .orangehrm-forgot-password-wrapper[data-v-50727291] {
   flex: 1;
@@ -6053,7 +6540,7 @@
   \*****************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************/
 /* Import OXD Globals */
 .orangehrm-card-container[data-v-4a4b5fa4] {
-  box-shadow: 3px 3px 10px #929baa;
+  box-shadow: 3px 3px 10px var(--oxd-interface-gray-color, #929baa);
 }
 .orangehrm-admin-access-container[data-v-4a4b5fa4] {
   display: flex;
@@ -6120,7 +6607,7 @@
  * Boston, MA  02110-1301, USA
  */
 .orangehrm-card-container[data-v-0ec970ee] {
-  box-shadow: 3px 3px 10px #929baa;
+  box-shadow: 3px 3px 10px var(--oxd-interface-gray-color, #929baa);
   width: 80vw;
 }
 @media (min-width: 800px) {
@@ -6133,7 +6620,7 @@
   font-size: 12px;
 }
 .orangehrm-forgot-password-reset--link[data-v-0ec970ee] {
-  color: var(--oxd-primary-one-color);
+  color: var(--oxd-primary-one-color, #ff7b1d);
 }
 .orangehrm-forgot-password-wrapper[data-v-0ec970ee] {
   flex: 1;
@@ -6213,7 +6700,7 @@
  * Boston, MA  02110-1301, USA
  */
 .orangehrm-card-container[data-v-3630b2cc] {
-  box-shadow: 3px 3px 10px #929baa;
+  box-shadow: 3px 3px 10px var(--oxd-interface-gray-color, #929baa);
   width: 80vw;
 }
 @media (min-width: 800px) {
@@ -6226,7 +6713,7 @@
   font-size: 12px;
 }
 .orangehrm-forgot-password-reset--link[data-v-3630b2cc] {
-  color: var(--oxd-primary-one-color);
+  color: var(--oxd-primary-one-color, #ff7b1d);
 }
 .orangehrm-forgot-password-wrapper[data-v-3630b2cc] {
   flex: 1;
@@ -6306,7 +6793,7 @@
  * Boston, MA  02110-1301, USA
  */
 .orangehrm-card-container[data-v-2d46acdf] {
-  box-shadow: 3px 3px 10px #929baa;
+  box-shadow: 3px 3px 10px var(--oxd-interface-gray-color, #929baa);
   width: 80vw;
 }
 @media (min-width: 800px) {
@@ -6319,7 +6806,7 @@
   font-size: 12px;
 }
 .orangehrm-forgot-password-reset--link[data-v-2d46acdf] {
-  color: var(--oxd-primary-one-color);
+  color: var(--oxd-primary-one-color, #ff7b1d);
 }
 .orangehrm-forgot-password-wrapper[data-v-2d46acdf] {
   flex: 1;
@@ -6448,7 +6935,7 @@
 }
 .orangehrm-dashboard-widget-loader[data-v-e838762c] {
   margin: 9rem auto;
-  background-color: #ffffff;
+  background-color: var(--oxd-white-color, #ffffff);
 }
 /*!*******************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
   !*** css ./node_modules/css-loader/dist/cjs.js??clonedRuleSet-22.use[1]!./node_modules/vue-loader/dist/stylePostLoader.js!./node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-22.use[2]!./node_modules/sass-loader/dist/cjs.js??clonedRuleSet-22.use[3]!./src/orangehrmDashboardPlugin/components/quick-launch-widget.scss?vue&type=style&index=0&id=30219bff&lang=scss&scoped=true ***!
@@ -6477,8 +6964,8 @@
   box-sizing: border-box;
 }
 .orangehrm-quick-launch-icon[data-v-30219bff]:focus, .orangehrm-quick-launch-icon[data-v-30219bff]:hover, .orangehrm-quick-launch-icon[data-v-30219bff]:active {
-  color: var(--oxd-primary-one-color);
-  background-color: var(--oxd-primary-one-alpha-15-color);
+  color: var(--oxd-primary-one-color, #ff7b1d);
+  background-color: var(--oxd-primary-one-alpha-15-color, rgba(255, 123, 29, 0.15));
 }
 .orangehrm-quick-launch-heading[data-v-30219bff] {
   width: 75px;
@@ -6533,7 +7020,7 @@
   display: block;
   padding: 0.5rem;
   border-radius: 0.75rem;
-  border: 1px solid #e8eaef;
+  border: 1px solid var(--oxd-interface-gray-lighten-2-color, #e8eaef);
 }
 .orangehrm-buzz-widget-header[data-v-24ef9293] {
   display: flex;
@@ -6576,7 +7063,7 @@
 }
 .orangehrm-buzz-widget-header-time[data-v-24ef9293] {
   font-size: 10px;
-  color: #929baa;
+  color: var(--oxd-interface-gray-color, #929baa);
 }
 .orangehrm-buzz-widget-header[data-v-24ef9293] .orangehrm-buzz-profile-image img {
   width: 35px;
@@ -6740,7 +7227,7 @@
   border-radius: 100%;
   box-sizing: border-box;
   justify-content: center;
-  border: 0.15rem solid var(--oxd-primary-one-color);
+  border: 0.15rem solid var(--oxd-primary-one-color, #ff7b1d);
 }
 .orangehrm-attendance-card-profile-record[data-v-304a17e0] {
   margin-left: 1rem;
@@ -6752,7 +7239,7 @@
   border-radius: 1rem;
   margin-bottom: 1rem;
   justify-content: center;
-  background-color: #f1f2f5;
+  background-color: var(--oxd-background-light-gray-color, #f1f2f5);
 }
 .orangehrm-attendance-card-summary[data-v-304a17e0] {
   display: flex;
@@ -6770,7 +7257,7 @@
   font-weight: 700;
   padding: 0.35rem;
   border-radius: 0.75rem;
-  background-color: #f1f2f5;
+  background-color: var(--oxd-background-light-gray-color, #f1f2f5);
 }
 .orangehrm-attendance-card-icon[data-v-304a17e0] {
   height: 15px;
@@ -6779,7 +7266,7 @@
 .orangehrm-attendance-card-state[data-v-304a17e0] {
   font-weight: 700;
   white-space: nowrap;
-  color: var(--oxd-primary-one-color);
+  color: var(--oxd-primary-one-color, #ff7b1d);
 }
 .orangehrm-attendance-card-details[data-v-304a17e0] {
   font-size: 10px;
@@ -6791,7 +7278,7 @@
   right: 0;
   font-size: 20px;
   transform: translate(0%, -50%);
-  outline: 5px solid #ffffff !important;
+  outline: 5px solid var(--oxd-white-color, #ffffff) !important;
 }
 .emp-attendance-chart[data-v-304a17e0] {
   height: 170px;
@@ -6899,7 +7386,7 @@
 }
 .orangehrm-buzz-post-body-readmore[data-v-9ecab904] {
   cursor: pointer;
-  color: var(--oxd-primary-one-color);
+  color: var(--oxd-primary-one-color, #ff7b1d);
 }
 .orangehrm-buzz-post-body-readmore[data-v-9ecab904]:hover {
   text-decoration: underline;
@@ -6929,14 +7416,14 @@
 .orangehrm-buzz-post-body-more[data-v-9ecab904] {
   font-size: 3rem;
   font-weight: 600;
-  color: #ffffff;
+  color: var(--oxd-white-color, #ffffff);
 }
 .orangehrm-buzz-post-body-employee[data-v-9ecab904] {
   font-size: 0.9rem;
 }
 .orangehrm-buzz-post-body-date[data-v-9ecab904] {
   font-size: 0.6rem;
-  color: #929baa;
+  color: var(--oxd-interface-gray-color, #929baa);
 }
 .orangehrm-buzz-post-body-original-text[data-v-9ecab904] {
   font-weight: 300;
@@ -6995,9 +7482,9 @@
   padding: 5px 10px;
   box-sizing: border-box;
   border-radius: 0.65rem;
-  background-color: #ffffff;
+  background-color: var(--oxd-white-color, #ffffff);
   box-shadow: 0 5px 15px 0px rgba(0, 0, 0, 0.15);
-  border: 1px solid #e8eaef;
+  border: 1px solid var(--oxd-interface-gray-lighten-2-color, #e8eaef);
 }
 .orangehrm-buzz-stats-modal-employee[data-v-81cc7bac] {
   display: flex;
@@ -7054,7 +7541,7 @@
   margin-right: 0.5rem;
 }
 .orangehrm-buzz-stats-dialog-icon.--likes[data-v-81cc7bac] {
-  color: #eb0910;
+  color: var(--oxd-feedback-danger-color, #eb0910);
 }
 .orangehrm-buzz-stats-dialog-employee[data-v-81cc7bac] {
   gap: 0.5rem;
@@ -7155,7 +7642,7 @@
 .orangehrm-buzz-stats-like-icon[data-v-c1c8801a] {
   height: 15px;
   margin-right: 5px;
-  color: #eb0910;
+  color: var(--oxd-feedback-danger-color, #eb0910);
 }
 /*!**************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
   !*** css ./node_modules/css-loader/dist/cjs.js??clonedRuleSet-22.use[1]!./node_modules/vue-loader/dist/stylePostLoader.js!./node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-22.use[2]!./node_modules/sass-loader/dist/cjs.js??clonedRuleSet-22.use[3]!./node_modules/vue-loader/dist/index.js??ruleSet[0].use[0]!./src/orangehrmBuzzPlugin/components/PostModal.vue?vue&type=style&index=0&id=c80181fe&lang=scss&scoped=true ***!
@@ -7190,13 +7677,13 @@
 }
 .orangehrm-photo-upload-icon[data-v-61346894] {
   font-size: 5rem;
-  color: #e8eaef;
+  color: var(--oxd-interface-gray-lighten-2-color, #e8eaef);
 }
 [data-v-61346894] .oxd-file-div {
   padding: 1rem;
   cursor: pointer;
   text-align: center;
-  border: 0.25rem dashed #e8eaef;
+  border: 0.25rem dashed var(--oxd-interface-gray-lighten-2-color, #e8eaef);
 }
 /*!******************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
   !*** css ./node_modules/css-loader/dist/cjs.js??clonedRuleSet-22.use[1]!./node_modules/vue-loader/dist/stylePostLoader.js!./node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-22.use[2]!./node_modules/sass-loader/dist/cjs.js??clonedRuleSet-22.use[3]!./src/orangehrmBuzzPlugin/components/photo-input.scss?vue&type=style&index=0&id=2af80c58&lang=scss&scoped=true ***!
@@ -7220,7 +7707,7 @@
   padding: 0;
   min-width: 1.5625rem;
   min-height: 1.5625rem;
-  color: #ffffff;
+  color: var(--oxd-white-color, #ffffff);
 }
 .orangehrm-photo-input-remove.--float[data-v-2af80c58] {
   top: -5px;
@@ -7229,7 +7716,7 @@
   background-color: #b8bdc7;
 }
 .orangehrm-photo-input-remove[data-v-2af80c58]:hover {
-  background-color: #64728c;
+  background-color: var(--oxd-interface-gray-darken-1-color, #64728c);
 }
 .orangehrm-photo-input[data-v-2af80c58] .orangehrm-buzz-photos-item {
   padding: 0 5px;
@@ -7491,7 +7978,7 @@
 }
 .orangehrm-buzz-share-date[data-v-ecbe79d2] {
   font-size: 0.6rem;
-  color: #929baa;
+  color: var(--oxd-interface-gray-color, #929baa);
 }
 .orangehrm-buzz-share-text[data-v-ecbe79d2] {
   font-weight: 300;
@@ -7590,11 +8077,11 @@
   font-size: 12px;
   min-width: 1.5625rem;
   min-height: 1.5625rem;
-  color: #ffffff;
+  color: var(--oxd-white-color, #ffffff);
   background: rgba(0, 0, 0, 0.7);
 }
 [data-v-74f79510] .actions:hover {
-  background-color: #64728c;
+  background-color: var(--oxd-interface-gray-darken-1-color, #64728c);
 }
 [data-v-74f79510] .actions:disabled {
   opacity: 0.5;
@@ -7621,13 +8108,13 @@
 .orangehrm-post-comment-datetime[data-v-503e2a9a] {
   font-weight: 300;
   font-size: 0.6rem;
-  color: #929baa;
+  color: var(--oxd-interface-gray-color, #929baa);
 }
 .orangehrm-post-comment-area[data-v-503e2a9a] {
   padding: 0.5rem;
   position: relative;
   border-radius: 0.8rem;
-  background-color: #f6f5fb;
+  background-color: var(--oxd-background-pastel-white-color, #f6f5fb);
 }
 .orangehrm-post-comment-action-area[data-v-503e2a9a] {
   gap: 1rem;
@@ -7636,15 +8123,15 @@
   margin-top: 0.1rem;
 }
 .orangehrm-post-comment-action.--cancel[data-v-503e2a9a] {
-  color: var(--oxd-primary-one-color);
+  color: var(--oxd-primary-one-color, #ff7b1d);
 }
 .orangehrm-post-comment-action.--liked[data-v-503e2a9a] {
-  color: #eb0910;
+  color: var(--oxd-feedback-danger-color, #eb0910);
 }
 .orangehrm-post-comment-action[data-v-503e2a9a]:hover {
   cursor: pointer;
   text-decoration: underline;
-  color: var(--oxd-primary-one-color);
+  color: var(--oxd-primary-one-color, #ff7b1d);
 }
 .orangehrm-post-comment form[data-v-503e2a9a] {
   font-size: 0.75rem;
@@ -7686,7 +8173,7 @@
 .orangehrm-post-comment-readmore[data-v-503e2a9a] {
   cursor: pointer;
   font-size: 0.75rem;
-  color: var(--oxd-primary-one-color);
+  color: var(--oxd-primary-one-color, #ff7b1d);
 }
 .orangehrm-post-comment-readmore[data-v-503e2a9a]:hover {
   text-decoration: underline;
@@ -7702,11 +8189,11 @@
   font-size: 0.75rem;
   border-radius: 0.5rem;
   box-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2);
-  background-color: #fafafc;
+  background-color: var(--oxd-background-white-shadow-color, #fafafc);
 }
 .orangehrm-post-comment-stats-icon[data-v-503e2a9a] {
   height: 12px;
-  color: #eb0910;
+  color: var(--oxd-feedback-danger-color, #eb0910);
 }
 /*!*************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
   !*** css ./node_modules/css-loader/dist/cjs.js??clonedRuleSet-22.use[1]!./node_modules/vue-loader/dist/stylePostLoader.js!./node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-22.use[2]!./node_modules/sass-loader/dist/cjs.js??clonedRuleSet-22.use[3]!./node_modules/vue-loader/dist/index.js??ruleSet[0].use[0]!./src/orangehrmBuzzPlugin/components/PostCommentContainer.vue?vue&type=style&index=0&id=76828684&lang=scss&scoped=true ***!
@@ -7724,7 +8211,7 @@
   cursor: pointer;
   font-size: 0.9rem;
   text-align: center;
-  color: var(--oxd-primary-one-color);
+  color: var(--oxd-primary-one-color, #ff7b1d);
 }
 .orangehrm-buzz-comment-readmore[data-v-76828684]:hover {
   text-decoration: underline;
@@ -7743,7 +8230,7 @@
   padding: 1.2rem;
   overflow-y: auto;
   height: 100vh;
-  background: #ffffff;
+  background: var(--oxd-white-color, #ffffff);
   scrollbar-color: #cfd3de #f6f5fb;
   scrollbar-width: thin;
 }
@@ -7772,7 +8259,7 @@
 }
 .orangehrm-post-details-time[data-v-3d4d75d4] {
   font-size: 0.75rem;
-  color: #929baa;
+  color: var(--oxd-interface-gray-color, #929baa);
 }
 .orangehrm-post-details-emp-name[data-v-3d4d75d4] {
   font-size: 1rem;
@@ -7807,7 +8294,7 @@
 }
 .orangehrm-post-details-readmore[data-v-3d4d75d4] {
   cursor: pointer;
-  color: var(--oxd-primary-one-color);
+  color: var(--oxd-primary-one-color, #ff7b1d);
 }
 .orangehrm-post-details-readmore[data-v-3d4d75d4]:hover {
   text-decoration: underline;
@@ -7871,7 +8358,7 @@
   padding: 0.5rem;
   border-radius: 1rem;
   align-items: flex-start;
-  background: #ffffff;
+  background: var(--oxd-white-color, #ffffff);
   justify-content: space-between;
 }
 .orangehrm-buzz-pill-actions[data-v-39e7e2aa] {
@@ -7894,7 +8381,7 @@
 }
 .orangehrm-buzz-pill-stats-likes[data-v-39e7e2aa] .oxd-icon {
   margin-right: 5px;
-  color: #eb0910;
+  color: var(--oxd-feedback-danger-color, #eb0910);
 }
 .orangehrm-buzz-pill-stats-other[data-v-39e7e2aa] {
   display: flex;
@@ -7930,7 +8417,7 @@
   margin-bottom: 1rem;
 }
 .orangehrm-buzz-like-icon[data-v-6ddd08d5] {
-  color: #eb0910;
+  color: var(--oxd-feedback-danger-color, #eb0910);
 }
 .orangehrm-buzz-loader[data-v-6ddd08d5] {
   margin-left: auto;
@@ -7997,7 +8484,7 @@
 }
 .orangehrm-buzz-post-time[data-v-6ddd08d5] {
   font-size: 0.75rem;
-  color: #929baa;
+  color: var(--oxd-interface-gray-color, #929baa);
 }
 .orangehrm-buzz-post-footer[data-v-6ddd08d5] {
   padding-top: 1rem;
@@ -8018,7 +8505,7 @@
 }
 .orangehrm-buzz-share-date[data-v-6a78f4ea] {
   font-size: 0.6rem;
-  color: #929baa;
+  color: var(--oxd-interface-gray-color, #929baa);
 }
 .orangehrm-buzz-share-text[data-v-6a78f4ea] {
   font-weight: 300;
@@ -8269,7 +8756,7 @@
 }
 .orangehrm-buzz-anniversary-footer[data-v-0bf3f506] .oxd-text {
   cursor: pointer;
-  color: var(--oxd-primary-one-color);
+  color: var(--oxd-primary-one-color, #ff7b1d);
 }
 .orangehrm-buzz-anniversary-nocontent[data-v-0bf3f506] {
   display: flex;
@@ -8320,13 +8807,13 @@
   font-weight: 700;
 }
 .orangehrm-flex-table-value.--success[data-v-46aaa76a] {
-  color: #34bc40;
+  color: var(--oxd-feedback-success-color, #34bc40);
 }
 .orangehrm-flex-table-value.--warning[data-v-46aaa76a] {
-  color: #ffa62f;
+  color: var(--oxd-feedback-warn-color, #ffa62f);
 }
 .orangehrm-flex-table-value.--error[data-v-46aaa76a] {
-  color: #eb0910;
+  color: var(--oxd-feedback-danger-color, #eb0910);
 }
 .orangehrm-flex-table-row[data-v-46aaa76a] {
   display: flex;
@@ -8337,7 +8824,7 @@
   flex: 1;
 }
 .orangehrm-flex-table-divider[data-v-46aaa76a] {
-  border-top-color: #64728c;
+  border-top-color: var(--oxd-interface-gray-darken-1-color, #64728c);
 }
 /*!************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
   !*** css ./node_modules/css-loader/dist/cjs.js??clonedRuleSet-22.use[1]!./node_modules/vue-loader/dist/stylePostLoader.js!./node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-22.use[2]!./node_modules/sass-loader/dist/cjs.js??clonedRuleSet-22.use[3]!./node_modules/vue-loader/dist/index.js??ruleSet[0].use[0]!./src/orangehrmSystemCheckPlugin/pages/SystemCheckScreen.vue?vue&type=style&index=0&id=643d9a3b&scoped=true&lang=scss ***!
@@ -8348,10 +8835,10 @@
 }
 .orangehrm-system-check-title[data-v-643d9a3b] {
   font-weight: 700;
-  color: var(--oxd-primary-one-color);
+  color: var(--oxd-primary-one-color, #ff7b1d);
 }
 .orangehrm-system-check-content.--error[data-v-643d9a3b] {
-  color: #eb0910;
+  color: var(--oxd-feedback-danger-color, #eb0910);
 }
 .orangehrm-system-check-action[data-v-643d9a3b] {
   padding: 1rem 0;
@@ -8639,24 +9126,24 @@ button > .icon[data-v-7e3c60fb] {
   padding: 0;
 }
 [data-v-1e745b21] .form-wizard-vue .fw-step-active {
-  background: var(--oxd-primary-one-color) !important;
+  background: var(--oxd-primary-one-color, #ff7b1d) !important;
   color: white !important;
 }
 [data-v-1e745b21] .form-wizard-vue .fw-list-progress-active {
-  background: var(--oxd-primary-one-color);
+  background: var(--oxd-primary-one-color, #ff7b1d);
 }
 [data-v-1e745b21] .form-wizard-vue .fw-body-content {
   padding: 0;
 }
 [data-v-1e745b21] .fw-btn {
-  background: var(--oxd-primary-one-color) !important;
+  background: var(--oxd-primary-one-color, #ff7b1d) !important;
 }
 /*!***********************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
   !*** css ./node_modules/css-loader/dist/cjs.js??clonedRuleSet-22.use[1]!./node_modules/vue-loader/dist/stylePostLoader.js!./node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-22.use[2]!./node_modules/sass-loader/dist/cjs.js??clonedRuleSet-22.use[3]!./src/onboardingPlugin/pages/my-assignments/components/assignment.scss?vue&type=style&index=0&id=62790182&lang=scss&scoped=true ***!
   \***********************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************/
 /* Import OXD Globals */
 .oxd-table-filter[data-v-62790182] {
-  background-color: #ffffff;
+  background-color: var(--oxd-white-color, #ffffff);
   border-radius: 1.2rem;
   padding: 25px 25px 25px 25px;
   margin: 25px 0;
@@ -8772,6 +9259,10 @@ span[data-v-8530db26] {
   !*** css ./node_modules/css-loader/dist/cjs.js??clonedRuleSet-24.use[1]!./node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-24.use[2]!./node_modules/sass-loader/dist/cjs.js??clonedRuleSet-24.use[3]!./src/core/styles/global.scss ***!
   \*******************************************************************************************************************************************************************************************************************************************/
 /* Import OXD Globals */
+hr {
+  all: revert;
+}
+
 .orangehrm-header-container,
 .orangehrm-dialog-header-container {
   display: flex;
@@ -8809,7 +9300,7 @@ span[data-v-8530db26] {
 }
 
 .orangehrm-card-container {
-  background-color: #ffffff;
+  background-color: var(--oxd-white-color, #ffffff);
   border-radius: 1.2rem;
   padding: 25px;
 }
@@ -8821,19 +9312,19 @@ span[data-v-8530db26] {
 }
 
 .orangehrm-container {
-  background-color: #e8eaef;
+  background-color: var(--oxd-interface-gray-lighten-2-color, #e8eaef);
   /*border-radius: 1.2rem;*/
   padding: 0.5rem;
 }
 .orangehrm-container .oxd-table-header-cell .oxd-checkbox-input {
-  border: 1px solid #929baa;
+  border: 1px solid var(--oxd-interface-gray-color, #929baa);
 }
 .orangehrm-container .oxd-table-card .card-header-slot-content .data {
   font-size: 1rem;
 }
 
 .orangehrm-paper-container {
-  background-color: #ffffff;
+  background-color: var(--oxd-white-color, #ffffff);
   border-radius: 1.2rem;
 }
 
@@ -8904,7 +9395,7 @@ span[data-v-8530db26] {
   text-align: center;
 }
 .orangehrm-copyright a {
-  color: #38455d;
+  color: var(--oxd-interface-gray-darken-2-color, #38455d);
 }
 
 .orangehrm-form-action {

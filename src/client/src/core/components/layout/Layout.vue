@@ -48,8 +48,8 @@
 <script>
 import {provide, readonly, ref} from 'vue';
 import About from '@/core/pages/About.vue';
-import {OxdLayout} from '@ohrm/oxd';
-//import OxdLayout from '@/core/components/custom-layout/Layout/Layout.vue';
+//import {OxdLayout} from '@ohrm/oxd';
+import OxdLayout from '@/core/components/custom-layout/Layout/Layout.vue';
 import {dateFormatKey} from '@/core/util/composable/useDateFormat';
 
 export default {

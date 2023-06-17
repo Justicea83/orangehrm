@@ -48,19 +48,19 @@
 <script>
 import VacancyCard from '@/orangehrmRecruitmentPlugin/components/VacancyCard';
 import {APIService} from '@/core/util/services/api.service';
-import Spinner from '@ohrm/oxd/core/components/Loader/Spinner';
 import usePaginate from '@/core/util/composable/usePaginate';
+import {OxdSpinner} from '@ohrm/oxd';
 
 export default {
   name: 'VacancyList',
   components: {
     'vacancy-card': VacancyCard,
-    'oxd-loading-spinner': Spinner,
+    'oxd-loading-spinner': OxdSpinner,
   },
   setup() {
-    const defaultPic = `${window.appGlobal.baseUrl}/../images/ohrm_branding.png`;
-    const vacancyDataNormalizer = data => {
-      return data.map(item => {
+    const defaultPic = `${window.appGlobal.publicPath}/images/ohrm_branding.png`;
+    const vacancyDataNormalizer = (data) => {
+      return data.map((item) => {
         return {
           vacancyId: item.id,
           vacancyTitle: item.name,
@@ -72,17 +72,11 @@ export default {
       window.appGlobal.baseUrl,
       '/api/v2/recruitment/public/vacancies',
     );
-    const {
-      showPaginator,
-      currentPage,
-      total,
-      pages,
-      response,
-      isLoading,
-    } = usePaginate(http, {
-      normalizer: vacancyDataNormalizer,
-      pageSize: 8,
-    });
+    const {showPaginator, currentPage, total, pages, response, isLoading} =
+      usePaginate(http, {
+        normalizer: vacancyDataNormalizer,
+        pageSize: 8,
+      });
     return {
       defaultPic,
       showPaginator,

@@ -9,7 +9,7 @@
       </oxd-text>
     </div>
     <oxd-divider />
-    <oxd-form :loading="isLoading" @submitValid="onSave">
+    <oxd-form :loading="isLoading" @submit-valid="onSave">
       <oxd-form-row>
         <oxd-input-field
           v-model="customer.name"
@@ -51,8 +51,7 @@ import {
   required,
   shouldNotExceedCharLength,
 } from '@ohrm/core/util/validation/rules';
-import Dialog from '@ohrm/oxd/core/components/Dialog/Dialog';
-import promiseDebounce from '@ohrm/oxd/utils/promiseDebounce';
+import {OxdDialog, promiseDebounce} from '@ohrm/oxd';
 
 const customerModel = {
   id: '',
@@ -63,7 +62,7 @@ const customerModel = {
 export default {
   name: 'AddCustomerModal',
   components: {
-    'oxd-dialog': Dialog,
+    'oxd-dialog': OxdDialog,
   },
   emits: ['close'],
   setup() {
@@ -71,7 +70,7 @@ export default {
       window.appGlobal.baseUrl,
       '/api/v2/time/customers',
     );
-    http.setIgnorePath('api/v2/time/validation/customer-name');
+    http.setIgnorePath('/api/v2/time/validation/customer-name');
     return {
       http,
     };
@@ -98,7 +97,7 @@ export default {
           name: this.customer.name,
           description: this.customer.description,
         })
-        .then(response => {
+        .then((response) => {
           const {data} = response.data;
           this.$toast.saveSuccess();
           this.$emit('close', data);
@@ -108,17 +107,17 @@ export default {
       this.$emit('close');
     },
     validateCustomerName(customer) {
-      return new Promise(resolve => {
+      return new Promise((resolve) => {
         if (customer) {
           this.http
             .request({
               method: 'GET',
-              url: `api/v2/time/validation/customer-name`,
+              url: `/api/v2/time/validation/customer-name`,
               params: {
                 customerName: this.customer.name.trim(),
               },
             })
-            .then(response => {
+            .then((response) => {
               const {data} = response.data;
               return data.valid === true
                 ? resolve(true)

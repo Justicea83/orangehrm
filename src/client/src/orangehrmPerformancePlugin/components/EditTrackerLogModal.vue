@@ -29,7 +29,7 @@
       </oxd-text>
     </div>
     <oxd-divider />
-    <oxd-form :loading="isLoading" @submitValid="onSave">
+    <oxd-form :loading="isLoading" @submit-valid="onSave">
       <oxd-form-row>
         <oxd-input-field
           v-model="trackerLog.log"
@@ -84,7 +84,7 @@
 </template>
 
 <script>
-import Dialog from '@ohrm/oxd/core/components/Dialog/Dialog';
+import {OxdDialog} from '@ohrm/oxd';
 import {
   required,
   shouldNotExceedCharLength,
@@ -100,7 +100,7 @@ const trackerLogModel = {
 export default {
   name: 'EditTrackerLogModal',
   components: {
-    'oxd-dialog': Dialog,
+    'oxd-dialog': OxdDialog,
     'tracker-log-rating-button': TrackerLogRatingButton,
   },
   props: {
@@ -117,7 +117,7 @@ export default {
   setup(props) {
     const http = new APIService(
       window.appGlobal.baseUrl,
-      `api/v2/performance/trackers/${props.trackerId}/logs`,
+      `/api/v2/performance/trackers/${props.trackerId}/logs`,
     );
     return {
       http,
@@ -138,7 +138,7 @@ export default {
     this.isLoading = true;
     this.http
       .get(this.trackerLogId)
-      .then(response => {
+      .then((response) => {
         const {data} = response.data;
         this.trackerLog.log = data.log;
         this.trackerLog.comment = data.comment;

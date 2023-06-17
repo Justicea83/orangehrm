@@ -70,18 +70,18 @@
 </template>
 
 <script>
-import Icon from '@ohrm/oxd/core/components/Icon/Icon.vue';
 import {APIService} from '@/core/util/services/api.service';
 import {freshDate, formatDate} from '@ohrm/core/util/helper/datefns';
 import BaseWidget from '@/orangehrmDashboardPlugin/components/BaseWidget.vue';
 import useEmployeeNameTranslate from '@/core/util/composable/useEmployeeNameTranslate';
 import EmployeesOnLeaveConfigModal from '@/orangehrmDashboardPlugin/components/EmployeesOnLeaveConfigModal.vue';
+import {OxdIcon} from '@ohrm/oxd';
 
 export default {
   name: 'EmployeesOnLeaveWidget',
 
   components: {
-    'oxd-icon': Icon,
+    'oxd-icon': OxdIcon,
     'base-widget': BaseWidget,
     'employees-on-leave-config-modal': EmployeesOnLeaveConfigModal,
   },
@@ -89,7 +89,7 @@ export default {
   setup() {
     const http = new APIService(
       window.appGlobal.baseUrl,
-      'api/v2/dashboard/employees/leaves',
+      '/api/v2/dashboard/employees/leaves',
     );
     const {$tEmpName} = useEmployeeNameTranslate();
 
@@ -125,9 +125,9 @@ export default {
       .getAll({
         date: formatDate(freshDate(), 'yyyy-MM-dd'),
       })
-      .then(response => {
+      .then((response) => {
         const {data, meta} = response.data;
-        this.leaveList = data.map(item => {
+        this.leaveList = data.map((item) => {
           const {employee, leaveType, duration} = item;
           let _leaveType = leaveType?.name;
           if (_leaveType && duration === 'half_day_morning') {

@@ -19,6 +19,7 @@
 
 namespace OrangeHRM\CorporateBranding\Service;
 
+use OrangeHRM\Config\Config;
 use OrangeHRM\Core\config\DefaultConfig;
 use OrangeHRM\Core\Traits\Auth\AuthUserTrait;
 use OrangeHRM\Core\Traits\CacheTrait;
@@ -27,6 +28,7 @@ use OrangeHRM\CorporateBranding\Dao\ThemeDao;
 use OrangeHRM\CorporateBranding\Dto\PartialTheme;
 use OrangeHRM\CorporateBranding\Dto\ThemeImage;
 use OrangeHRM\CorporateBranding\Dto\ThemeVariables;
+use OrangeHRM\Framework\Http\Request;
 
 class ThemeService
 {
@@ -200,6 +202,8 @@ class ThemeService
             '--oxd-secondary-font-color' => $variables->getSecondaryFontColor(),
             '--oxd-primary-gradient-start-color' => $variables->getPrimaryGradientStartColor(),
             '--oxd-primary-gradient-end-color' => $variables->getPrimaryGradientEndColor(),
+            '--oxd-secondary-gradient-start-color' => $variables->getPrimaryGradientStartColor(),
+            '--oxd-secondary-gradient-end-color' => $variables->getPrimaryGradientEndColor(),
 
             // Primary
             '--oxd-primary-one-lighten-5-color' => $this->getScssHelper()->lighten($variables->getPrimaryColor(), '5%'),
@@ -222,5 +226,44 @@ class ThemeService
             '--oxd-secondary-four-alpha-20-color' => $this->getScssHelper()->rgba($variables->getSecondaryColor(), 0.2),
             '--oxd-secondary-four-alpha-50-color' => $this->getScssHelper()->rgba($variables->getSecondaryColor(), 0.5),
         ];
+    }
+
+    /**
+     * @param Request $request
+     * @return string
+     */
+    public function getClientLogoURL(Request $request): string
+    {
+        $assetsVersion = Config::get(Config::VUE_BUILD_TIMESTAMP);
+        if ($this->getImageETag('client_logo') !== null) {
+            return $request->getBaseUrl() . "/admin/theme/image/clientLogo?v=$assetsVersion";
+        }
+        return $request->getBasePath() . "/images/orange.png?v=$assetsVersion";
+    }
+
+    /**
+     * @param Request $request
+     * @return string
+     */
+    public function getClientBannerURL(Request $request): string
+    {
+        $assetsVersion = Config::get(Config::VUE_BUILD_TIMESTAMP);
+        if ($this->getImageETag('client_banner') !== null) {
+            return $request->getBaseUrl() . "/admin/theme/image/clientBanner?v=$assetsVersion";
+        }
+        return $request->getBasePath() . "/images/orangehrm-logo.png?v=$assetsVersion";
+    }
+
+    /**
+     * @param Request $request
+     * @return string
+     */
+    public function getLoginBannerURL(Request $request): string
+    {
+        $assetsVersion = Config::get(Config::VUE_BUILD_TIMESTAMP);
+        if ($this->getImageETag('login_banner') !== null) {
+            return $request->getBaseUrl() . "/admin/theme/image/loginBanner?v=$assetsVersion";
+        }
+        return $request->getBasePath() . "/images/ohrm_branding.png?v=$assetsVersion";
     }
 }

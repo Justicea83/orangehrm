@@ -1,4 +1,124 @@
-onboarding_index:
-  path: /onboarding/viewOnboarding
-  controller: OrangeHRM\Onboarding\Controller\OnboardingController::handle
+apiv2_task_management_task:
+  path: /api/v2/task-management/tasks/{id}
+  controller: OrangeHRM\Core\Controller\Rest\V2\GenericRestController::handle
+  methods: [ GET, PUT ]
+  defaults:
+    _api: OrangeHRM\Onboarding\Api\TaskAPI
+
+apiv2_task_management_tasks:
+  path: /api/v2/task-management/tasks
+  controller: OrangeHRM\Core\Controller\Rest\V2\GenericRestController::handle
+  methods: [ GET, POST, DELETE ]
+  defaults:
+    _api: OrangeHRM\Onboarding\Api\TaskAPI
+
+apiv2_task_management_task_type:
+  path: /api/v2/task-management/task-types/{id}
+  controller: OrangeHRM\Core\Controller\Rest\V2\GenericRestController::handle
+  methods: [ PUT, GET ]
+  defaults:
+    _api: OrangeHRM\Onboarding\Api\TaskTypeAPI
+
+apiv2_task_management_task_types:
+  path: /api/v2/task-management/task-types
+  controller: OrangeHRM\Core\Controller\Rest\V2\GenericRestController::handle
+  methods: [ GET, POST, DELETE ]
+  defaults:
+    _api: OrangeHRM\Onboarding\Api\TaskTypeAPI
+
+apiv2_task_management_task_assignment:
+  path: /api/v2/task-management/task-assignments/{id}
+  controller: OrangeHRM\Core\Controller\Rest\V2\GenericRestController::handle
+  methods: [ PUT ]
+  defaults:
+    _api: OrangeHRM\Onboarding\Api\GroupAssignmentAPI
+
+apiv2_task_management_task_assignments:
+  path: /api/v2/task-management/task-assignments
+  controller: OrangeHRM\Core\Controller\Rest\V2\GenericRestController::handle
+  methods: [ GET, POST, DELETE ]
+  defaults:
+    _api: OrangeHRM\Onboarding\Api\GroupAssignmentAPI
+
+apiv2_task_management_my_assignments:
+  path: /api/v2/task-management/my-assignments
+  controller: OrangeHRM\Core\Controller\Rest\V2\GenericRestController::handle
+  methods: [ GET ]
+  defaults:
+    _api: OrangeHRM\Onboarding\Api\MyAssignmentsAPI
+
+apiv2_task_management_employee_assignments:
+  path: /api/v2/task-management/employee-assignments
+  controller: OrangeHRM\Core\Controller\Rest\V2\GenericRestController::handle
+  methods: [ GET ]
+  defaults:
+    _api: OrangeHRM\Onboarding\Api\EmployeeAssignmentsAPI
+
+apiv2_task_management_task_groups:
+  path: /api/v2/task-management/task-groups
+  controller: OrangeHRM\Core\Controller\Rest\V2\GenericRestController::handle
+  methods: [ GET, POST, DELETE ]
+  defaults:
+    _api: OrangeHRM\Onboarding\Api\TaskGroupAPI
+
+apiv2_task_management_task_group_action:
+  path: /api/v2/task-management/task-groups/actions
+  controller: OrangeHRM\Core\Controller\Rest\V2\GenericRestController::handle
+  methods: [ PUT ]
+  defaults:
+    _api: OrangeHRM\Onboarding\Api\TaskGroupActionAPI
+
+##########################
+#        Screens
+##########################
+
+task_management_create:
+  path: /taskManagement/createTask
+  controller: OrangeHRM\Onboarding\Controller\CreateOnboardingController::handle
+  methods: [ GET ]
+
+task_management_my_assignments:
+  path: /taskManagement/myAssignments
+  controller: OrangeHRM\Onboarding\Controller\MyAssignmentsController::handle
+  methods: [ GET ]
+
+task_management_task_groups:
+  path: /taskManagement/viewTaskGroups
+  controller: OrangeHRM\Onboarding\Controller\TaskGroupsController::handle
+  methods: [ GET ]
+
+task_management_employee_task_groups:
+  path: /taskManagement/viewEmployeeTaskGroups
+  controller: OrangeHRM\Onboarding\Controller\EmployeeTaskGroupsController::handle
+  methods: [ GET ]
+
+# Tasks
+task_management_view_task_list:
+  path: /taskManagement/viewTasks
+  controller: OrangeHRM\Onboarding\Controller\TasksController::handle
+  methods: [ GET ]
+
+task_management_save_task:
+  path: /taskManagement/saveTask
+  controller: OrangeHRM\Onboarding\Controller\SaveTaskController::handle
+  methods: [ GET ]
+
+task_management_edit_task:
+  path: /taskManagement/saveTask/{id}
+  controller: OrangeHRM\Onboarding\Controller\SaveTaskController::handle
+  methods: [ GET ]
+
+task_management_task_types:
+  path: /taskManagement/viewTaskTypes
+  controller: OrangeHRM\Onboarding\Controller\TaskTypesController::handle
+  methods: [ GET ]
+
+task_management_save_task_type:
+  path: /taskManagement/saveTaskType
+  controller: OrangeHRM\Onboarding\Controller\SaveTaskTypeController::handle
+  methods: [ GET ]
+
+task_management_edit_task_type:
+  path: /taskManagement/saveTaskType/{id}
+  controller: OrangeHRM\Onboarding\Controller\SaveTaskTypeController::handle
   methods: [ GET ]

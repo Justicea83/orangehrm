@@ -7,7 +7,6 @@ use Doctrine\ORM\Query\Filter\SQLFilter;
 
 class TenantFilter extends SQLFilter
 {
-
     public function addFilterConstraint(ClassMetadata $targetEntity, $targetTableAlias): string
     {
         if (!$targetEntity->reflClass->implementsInterface(TenantAwareInterface::class)) {
@@ -16,5 +15,4 @@ class TenantFilter extends SQLFilter
 
         return sprintf('%s.org_id = %s', $targetTableAlias, $this->getParameter('org_id'));
     }
-
 }

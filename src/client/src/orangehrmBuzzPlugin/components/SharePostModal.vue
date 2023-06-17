@@ -66,8 +66,8 @@ import PostModal from '@/orangehrmBuzzPlugin/components/PostModal';
 import PhotoFrame from '@/orangehrmBuzzPlugin/components/PhotoFrame';
 import VideoFrame from '@/orangehrmBuzzPlugin/components/VideoFrame';
 import {shouldNotExceedCharLength} from '@/core/util/validation/rules';
-import BuzzPostInput from '@ohrm/oxd/core/components/Buzz/BuzzPostInput';
 import useEmployeeNameTranslate from '@/core/util/composable/useEmployeeNameTranslate';
+import {OxdBuzzPostInput} from '@ohrm/oxd';
 
 export default {
   name: 'SharePostModal',
@@ -76,7 +76,7 @@ export default {
     'post-modal': PostModal,
     'photo-frame': PhotoFrame,
     'video-frame': VideoFrame,
-    'oxd-buzz-post-input': BuzzPostInput,
+    'oxd-buzz-post-input': OxdBuzzPostInput,
   },
 
   props: {
@@ -91,12 +91,15 @@ export default {
   setup(props, context) {
     const {locale} = useLocale();
     const {saveSuccess} = useToast();
-    const {jsDateFormat} = useDateFormat();
+    const {jsDateFormat, jsTimeFormat} = useDateFormat();
     const {$tEmpName} = useEmployeeNameTranslate();
     const rules = {
       text: [shouldNotExceedCharLength(65530)],
     };
-    const http = new APIService(window.appGlobal.baseUrl, 'api/v2/buzz/shares');
+    const http = new APIService(
+      window.appGlobal.baseUrl,
+      '/api/v2/buzz/shares',
+    );
 
     const state = reactive({
       post: {
@@ -134,7 +137,7 @@ export default {
           includeMiddle: true,
           excludePastEmpTag: false,
         }),
-        dateTime: formatDate(utcDate, `${jsDateFormat} HH:mm`, {
+        dateTime: formatDate(utcDate, `${jsDateFormat} ${jsTimeFormat}`, {
           locale,
         }),
       };

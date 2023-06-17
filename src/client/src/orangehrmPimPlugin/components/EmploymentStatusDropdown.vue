@@ -36,11 +36,11 @@ export default {
     const options = ref([]);
     const http = new APIService(
       window.appGlobal.baseUrl,
-      'api/v2/admin/employment-statuses',
+      '/api/v2/admin/employment-statuses',
     );
     onBeforeMount(() => {
       http.getAll({limit: 0}).then(({data}) => {
-        options.value = data.data.map(item => {
+        options.value = data.data.map((item) => {
           return {
             id: item.id,
             label: item.name,

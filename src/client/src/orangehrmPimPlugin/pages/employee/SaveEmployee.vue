@@ -26,7 +26,7 @@
       </oxd-text>
       <oxd-divider />
 
-      <oxd-form :loading="isLoading" @submitValid="onSave">
+      <oxd-form :loading="isLoading" @submit-valid="onSave">
         <div class="orangehrm-employee-container">
           <div class="orangehrm-employee-image">
             <profile-image-input
@@ -44,16 +44,6 @@
                     v-model:middleName="employee.middleName"
                     v-model:lastName="employee.lastName"
                     :rules="rules"
-                  />
-                </oxd-grid-item>
-              </oxd-grid>
-
-              <oxd-grid :cols="2" class="orangehrm-full-width-grid">
-                <oxd-grid-item>
-                  <oxd-input-field
-                    v-model="employee.employeeId"
-                    :label="$t('general.employee_id')"
-                    :rules="rules.employeeId"
                   />
                 </oxd-grid-item>
               </oxd-grid>
@@ -80,23 +70,14 @@
                   </oxd-grid-item>
 
                   <oxd-grid-item>
-                    <oxd-input-group
-                      :label="$t('general.status')"
-                      :classes="{wrapper: '--status-grouped-field'}"
-                    >
-                      <oxd-input-field
-                        v-model="user.status"
-                        type="radio"
-                        :option-label="$t('general.enabled')"
-                        value="1"
-                      />
-                      <oxd-input-field
-                        v-model="user.status"
-                        type="radio"
-                        :option-label="$t('general.disabled')"
-                        value="2"
-                      />
-                    </oxd-input-group>
+                    <oxd-input-field
+                      v-model="user.role"
+                      type="select"
+                      :label="$t('general.user_role')"
+                      :rules="rules.role"
+                      :options="userRoles"
+                      required
+                    />
                   </oxd-grid-item>
                 </oxd-grid>
               </oxd-form-row>
@@ -128,7 +109,6 @@
 import {ref} from 'vue';
 import {APIService} from '@/core/util/services/api.service';
 import {navigate} from '@ohrm/core/util/helper/navigation';
-import SwitchInput from '@ohrm/oxd/core/components/Input/SwitchInput';
 import ProfileImageInput from '@/orangehrmPimPlugin/components/ProfileImageInput';
 import FullNameInput from '@/orangehrmPimPlugin/components/FullNameInput';
 import PasswordInput from '@/core/components/inputs/PasswordInput';
@@ -139,8 +119,9 @@ import {
   shouldNotLessThanCharLength,
   validFileTypes,
 } from '@ohrm/core/util/validation/rules';
+import {OxdSwitchInput} from '@ohrm/oxd';
 
-const defaultPic = `${window.appGlobal.baseUrl}/../dist/img/user-default-400.png`;
+const defaultPic = `${window.appGlobal.publicPath}/images/default-photo.png`;
 
 const employeeModel = {
   firstName: '',
@@ -152,7 +133,8 @@ const employeeModel = {
 
 const userModel = {
   username: '',
-  userRoleId: 2,
+  //userRoleId: 2,
+  role: null,
   empNumber: 0,
   status: '1',
   password: '',
@@ -161,7 +143,7 @@ const userModel = {
 
 export default {
   components: {
-    'oxd-switch-input': SwitchInput,
+    'oxd-switch-input': OxdSwitchInput,
     'profile-image-input': ProfileImageInput,
     'full-name-input': FullNameInput,
     'password-input': PasswordInput,
@@ -176,6 +158,10 @@ export default {
       type: Array,
       required: true,
     },
+    userRoles: {
+      type: Array,
+      required: true,
+    },
   },
 
   setup(props) {
@@ -186,7 +172,7 @@ export default {
 
     const http = new APIService(
       window.appGlobal.baseUrl,
-      'api/v2/pim/employees',
+      '/api/v2/pim/employees',
     );
 
     return {
@@ -206,6 +192,7 @@ export default {
         middleName: [shouldNotExceedCharLength(30)],
         lastName: [required, shouldNotExceedCharLength(30)],
         employeeId: [shouldNotExceedCharLength(10)],
+        role: [required],
         empPicture: [
           maxFileSize(1024 * 1024),
           validFileTypes(this.allowedImageTypes),
@@ -226,7 +213,7 @@ export default {
         const file = this.employee.empPicture.base64;
         const type = this.employee.empPicture.type;
         const isPicture = this.allowedImageTypes.findIndex(
-          item => item === type,
+          (item) => item === type,
         );
         return isPicture > -1 ? `data:${type};base64,${file}` : defaultPic;
       } else {
@@ -239,11 +226,11 @@ export default {
     this.isLoading = true;
     this.http
       .getAll()
-      .then(response => {
+      .then((response) => {
         const {data} = response.data;
-        this.rules.employeeId.push(v => {
+        this.rules.employeeId.push((v) => {
           const index = data.findIndex(
-            item =>
+            (item) =>
               item.employeeId?.trim() &&
               String(item.employeeId).toLowerCase() == String(v).toLowerCase(),
           );
@@ -253,13 +240,16 @@ export default {
             return true;
           }
         });
-        return this.http.http.get('api/v2/admin/users');
+        return this.http.request({
+          method: 'GET',
+          url: '/api/v2/admin/users',
+        });
       })
-      .then(response => {
+      .then((response) => {
         const {data} = response.data;
-        this.rules.username.push(v => {
+        this.rules.username.push((v) => {
           const index = data.findIndex(
-            item =>
+            (item) =>
               String(item.userName).toLowerCase() == String(v).toLowerCase(),
           );
           if (index > -1) {
@@ -284,7 +274,7 @@ export default {
         .create({
           ...this.employee,
         })
-        .then(response => {
+        .then((response) => {
           const {data} = response;
           if (data?.data) {
             this.empNumber = data.data.empNumber;
@@ -293,8 +283,8 @@ export default {
             return this.http.http.post('api/v2/admin/users', {
               username: this.user.username,
               password: this.user.password,
-              status: this.user.status == '1',
-              userRoleId: this.user.userRoleId,
+              status: this.user.status === '1',
+              userRoleId: this.user.role?.id,
               empNumber: data.data.empNumber,
             });
           } else {

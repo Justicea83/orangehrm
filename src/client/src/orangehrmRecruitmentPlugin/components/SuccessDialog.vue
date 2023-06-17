@@ -51,12 +51,12 @@
 </template>
 
 <script>
-import Dialog from '@ohrm/oxd/core/components/Dialog/Dialog';
+import {OxdDialog} from '@ohrm/oxd';
 
 export default {
   name: 'SuccessDialog',
   components: {
-    'simple-dialog': Dialog,
+    'simple-dialog': OxdDialog,
   },
   data() {
     return {
@@ -66,7 +66,7 @@ export default {
   },
   methods: {
     showSuccessDialog() {
-      return new Promise(resolve => {
+      return new Promise((resolve) => {
         this.resolve = resolve;
         this.show = true;
       });

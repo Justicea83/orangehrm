@@ -52,10 +52,9 @@ import {
 import {reactive, toRefs} from 'vue';
 import usei18n from '@/core/util/composable/usei18n';
 import {APIService} from '@/core/util/services/api.service';
-import promiseDebounce from '@ohrm/oxd/utils/promiseDebounce';
 import PostModal from '@/orangehrmBuzzPlugin/components/PostModal.vue';
 import VideoFrame from '@/orangehrmBuzzPlugin/components/VideoFrame.vue';
-import BuzzPostInput from '@ohrm/oxd/core/components/Buzz/BuzzPostInput';
+import {OxdBuzzPostInput, promiseDebounce} from '@ohrm/oxd';
 
 export default {
   name: 'ShareVideoModal',
@@ -63,7 +62,7 @@ export default {
   components: {
     'post-modal': PostModal,
     'video-frame': VideoFrame,
-    'oxd-buzz-post-input': BuzzPostInput,
+    'oxd-buzz-post-input': OxdBuzzPostInput,
   },
 
   props: {
@@ -77,7 +76,7 @@ export default {
 
   setup(props, context) {
     const {$t} = usei18n();
-    const http = new APIService(window.appGlobal.baseUrl, 'api/v2/buzz/posts');
+    const http = new APIService(window.appGlobal.baseUrl, '/api/v2/buzz/posts');
 
     const state = reactive({
       post: {
@@ -91,12 +90,12 @@ export default {
     const rules = {
       url: [
         required,
-        promiseDebounce(async value => {
+        promiseDebounce(async (value) => {
           if (!value) return true;
           state.embedURL = null;
           const response = await http.request({
             method: 'GET',
-            url: 'api/v2/buzz/validation/links',
+            url: '/api/v2/buzz/validation/links',
             params: {
               url: value,
             },

@@ -24,7 +24,7 @@
       v-model:loading="isLoading"
       :candidate-id="candidateId"
       :title="$t('recruitment.mark_interview_failed')"
-      @submitValid="onSave"
+      @submit-valid="onSave"
     >
       <oxd-form-row>
         <oxd-grid :cols="3">
@@ -77,7 +77,7 @@ export default {
   setup(props) {
     const http = new APIService(
       window.appGlobal.baseUrl,
-      `api/v2/recruitment/candidates/${props.candidateId}/interviews/${props.interviewId}/fail`,
+      `/api/v2/recruitment/candidates/${props.candidateId}/interviews/${props.interviewId}/fail`,
     );
 
     return {

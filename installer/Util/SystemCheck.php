@@ -249,7 +249,7 @@ class SystemCheck
             foreach ($supportedWebServers as $supportedWebServer) {
                 if (strpos($currentWebServer, $supportedWebServer) !== false) {
                     return [
-                        'message' => Messages::STATUS_OK . "(ver ${currentWebServer})",
+                        'message' => Messages::STATUS_OK . "(ver $currentWebServer)",
                         'status' => self::PASSED
                     ];
                 }
@@ -421,12 +421,12 @@ class SystemCheck
 
             case self::INSTALL_UTIL_MEMORY_HARD_LIMIT_FAIL:
                 $this->interruptContinue = true;
-                $message = "Warning at least ${hardLimit}M required (${maxMemory} available, Recommended ${softLimit}M)";
+                $message = "Warning at least {$hardLimit}M required ($maxMemory available, Recommended {$softLimit}M)";
                 $status = self::BLOCKER;
                 break;
 
             case self::INSTALL_UTIL_MEMORY_SOFT_LIMIT_FAIL:
-                $message = "OK (Recommended ${softLimit}M)";
+                $message = "OK (Recommended {$softLimit}M)";
                 break;
 
             case self::INSTALL_UTIL_MEMORY_OK:
@@ -563,6 +563,24 @@ class SystemCheck
     public function isLDAPExtensionEnabled(): array
     {
         if (extension_loaded('ldap')) {
+            return [
+                'message' => Messages::ENABLED,
+                'status' => self::PASSED
+            ];
+        } else {
+            return [
+                'message' => Messages::DISABLED,
+                'status' => self::BLOCKER
+            ];
+        }
+    }
+
+    /**
+     * @return array
+     */
+    public function isOpenSSLExtensionEnabled(): array
+    {
+        if (extension_loaded('openssl')) {
             return [
                 'message' => Messages::ENABLED,
                 'status' => self::PASSED
@@ -889,6 +907,10 @@ class SystemCheck
                     [
                         'label' => 'LDAP extension status',
                         'value' => $this->isLDAPExtensionEnabled()
+                    ],
+                    [
+                        'label' => 'OpenSSL extension status',
+                        'value' => $this->isOpenSSLExtensionEnabled()
                     ],
                 ]
             ]

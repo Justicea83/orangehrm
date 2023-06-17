@@ -23,14 +23,14 @@
     <oxd-table-filter
       :filter-title="$t('performance.employee_performance_trackers')"
     >
-      <oxd-form @submitValid="filterItems" @reset="resetDataTable">
+      <oxd-form @submit-valid="filterItems" @reset="resetDataTable">
         <oxd-form-row>
           <oxd-grid :cols="3" class="orangehrm-full-width-grid">
             <oxd-grid-item>
               <employee-autocomplete
                 v-model="filters.empName"
                 :rules="rules.employee"
-                api-path="api/v2/performance/trackers/reviewers"
+                api-path="/api/v2/performance/trackers/reviewers"
                 :params="{
                   includeEmployees: filters.includeEmployees.param,
                 }"
@@ -128,8 +128,8 @@ export default {
     const {$t} = usei18n();
     const {jsDateFormat} = useDateFormat();
     const {locale} = useLocale();
-    const employeeTrackerNormalizer = data => {
-      return data.map(item => {
+    const employeeTrackerNormalizer = (data) => {
+      return data.map((item) => {
         return {
           id: item.id,
           title: item.title,
@@ -163,7 +163,7 @@ export default {
       };
     });
 
-    const api = 'api/v2/performance/employees/trackers';
+    const api = '/api/v2/performance/employees/trackers';
     const http = new APIService(window.appGlobal.baseUrl, api);
 
     const {

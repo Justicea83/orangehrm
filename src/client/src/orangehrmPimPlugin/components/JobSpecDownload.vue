@@ -47,12 +47,12 @@
 <script>
 import {onBeforeMount, reactive, toRefs} from 'vue';
 import {APIService} from '@ohrm/core/util/services/api.service';
-import Spinner from '@ohrm/oxd/core/components/Loader/Spinner.vue';
+import {OxdSpinner} from '@ohrm/oxd';
 
 export default {
   name: 'JobSpecDownload',
   components: {
-    'oxd-loading-spinner': Spinner,
+    'oxd-loading-spinner': OxdSpinner,
   },
   props: {
     resourceId: {
@@ -63,7 +63,7 @@ export default {
   setup(props) {
     const http = new APIService(
       window.appGlobal.baseUrl,
-      `api/v2/admin/job-titles/${props.resourceId}/specification`,
+      `/api/v2/admin/job-titles/${props.resourceId}/specification`,
     );
     const state = reactive({
       isLoading: false,
@@ -81,7 +81,7 @@ export default {
         .request({
           method: 'GET',
           // Prevent triggering response interceptor on 404
-          validateStatus: status => {
+          validateStatus: (status) => {
             return (status >= 200 && status < 300) || status == 404;
           },
         })
@@ -114,8 +114,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import '@ohrm/oxd/styles/_mixins.scss';
-
 .input-container {
   position: relative;
   display: flex;

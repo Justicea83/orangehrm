@@ -73,18 +73,18 @@
 <script>
 import {computed, reactive, toRefs} from 'vue';
 import useLocale from '@/core/util/composable/useLocale';
-import Icon from '@ohrm/oxd/core/components/Icon/Icon.vue';
 import {formatDate, parseDate} from '@/core/util/helper/datefns';
 import useDateFormat from '@/core/util/composable/useDateFormat';
 import PhotoFrame from '@/orangehrmBuzzPlugin/components/PhotoFrame';
 import VideoFrame from '@/orangehrmBuzzPlugin/components/VideoFrame';
 import useEmployeeNameTranslate from '@/core/util/composable/useEmployeeNameTranslate';
+import {OxdIcon} from '@ohrm/oxd';
 
 export default {
   name: 'PostBody',
 
   components: {
-    'oxd-icon': Icon,
+    'oxd-icon': OxdIcon,
     'photo-frame': PhotoFrame,
     'video-frame': VideoFrame,
   },
@@ -100,7 +100,7 @@ export default {
 
   setup(props, context) {
     const {locale} = useLocale();
-    const {jsDateFormat} = useDateFormat();
+    const {jsDateFormat, jsTimeFormat} = useDateFormat();
     const {$tEmpName} = useEmployeeNameTranslate();
     const state = reactive({
       readMore: new String(props.post?.text).length < 500,
@@ -115,7 +115,7 @@ export default {
       state.readMore = !state.readMore;
     };
 
-    const onClickPicture = index => {
+    const onClickPicture = (index) => {
       context.emit('selectPhoto', index);
     };
 
@@ -134,7 +134,7 @@ export default {
           includeMiddle: true,
           excludePastEmpTag: false,
         }),
-        dateTime: formatDate(utcDate, `${jsDateFormat} HH:mm`, {
+        dateTime: formatDate(utcDate, `${jsDateFormat} ${jsTimeFormat}`, {
           locale,
         }),
       };

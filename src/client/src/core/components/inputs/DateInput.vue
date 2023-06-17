@@ -26,7 +26,7 @@
     :events="events"
     :display-format="jsDateFormat"
     :locale="locale"
-    @selectYear="onSelectYear"
+    @select-year="onSelectYear"
   />
 </template>
 
@@ -53,15 +53,15 @@ export default {
     const {jsDateFormat, userDateFormat} = useDateFormat();
     const {locale} = useLocale();
 
-    const responseValidator = status => {
+    const responseValidator = (status) => {
       return (status >= 200 && status < 300) || status === 403;
     };
 
     const fetchWorkWeek = async () => {
       http
         .request({
-          type: 'GET',
-          url: 'api/v2/leave/workweek',
+          method: 'GET',
+          url: '/api/v2/leave/workweek',
           params: {
             model: 'indexed',
           },
@@ -69,7 +69,7 @@ export default {
         })
         .then(({data}) => {
           if (data?.data) {
-            state.attributes = Object.keys(data.data).map(i => {
+            state.attributes = Object.keys(data.data).map((i) => {
               return {
                 index: parseInt(i),
                 class:
@@ -87,8 +87,8 @@ export default {
     const fetchEvents = async (fromDate, toDate) => {
       http
         .request({
-          type: 'GET',
-          url: 'api/v2/leave/holidays',
+          method: 'GET',
+          url: '/api/v2/leave/holidays',
           params: {
             fromDate,
             toDate,
@@ -97,7 +97,7 @@ export default {
         })
         .then(({data}) => {
           if (Array.isArray(data?.data)) {
-            state.events = data.data.map(event => {
+            state.events = data.data.map((event) => {
               return {
                 date: parseDate(event.date, 'yyyy-MM-dd'),
                 type: event.name,

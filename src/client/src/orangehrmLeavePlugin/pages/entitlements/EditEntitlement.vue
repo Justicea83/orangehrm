@@ -27,7 +27,7 @@
 
       <oxd-divider />
 
-      <oxd-form :loading="isLoading" @submitValid="onSave">
+      <oxd-form :loading="isLoading" @submit-valid="onSave">
         <oxd-form-row>
           <oxd-grid :cols="3" class="orangehrm-full-width-grid">
             <oxd-grid-item>
@@ -90,7 +90,7 @@
 <script>
 import useLocale from '@/core/util/composable/useLocale';
 import {navigate} from '@ohrm/core/util/helper/navigation';
-import promiseDebounce from '@ohrm/oxd/utils/promiseDebounce';
+import {promiseDebounce} from '@ohrm/oxd';
 import {APIService} from '@ohrm/core/util/services/api.service';
 import useDateFormat from '@/core/util/composable/useDateFormat';
 import {formatDate, parseDate} from '@/core/util/helper/datefns';
@@ -128,7 +128,7 @@ export default {
       '/api/v2/leave/leave-entitlements',
     );
     http.setIgnorePath(
-      'api/v2/leave/leave-entitlements/[0-9]+/validation/entitlements',
+      '/api/v2/leave/leave-entitlements/[0-9]+/validation/entitlements',
     );
     const {jsDateFormat} = useDateFormat();
     const {locale} = useLocale();
@@ -149,7 +149,7 @@ export default {
         leavePeriod: [required],
         entitlement: [
           required,
-          v => {
+          (v) => {
             return (
               /^\d+(\.\d{1,2})?$/.test(v) ||
               this.$t('leave.should_be_a_number_with_2_decimal_places')
@@ -166,9 +166,9 @@ export default {
   beforeMount() {
     this.isLoading = true;
     this.http
-      .request({method: 'GET', url: 'api/v2/leave/leave-periods'})
+      .request({method: 'GET', url: '/api/v2/leave/leave-periods'})
       .then(({data}) => {
-        this.leavePeriods = data.data.map(item => {
+        this.leavePeriods = data.data.map((item) => {
           const startDate = formatDate(
             parseDate(item.startDate),
             this.jsDateFormat,
@@ -188,7 +188,7 @@ export default {
         });
         return this.http.get(this.entitlementId);
       })
-      .then(response => {
+      .then((response) => {
         const {data} = response.data;
         this.leaveEntitlement.employee = {
           id: data.employee.empNumber,
@@ -199,7 +199,7 @@ export default {
           id: data.leaveType.id,
           label: data.leaveType.name,
         };
-        this.leaveEntitlement.leavePeriod = this.leavePeriods.find(item => {
+        this.leaveEntitlement.leavePeriod = this.leavePeriods.find((item) => {
           return item.id === `${data.fromDate}_${data.toDate}`;
         });
         this.leaveEntitlement.entitlement = data.entitlement;
@@ -235,17 +235,17 @@ export default {
 
     validateEntitlement(value) {
       const entitlement = parseFloat(value);
-      return new Promise(resolve => {
+      return new Promise((resolve) => {
         if (!isNaN(entitlement)) {
           this.http
             .request({
               method: 'GET',
-              url: `api/v2/leave/leave-entitlements/${this.entitlementId}/validation/entitlements`,
+              url: `/api/v2/leave/leave-entitlements/${this.entitlementId}/validation/entitlements`,
               params: {
                 entitlement,
               },
             })
-            .then(response => {
+            .then((response) => {
               const {data} = response.data;
               return data.valid === true
                 ? resolve(true)

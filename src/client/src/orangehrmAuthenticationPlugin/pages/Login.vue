@@ -32,9 +32,9 @@
         ></oxd-alert>
 
         <oxd-alert
-            :show="success !== null"
-            :message="success?.message || ''"
-            type="success"
+          :show="success !== null"
+          :message="success?.message || ''"
+          type="success"
         ></oxd-alert>
 
         <oxd-sheet
@@ -42,15 +42,15 @@
           type="gray-lighten-2"
           class="orangehrm-demo-credentials"
         >
-          <oxd-text tag="p">Username : Admin</oxd-text>
-          <oxd-text tag="p">Password : admin123</oxd-text>
+          <oxd-text tag="p">Username : demo@admin.com</oxd-text>
+          <oxd-text tag="p">Password : 1#e18^J2b8o</oxd-text>
         </oxd-sheet>
       </div>
       <oxd-form
         ref="loginForm"
         method="post"
         :action="submitUrl"
-        @submitValid="onSubmit"
+        @submit-valid="onSubmit"
       >
         <input name="_token" :value="token" type="hidden" />
 
@@ -86,12 +86,15 @@
             type="submit"
           />
         </oxd-form-actions>
-        <div class="orangehrm-login-forgot">
+        <div v-if="!isDemoMode" class="orangehrm-login-forgot">
           <oxd-text class="orangehrm-login-forgot-header" @click="navigateUrl">
             {{ $t('auth.forgot_password') }}?
           </oxd-text>
 
-          <oxd-text class="orangehrm-login-forgot-header" @click="goToRegistrationPage">
+          <oxd-text
+            class="orangehrm-login-forgot-header"
+            @click="goToRegistrationPage"
+          >
             {{ $t('auth.register') }}?
           </oxd-text>
         </div>
@@ -109,13 +112,12 @@ import {urlFor} from '@ohrm/core/util/helper/url';
 import {required} from '@ohrm/core/util/validation/rules';
 import {navigate, reloadPage} from '@ohrm/core/util/helper/navigation';
 import LoginLayout from '../components/LoginLayout';
-import Alert from '@ohrm/oxd/core/components/Alert/Alert';
-import Sheet from '@ohrm/oxd/core/components/Sheet/Sheet';
+import {OxdAlert, OxdSheet} from '@ohrm/oxd';
 
 export default {
   components: {
-    'oxd-alert': Alert,
-    'oxd-sheet': Sheet,
+    'oxd-alert': OxdAlert,
+    'oxd-sheet': OxdSheet,
     'login-layout': LoginLayout,
   },
 
@@ -150,6 +152,7 @@ export default {
         username: [required],
         password: [required],
       },
+      submitted: false,
     };
   },
 
@@ -167,7 +170,10 @@ export default {
 
   methods: {
     onSubmit() {
-      this.$refs.loginForm.$el.submit();
+      if (!this.submitted) {
+        this.submitted = true;
+        this.$refs.loginForm.$el.submit();
+      }
     },
     navigateUrl() {
       navigate('/auth/requestPasswordResetCode');

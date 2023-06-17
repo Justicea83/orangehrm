@@ -19,6 +19,7 @@
 
 namespace OrangeHRM\Core\Subscriber;
 
+use OrangeHRM\Config\Config;
 use OrangeHRM\Core\Api\V2\Exception\ForbiddenException;
 use OrangeHRM\Core\Controller\PublicControllerInterface;
 use OrangeHRM\Core\Controller\Rest\V2\AbstractRestController;
@@ -68,11 +69,16 @@ class ApiAuthorizationSubscriber extends AbstractEventSubscriber
         if (is_null($apiClass)) {
             throw new ForbiddenException('`_api` parameter not defined in API routes');
         }
+
+        if(Config::PRODUCT_MODE === Config::MODE_DEV) {
+            return;
+        }
+
         $permissions = $this->getUserRoleManager()->getApiPermissions($apiClass);
 
         $permissionGetter = $this->getPermissionGetterMethod($event->getRequest()->getMethod());
         if (is_null($permissionGetter) || !$permissions->$permissionGetter()) {
-            throw new ForbiddenException('Unauthorized');
+           throw new ForbiddenException('Unauthorized');
         }
     }
 

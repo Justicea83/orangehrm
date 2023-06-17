@@ -20,7 +20,7 @@
 
 <template>
   <oxd-table-filter :filter-title="$t('attendance.my_attendance_records')">
-    <oxd-form @submitValid="filterItems">
+    <oxd-form @submit-valid="filterItems">
       <oxd-form-row>
         <oxd-grid :cols="4" class="orangehrm-full-width-grid">
           <oxd-grid-item>
@@ -84,16 +84,22 @@
 
 <script>
 import {computed, ref} from 'vue';
-import {required, validDateFormat} from '@/core/util/validation/rules';
+import {
+  freshDate,
+  parseDate,
+  parseTime,
+  formatTime,
+  formatDate,
+  getStandardTimezone,
+} from '@/core/util/helper/datefns';
 import {navigate} from '@/core/util/helper/navigation';
+import useLocale from '@/core/util/composable/useLocale';
 import {APIService} from '@/core/util/services/api.service';
 import usePaginate from '@ohrm/core/util/composable/usePaginate';
-import {freshDate, formatDate, parseDate} from '@ohrm/core/util/helper/datefns';
+import useDateFormat from '@/core/util/composable/useDateFormat';
+import {required, validDateFormat} from '@/core/util/validation/rules';
 import RecordCell from '@/orangehrmAttendancePlugin/components/RecordCell.vue';
 import DeleteConfirmationDialog from '@ohrm/components/dialogs/DeleteConfirmationDialog';
-import {getStandardTimezone} from '@/core/util/helper/datefns';
-import useDateFormat from '@/core/util/composable/useDateFormat';
-import useLocale from '@/core/util/composable/useLocale';
 
 export default {
   components: {
@@ -113,7 +119,8 @@ export default {
 
   setup(props) {
     const {locale} = useLocale();
-    const {jsDateFormat, userDateFormat} = useDateFormat();
+    const {jsDateFormat, userDateFormat, timeFormat, jsTimeFormat} =
+      useDateFormat();
 
     const rules = {
       date: [required, validDateFormat(userDateFormat)],
@@ -130,31 +137,41 @@ export default {
 
     const http = new APIService(
       window.appGlobal.baseUrl,
-      'api/v2/attendance/records',
+      '/api/v2/attendance/records',
     );
 
-    const attendanceRecordNormalizer = data => {
-      return data.map(item => {
+    const attendanceRecordNormalizer = (data) => {
+      return data.map((item) => {
         const {punchIn, punchOut} = item;
         const punchInDate = formatDate(
           parseDate(punchIn?.userDate),
           jsDateFormat,
           {locale},
         );
+        const punchInTime = formatTime(
+          parseTime(punchIn?.userTime, timeFormat),
+          jsTimeFormat,
+        );
         const punchOutDate = formatDate(
           parseDate(punchOut?.userDate),
           jsDateFormat,
           {locale},
+        );
+        const punchOutTime = formatTime(
+          parseTime(punchOut?.userTime, timeFormat),
+          jsTimeFormat,
         );
 
         return {
           id: item.id,
           punchIn: {
             ...punchIn,
+            userTime: punchInTime,
             userDate: punchInDate,
           },
           punchOut: {
             ...punchOut,
+            userTime: punchOutTime,
             userDate: punchOutDate,
           },
           punchInNote: punchIn.note,
@@ -212,6 +229,7 @@ export default {
         {
           name: 'punchInNote',
           slot: 'title',
+          cellType: 'oxd-table-cell-truncate',
           title: this.$t('attendance.punch_in_note'),
           style: {flex: 1},
         },
@@ -225,6 +243,7 @@ export default {
         {
           name: 'punchOutNote',
           slot: 'title',
+          cellType: 'oxd-table-cell-truncate',
           title: this.$t('attendance.punch_out_note'),
           style: {flex: 1},
         },
@@ -279,17 +298,17 @@ export default {
       navigate('/attendance/editAttendanceRecord/{id}', {id: item.id});
     },
     onClickDeleteSelected() {
-      const ids = this.checkedItems.map(index => {
+      const ids = this.checkedItems.map((index) => {
         return this.items?.data[index].id;
       });
-      this.$refs.deleteDialog.showDialog().then(confirmation => {
+      this.$refs.deleteDialog.showDialog().then((confirmation) => {
         if (confirmation === 'ok') {
           this.deleteItems(ids);
         }
       });
     },
     onClickDelete(item) {
-      this.$refs.deleteDialog.showDialog().then(confirmation => {
+      this.$refs.deleteDialog.showDialog().then((confirmation) => {
         if (confirmation === 'ok') {
           this.deleteItems([item.id]);
         }

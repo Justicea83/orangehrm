@@ -34,6 +34,13 @@
         </a>
       </li>
     </template>
+    <template #nav-actions>
+      <oxd-icon-button
+        name="question-lg"
+        :title="$t('general.help')"
+        @click="onClickSupport"
+      />
+    </template>
   </oxd-layout>
   <about v-if="showAboutModel" @close="closeAboutModel"></about>
 </template>
@@ -41,13 +48,14 @@
 <script>
 import {provide, readonly, ref} from 'vue';
 import About from '@/core/pages/About.vue';
-import Layout from '@ohrm/oxd/core/components/Layout/Layout.vue';
+import {OxdLayout} from '@ohrm/oxd';
+//import OxdLayout from '@/core/components/custom-layout/Layout/Layout.vue';
 import {dateFormatKey} from '@/core/util/composable/useDateFormat';
 
 export default {
   components: {
     about: About,
-    'oxd-layout': Layout,
+    'oxd-layout': OxdLayout,
   },
   inheritAttrs: false,
   props: {
@@ -75,6 +83,10 @@ export default {
       type: Object,
       default: null,
     },
+    helpUrl: {
+      type: String,
+      default: null,
+    },
   },
   setup(props) {
     const showAboutModel = ref(false);
@@ -89,7 +101,13 @@ export default {
       showAboutModel.value = false;
     };
 
+    const onClickSupport = () => {
+      if (props.helpUrl) window.open(props.helpUrl, '_blank');
+    };
+    console.log('base mounted');
+
     return {
+      onClickSupport,
       showAboutModel,
       openAboutModel,
       closeAboutModel,

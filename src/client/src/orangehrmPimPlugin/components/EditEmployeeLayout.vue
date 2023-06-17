@@ -73,7 +73,7 @@ import TabsNavigation from '@/orangehrmPimPlugin/components/TabsNavigation';
 import ProfileAttachments from '@/orangehrmPimPlugin/components/ProfileAttachments';
 import ProfileCustomFields from '@/orangehrmPimPlugin/components/ProfileCustomFields';
 
-const defaultPic = `${window.appGlobal.baseUrl}/../dist/img/user-default-400.png`;
+const defaultPic = `${window.appGlobal.publicPath}/images/default-photo.png`;
 
 export default {
   name: 'EditEmployeeLayout',
@@ -125,7 +125,7 @@ export default {
     const isCurrentEmp = ref(true);
     const http = new APIService(
       window.appGlobal.baseUrl,
-      'api/v2/pim/employees',
+      '/api/v2/pim/employees',
     );
 
     http.get(props.employeeId).then(({data}) => {
@@ -156,11 +156,8 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import '@ohrm/oxd/styles/_mixins.scss';
-
 .orangehrm-card-container {
   padding: unset;
-  overflow: hidden;
 }
 
 .orangehrm-edit-employee {

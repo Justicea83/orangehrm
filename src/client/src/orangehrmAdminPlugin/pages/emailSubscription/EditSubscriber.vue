@@ -24,7 +24,7 @@
       <oxd-text type="card-title">{{ $t('admin.edit_subscriber') }}</oxd-text>
     </div>
     <oxd-divider />
-    <oxd-form :loading="isLoading" @submitValid="onSave">
+    <oxd-form :loading="isLoading" @submit-valid="onSave">
       <oxd-form-row>
         <oxd-input-field
           v-model="subscriber.name"
@@ -59,12 +59,12 @@
 
 <script>
 import {APIService} from '@/core/util/services/api.service';
-import Dialog from '@ohrm/oxd/core/components/Dialog/Dialog';
 import {
   required,
   validEmailFormat,
   shouldNotExceedCharLength,
 } from '@ohrm/core/util/validation/rules';
+import {OxdDialog} from '@ohrm/oxd';
 
 const subscriberModel = {
   name: '',
@@ -74,7 +74,7 @@ const subscriberModel = {
 export default {
   name: 'EditSubscriber',
   components: {
-    'oxd-dialog': Dialog,
+    'oxd-dialog': OxdDialog,
   },
   props: {
     data: {
@@ -86,7 +86,7 @@ export default {
   setup(props) {
     const http = new APIService(
       window.appGlobal.baseUrl,
-      `api/v2/admin/email-subscriptions/${props.data.subscriptionId}/subscribers`,
+      `/api/v2/admin/email-subscriptions/${props.data.subscriptionId}/subscribers`,
     );
     return {
       http,
@@ -106,18 +106,18 @@ export default {
     this.isLoading = true;
     this.http
       .get(this.data.id)
-      .then(response => {
+      .then((response) => {
         const {data} = response.data;
         this.subscriber.name = data.name;
         this.subscriber.email = data.email;
         // Fetch list data for unique test
         return this.http.getAll();
       })
-      .then(response => {
+      .then((response) => {
         const {data} = response.data;
         if (data) {
-          this.rules.email.push(v => {
-            const index = data.findIndex(item => item.email == v);
+          this.rules.email.push((v) => {
+            const index = data.findIndex((item) => item.email == v);
             if (index > -1) {
               const {id} = data[index];
               return id != this.data.id

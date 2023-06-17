@@ -26,7 +26,7 @@
       </oxd-text>
       <oxd-divider />
 
-      <oxd-form :loading="isLoading" @submitValid="onSave">
+      <oxd-form :loading="isLoading" @submit-valid="onSave">
         <oxd-form-row>
           <oxd-grid :cols="2" class="orangehrm-full-width-grid">
             <oxd-grid-item>
@@ -99,7 +99,6 @@
 </template>
 
 <script>
-import SwitchInput from '@ohrm/oxd/core/components/Input/SwitchInput';
 import {navigate} from '@ohrm/core/util/helper/navigation';
 import {
   required,
@@ -110,6 +109,7 @@ import {
 } from '@ohrm/core/util/validation/rules';
 import {APIService} from '@/core/util/services/api.service';
 import JobtitleDropdown from '@/orangehrmPimPlugin/components/JobtitleDropdown.vue';
+import {OxdSwitchInput} from '@ohrm/oxd';
 
 const initialKpi = {
   title: '',
@@ -122,7 +122,7 @@ const initialKpi = {
 export default {
   name: 'KpiSave',
   components: {
-    'oxd-switch-input': SwitchInput,
+    'oxd-switch-input': OxdSwitchInput,
     'jobtitle-dropdown': JobtitleDropdown,
   },
   props: {
@@ -134,7 +134,7 @@ export default {
   setup() {
     const http = new APIService(
       window.appGlobal.baseUrl,
-      'api/v2/performance/kpis',
+      '/api/v2/performance/kpis',
     );
 
     return {
@@ -176,7 +176,7 @@ export default {
     this.isLoading = true;
     this.http
       .get(this.kpiId)
-      .then(response => {
+      .then((response) => {
         const {data} = response.data;
         const {meta} = response.data;
         this.isReadOnly = meta.editable === false;

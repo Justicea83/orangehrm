@@ -35,7 +35,7 @@
           :option-label="$t('general.keep_current')"
           value="keepCurrent"
           :model-value="method"
-          @update:modelValue="$emit('update:method', $event)"
+          @update:model-value="$emit('update:method', $event)"
         />
         <oxd-input-field
           v-if="deletable"
@@ -43,14 +43,14 @@
           :option-label="$t('general.delete_current')"
           value="deleteCurrent"
           :model-value="method"
-          @update:modelValue="$emit('update:method', $event)"
+          @update:model-value="$emit('update:method', $event)"
         />
         <oxd-input-field
           type="radio"
           :option-label="$t('general.replace_current')"
           value="replaceCurrent"
           :model-value="method"
-          @update:modelValue="$emit('update:method', $event)"
+          @update:model-value="$emit('update:method', $event)"
         />
       </div>
     </div>
@@ -66,19 +66,19 @@
       :model-value="newFile"
       :disabled="disabled"
       :placeholder="$t('general.no_file_selected')"
-      @update:modelValue="$emit('update:newFile', $event)"
+      @update:model-value="$emit('update:newFile', $event)"
     />
     <oxd-text class="orangehrm-input-hint" tag="p">{{ hint }}</oxd-text>
   </div>
 </template>
 
 <script>
-import Icon from '@ohrm/oxd/core/components/Icon/Icon.vue';
+import {OxdIcon} from '@ohrm/oxd';
 
 export default {
   name: 'FileUploadInput',
   components: {
-    'oxd-icon': Icon,
+    'oxd-icon': OxdIcon,
   },
   inheritAttrs: false,
   props: {

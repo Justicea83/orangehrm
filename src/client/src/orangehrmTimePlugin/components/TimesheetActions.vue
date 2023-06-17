@@ -73,8 +73,8 @@ export default {
     const {jsDateFormat} = useDateFormat();
     const {locale} = useLocale();
 
-    const actionsNormalizer = data => {
-      return data.map(item => {
+    const actionsNormalizer = (data) => {
+      return data.map((item) => {
         let performedEmployee;
         let actionName = item.action?.label;
         const firstName = item.performedEmployee?.firstName;
@@ -162,6 +162,7 @@ export default {
         },
         {
           name: 'comment',
+          cellType: 'oxd-table-cell-truncate',
           title: this.$t('general.comment'),
           style: {flex: 1},
         },

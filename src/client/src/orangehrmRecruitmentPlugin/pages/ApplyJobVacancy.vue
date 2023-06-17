@@ -64,7 +64,7 @@
         enctype="multipart/form-data"
         :loading="isLoading"
         :action="submitUrl"
-        @submitValid="onSave"
+        @submit-valid="onSave"
       >
         <input name="_token" :value="token" type="hidden" />
         <input name="vacancyId" :value="vacancyId" type="hidden" />
@@ -131,9 +131,9 @@
                   v-model="applicant.keywords"
                   name="keywords"
                   :label="$t('recruitment.keywords')"
-                  :placeholder="
-                    `${$t('recruitment.enter_comma_seperated_words')}...`
-                  "
+                  :placeholder="`${$t(
+                    'recruitment.enter_comma_seperated_words',
+                  )}...`"
                   :rules="rules.keywords"
                 />
               </oxd-grid-item>
@@ -211,7 +211,7 @@ import SubmitButton from '@/core/components/buttons/SubmitButton';
 import {navigate} from '@/core/util/helper/navigation';
 import {APIService} from '@/core/util/services/api.service';
 import {urlFor} from '@/core/util/helper/url';
-import useResponsive from '@ohrm/oxd/composables/useResponsive';
+import {useResponsive} from '@ohrm/oxd';
 
 const applicantModel = {
   firstName: '',
@@ -259,14 +259,14 @@ export default {
     },
   },
   setup() {
-    const defaultPic = `${window.appGlobal.baseUrl}/../images/ohrm_branding.png`;
+    const defaultPic = `${window.appGlobal.publicPath}/images/ohrm_branding.png`;
     const applicant = ref({
       ...applicantModel,
     });
     const responsiveState = useResponsive();
     const http = new APIService(
       window.appGlobal.baseUrl,
-      'api/v2/recruitment/public/vacancies',
+      '/api/v2/recruitment/public/vacancies',
     );
 
     return {
@@ -320,7 +320,7 @@ export default {
     },
   },
   beforeMount() {
-    this.http.get(this.vacancyId).then(response => {
+    this.http.get(this.vacancyId).then((response) => {
       const {data} = response.data;
       this.vacancyName = data?.name ?? '';
       this.vacancyDescription = data?.description;
@@ -339,7 +339,7 @@ export default {
       navigate('/recruitmentApply/jobs.html');
     },
     showDialogue() {
-      this.$refs.showDialogueModal.showSuccessDialog().then(confirmation => {
+      this.$refs.showDialogueModal.showSuccessDialog().then((confirmation) => {
         if (confirmation === 'ok') {
           navigate('/recruitmentApply/jobs.html');
         }

@@ -26,7 +26,7 @@
       </oxd-text>
       <oxd-divider />
 
-      <oxd-form :loading="isLoading" @submitValid="onSave">
+      <oxd-form :loading="isLoading" @submit-valid="onSave">
         <oxd-grid :cols="2" class="orangehrm-full-width-grid">
           <oxd-grid-item>
             <oxd-input-field
@@ -122,7 +122,7 @@ import {
 } from '@ohrm/core/util/validation/rules';
 import {APIService} from '@/core/util/services/api.service';
 import {navigate} from '@ohrm/core/util/helper/navigation';
-import promiseDebounce from '@ohrm/oxd/utils/promiseDebounce';
+import {promiseDebounce} from '@ohrm/oxd';
 import useEmployeeNameTranslate from '@/core/util/composable/useEmployeeNameTranslate';
 import Activities from '@/orangehrmTimePlugin/components/Activities.vue';
 import AddCustomerModal from '@/orangehrmTimePlugin/components/AddCustomerModal.vue';
@@ -157,9 +157,9 @@ export default {
   setup() {
     const http = new APIService(
       window.appGlobal.baseUrl,
-      'api/v2/time/projects',
+      '/api/v2/time/projects',
     );
-    http.setIgnorePath('api/v2/time/validation/project-name');
+    http.setIgnorePath('/api/v2/time/validation/project-name');
     return {
       http,
     };
@@ -176,7 +176,7 @@ export default {
         customer: [required, validSelection],
         projectAdmin: [
           validSelection,
-          value => {
+          (value) => {
             return this.projectAdmins.filter(
               ({value: admin}) => admin && admin.id === value?.id,
             ).length < 2
@@ -192,7 +192,7 @@ export default {
     const {$tEmpName} = useEmployeeNameTranslate();
     this.http
       .get(this.projectId, {model: 'detailed'})
-      .then(response => {
+      .then((response) => {
         const {data} = response.data;
         this.project.name = data.name;
         this.project.description = data.description;
@@ -204,7 +204,7 @@ export default {
           Array.isArray(data.projectAdmins) &&
           data.projectAdmins.length > 0
         ) {
-          this.projectAdmins = data.projectAdmins.map(projectAdmin => {
+          this.projectAdmins = data.projectAdmins.map((projectAdmin) => {
             return {
               value: {
                 id: projectAdmin.empNumber,
@@ -267,19 +267,19 @@ export default {
         });
     },
     validateProjectName(project) {
-      return new Promise(resolve => {
+      return new Promise((resolve) => {
         if (project) {
           this.http
             .request({
               method: 'GET',
-              url: `api/v2/time/validation/project-name`,
+              url: `/api/v2/time/validation/project-name`,
               params: {
                 projectId: this.projectId,
                 projectName: this.project.name.trim(),
                 customerId: this.project.customer?.id,
               },
             })
-            .then(response => {
+            .then((response) => {
               const {data} = response.data;
               return data.valid === true
                 ? resolve(true)

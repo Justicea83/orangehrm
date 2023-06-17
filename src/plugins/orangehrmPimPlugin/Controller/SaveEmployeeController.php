@@ -19,11 +19,11 @@
 
 namespace OrangeHRM\Pim\Controller;
 
+use OrangeHRM\Admin\Dao\UserDao;
 use OrangeHRM\Core\Controller\AbstractVueController;
 use OrangeHRM\Core\Service\IDGeneratorService;
 use OrangeHRM\Core\Vue\Component;
 use OrangeHRM\Core\Vue\Prop;
-use OrangeHRM\Entity\Employee;
 use OrangeHRM\Entity\EmpPicture;
 use OrangeHRM\Framework\Http\Request;
 
@@ -42,11 +42,18 @@ class SaveEmployeeController extends AbstractVueController
         return $this->idGeneratorService;
     }
 
+    /**
+     * @return UserDao
+     */
+    public function getUserDao(): UserDao
+    {
+        return $this->userDao ??= new UserDao();
+    }
+
     public function preRender(Request $request): void
     {
         $component = new Component('employee-save');
-        $employeeId = $this->getIdGeneratorService()->getNextID(Employee::class, false);
-        $component->addProp(new Prop('emp-id', Prop::TYPE_NUMBER, $employeeId));
+        $component->addProp(new Prop('user-roles', Prop::TYPE_ARRAY, $this->getUserDao()->getFormattedAssignableUserRoles()));
         $component->addProp(new Prop('allowed-image-types', Prop::TYPE_ARRAY, EmpPicture::ALLOWED_IMAGE_TYPES));
         $this->setComponent($component);
     }

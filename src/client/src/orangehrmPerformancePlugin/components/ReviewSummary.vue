@@ -111,7 +111,7 @@ import useLocale from '@/core/util/composable/useLocale';
 import usei18n from '@/core/util/composable/usei18n';
 import useEmployeeNameTranslate from '@/core/util/composable/useEmployeeNameTranslate';
 
-const defaultPic = `${window.appGlobal.baseUrl}/../dist/img/user-default-400.png`;
+const defaultPic = `${window.appGlobal.publicPath}/images/default-photo.png`;
 
 export default {
   name: 'ReviewSummary',
@@ -163,7 +163,7 @@ export default {
       {id: 4, label: $t('performance.completed')},
     ];
 
-    const reviewDateFormat = date =>
+    const reviewDateFormat = (date) =>
       formatDate(parseDate(date), jsDateFormat, {locale});
 
     const imgSrc = computed(() =>
@@ -172,7 +172,7 @@ export default {
         : defaultPic,
     );
 
-    const reviewStatus = statusOpts.find(el => el.id === props.status).label;
+    const reviewStatus = statusOpts.find((el) => el.id === props.status).label;
     const reviewPeriod = `${reviewDateFormat(
       props.reviewPeriodStart,
     )} - ${reviewDateFormat(props.reviewPeriodEnd)}`;

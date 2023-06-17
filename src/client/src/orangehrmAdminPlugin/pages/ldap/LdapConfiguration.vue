@@ -381,13 +381,11 @@ import {
   numberShouldBeBetweenMinAndMaxValue,
 } from '@/core/util/validation/rules';
 import useForm from '@/core/util/composable/useForm';
-import Icon from '@ohrm/oxd/core/components/Icon/Icon';
-import Alert from '@ohrm/oxd/core/components/Alert/Alert';
 import {reloadPage} from '@/core/util/helper/navigation';
 import {APIService} from '@ohrm/core/util/services/api.service';
-import SwitchInput from '@ohrm/oxd/core/components/Input/SwitchInput';
 import LdapSyncConnection from '@/orangehrmAdminPlugin/components/LdapSyncConnection';
 import LdapTestConnectionModal from '@/orangehrmAdminPlugin/components/LdapTestConnectionModal';
+import {OxdAlert, OxdIcon, OxdSwitchInput} from '@ohrm/oxd';
 
 const configurationModel = {
   enable: false,
@@ -420,9 +418,9 @@ const dataMappingModel = {
 
 export default {
   components: {
-    'oxd-icon': Icon,
-    'oxd-alert': Alert,
-    'oxd-switch-input': SwitchInput,
+    'oxd-icon': OxdIcon,
+    'oxd-alert': OxdAlert,
+    'oxd-switch-input': OxdSwitchInput,
     'ldap-sync-connection': LdapSyncConnection,
     'ldap-test-connection-modal': LdapTestConnectionModal,
   },
@@ -437,7 +435,7 @@ export default {
   setup() {
     const http = new APIService(
       window.appGlobal.baseUrl,
-      'api/v2/admin/ldap-config',
+      '/api/v2/admin/ldap-config',
     );
     const {formRef, invalid, validate} = useForm();
 
@@ -495,7 +493,7 @@ export default {
         port: [required, validPortRange(5, 0, 65535)],
         bindUserDN: [required, shouldNotExceedCharLength(255)],
         bindUserPassword: [
-          v => this.configuration.hasBindUserPassword || required(v),
+          (v) => this.configuration.hasBindUserPassword || required(v),
           shouldNotExceedCharLength(255),
         ],
         baseDistinguishedName: [required, shouldNotExceedCharLength(255)],
@@ -512,14 +510,14 @@ export default {
         middleNameAttribute: [shouldNotExceedCharLength(100)],
         userStatusAttribute: [shouldNotExceedCharLength(100)],
         workEmailAttribute: [
-          v =>
+          (v) =>
             this.configuration.employeeSelectorMapping === 'workEmail'
               ? required(v)
               : true,
           shouldNotExceedCharLength(100),
         ],
         employeeIdAttribute: [
-          v =>
+          (v) =>
             this.configuration.employeeSelectorMapping === 'employeeId'
               ? required(v)
               : true,
@@ -550,7 +548,7 @@ export default {
     this.isLoading = true;
     this.http
       .getAll()
-      .then(response => {
+      .then((response) => {
         const {data} = response.data;
         const {userLookupSettings} = data;
         const userLookupSetting = userLookupSettings[0];
@@ -558,11 +556,11 @@ export default {
         this.configuration.hostname = data.hostname;
         this.configuration.port = data.port;
         this.configuration.encryption = this.encryptionOptions.find(
-          option => option.id === data.encryption,
+          (option) => option.id === data.encryption,
         );
         this.configuration.ldapImplementation =
           this.ldapImplementationOptions.find(
-            option => option.id === data.ldapImplementation,
+            (option) => option.id === data.ldapImplementation,
           ) || this.ldapImplementationOptions[0];
 
         this.configuration.bindAnonymously = data.bindAnonymously;
@@ -589,7 +587,7 @@ export default {
         }
         this.configuration.searchScope =
           this.searchScopeOptions.find(
-            option => option.id === userLookupSetting?.searchScope,
+            (option) => option.id === userLookupSetting?.searchScope,
           ) || this.searchScopeOptions[0];
 
         this.configuration.dataMapping = data.dataMapping;
@@ -612,10 +610,10 @@ export default {
         this.http
           .request({
             method: 'POST',
-            url: 'api/v2/admin/ldap-test-connection',
+            url: '/api/v2/admin/ldap-test-connection',
             data,
           })
-          .then(response => {
+          .then((response) => {
             const {data} = response.data;
             this.testModalState = data;
           })
@@ -628,9 +626,10 @@ export default {
         employeeSelectorMapping = [
           {
             field: this.configuration.employeeSelectorMapping,
-            attributeName: this.configuration.dataMapping[
-              this.configuration.employeeSelectorMapping
-            ],
+            attributeName:
+              this.configuration.dataMapping[
+                this.configuration.employeeSelectorMapping
+              ],
           },
         ];
       }
@@ -655,8 +654,8 @@ export default {
           },
         ],
         dataMapping: this.configuration.dataMapping,
-        mergeLDAPUsersWithExistingSystemUsers: this.configuration
-          .mergeLDAPUsersWithExistingSystemUsers,
+        mergeLDAPUsersWithExistingSystemUsers:
+          this.configuration.mergeLDAPUsersWithExistingSystemUsers,
         syncInterval: parseInt(this.configuration.syncInterval),
       };
     },

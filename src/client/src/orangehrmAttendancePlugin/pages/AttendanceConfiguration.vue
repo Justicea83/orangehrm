@@ -27,7 +27,7 @@
 
       <oxd-divider />
 
-      <oxd-form :loading="isLoading" @submitValid="onSave">
+      <oxd-form :loading="isLoading" @submit-valid="onSave">
         <oxd-form-row>
           <oxd-grid :cols="2" class="orangehrm-full-width-grid">
             <div class="orangehrm-attendance-field-row">
@@ -77,7 +77,7 @@
 
 <script>
 import {APIService} from '@/core/util/services/api.service';
-import SwitchInput from '@ohrm/oxd/core/components/Input/SwitchInput';
+import {OxdSwitchInput} from '@ohrm/oxd';
 
 const configsModel = {
   canUserChangeCurrentTime: false,
@@ -87,12 +87,12 @@ const configsModel = {
 
 export default {
   components: {
-    'oxd-switch-input': SwitchInput,
+    'oxd-switch-input': OxdSwitchInput,
   },
   setup() {
     const http = new APIService(
       window.appGlobal.baseUrl,
-      'api/v2/attendance/configs',
+      '/api/v2/attendance/configs',
     );
     return {
       http,
@@ -108,7 +108,7 @@ export default {
     this.isLoading = true;
     this.http
       .getAll()
-      .then(response => {
+      .then((response) => {
         const {data} = response.data;
         this.config = {...data};
       })
@@ -126,7 +126,7 @@ export default {
             ...this.config,
           },
         })
-        .then(response => {
+        .then((response) => {
           const {data} = response.data;
           this.config = {...data};
           return this.$toast.saveSuccess();
@@ -139,8 +139,6 @@ export default {
 };
 </script>
 <style lang="scss" scoped>
-@import '@ohrm/oxd/styles/_mixins.scss';
-
 .orangehrm-attendance-field-row {
   grid-column-start: 1;
   display: flex;

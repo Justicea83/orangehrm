@@ -190,8 +190,8 @@ export default function useTimesheetAPIs(http: APIService) {
     return http.request({
       method: 'PUT',
       url: empNumber
-        ? `api/v2/time/employees/${empNumber}/timesheets/${timesheetId}`
-        : `api/v2/time/timesheets/${timesheetId}`,
+        ? `/api/v2/time/employees/${empNumber}/timesheets/${timesheetId}`
+        : `/api/v2/time/timesheets/${timesheetId}`,
       data: {
         action,
         comment: comment ? comment : undefined,
@@ -208,13 +208,13 @@ export default function useTimesheetAPIs(http: APIService) {
     timesheet: Timesheet;
     allowedActions: AllowedAction[];
   }> => {
-    return new Promise(resolve => {
+    return new Promise((resolve) => {
       http
         .request({
           method: 'GET',
           url: isEmployeeTimesheet
-            ? `api/v2/time/employees/timesheets/${timesheetId}/entries`
-            : `api/v2/time/timesheets/${timesheetId}/entries`,
+            ? `/api/v2/time/employees/timesheets/${timesheetId}/entries`
+            : `/api/v2/time/timesheets/${timesheetId}/entries`,
         })
         .then((response: AxiosResponse<EntriesResponse>) => {
           const {data, meta} = response.data;
@@ -232,8 +232,8 @@ export default function useTimesheetAPIs(http: APIService) {
     return http.request({
       method: 'PUT',
       url: isEmployeeTimesheet
-        ? `api/v2/time/employees/timesheets/${timesheetId}/entries`
-        : `api/v2/time/timesheets/${timesheetId}/entries`,
+        ? `/api/v2/time/employees/timesheets/${timesheetId}/entries`
+        : `/api/v2/time/timesheets/${timesheetId}/entries`,
       data: {
         ...payload,
       },

@@ -92,7 +92,6 @@ class SignupController extends AbstractController implements PublicControllerInt
                     ->setPassword($password)
                     ->setOrganizationName($organizationName)
             );
-
         } catch (AuthenticationException $e) {
             $this->getAuthUser()->addFlash(AuthUser::FLASH_REGISTRATION_ERROR, $e->normalize());
             return new RedirectResponse($registerUrl);

@@ -23,7 +23,7 @@ use Dotenv\Dotenv;
 require realpath(__DIR__ . '/src/vendor/autoload.php');
 
 /* For logging PHP errors */
-include_once('./src/config/log_settings.php');
+//include_once('./src/config/log_settings.php');
 
 $dotenv = Dotenv::createImmutable(__DIR__);
 $dotenv->load();

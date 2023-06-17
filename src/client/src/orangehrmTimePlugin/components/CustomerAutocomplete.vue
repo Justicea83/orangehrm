@@ -38,7 +38,7 @@ export default {
   setup() {
     const http = new APIService(
       window.appGlobal.baseUrl,
-      'api/v2/time/customers',
+      '/api/v2/time/customers',
     );
     return {
       http,
@@ -46,7 +46,7 @@ export default {
   },
   methods: {
     async loadCustomers(serachParam) {
-      return new Promise(resolve => {
+      return new Promise((resolve) => {
         if (serachParam.trim()) {
           this.http
             .getAll({
@@ -54,7 +54,7 @@ export default {
             })
             .then(({data}) => {
               resolve(
-                data.data.map(customer => {
+                data.data.map((customer) => {
                   return {
                     id: customer.id,
                     label: customer.name,

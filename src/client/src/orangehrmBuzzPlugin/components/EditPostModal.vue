@@ -80,16 +80,15 @@ import usei18n from '@/core/util/composable/usei18n';
 import useToast from '@/core/util/composable/useToast';
 import useLocale from '@/core/util/composable/useLocale';
 import {APIService} from '@/core/util/services/api.service';
-import promiseDebounce from '@ohrm/oxd/utils/promiseDebounce';
 import {formatDate, parseDate} from '@/core/util/helper/datefns';
 import useDateFormat from '@/core/util/composable/useDateFormat';
 import PostModal from '@/orangehrmBuzzPlugin/components/PostModal';
 import PhotoFrame from '@/orangehrmBuzzPlugin/components/PhotoFrame';
 import VideoFrame from '@/orangehrmBuzzPlugin/components/VideoFrame';
 import PhotoInput from '@/orangehrmBuzzPlugin/components/PhotoInput';
-import BuzzPostInput from '@ohrm/oxd/core/components/Buzz/BuzzPostInput';
 import useBuzzAPIs from '@/orangehrmBuzzPlugin/util/composable/useBuzzAPIs';
 import useEmployeeNameTranslate from '@/core/util/composable/useEmployeeNameTranslate';
+import {OxdBuzzPostInput, promiseDebounce} from '@ohrm/oxd';
 
 export default {
   name: 'EditPostModal',
@@ -99,7 +98,7 @@ export default {
     'photo-frame': PhotoFrame,
     'photo-input': PhotoInput,
     'video-frame': VideoFrame,
-    'oxd-buzz-post-input': BuzzPostInput,
+    'oxd-buzz-post-input': OxdBuzzPostInput,
   },
 
   props: {
@@ -114,7 +113,7 @@ export default {
   setup(props, context) {
     const {$t} = usei18n();
     const {locale} = useLocale();
-    const {jsDateFormat} = useDateFormat();
+    const {jsDateFormat, jsTimeFormat} = useDateFormat();
     const {$tEmpName} = useEmployeeNameTranslate();
     const http = new APIService(window.appGlobal.baseUrl, '');
     const {updateSuccess} = useToast();
@@ -142,7 +141,7 @@ export default {
         type = 'video';
       }
 
-      new Promise(resolve => {
+      new Promise((resolve) => {
         if (props.data.originalPost) {
           resolve(updateSharedPost(props.data.id, state.post.text));
         } else {
@@ -151,16 +150,16 @@ export default {
               type: type,
               text: state.post.text,
               link: state.post.video,
-              photos: state.post.photos.filter(id => typeof id === 'object'),
-              deletedPhotos: (props.data.photoIds || []).filter(id => {
+              photos: state.post.photos.filter((id) => typeof id === 'object'),
+              deletedPhotos: (props.data.photoIds || []).filter((id) => {
                 return (
-                  state.post.photos.findIndex(photo => photo === id) === -1
+                  state.post.photos.findIndex((photo) => photo === id) === -1
                 );
               }),
             }),
           );
         }
-      }).then(response => {
+      }).then((response) => {
         updateSuccess();
         context.emit('close', response.data);
       });
@@ -169,12 +168,12 @@ export default {
     const rules = {
       url: [
         required,
-        promiseDebounce(async value => {
+        promiseDebounce(async (value) => {
           if (!value) return true;
           state.embedURL = null;
           const response = await http.request({
             method: 'GET',
-            url: 'api/v2/buzz/validation/links',
+            url: '/api/v2/buzz/validation/links',
             params: {
               url: value,
             },
@@ -190,7 +189,7 @@ export default {
       ],
       text: [
         shouldNotExceedCharLength(65530),
-        value => {
+        (value) => {
           if (props.data.type === 'video' || state.post.photos.length > 0) {
             return true;
           }
@@ -214,7 +213,7 @@ export default {
           includeMiddle: true,
           excludePastEmpTag: false,
         }),
-        dateTime: formatDate(utcDate, `${jsDateFormat} HH:mm`, {
+        dateTime: formatDate(utcDate, `${jsDateFormat} ${jsTimeFormat}`, {
           locale,
         }),
       };

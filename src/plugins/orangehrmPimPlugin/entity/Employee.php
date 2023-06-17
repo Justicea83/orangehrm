@@ -554,7 +554,7 @@ class Employee implements TenantAwareInterface
     /**
      * @var int|null
      *
-     * @ORM\Column(name="org_id", type="integer",nullable=true)
+     * @ORM\Column(name="org_id", type="integer", nullable=true)
      */
     private ?int $orgId = null;
 
@@ -1589,5 +1589,22 @@ class Employee implements TenantAwareInterface
     public function getOrgId(): ?int
     {
         return $this->orgId;
+    }
+
+    public function getFullName(): string
+    {
+        $fullName = '';
+
+        if (!empty($this->getFirstName())) {
+            $fullName .= $this->getFirstName() . ' ';
+        }
+        if (!empty($this->getMiddleName())) {
+            $fullName .= $this->getMiddleName() . ' ';
+        }
+        if (!empty($this->getLastName())) {
+            $fullName .= $this->getLastName() . ' ';
+        }
+
+        return trim($fullName);
     }
 }

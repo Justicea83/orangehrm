@@ -29,7 +29,7 @@
       </oxd-text>
     </div>
     <oxd-divider />
-    <oxd-form :loading="isLoading" @submitValid="onSave">
+    <oxd-form :loading="isLoading" @submit-valid="onSave">
       <oxd-form-row>
         <oxd-grid :cols="2" class="orangehrm-timesheet-grid">
           <oxd-text tag="p" class="orangehrm-timesheet-title">
@@ -78,7 +78,7 @@
 <script>
 import {shouldNotExceedCharLength} from '@ohrm/core/util/validation/rules';
 import {APIService} from '@/core/util/services/api.service';
-import Dialog from '@ohrm/oxd/core/components/Dialog/Dialog';
+import {OxdDialog} from '@ohrm/oxd';
 import useLocale from '@/core/util/composable/useLocale';
 import useDateFormat from '@/core/util/composable/useDateFormat';
 import {formatDate, parseDate} from '@/core/util/helper/datefns';
@@ -86,7 +86,7 @@ import {formatDate, parseDate} from '@/core/util/helper/datefns';
 export default {
   name: 'TimesheetCommentModal',
   components: {
-    'oxd-dialog': Dialog,
+    'oxd-dialog': OxdDialog,
   },
   props: {
     data: {
@@ -106,7 +106,7 @@ export default {
   setup() {
     const http = new APIService(
       window.appGlobal.baseUrl,
-      `api/v2/time/timesheets`,
+      `/api/v2/time/timesheets`,
     );
     const {locale} = useLocale();
     const {jsDateFormat} = useDateFormat();
@@ -147,9 +147,9 @@ export default {
       this.http
         .request({
           method: 'GET',
-          url: `api/v2/time/timesheets/${this.timesheetId}/entries/${this.data.id}/comment`,
+          url: `/api/v2/time/timesheets/${this.timesheetId}/entries/${this.data.id}/comment`,
         })
-        .then(response => {
+        .then((response) => {
           const {data} = response.data;
           this.comment = data?.comment;
         })
@@ -164,7 +164,7 @@ export default {
       this.http
         .request({
           method: 'PUT',
-          url: `api/v2/time/timesheets/${this.timesheetId}/entries/comment`,
+          url: `/api/v2/time/timesheets/${this.timesheetId}/entries/comment`,
           data: {
             date: this.data.date,
             comment: this.comment,
@@ -172,7 +172,7 @@ export default {
             activityId: this.data.activity.id,
           },
         })
-        .then(response => {
+        .then((response) => {
           const {data} = response.data;
           this.$toast.saveSuccess();
           this.$emit('close', data);
@@ -190,6 +190,7 @@ export default {
 .orangehrm-timesheet {
   &-grid {
     width: 100%;
+    padding: 0 0.625rem;
     grid-template-columns: 100px 1fr;
     margin-bottom: 1rem;
   }

@@ -26,7 +26,7 @@
       }}</oxd-text>
       <oxd-divider />
 
-      <oxd-form :loading="isLoading" @submitValid="onSave">
+      <oxd-form :loading="isLoading" @submit-valid="onSave">
         <oxd-form-row>
           <oxd-grid :cols="2" class="orangehrm-full-width-grid">
             <oxd-grid-item>
@@ -102,7 +102,7 @@ import {
   shouldNotExceedCharLength,
   shouldNotLessThanCharLength,
 } from '@/core/util/validation/rules';
-import promiseDebounce from '@ohrm/oxd/utils/promiseDebounce';
+import {promiseDebounce} from '@ohrm/oxd';
 
 const userModel = {
   username: '',
@@ -127,8 +127,11 @@ export default {
   },
 
   setup() {
-    const http = new APIService(window.appGlobal.baseUrl, 'api/v2/admin/users');
-    http.setIgnorePath('api/v2/admin/validation/user-name');
+    const http = new APIService(
+      window.appGlobal.baseUrl,
+      '/api/v2/admin/users',
+    );
+    http.setIgnorePath('/api/v2/admin/validation/user-name');
     return {
       http,
     };
@@ -179,17 +182,17 @@ export default {
         });
     },
     validateUserName(user) {
-      return new Promise(resolve => {
+      return new Promise((resolve) => {
         if (user) {
           this.http
             .request({
               method: 'GET',
-              url: `api/v2/admin/validation/user-name`,
+              url: `/api/v2/admin/validation/user-name`,
               params: {
                 userName: this.user.username.trim(),
               },
             })
-            .then(response => {
+            .then((response) => {
               const {data} = response.data;
               return data.valid === true
                 ? resolve(true)

@@ -1,0 +1,25 @@
+@import '@ohrm/oxd/variables.scss';
+
+$oxd-sidepanel-bg-color: $oxd-white-color !default;
+$oxd-sidepanel-border-radius: 35px !default;
+$oxd-sidepanel-min-height: 100vh !default;
+$oxd-sidepanel-box-shadow: 0px 25px 35px 0 rgba(0, 0, 0, 0.18) !default;
+
+$oxd-brand-logo-height: 50px !default;
+$oxd-brand-logo-width: 50px !default;
+$oxd-brand-banner-height: 50px !default;
+$oxd-brand-banner-width: 182px !default;
+
+$oxd-menu-padding-right: 10px !default;
+$oxd-menu-item-font-size: 0.85rem !default;
+$oxd-menu-item-font-weight: 600 !default;
+$oxd-menu-item-padding: 8px 16px 8px 24px !default;
+$oxd-menu-item-color: $oxd-interface-gray-darken-1-color !default;
+$oxd-menu-item-color--active: $oxd-primary-font-color !default;
+$oxd-menu-item-color--hover: $oxd-primary-font-color !default;
+$oxd-menu-item-hover-color: $oxd-primary-one-alpha-10-color !default;
+$oxd-menu-item-active-color: $oxd-primary-one-color !default;
+$oxd-menu-slide-button-color: $oxd-primary-one-color !default;
+$oxd-menu-item-text-padding-left: 15px !default;
+
+$oxd-main-menu-hr: 1px solid rgba(143, 143, 143, 0.15) !default;

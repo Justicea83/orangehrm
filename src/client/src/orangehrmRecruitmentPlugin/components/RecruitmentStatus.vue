@@ -126,7 +126,7 @@ export default {
   setup() {
     const http = new APIService(
       window.appGlobal.baseUrl,
-      'api/v2/recruitment/candidates',
+      '/api/v2/recruitment/candidates',
     );
     const {$tEmpName} = useEmployeeNameTranslate();
 
@@ -155,7 +155,7 @@ export default {
   computed: {
     recruitmentStatus() {
       return (
-        this.statuses.find(item => item.id === this.candidate.status?.id)
+        this.statuses.find((item) => item.id === this.candidate.status?.id)
           ?.label || null
       );
     },
@@ -190,7 +190,7 @@ export default {
   },
   methods: {
     hasWorkflow(actionId) {
-      return this.actions.findIndex(actions => actions.id == actionId) > -1;
+      return this.actions.findIndex((actions) => actions.id == actionId) > -1;
     },
     doWorkflow(actionId) {
       navigate(
@@ -207,9 +207,9 @@ export default {
       this.http
         .request({
           method: 'GET',
-          url: `api/v2/recruitment/candidates/${this.candidate?.id}/actions/allowed`,
+          url: `/api/v2/recruitment/candidates/${this.candidate?.id}/actions/allowed`,
         })
-        .then(response => {
+        .then((response) => {
           const {data} = response.data;
           this.actions = [...data];
         })
@@ -222,8 +222,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import '@ohrm/oxd/styles/_mixins.scss';
-
 .orangehrm-recruitment {
   display: flex;
   justify-content: space-between;

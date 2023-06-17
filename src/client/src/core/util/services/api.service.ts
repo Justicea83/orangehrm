@@ -21,10 +21,17 @@ import axios, {
   AxiosInstance,
   AxiosRequestConfig,
   AxiosResponse,
+  RawAxiosRequestHeaders,
 } from 'axios';
 import {WebStorage} from '../helper/storage';
 import {ComponentInternalInstance, getCurrentInstance} from 'vue';
 import {reloadPage} from '@ohrm/core/util/helper/navigation';
+
+interface ErrorResponse {
+  error: {
+    message?: string;
+  };
+}
 
 export class APIService {
   private _http: AxiosInstance;
@@ -57,7 +64,7 @@ export class APIService {
     return this._http.get(this._apiSection, {headers, params});
   }
 
-  get(id: number, params?: object): Promise<AxiosResponse> {
+  get(id: number | string, params?: object): Promise<AxiosResponse> {
     const headers = {
       'Content-Type': 'application/json',
     };
@@ -74,14 +81,14 @@ export class APIService {
   }
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  update(id: number, data: any): Promise<AxiosResponse> {
+  update(id: number | string, data: any): Promise<AxiosResponse> {
     const headers = {
       'Content-Type': 'application/json',
     };
     return this._http.put(`${this._apiSection}/${id}`, data, {headers});
   }
 
-  delete(id: number): Promise<AxiosResponse> {
+  delete(id: number | string): Promise<AxiosResponse> {
     const headers = {
       'Content-Type': 'application/json',
     };
@@ -128,7 +135,7 @@ export class APIService {
       (response: AxiosResponse): AxiosResponse => {
         return response;
       },
-      (error: AxiosError): Promise<AxiosError> => {
+      (error: AxiosError<ErrorResponse>): Promise<AxiosError> => {
         if (error.response?.status === 401) {
           reloadPage();
           return Promise.reject();
@@ -140,8 +147,8 @@ export class APIService {
 
         const $toast = vm?.appContext.config.globalProperties.$toast;
         if ($toast && error.code !== 'ECONNABORTED') {
-          const message = error.response?.data?.error?.message;
-          $toast.unexpectedError(message);
+          const response = error.response?.data;
+          $toast.unexpectedError(response?.error.message || null);
         }
         return Promise.reject(error);
       },
@@ -153,13 +160,15 @@ export class APIService {
       };
       // Additional interceptors for caching
       this._http.interceptors.request.use(
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        // @ts-ignore
         (config: AxiosRequestConfig) => {
           if (config.url) {
             const url = config.url;
             const cachedEtag = this._cacheStorage.getItem(url);
             if (cachedEtag) {
               config.headers = {
-                ...config.headers,
+                ...(config.headers as RawAxiosRequestHeaders),
                 // https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/If-None-Match
                 'If-None-Match': cachedEtag,
               };
@@ -197,15 +206,17 @@ export class APIService {
         (error: AxiosError) => {
           if (error.response?.status === 304) {
             const etag = error.response.headers['etag'];
-            const cacheData = this._cacheStorage.getItem(
-              removeETagWeakValidatorDirective(etag),
-            );
-            if (cacheData) {
-              return Promise.resolve({
-                ...error.response,
-                status: 200,
-                data: JSON.parse(cacheData),
-              });
+            if (etag) {
+              const cacheData = this._cacheStorage.getItem(
+                removeETagWeakValidatorDirective(etag),
+              );
+              if (cacheData) {
+                return Promise.resolve({
+                  ...error.response,
+                  status: 200,
+                  data: JSON.parse(cacheData),
+                });
+              }
             }
           }
           return Promise.reject(error);

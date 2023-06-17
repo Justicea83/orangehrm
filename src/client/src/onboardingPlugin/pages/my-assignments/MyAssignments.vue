@@ -1,0 +1,184 @@
+<template>
+  <div class="flex relative h-full">
+    <div
+      ref="list"
+      :class="{'w-2/3 mr-3': showDetails, 'w-full': !showDetails}"
+    >
+      <assignment
+        v-for="task in tasks"
+        :key="task.id"
+        :task-group="task"
+        :class="{active: task.isActive}"
+        @open-details="openAssignmentDetail"
+        @toggle-active="toggleActive"
+      >
+        <template #exportOptions>
+          <task-progress :progress="task.progress" />
+        </template>
+      </assignment>
+    </div>
+    <div class="fixed top-15 right-3 h-screen w-1/4">
+      <assignment-detail
+        v-if="selectedTask && showDetails"
+        :task-group="selectedTask"
+        @on-close="onClose"
+        @on-toggle-mark-complete="onToggleMarkComplete"
+        @on-submit="onSubmit"
+      />
+    </div>
+    <delete-confirmation
+      ref="deleteDialog"
+      confirm-button-text="Yes, Submit"
+      :with-confirmation-icon="false"
+      :message="submitConfirmation"
+    ></delete-confirmation>
+  </div>
+</template>
+
+<script>
+import {APIService} from '@/core/util/services/api.service';
+import Assignment from '@/onboardingPlugin/pages/my-assignments/components/Assignment';
+import AssignmentDetail from '@/onboardingPlugin/pages/my-assignments/components/AssignmentDetail';
+import DeleteConfirmationDialog from '@/core/components/dialogs/DeleteConfirmationDialog';
+import TaskProgress from '@/onboardingPlugin/pages/task-groups/components/TaskProgress';
+
+const ACTION_COMPLETE = 'complete_assignment';
+const ACTION_SUBMIT = 'submit';
+
+export default {
+  name: 'MyAssignments',
+  components: {
+    TaskProgress,
+    Assignment,
+    AssignmentDetail,
+    'delete-confirmation': DeleteConfirmationDialog,
+  },
+  setup() {
+    const http = new APIService(
+      window.appGlobal.baseUrl,
+      '/api/v2/task-management/my-assignments',
+    );
+    return {
+      http,
+    };
+  },
+  data() {
+    return {
+      meta: null,
+      tasks: [],
+      selectedTask: null,
+      showDetails: true,
+      submitConfirmation:
+        "The will be submitted and can't be edited again. Are you sure you want to continue?",
+    };
+  },
+  mounted() {
+    this.loadData();
+  },
+  methods: {
+    toggleActive(taskGroup) {
+      const tasks = [...this.tasks];
+      tasks.map((task) => {
+        task.isActive = task.id === taskGroup.id;
+        return task;
+      });
+      this.tasks = tasks;
+      this.selectedTask = taskGroup;
+
+      this.$nextTick(() => {
+        const activeElement = this.$refs.list.querySelector('.active');
+        if (activeElement) {
+          activeElement.scrollIntoView({
+            behavior: 'smooth',
+            block: 'center',
+            inline: 'nearest',
+          });
+        }
+      });
+    },
+    onClose() {
+      this.showDetails = false;
+    },
+    openAssignmentDetail(data) {
+      this.selectedTask = data;
+      this.showDetails = true;
+    },
+    loadData() {
+      this.http.getAll().then((results) => {
+        const {meta, data} = results.data;
+        this.meta = meta;
+        this.tasks = data.map((task, index) => ({
+          ...task,
+          isActive: index === 0,
+        }));
+        this.selectedTask = data[0];
+      });
+    },
+    allTasksComplete() {
+      return this.selectedTask.taskGroups.every((task) => task.isCompleted);
+    },
+    onToggleMarkComplete() {
+      this.http
+        .request({
+          url: '/api/v2/task-management/task-groups/actions',
+          method: 'PUT',
+          data: {
+            action: ACTION_COMPLETE,
+            groupAssignmentId: this.selectedTask?.id,
+          },
+        })
+        .then(() => {
+          const tasks = this.tasks;
+          const taskIndex = tasks.findIndex(
+            (task) => task.id === this.selectedTask?.id,
+          );
+          tasks[taskIndex].completed = true;
+          tasks[taskIndex].taskGroups = tasks[taskIndex].taskGroups.map(
+            (task) => ({
+              ...task,
+              isCompleted: true,
+            }),
+          );
+          this.tasks = tasks;
+          this.$toast.generalSuccess('Assignment completed successfully');
+        });
+    },
+    submitAssignment() {
+      if (!this.allTasksComplete()) {
+        this.$toast.unexpectedError(
+          'An assignment can only be submitted after all subtasks are completed',
+        );
+        return;
+      }
+      this.http
+        .request({
+          url: '/api/v2/task-management/task-groups/actions',
+          method: 'PUT',
+          data: {
+            action: ACTION_SUBMIT,
+            groupAssignmentId: this.selectedTask?.id,
+          },
+        })
+        .then(() => {
+          const tasks = this.tasks;
+          const taskIndex = tasks.findIndex(
+            (task) => task.id === this.selectedTask?.id,
+          );
+          tasks[taskIndex].submittedAt = new Date().toISOString();
+
+          this.tasks = tasks;
+          this.$toast.generalSuccess('Assignment submitted successfully');
+        });
+    },
+    onSubmit() {
+      this.$refs.deleteDialog.showDialog().then((confirmation) => {
+        if (confirmation === 'ok') {
+          this.submitAssignment();
+        }
+      });
+    },
+  },
+};
+</script>
+
+<style scoped></style>

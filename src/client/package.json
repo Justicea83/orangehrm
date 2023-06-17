@@ -4,21 +4,29 @@
   "private": true,
   "scripts": {
     "serve": "vue-cli-service serve",
-    "dev": "vue-cli-service build --watch --mode development --dest ../../web/dist",
+    "dev": "vue-cli-service build --watch --mode development --dest ../../web/dist && tailwindcss -i ./src/index.css -o ../../web/dist/output.css --watch",
     "build": "vue-cli-service build --dest ../../web/dist",
     "test:unit": "vue-cli-service test:unit",
     "lint": "vue-cli-service lint --max-warnings=0 --mode production"
   },
   "dependencies": {
+    "@headlessui/vue": "^1.7.13",
+    "@heroicons/vue": "^2.0.17",
     "@ohrm/oxd": "2.0.0",
     "axios": "^1.2.2",
     "core-js": "^3.27.1",
     "date-fns": "^2.22.1",
+    "form-wizard-vue3": "^1.1.0",
     "hammerjs": "^2.0.8",
     "intl-messageformat": "^9.11.4",
+    "moment": "^2.29.4",
+    "primeicons": "^6.0.1",
     "qrcode": "^1.5.1",
     "vue": "^3.2.45",
-    "vue-stepper": "^1.4.2"
+    "vue3-circle-progress": "^1.0.7",
+    "vue3-easy-data-table": "^1.5.45",
+    "vue3-infinite-scroll-good": "^1.0.2",
+    "vuedraggable": "^4.1.0"
   },
   "devDependencies": {
     "@types/hammerjs": "^2.0.41",

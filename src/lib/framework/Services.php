@@ -273,6 +273,14 @@ final class Services
      */
     public const EMPLOYEE_SERVICE = 'pim.employee_service';
 
+    public const TASK_SERVICE = 'onboarding.task_service';
+
+    public const TASK_GROUP_SERVICE = 'onboarding.gruop.task_service';
+
+    public const TASK_TYPE_SERVICE = 'onboarding.task_type_service';
+
+    public const GROUP_ASSIGNMENT_SERVICE = 'onboarding.group_assignment_service';
+
     /**
      * @see \OrangeHRM\Pim\Service\EmployeeSalaryService
      */

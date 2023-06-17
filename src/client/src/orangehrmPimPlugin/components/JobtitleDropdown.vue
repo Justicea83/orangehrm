@@ -23,6 +23,8 @@
     type="select"
     :label="$t('general.job_title')"
     :options="options"
+    :rules="rules"
+    :required="required"
   />
 </template>
 
@@ -31,6 +33,18 @@ import {ref, onBeforeMount} from 'vue';
 import {APIService} from '@ohrm/core/util/services/api.service';
 export default {
   name: 'JobtitleDropdown',
+  props: {
+    rules: {
+      type: Array,
+      required: false,
+      default: Array.from([]),
+    },
+    required: {
+      type: Boolean,
+      required: false,
+      default: false,
+    },
+  },
   setup() {
     const options = ref([]);
     const http = new APIService(

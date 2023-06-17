@@ -1,0 +1,26 @@
+div.list-item {
+  cursor: pointer;
+  background: white;
+  padding: 8px;
+  border-radius: 4px;
+  margin-bottom: 8px;
+  &:hover {
+    box-shadow: rgba(0, 0, 0, 0.15) 1.95px 1.95px 2.6px;
+  }
+  & > button {
+  }
+  & > p,
+  h3 {
+    user-select: none;
+  }
+}
+.drag > div {
+  transform: rotate(5deg);
+}
+.ghost {
+  background: lightgray;
+  border-radius: 6px;
+}
+.ghost > div {
+  visibility: hidden;
+}

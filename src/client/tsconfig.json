@@ -10,6 +10,8 @@
     "skipLibCheck": true,
     "esModuleInterop": true,
     "allowSyntheticDefaultImports": true,
+    "isolatedModules": true,
+    "noImplicitThis": false,
     "sourceMap": true,
     "baseUrl": ".",
     "types": ["webpack-env", "jest"],

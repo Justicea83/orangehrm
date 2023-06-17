@@ -70,6 +70,9 @@ class ConfigDao extends BaseDao
 
         try {
             $config = $this->getRepository(Config::class)->findOneBy(['name' => $name, 'orgId' => $this->getAuthUser()?->getOrgId()]);
+            if ($config == null) {
+                return DefaultConfig::getDefaultValue($name);
+            }
             if ($config instanceof Config) {
                 return $config->getValue();
             }

@@ -18,9 +18,9 @@
 
 import {computed, ref, watch} from 'vue';
 
-type Order = 'ASC' | 'DESC' | 'DEFAULT';
+export type Order = 'ASC' | 'DESC' | 'DEFAULT';
 
-interface SortDefinition {
+export interface SortDefinition {
   [column: string]: Order;
 }
 

@@ -53,8 +53,8 @@ class Config
     public const PRODUCT_VERSION = '5.4';
     public const ORANGEHRM_API_VERSION = '2.4.0';
     public const PRODUCT_NAME = 'TaskflowHR';
-    public const PRODUCT_MODE = self::MODE_DEMO;
-    public const REGISTRATION_URL = 'https://hr.orangehrm.com';
+    public const PRODUCT_MODE = self::MODE_DEV;
+    public const REGISTRATION_URL = 'https://hr.taskflowhr.com';
 
     public const DEFAULT_MAX_SESSION_IDLE_TIME = 1800;
 

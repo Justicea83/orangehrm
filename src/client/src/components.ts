@@ -21,6 +21,7 @@ import SubmitButton from '@ohrm/components/buttons/SubmitButton.vue';
 import TableHeader from '@ohrm/components/table/TableHeader.vue';
 import RequiredText from '@ohrm/components/labels/RequiredText.vue';
 import Layout from '@ohrm/components/layout/Layout.vue';
+//import Layout from '@/core/components/custom-layout/Layout/Layout.vue';
 import DateInput from '@ohrm/components/inputs/DateInput.vue';
 import TimeInput from '@ohrm/components/inputs/TimeInput.vue';
 

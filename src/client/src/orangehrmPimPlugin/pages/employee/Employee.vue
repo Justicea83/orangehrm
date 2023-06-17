@@ -375,7 +375,7 @@ export default {
     onClickDelete(item, $event) {
       $event.stopImmediatePropagation();
       const isSelectable = this.unselectableEmpNumbers.findIndex(
-        (empNumber) => empNumber == item.id,
+        (empNumber) => empNumber === item.id,
       );
       if (isSelectable > -1) {
         return this.$toast.cannotDelete();

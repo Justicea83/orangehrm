@@ -83,11 +83,9 @@
           :headers="headers"
           :items="taskGroups?.data"
           :selectable="showActions"
-          :clickable="true"
           :loading="isLoading"
           class="orangehrm-employee-list"
           row-decorator="oxd-table-decorator-card"
-          @click="onClickEdit"
         />
       </div>
       <div class="orangehrm-bottom-container">
@@ -335,31 +333,41 @@ export default {
           cellRenderer: this.renderProgressCell,
         },
       ];
-      if (this.showActions) {
-        const newItem: CardHeader = {
-          name: 'actions',
-          slot: 'action',
-          title: this.$t('general.actions'),
-          style: {flex: 1},
-          cellType: 'oxd-table-cell-actions',
-          cellConfig: {
-            delete: {
-              onClick: this.onClickDelete,
-              component: 'oxd-icon-button',
-              props: {
-                name: 'trash',
-              },
+      const newItem: CardHeader = {
+        name: 'actions',
+        slot: 'action',
+        title: this.$t('general.actions'),
+        style: {flex: 1},
+        cellType: 'oxd-table-cell-actions',
+        cellConfig: {
+          view: {
+            onClick: this.onClickView,
+            props: {
+              name: 'eye-fill',
             },
-            edit: {
-              onClick: this.onClickEdit,
-              props: {
-                name: 'pencil-fill',
-              },
+          },
+        },
+      };
+
+      if (this.showActions) {
+        newItem.cellConfig = {
+          ...newItem.cellConfig,
+          edit: {
+            onClick: this.onClickEdit,
+            props: {
+              name: 'pencil-fill',
+            },
+          },
+          delete: {
+            onClick: this.onClickDelete,
+            component: 'oxd-icon-button',
+            props: {
+              name: 'trash',
             },
           },
         };
-        headers.push(newItem);
       }
+      headers.push(newItem);
       return headers;
     },
   },
@@ -368,8 +376,11 @@ export default {
     onClickAdd() {
       navigate('/taskManagement/createTask');
     },
-    onClickEdit() {
-      //navigate('/admin/saveTask');
+    onClickEdit(item: TaskGroup) {
+      navigate(`/taskManagement/viewTaskGroups/edit/${item.id}`);
+    },
+    onClickView(item: TaskGroup) {
+      navigate(`/taskManagement/viewTaskGroups/${item.id}`);
     },
     onClickDelete(item: TaskGroup) {
       this.$refs.deleteDialog.showDialog().then((confirmation: string) => {

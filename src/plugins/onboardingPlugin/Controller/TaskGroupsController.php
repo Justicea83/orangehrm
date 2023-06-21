@@ -14,7 +14,12 @@ class TaskGroupsController extends AbstractVueController
 
     public function preRender(Request $request): void
     {
-        $component = new Component('task-groups');
+        if ($request->attributes->has('id')) {
+            $component = new Component('edit-assignment');
+            $component->addProp(new Prop('assignment-id', Prop::TYPE_STRING, $request->attributes->getInt('id')));
+        } else {
+            $component = new Component('task-groups');
+        }
         $component->addProp(new Prop('theme', Prop::TYPE_ARRAY, $this->getThemeService()->getCurrentThemeVariables()));
 
         $this->setComponent($component);

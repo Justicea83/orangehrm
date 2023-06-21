@@ -8,6 +8,8 @@ import SaveTask from './pages/tasks/SaveTask.vue';
 import EditTask from './pages/tasks/EditTask.vue';
 import SaveTaskType from './pages/task-types/SaveTaskType.vue';
 import EditTaskType from './pages/task-types/EditTaskType.vue';
+import FullAssignment from './pages/full-assignment/FullAssignment.vue';
+import EditAssignment from './pages/edit-assignment/EditAssignment.vue';
 
 export default {
   'create-onboarding': CreateOnboarding,
@@ -20,4 +22,6 @@ export default {
   'edit-task': EditTask,
   'save-task-type': SaveTaskType,
   'edit-task-type': EditTaskType,
+  'full-assignment': FullAssignment,
+  'edit-assignment': EditAssignment,
 };

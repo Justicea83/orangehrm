@@ -50,6 +50,10 @@ export default {
     CheckBadgeIcon,
   },
   props: {
+    isOwner: {
+      type: Boolean,
+      default: true,
+    },
     taskList: {
       type: Array,
       required: true,
@@ -86,11 +90,15 @@ export default {
   },
   computed: {
     headers(): Header[] {
-      return [
-        {value: 'isCompleted', text: ''},
+      let headerInfo = [
         {value: 'task.title', text: 'Title'},
         {value: 'dueDate', text: 'Due Date', sortable: true},
       ];
+
+      if (this.isOwner) {
+        headerInfo = [{value: 'isCompleted', text: ''}, ...headerInfo];
+      }
+      return headerInfo;
     },
     taskListModel: {
       get() {

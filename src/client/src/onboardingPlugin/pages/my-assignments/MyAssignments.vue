@@ -13,7 +13,10 @@
         @toggle-active="toggleActive"
       >
         <template #exportOptions>
-          <task-progress :progress="task.progress" />
+          <task-progress
+            :fill-color="theme['--oxd-primary-one-color'] ?? null"
+            :progress="task.progress"
+          />
         </template>
       </assignment>
     </div>
@@ -42,8 +45,8 @@ import AssignmentDetail from '@/onboardingPlugin/pages/my-assignments/components
 import DeleteConfirmationDialog from '@/core/components/dialogs/DeleteConfirmationDialog';
 import TaskProgress from '@/onboardingPlugin/pages/task-groups/components/TaskProgress';
 
-const ACTION_COMPLETE = 'complete_assignment';
-const ACTION_SUBMIT = 'submit';
+export const ACTION_COMPLETE = 'complete_assignment';
+export const ACTION_SUBMIT = 'submit';
 
 export default {
   name: 'MyAssignments',
@@ -52,6 +55,12 @@ export default {
     Assignment,
     AssignmentDetail,
     'delete-confirmation': DeleteConfirmationDialog,
+  },
+  props: {
+    theme: {
+      type: Object,
+      required: true,
+    },
   },
   setup() {
     const http = new APIService(

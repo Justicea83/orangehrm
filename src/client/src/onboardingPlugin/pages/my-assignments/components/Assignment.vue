@@ -27,6 +27,7 @@
     </div>
     <div v-show="taskGroup.isActive" class="oxd-table-filter-area mt-2">
       <task-group
+        :is-owner="isOwner"
         :task-list="taskGroup.taskGroups"
         :task-group-id="taskGroup.id"
         :completed="taskGroup.completed"
@@ -51,6 +52,10 @@ export default {
     taskGroup: {
       type: Object,
       required: true,
+    },
+    isOwner: {
+      type: Boolean,
+      default: true,
     },
   },
   emits: ['open-details', 'toggleActive'],

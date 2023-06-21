@@ -2,6 +2,7 @@
   <div class="orangehrm-background-container">
     <div class="orangehrm-paper-container">
       <detail-tools
+        :is-owner="isOwner"
         :task-group="taskGroup"
         @on-toggle-mark-complete="onToggleMarkComplete"
         @on-submit="onSubmit"
@@ -14,6 +15,7 @@
         </oxd-text>
 
         <detail-item title="Creator" :sub-title="taskGroup?.creator?.name" />
+        <detail-item title="Assignee" :sub-title="taskGroup?.assignee?.name" />
         <detail-item
           title="Supervisor"
           :sub-title="taskGroup?.supervisor?.name"
@@ -74,6 +76,10 @@ export default {
     taskGroup: {
       type: Object,
       required: true,
+    },
+    isOwner: {
+      type: Boolean,
+      default: true,
     },
   },
   emits: ['onToggleMarkComplete', 'onClose', 'onSubmit'],

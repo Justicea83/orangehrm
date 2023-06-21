@@ -109,6 +109,10 @@ export default {
       type: Array,
       default: null,
     },
+    activity: {
+      type: Object,
+      required: true,
+    },
     data: {
       type: Object,
       default: null,
@@ -141,6 +145,9 @@ export default {
   },
   watch: {
     data(newData) {
+      if (this.activity.existingTasks) {
+        this.elpTasks = [...this.activity.existingTasks, ...this.elpTasks];
+      }
       const elpTasksIds = this.elpTasks.map((elpTask) => elpTask.id);
       const {data, meta} = newData;
       this.meta = meta;
@@ -151,6 +158,8 @@ export default {
       } else {
         this.tasks = [...data];
       }
+
+
     },
   },
   methods: {

@@ -74,8 +74,6 @@ export default {
     return {
       selectedTask: null,
       showDetails: true,
-      submitConfirmation:
-        "The will be submitted and can't be edited again. Are you sure you want to continue?",
     };
   },
   computed: {

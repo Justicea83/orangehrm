@@ -3,7 +3,7 @@
     <div class="orangehrm-background-container">
       <div class="orangehrm-card-container">
         <oxd-text tag="h6" class="orangehrm-main-title">
-          Create a task assignment
+          {{ mode === 'add' ? 'Create a ' : 'Update' }} task assignment
         </oxd-text>
 
         <oxd-divider />
@@ -55,11 +55,15 @@ const initialActivity = {
   supervisor: null,
   dueDate: null,
   startDate: null,
-  type: null,
   endDate: null,
   tasks: [],
+  type: [],
+  types: [],
   name: null,
 };
+
+export const MODE_EDIT = 'edit';
+const MODE_ADD = 'add';
 
 export default {
   name: 'CreateOnboarding',
@@ -70,6 +74,16 @@ export default {
     OxdText,
     OxdForm,
     OxdDivider,
+  },
+  props: {
+    mode: {
+      type: String,
+      default: MODE_ADD,
+    },
+    assignment: {
+      type: Object,
+      default: null,
+    },
   },
   setup() {
     const http = new APIService(
@@ -141,7 +155,7 @@ export default {
   },
   watch: {
     activityType(newType) {
-      if (newType.length) {
+      if (newType && newType.length) {
         const activityIds = newType?.map((t) => t.id).join(',');
 
         this.http
@@ -156,9 +170,72 @@ export default {
       }
     },
   },
+  mounted() {
+    if (this.mode === MODE_EDIT && this.assignment) {
+      this.activity = {
+        name: this.assignment.name,
+        notes: this.assignment.notes,
+        employee: {
+          id: this.assignment.assignee?.id,
+          label: this.assignment.assignee?.name,
+        },
+        supervisor: this.assignment.supervisor?.id
+          ? {
+              id: this.assignment.supervisor?.id,
+              label: this.assignment.supervisor?.name,
+            }
+          : null,
+        dueDate: this.assignment.dueDate?.split(' ')[0],
+        startDate: this.assignment.startDate?.split(' ')[0],
+        endDate: this.assignment.endDate?.split(' ')[0],
+        tasks: [],
+        existingTasks: this.assignment.taskGroups.map((group) => group.task),
+        types: this.assignment.taskTypes.map((item) => {
+          return {
+            id: item.id,
+            label: item.name,
+          };
+        }),
+      };
+    }
+  },
   methods: {
     tasksChanged(tasks) {
       this.activity.tasks = tasks;
+    },
+    save(payload) {
+      this.http
+        .request({
+          url: '/api/v2/task-management/task-assignments',
+          method: 'POST',
+          data: payload,
+        })
+        .then(() => {
+          return this.$toast.saveSuccess();
+        })
+        .then(() => {
+          navigate('/taskManagement/viewTaskGroups');
+        })
+        .catch(() => {
+          this.isLoading = false;
+        });
+    },
+    update(payload) {
+      this.http
+        .request({
+          url: `/api/v2/task-management/task-assignments/${this.assignment.id}`,
+          method: 'PUT',
+          data: payload,
+        })
+        .then(() => {
+          return this.$toast.updateSuccess();
+        })
+        .then(() => {
+          navigate('/taskManagement/viewTaskGroups');
+        })
+        .catch(() => {
+          this.isLoading = false;
+        });
     },
     complete() {
       if (!this.activity.tasks || this.activity.tasks.length === 0) {
@@ -198,21 +275,13 @@ export default {
         }),
       };
 
-      this.http
-        .request({
-          url: '/api/v2/task-management/task-assignments',
-          method: 'POST',
-          data: payload,
-        })
-        .then(() => {
-          return this.$toast.saveSuccess();
-        })
-        .then(() => {
-          navigate('/taskManagement/viewTaskGroups');
-        })
-        .catch(() => {
-          this.isLoading = false;
-        });
+      if (this.mode === MODE_ADD) {
+        this.save(payload);
+      }
+
+      if (this.mode === MODE_EDIT) {
+        this.update(payload);
+      }
     },
     beforeChange({index, ref}) {
       const {validate} = this.$refs.form;

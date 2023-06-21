@@ -350,6 +350,8 @@ export default {
       };
 
       if (this.showActions) {
+        console.clear()
+        console.log(this.taskGroups);
         newItem.cellConfig = {
           ...newItem.cellConfig,
           edit: {

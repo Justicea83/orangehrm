@@ -9,6 +9,7 @@
 <script>
 import {APIService} from '@/core/util/services/api.service';
 import CreateOnboarding from '@/onboardingPlugin/pages/create/CreateOnboarding';
+import {navigate} from '@/core/util/helper/navigation';
 
 export default {
   name: 'EditAssignment',
@@ -42,9 +43,18 @@ export default {
     loadData() {
       this.http.get(this.assignmentId).then((results) => {
         const {data} = results.data;
-        this.selectedTask = data;
-        console.clear();
-        console.log(data);
+        if (data.submittedAt) {
+          this.$toast
+            .warn({
+              message: 'The assignment has already been submitted',
+              title: 'Assignment Submitted',
+            })
+            .then(() => {
+              navigate('/taskManagement/viewTaskGroups');
+            });
+        } else {
+          this.selectedTask = data;
+        }
       });
     },
   },

@@ -4,7 +4,6 @@ namespace OrangeHRM\Onboarding\Dao;
 
 use Carbon\Carbon;
 use Exception;
-use OrangeHRM\Core\Api\V2\Exception\NotImplementedException;
 use OrangeHRM\Core\Dao\BaseDao;
 use OrangeHRM\Core\Exception\DaoException;
 use OrangeHRM\Core\Traits\Auth\AuthUserTrait;
@@ -156,6 +155,7 @@ class GroupAssignmentDao extends BaseDao
         $groupAssignment = $this->getGroupAssignmentById($id);
         return $groupAssignment->getCreatorId() === $this->getAuthUser()->getEmpNumber();
     }
+
     /**
      * @throws DaoException
      */
@@ -174,6 +174,7 @@ class GroupAssignmentDao extends BaseDao
 
     /**
      * @throws DaoException
+     * @throws PermissionDeniedException
      */
     public function deleteGroupAssignmentById(array $ids): int
     {
@@ -190,7 +191,7 @@ class GroupAssignmentDao extends BaseDao
         $idsToDelete = array_map(fn(GroupAssignment $groupAssignment) => $groupAssignment->getId(), $results);
 
         if (count($idsToDelete) === 0) {
-            return 0;
+            throw new PermissionDeniedException();
         }
 
         try {
@@ -206,9 +207,13 @@ class GroupAssignmentDao extends BaseDao
 
     /**
      * @throws DaoException
+     * @throws PermissionDeniedException
      */
     public function markAsComplete(int $id): void
     {
+        if (!$this->isOwner($id)) {
+            throw new PermissionDeniedException();
+        }
         $this->beginTransaction();
         try {
             $q = $this->createQueryBuilder(TaskGroup::class, 't');
@@ -276,8 +281,9 @@ class GroupAssignmentDao extends BaseDao
      * @throws DaoException
      * @throws PermissionDeniedException
      */
-    public function approveAssignment(int $id) {
-        if(!$this->isOwner($id)) {
+    public function approveAssignment(int $id)
+    {
+        if (!$this->isOwner($id)) {
             throw new PermissionDeniedException();
         }
         $this->changeState($id, GroupAssignment::STATUS_APPROVED);
@@ -287,8 +293,9 @@ class GroupAssignmentDao extends BaseDao
      * @throws DaoException
      * @throws PermissionDeniedException
      */
-    public function rejectAssignment(int $id) {
-        if(!$this->isOwner($id)) {
+    public function rejectAssignment(int $id)
+    {
+        if (!$this->isOwner($id)) {
             throw new PermissionDeniedException();
         }
         $this->changeState($id, GroupAssignment::STATUS_REJECTED);

@@ -25,7 +25,9 @@ class GroupAssignmentModel implements Normalizable
             'submittedAt',
             'getProgress',
             ['getSupervisor', 'getFullName'],
+            ['getSupervisor', 'getEmpNumber'],
             ['getCreatedBy', 'getFullName'],
+            ['getCreatedBy', 'getEmpNumber'],
             ['getEmployee', 'getFullName'],
             ['getEmployee', 'getEmpNumber'],
         ]);
@@ -41,7 +43,9 @@ class GroupAssignmentModel implements Normalizable
             'submittedAt',
             'progress',
             ['supervisor', 'name'],
+            ['supervisor', 'id'],
             ['creator', 'name'],
+            ['creator', 'id'],
             ['assignee', 'name'],
             ['assignee', 'id'],
         ]);

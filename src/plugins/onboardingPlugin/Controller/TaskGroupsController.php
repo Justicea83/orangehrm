@@ -3,6 +3,7 @@
 namespace OrangeHRM\Onboarding\Controller;
 
 use OrangeHRM\Core\Controller\AbstractVueController;
+use OrangeHRM\Core\Traits\Auth\AuthUserTrait;
 use OrangeHRM\Core\Vue\Component;
 use OrangeHRM\Core\Vue\Prop;
 use OrangeHRM\CorporateBranding\Traits\ThemeServiceTrait;
@@ -10,7 +11,7 @@ use OrangeHRM\Framework\Http\Request;
 
 class TaskGroupsController extends AbstractVueController
 {
-    use ThemeServiceTrait;
+    use ThemeServiceTrait, AuthUserTrait;
 
     public function preRender(Request $request): void
     {
@@ -20,6 +21,7 @@ class TaskGroupsController extends AbstractVueController
         } else {
             $component = new Component('task-groups');
         }
+        $component->addProp(new Prop('user-id', Prop::TYPE_STRING, $this->getAuthUser()->getEmpNumber()));
         $component->addProp(new Prop('theme', Prop::TYPE_ARRAY, $this->getThemeService()->getCurrentThemeVariables()));
 
         $this->setComponent($component);

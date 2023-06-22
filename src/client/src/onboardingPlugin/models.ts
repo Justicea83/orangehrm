@@ -7,7 +7,7 @@ export interface Task {
 
 export interface SimpleUser {
   id: number;
-  name: number;
+  name: number | null;
 }
 
 export interface TaskGroup {
@@ -16,4 +16,6 @@ export interface TaskGroup {
   submittedAt?: string | null;
   taskGroups: Task[];
   assignee: SimpleUser;
+  creator: SimpleUser;
+  supervisor: SimpleUser;
 }

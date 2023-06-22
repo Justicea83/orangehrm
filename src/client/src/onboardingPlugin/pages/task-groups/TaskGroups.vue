@@ -182,6 +182,10 @@ export default {
       type: Boolean,
       default: true,
     },
+    userId: {
+      type: String,
+      required: true,
+    },
     apiUrl: {
       type: String,
       default: () => '/api/v2/task-management/task-assignments',
@@ -359,10 +363,20 @@ export default {
       const dropdownActions = [
         {label: this.$t('general.add_comment'), context: 'add_comment'},
         {label: 'View Assignment Details', context: 'assignment_details'},
-        {label: 'Edit Assignment Details', context: 'edit_details'},
-        {label: 'Delete Assignment', context: 'delete_assignment'},
         {label: this.$t('leave.view_pim_info'), context: 'pim_details'},
       ];
+
+      if (row.creator.id === this.userId) {
+        dropdownActions.push({
+          label: 'Edit Assignment Details',
+          context: 'edit_details',
+        });
+
+        dropdownActions.push({
+          label: 'Delete Assignment',
+          context: 'delete_assignment',
+        });
+      }
 
       const actions = [
         {
@@ -376,7 +390,7 @@ export default {
         },
       ];
 
-      if (!row.submittedAt) {
+      if (row.submittedAt) {
         actions.forEach((item) => {
           if (item.action === 'APPROVE') {
             approve.props.label = this.$t('general.approve');
@@ -414,7 +428,7 @@ export default {
           break;
         case 'pim_details':
           navigate('/pim/viewPersonalDetails/empNumber/{id}', {
-            id: row.assignee.id,
+            id: row.assignee.id.toString(),
           });
           break;
         case 'add_comment':

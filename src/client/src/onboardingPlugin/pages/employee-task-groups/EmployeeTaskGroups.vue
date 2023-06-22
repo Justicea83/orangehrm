@@ -3,6 +3,7 @@
     api-url="/api/v2/task-management/employee-assignments"
     :show-actions="false"
     :theme="theme"
+    :user-id="userId"
   />
 </template>
 
@@ -17,6 +18,10 @@ export default {
     theme: {
       type: Object,
       default: null,
+    },
+    userId: {
+      type: String,
+      required: true,
     },
   },
 };

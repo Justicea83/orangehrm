@@ -107,20 +107,23 @@ import useSort, {SortDefinition} from '@/core/util/composable/useSort';
 import usePaginate from '@/core/util/composable/usePaginate';
 import DeleteConfirmationDialog from '@ohrm/components/dialogs/DeleteConfirmationDialog.vue';
 import {
-  OxdCardTable,
   OxdButton,
-  OxdPagination,
-  OxdForm,
+  OxdCardTable,
   OxdDivider,
-  OxdInputField,
-  OxdTableFilter,
+  OxdForm,
+  OxdFormActions,
   OxdFormRow,
   OxdGrid,
   OxdGridItem,
-  OxdFormActions,
+  OxdInputField,
+  OxdPagination,
+  OxdTableFilter,
 } from '@ohrm/oxd';
 import TableHeader from '@ohrm/components/table/TableHeader.vue';
-import {CardHeader} from '@ohrm/oxd/types/components/CardTable/types';
+import {
+  ActionsCellConfig,
+  CardHeader,
+} from '@ohrm/oxd/types/components/CardTable/types';
 import DeadlineDate from '@/onboardingPlugin/pages/task-groups/components/DeadlineDate.vue';
 import CompleteCell from '@/onboardingPlugin/pages/task-groups/components/CompleteCell.vue';
 import NameCell from '@/onboardingPlugin/pages/task-groups/components/NameCell.vue';
@@ -129,6 +132,7 @@ import {navigate} from '@/core/util/helper/navigation';
 import DateInput from '@/core/components/inputs/DateInput.vue';
 import EmployeeAutocomplete from '@/core/components/inputs/EmployeeAutocomplete.vue';
 import TaskProgress from './components/TaskProgress.vue';
+import useAssignmentActions from '@/onboardingPlugin/util/composable/useAssignmentActions';
 
 const defaultSortOrder: SortDefinition = {
   'task.title': 'DEFAULT',
@@ -222,6 +226,8 @@ export default {
       props.apiUrl,
     );
 
+    const {assignmentActions} = useAssignmentActions(http);
+
     const {
       showPaginator,
       currentPage,
@@ -242,6 +248,7 @@ export default {
       currentPage,
       isLoading,
       total,
+      assignmentActions,
       pages,
       execQuery,
       taskGroups: response,
@@ -258,7 +265,7 @@ export default {
 
   computed: {
     headers(): CardHeader[] {
-      const headers = [
+      return [
         {
           name: 'name',
           slot: 'name',
@@ -332,49 +339,91 @@ export default {
           style: {flex: 1},
           cellRenderer: this.renderProgressCell,
         },
-      ];
-      const newItem: CardHeader = {
-        name: 'actions',
-        slot: 'action',
-        title: this.$t('general.actions'),
-        style: {flex: 1},
-        cellType: 'oxd-table-cell-actions',
-        cellConfig: {
-          view: {
-            onClick: this.onClickView,
-            props: {
-              name: 'eye-fill',
-            },
-          },
+        {
+          name: 'actions',
+          slot: 'action',
+          title: this.$t('general.actions'),
+          style: {flex: 1, flexDirection: 'row'},
+          cellType: 'oxd-table-cell-actions',
+          cellRenderer: this.actionCellRenderer,
         },
-      };
-
-      if (this.showActions) {
-        console.clear()
-        console.log(this.taskGroups);
-        newItem.cellConfig = {
-          ...newItem.cellConfig,
-          edit: {
-            onClick: this.onClickEdit,
-            props: {
-              name: 'pencil-fill',
-            },
-          },
-          delete: {
-            onClick: this.onClickDelete,
-            component: 'oxd-icon-button',
-            props: {
-              name: 'trash',
-            },
-          },
-        };
-      }
-      headers.push(newItem);
-      return headers;
+      ];
     },
   },
 
   methods: {
+    actionCellRenderer(...[, , , row]: Array<TaskGroup>) {
+      const cellConfig: ActionsCellConfig<RowItem> = {};
+
+      const {approve, reject, more} = this.assignmentActions;
+      const dropdownActions = [
+        {label: this.$t('general.add_comment'), context: 'add_comment'},
+        {label: 'View Assignment Details', context: 'assignment_details'},
+        {label: 'Edit Assignment Details', context: 'edit_details'},
+        {label: 'Delete Assignment', context: 'delete_assignment'},
+        {label: this.$t('leave.view_pim_info'), context: 'pim_details'},
+      ];
+
+      const actions = [
+        {
+          action: 'APPROVE',
+        },
+        {
+          action: 'REJECT',
+        },
+        {
+          action: 'CANCEL',
+        },
+      ];
+
+      if (!row.submittedAt) {
+        actions.forEach((item) => {
+          if (item.action === 'APPROVE') {
+            approve.props.label = this.$t('general.approve');
+            approve.props.onClick = () => this.onLeaveAction(row.id, 'APPROVE');
+            cellConfig.approve = approve;
+          }
+          if (item.action === 'REJECT') {
+            reject.props.label = this.$t('general.reject');
+            reject.props.onClick = () => this.onLeaveAction(row.id, 'REJECT');
+            cellConfig.reject = reject;
+          }
+        });
+      }
+
+      more.props.options = dropdownActions;
+      more.props.onClick = ($event: {context: string}) =>
+        this.onAssignmentDropdownAction($event, row);
+      cellConfig.more = more;
+
+      return {
+        props: {
+          header: {
+            cellConfig,
+          },
+        },
+      };
+    },
+    onAssignmentDropdownAction(event: {context: string}, row: TaskGroup) {
+      switch (event.context) {
+        case 'delete_assignment':
+          this.onClickDelete(row);
+          break;
+        case 'edit_details':
+          this.onClickEdit(row);
+          break;
+        case 'pim_details':
+          navigate('/pim/viewPersonalDetails/empNumber/{id}', {
+            id: row.assignee.id,
+          });
+          break;
+        case 'add_comment':
+          break;
+        case 'assignment_details':
+          this.onClickView(row);
+          break;
+      }
+    },
     onClickAdd() {
       navigate('/taskManagement/createTask');
     },

@@ -31,6 +31,8 @@ import './core/plugins/loader/loader.scss';
 
 const app = createApp({
   name: 'App',
+  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+  // @ts-ignore
   components: pages,
 });
 

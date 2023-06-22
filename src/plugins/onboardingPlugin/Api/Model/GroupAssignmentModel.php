@@ -27,6 +27,7 @@ class GroupAssignmentModel implements Normalizable
             ['getSupervisor', 'getFullName'],
             ['getCreatedBy', 'getFullName'],
             ['getEmployee', 'getFullName'],
+            ['getEmployee', 'getEmpNumber'],
         ]);
 
         $this->setAttributeNames([
@@ -42,6 +43,7 @@ class GroupAssignmentModel implements Normalizable
             ['supervisor', 'name'],
             ['creator', 'name'],
             ['assignee', 'name'],
+            ['assignee', 'id'],
         ]);
     }
 }

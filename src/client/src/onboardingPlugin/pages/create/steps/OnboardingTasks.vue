@@ -158,8 +158,6 @@ export default {
       } else {
         this.tasks = [...data];
       }
-
-
     },
   },
   methods: {

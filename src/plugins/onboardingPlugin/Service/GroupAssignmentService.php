@@ -90,4 +90,14 @@ class GroupAssignmentService
     {
         $this->getGroupAssignmentDao()->changeCompleteState($id, $state);
     }
+
+    public function approveAssignment(int $id): void
+    {
+        $this->getGroupAssignmentDao()->approveAssignment($id);
+    }
+
+    public function rejectAssignment(int $id): void
+    {
+        $this->getGroupAssignmentDao()->rejectAssignment($id);
+    }
 }

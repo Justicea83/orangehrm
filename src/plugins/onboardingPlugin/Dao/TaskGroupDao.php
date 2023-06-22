@@ -6,7 +6,6 @@ use Exception;
 use OrangeHRM\Core\Dao\BaseDao;
 use OrangeHRM\Core\Exception\DaoException;
 use OrangeHRM\Entity\GroupAssignment;
-use OrangeHRM\Entity\Task;
 use OrangeHRM\Entity\TaskGroup;
 use OrangeHRM\Onboarding\Dto\TaskGroupSearchFilterParams;
 use OrangeHRM\Onboarding\Traits\Service\GroupAssignmentServiceTrait;

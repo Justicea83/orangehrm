@@ -35,6 +35,7 @@ class GroupAssignmentDetailModel implements Normalizable
                     ['getTask', 'getId', 'getTitle', 'getNotes']
                 ]
             ],
+            'getStatus',
             ['getSupervisor', 'getFullName'],
             ['getSupervisor', 'getEmpNumber'],
             ['getCreatedBy', 'getFullName'],
@@ -64,6 +65,7 @@ class GroupAssignmentDetailModel implements Normalizable
                     ['task', 'id', 'title', 'notes'],
                 ]
             ],
+            'status',
             ['supervisor', 'name'],
             ['supervisor', 'id'],
             ['creator', 'name'],

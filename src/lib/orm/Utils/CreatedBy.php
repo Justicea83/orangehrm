@@ -45,4 +45,20 @@ trait CreatedBy
     {
         $this->createdBy = $createdBy;
     }
+
+    /**
+     * @return int|null
+     */
+    public function getCreatorId(): ?int
+    {
+        return $this->creatorId;
+    }
+
+    /**
+     * @param int|null $creatorId
+     */
+    public function setCreatorId(?int $creatorId): void
+    {
+        $this->creatorId = $creatorId;
+    }
 }

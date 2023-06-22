@@ -27,6 +27,10 @@ class GroupAssignment extends TenantAwareWithTimeStamps
         $this->taskGroups = new ArrayCollection();
     }
 
+    const STATUS_PENDING = 'pending';
+    const STATUS_APPROVED = 'approved';
+    const STATUS_REJECTED = 'rejected';
+
     /**
      * @var int
      *
@@ -60,6 +64,11 @@ class GroupAssignment extends TenantAwareWithTimeStamps
      * @ORM\Column(name="submitted_at", type="string", nullable=true)
      */
     private ?string $submittedAt = null;
+
+    /**
+     * @ORM\Column(name="status", type="string", nullable=true)
+     */
+    private ?string $status = null;
 
     /**
      * @ORM\Column(name="completed", type="boolean", options={"default" : 0})
@@ -325,8 +334,25 @@ class GroupAssignment extends TenantAwareWithTimeStamps
         if($completedTasks === 0) {
             return 0;
         }
+
         $totalTasks = $this->getTaskGroups()->count();
 
         return round($completedTasks / $totalTasks * 100, 2);
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getStatus(): ?string
+    {
+        return $this->status;
+    }
+
+    /**
+     * @param string|null $status
+     */
+    public function setStatus(?string $status): void
+    {
+        $this->status = $status;
     }
 }

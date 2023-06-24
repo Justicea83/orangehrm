@@ -5,6 +5,7 @@ namespace OrangeHRM\Entity;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use OrangeHRM\Comments\Traits\HasComments;
 use OrangeHRM\Entity\Decorator\DecoratorTrait;
 use OrangeHRM\Entity\Decorator\GroupAssignmentDecorator;
 use OrangeHRM\Onboarding\Traits\Service\TaskTypeServiceTrait;
@@ -20,7 +21,7 @@ use OrangeHRM\ORM\Utils\TenantAwareWithTimeStamps;
  */
 class GroupAssignment extends TenantAwareWithTimeStamps
 {
-    use SoftDeletes, DecoratorTrait, CreatedBy, TaskTypeServiceTrait;
+    use SoftDeletes, DecoratorTrait, CreatedBy, TaskTypeServiceTrait, HasComments;
 
     public function __construct()
     {

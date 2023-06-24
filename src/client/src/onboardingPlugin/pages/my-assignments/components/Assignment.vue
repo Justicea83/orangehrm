@@ -33,13 +33,54 @@
         :completed="taskGroup.completed"
         :submitted-at="taskGroup.submittedAt"
       />
+      <comment
+        v-for="comment in comments"
+        :key="comment.id"
+        :comment="comment"
+      />
+
+      <div class="mt-8">
+        <oxd-form @submit-valid="onSave">
+          <oxd-form-row>
+            <oxd-input-field
+              v-model="newComment.body"
+              type="textarea"
+              placeholder="Add Comment"
+            />
+          </oxd-form-row>
+
+          <oxd-divider />
+
+          <oxd-form-actions>
+            <submit-button
+              :loading="loading"
+              :disabled="!newComment || !newComment.body"
+              label="Add Comment"
+            />
+          </oxd-form-actions>
+        </oxd-form>
+      </div>
     </div>
   </div>
 </template>
 
 <script>
-import {OxdIconButton, OxdText} from '@ohrm/oxd';
 import TaskGroup from '@/onboardingPlugin/pages/my-assignments/components/TaskGroup';
+import Comment from '@/core/components/comments/comment/Comment';
+import SubmitButton from '@ohrm/components/buttons/SubmitButton.vue';
+import {
+  OxdForm,
+  OxdFormRow,
+  OxdIconButton,
+  OxdFormActions,
+  OxdDivider,
+  OxdText,
+  OxdInputField,
+} from '@ohrm/oxd';
+import {APIService} from '@/core/util/services/api.service';
+import useComments, {
+  MODEL_TYPE_GROUP_ASSIGNMENT,
+} from '@/commentsPlugin/util/composable/useComments';
 
 export default {
   name: 'Assignment',
@@ -47,6 +88,13 @@ export default {
     OxdIconButton,
     OxdText,
     TaskGroup,
+    Comment,
+    OxdForm,
+    OxdDivider,
+    OxdFormActions,
+    OxdFormRow,
+    SubmitButton,
+    OxdInputField,
   },
   props: {
     taskGroup: {
@@ -59,6 +107,23 @@ export default {
     },
   },
   emits: ['open-details', 'toggleActive'],
+  setup() {
+    const http = new APIService(window.appGlobal.baseUrl, '');
+    const {addComment, deleteComment, editComment} = useComments(http);
+
+    return {
+      addComment,
+      deleteComment,
+      editComment,
+    };
+  },
+  data() {
+    return {
+      newComment: {},
+      loading: false,
+      comments: [...this.taskGroup.comments],
+    };
+  },
 
   methods: {
     openMenu() {
@@ -67,6 +132,25 @@ export default {
     },
     toggleFilters() {
       this.$emit('toggleActive', this.taskGroup);
+    },
+
+    onSave() {
+      const payload = {
+        ...this.newComment,
+        model_type: MODEL_TYPE_GROUP_ASSIGNMENT,
+        model_id: this.taskGroup.id,
+      };
+
+      this.loading = true;
+      this.addComment(payload)
+        .then(({data}) => {
+          const comment = data.data;
+          this.comments.unshift(comment);
+          this.newComment = {
+            body: '',
+          };
+        })
+        .finally(() => (this.loading = false));
     },
   },
 };

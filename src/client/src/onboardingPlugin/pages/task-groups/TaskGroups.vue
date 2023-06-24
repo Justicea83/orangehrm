@@ -97,6 +97,15 @@
       </div>
     </div>
     <delete-confirmation ref="deleteDialog"></delete-confirmation>
+
+    <add-comment-modal
+      v-if="showCommentModal"
+      :id="commentModalState"
+      :model-id="selectedTaskGroup?.id"
+      :model-type="modelType"
+      :comments="selectedTaskGroup?.comments"
+      @close="onCommentModalClose"
+    />
   </div>
 </template>
 
@@ -133,6 +142,8 @@ import DateInput from '@/core/components/inputs/DateInput.vue';
 import EmployeeAutocomplete from '@/core/components/inputs/EmployeeAutocomplete.vue';
 import TaskProgress from './components/TaskProgress.vue';
 import useAssignmentActions from '@/onboardingPlugin/util/composable/useAssignmentActions';
+import AddCommentModal from '@/commentsPlugin/add/AddCommentModal.vue';
+import {MODEL_TYPE_GROUP_ASSIGNMENT} from '@/commentsPlugin/util/composable/useComments';
 
 const defaultSortOrder: SortDefinition = {
   'task.title': 'DEFAULT',
@@ -160,6 +171,7 @@ export default {
   name: 'TaskGroups',
 
   components: {
+    AddCommentModal,
     'delete-confirmation': DeleteConfirmationDialog,
     OxdCardTable,
     TableHeader,
@@ -264,6 +276,10 @@ export default {
   data() {
     return {
       checkedItems: [],
+      showCommentModal: false,
+      commentModalState: null,
+      selectedTaskGroup: null,
+      modelType: MODEL_TYPE_GROUP_ASSIGNMENT,
     };
   },
 
@@ -432,6 +448,8 @@ export default {
           });
           break;
         case 'add_comment':
+          this.selectedTaskGroup = row;
+          this.showCommentModal = true;
           break;
         case 'assignment_details':
           this.onClickView(row);
@@ -474,6 +492,11 @@ export default {
           this.isLoading = false;
           this.resetDataTable();
         });
+    },
+    onCommentModalClose() {
+      this.commentModalState = null;
+      this.showCommentModal = false;
+      this.resetDataTable();
     },
     onClickDeleteSelected() {
       const ids: number[] = [];

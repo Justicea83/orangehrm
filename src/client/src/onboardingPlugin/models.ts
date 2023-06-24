@@ -8,6 +8,7 @@ export interface Task {
 export interface SimpleUser {
   id: number;
   name: number | null;
+  avatar: string | null;
 }
 
 export interface TaskGroup {

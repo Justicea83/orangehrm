@@ -9138,6 +9138,59 @@ button > .icon[data-v-7e3c60fb] {
 [data-v-1e745b21] .fw-btn {
   background: var(--oxd-primary-one-color, #ff7b1d) !important;
 }
+/*!**************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** css ./node_modules/css-loader/dist/cjs.js??clonedRuleSet-22.use[1]!./node_modules/vue-loader/dist/stylePostLoader.js!./node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-22.use[2]!./node_modules/sass-loader/dist/cjs.js??clonedRuleSet-22.use[3]!./node_modules/vue-loader/dist/index.js??ruleSet[0].use[0]!./src/core/components/comments/comment/Comment.vue?vue&type=style&index=0&id=44324594&lang=scss ***!
+  \**************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************/
+/* Import OXD Globals */
+.comment {
+  padding-top: 20px;
+  position: relative;
+}
+.comment.shaddow {
+  box-shadow: -21px 0 0 0 #fff;
+}
+.comment.corner::before {
+  left: -21px;
+  content: "";
+  top: 0;
+  height: 30px;
+  width: 15px;
+  position: absolute;
+  border-left: 1px solid #e6e6e6;
+  border-bottom: 1px solid #e6e6e6;
+  border-bottom-left-radius: 8px;
+}
+.comment__author {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.comment__avatar {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  overflow: hidden;
+  min-width: 36px;
+  align-self: flex-start;
+}
+.comment__title {
+  font-size: 15px;
+  font-weight: 500;
+  line-height: 16px;
+}
+.comment__body {
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 21px;
+}
+.comment__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.comment__inner-commment {
+  border-left: 1px solid #e6e6e6;
+}
 /*!***********************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
   !*** css ./node_modules/css-loader/dist/cjs.js??clonedRuleSet-22.use[1]!./node_modules/vue-loader/dist/stylePostLoader.js!./node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-22.use[2]!./node_modules/sass-loader/dist/cjs.js??clonedRuleSet-22.use[3]!./src/onboardingPlugin/pages/my-assignments/components/assignment.scss?vue&type=style&index=0&id=62790182&lang=scss&scoped=true ***!
   \***********************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************/
@@ -9182,6 +9235,35 @@ button > .icon[data-v-7e3c60fb] {
   padding-left: 5px;
   min-width: unset;
   margin-right: 5px;
+}
+/*!********************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** css ./node_modules/css-loader/dist/cjs.js??clonedRuleSet-22.use[1]!./node_modules/vue-loader/dist/stylePostLoader.js!./node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-22.use[2]!./node_modules/sass-loader/dist/cjs.js??clonedRuleSet-22.use[3]!./node_modules/vue-loader/dist/index.js??ruleSet[0].use[0]!./src/commentsPlugin/add/AddCommentModal.vue?vue&type=style&index=0&id=fd7db2dc&scoped=true&lang=scss ***!
+  \********************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************/
+/* Import OXD Globals */
+.orangehrm-modal-content[data-v-fd7db2dc] {
+  max-height: 200px;
+  overflow: hidden auto;
+  margin: 0.5rem 0;
+  scrollbar-color: #cfd3de #f6f5fb;
+  scrollbar-width: thin;
+}
+.orangehrm-modal-content[data-v-fd7db2dc]::-webkit-scrollbar {
+  width: 0.5rem;
+  height: 0.5rem;
+}
+.orangehrm-modal-content[data-v-fd7db2dc]::-webkit-scrollbar-thumb {
+  background: #cfd3de;
+  border-radius: 20px;
+}
+.orangehrm-modal-content[data-v-fd7db2dc]::-webkit-scrollbar-track {
+  background: #f6f5fb;
+}
+@media screen and (-ms-high-contrast: active), (-ms-high-contrast: none) {
+.orangehrm-modal-content[data-v-fd7db2dc] {
+    scrollbar-face-color: #cfd3de;
+    scrollbar-track-color: #f6f5fb;
+    scrollbar-arrow-color: #929baa;
+}
 }
 /*!******************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
   !*** css ./node_modules/css-loader/dist/cjs.js??clonedRuleSet-12.use[1]!./node_modules/vue-loader/dist/stylePostLoader.js!./node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-12.use[2]!./node_modules/vue-loader/dist/index.js??ruleSet[0].use[0]!./src/orangehrmClaimPlugin/components/EventAutocomplete.vue?vue&type=style&index=0&id=eddb74d6&scoped=true&lang=css ***!

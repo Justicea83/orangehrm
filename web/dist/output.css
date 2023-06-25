@@ -588,6 +588,10 @@ video {
   z-index: 10;
 }
 
+.mb-\[10px\] {
+  margin-bottom: 10px;
+}
+
 .ml-1 {
   margin-left: 0.25rem;
 }
@@ -610,14 +614,6 @@ video {
 
 .mt-3 {
   margin-top: 0.75rem;
-}
-
-.mb-\[10px\] {
-  margin-bottom: 10px;
-}
-
-.mt-4 {
-  margin-top: 1rem;
 }
 
 .mt-8 {

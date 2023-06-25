@@ -30,8 +30,6 @@ class GroupAssignmentDao extends BaseDao
         $qb = $this->getGroupAssignmentListQueryBuilderWrapper($filterParams)->getQueryBuilder();
         $qb->andWhere('g.empNumber = :employeeId')
             ->setParameter('employeeId', $this->getAuthUser()->getEmpNumber());
-        $qb->andWhere('g.status = :status')
-            ->setParameter('status', GroupAssignment::STATUS_PENDING);
         return $qb->getQuery()->execute();
     }
 
@@ -49,6 +47,9 @@ class GroupAssignmentDao extends BaseDao
         $qb = $this->getGroupAssignmentListQueryBuilderWrapper($filterParams)->getQueryBuilder();
         $qb->andWhere('g.supervisorNumber = :employeeId')
             ->setParameter('employeeId', $this->getAuthUser()->getEmpNumber());
+        $qb->andWhere(
+            $qb->expr()->in('g.status', [GroupAssignment::STATUS_PENDING, GroupAssignment::STATUS_REJECTED])
+        );
         return $qb->getQuery()->execute();
     }
 
@@ -57,6 +58,9 @@ class GroupAssignmentDao extends BaseDao
         $qb = $this->getGroupAssignmentListQueryBuilderWrapper($filterParams)->getQueryBuilder();
         $qb->andWhere('g.supervisorNumber = :employeeId')
             ->setParameter('employeeId', $this->getAuthUser()->getEmpNumber());
+        $qb->andWhere(
+            $qb->expr()->in('g.status', [GroupAssignment::STATUS_PENDING, GroupAssignment::STATUS_REJECTED])
+        );
         return $this->getPaginator($qb)->count();
     }
 
@@ -159,6 +163,24 @@ class GroupAssignmentDao extends BaseDao
     /**
      * @throws DaoException
      */
+    private function isAssignee(int $id): bool
+    {
+        $groupAssignment = $this->getGroupAssignmentById($id);
+        return $groupAssignment->getEmployee()->getEmpNumber() === $this->getAuthUser()->getEmpNumber();
+    }
+
+    /**
+     * @throws DaoException
+     */
+    private function isSupervisor(int $id): bool
+    {
+        $groupAssignment = $this->getGroupAssignmentById($id);
+        return $groupAssignment->getSupervisor()->getEmpNumber() === $this->getAuthUser()->getEmpNumber();
+    }
+
+    /**
+     * @throws DaoException
+     */
     public function getGroupAssignmentById(int $id): ?GroupAssignment
     {
         try {
@@ -211,7 +233,7 @@ class GroupAssignmentDao extends BaseDao
      */
     public function markAsComplete(int $id): void
     {
-        if (!$this->isOwner($id)) {
+        if (!$this->isAssignee($id) && !$this->isOwner($id)) {
             throw new PermissionDeniedException();
         }
         $this->beginTransaction();
@@ -283,7 +305,7 @@ class GroupAssignmentDao extends BaseDao
      */
     public function approveAssignment(int $id)
     {
-        if (!$this->isOwner($id)) {
+        if (!$this->isSupervisor($id)) {
             throw new PermissionDeniedException();
         }
         $this->changeState($id, GroupAssignment::STATUS_APPROVED);
@@ -295,7 +317,7 @@ class GroupAssignmentDao extends BaseDao
      */
     public function rejectAssignment(int $id)
     {
-        if (!$this->isOwner($id)) {
+        if (!$this->isSupervisor($id)) {
             throw new PermissionDeniedException();
         }
         $this->changeState($id, GroupAssignment::STATUS_REJECTED);

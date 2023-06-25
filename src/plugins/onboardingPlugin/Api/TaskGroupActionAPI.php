@@ -11,6 +11,7 @@ use OrangeHRM\Core\Api\V2\ResourceEndpoint;
 use OrangeHRM\Core\Api\V2\Serializer\NormalizeException;
 use OrangeHRM\Core\Exception\DaoException;
 use OrangeHRM\Onboarding\Api\Validation\TaskGroupActionValidation;
+use OrangeHRM\Onboarding\Exception\PermissionDeniedException;
 use OrangeHRM\Onboarding\Traits\Service\GroupAssignmentServiceTrait;
 use OrangeHRM\Onboarding\Traits\Service\TaskGroupServiceTrait;
 
@@ -43,6 +44,7 @@ class TaskGroupActionAPI extends Endpoint implements ResourceEndpoint
     /**
      * @throws DaoException
      * @throws NormalizeException
+     * @throws PermissionDeniedException
      */
     public function update(): EndpointResult
     {

@@ -19,6 +19,7 @@
 import {createApp} from 'vue';
 import components from './components';
 import pages from './pages';
+import mitt from 'mitt';
 import acl, {AclAPI} from './core/plugins/acl/acl';
 import toaster, {ToasterAPI} from './core/plugins/toaster/toaster';
 import createI18n, {TranslateAPI} from './core/plugins/i18n/translate';
@@ -28,6 +29,7 @@ import '@ohrm/oxd/style.css';
 import './core/styles/global.scss';
 import './core/plugins/toaster/toaster.scss';
 import './core/plugins/loader/loader.scss';
+import VTooltip from 'v-tooltip';
 
 const app = createApp({
   name: 'App',
@@ -35,9 +37,15 @@ const app = createApp({
   // @ts-ignore
   components: pages,
 });
+// setup global emitter
+const emitter = mitt();
+app.config.globalProperties.emitter = emitter;
 
 // Global Register Components
 app.use(components);
+
+// Tooltip
+app.use(VTooltip);
 
 app.use(toaster, {
   duration: 2500,

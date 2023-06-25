@@ -15,6 +15,12 @@ type useAssignmentActionsArgs = {
   secondaryActions?: AssignmentSecondaryAction[];
 };
 
+export type AssignmentAPIAction = {
+  action: string;
+  groupAssignmentId: number | null;
+  taskGroupId?: number | null;
+};
+
 const approve: AssignmentAction = {
   component: 'oxd-button',
   props: {
@@ -60,48 +66,16 @@ export default function useAssignmentActions(
     primaryActions = {approve, reject, cancel, more},
   }: useAssignmentActionsArgs = {},
 ) {
-  const processAssignmentAction = (id: number, actionType: string) => {
+  const performAssignmentAction = (payload: AssignmentAPIAction) => {
     return http.request({
       method: 'PUT',
-      url: `/api/v2/Assignment/Assignments/${id}`,
-      data: {
-        action: actionType,
-      },
-    });
-  };
-
-  const processAssignmentRequestAction = (id: number, actionType: string) => {
-    return http.request({
-      method: 'PUT',
-      url: `/api/v2/Assignment/employees/Assignment-requests/${id}`,
-      data: {
-        action: actionType,
-      },
-    });
-  };
-
-  const processAssignmentRequestBulkAction = (
-    ids: number[],
-    actionType: string,
-  ) => {
-    return http.request({
-      method: 'PUT',
-      url: '/api/v2/Assignment/employees/Assignment-requests/bulk',
-      data: {
-        data: ids.map((id) => {
-          return {
-            AssignmentRequestId: id,
-            action: actionType,
-          };
-        }),
-      },
+      url: '/api/v2/task-management/task-groups/actions',
+      data: payload,
     });
   };
 
   return {
     assignmentActions: primaryActions,
-    processAssignmentAction,
-    processAssignmentRequestAction,
-    processAssignmentRequestBulkAction,
+    performAssignmentAction,
   };
 }

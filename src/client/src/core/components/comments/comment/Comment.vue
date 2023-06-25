@@ -19,7 +19,10 @@
         </p>
       </div>
     </div>
-    <div v-if="comment.replies && comment.replies.length" class="pl-[20px] comment__inner-commment">
+    <div
+      v-if="comment.replies && comment.replies.length"
+      class="pl-[20px] comment__inner-commment"
+    >
       <template v-for="(reply, index) in comment.replies" :key="index">
         <Comment
           v-bind="{

@@ -4,6 +4,7 @@
       alternating
       :headers="headers"
       :items="taskList"
+      class="z-10"
       :rows-per-page="10"
     >
       <template #expand="item">
@@ -40,7 +41,7 @@ import 'vue3-easy-data-table/dist/style.css';
 import Vue3EasyDataTable, {Header} from 'vue3-easy-data-table';
 import {CheckBadgeIcon} from '@heroicons/vue/24/solid';
 import {APIService} from '@/core/util/services/api.service';
-import {Task} from '@/onboardingPlugin/models';
+import {Task, TaskGroup} from '@/onboardingPlugin/models';
 import moment from 'moment';
 
 export default {
@@ -50,6 +51,14 @@ export default {
     CheckBadgeIcon,
   },
   props: {
+    isOwner: {
+      type: Boolean,
+      default: true,
+    },
+    taskGroup: {
+      type: Object,
+      default: null,
+    },
     taskList: {
       type: Array,
       required: true,
@@ -86,17 +95,29 @@ export default {
   },
   computed: {
     headers(): Header[] {
-      return [
-        {value: 'isCompleted', text: ''},
+      let headerInfo = [
         {value: 'task.title', text: 'Title'},
         {value: 'dueDate', text: 'Due Date', sortable: true},
       ];
+
+      if (this.isOwner) {
+        headerInfo = [{value: 'isCompleted', text: ''}, ...headerInfo];
+      }
+      return headerInfo;
     },
     taskListModel: {
       get() {
         return this.taskList;
       },
       set(value: Task[]) {
+        this.$emit('update:prop', value);
+      },
+    },
+    taskGroupModel: {
+      get() {
+        return this.taskGroup;
+      },
+      set(value: TaskGroup) {
         this.$emit('update:prop', value);
       },
     },
@@ -124,6 +145,14 @@ export default {
           tableData[indexById].isCompleted = !tableData[indexById].isCompleted;
 
           this.taskListModel = tableData;
+          const totalTasks = tableData.length;
+          let completedTasks = tableData.filter(
+            (task) => task.isCompleted,
+          ).length;
+          this.taskGroupModel.progress =
+            totalTasks === 0
+              ? 0
+              : Math.round((completedTasks / totalTasks) * 100);
         });
     },
     formatDate(date?: string): string {

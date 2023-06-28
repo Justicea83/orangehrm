@@ -22,18 +22,37 @@
   <oxd-button
     class="orangehrm-left-space"
     display-type="secondary"
-    :label="$t('general.save')"
+    :label="label"
+    :disabled="disabled"
     :type="buttonType"
+    :loading="loading"
   />
 </template>
 
 <script>
+import {OxdButton} from '@ohrm/oxd';
+
 export default {
   name: 'SubmitButton',
+  components: {
+    OxdButton,
+  },
   props: {
     buttonType: {
       type: String,
       default: 'submit',
+    },
+    disabled: {
+      type: Boolean,
+      default: false,
+    },
+    loading: {
+      type: Boolean,
+      default: false,
+    },
+    label: {
+      type: String,
+      default: () => 'Save',
     },
   },
 };

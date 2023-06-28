@@ -146,7 +146,9 @@ trait GroupAssignmentValidation
 
     public function getValidationRuleForGetOne(): ParamRuleCollection
     {
-        throw $this->getNotImplementedException();
+        return new ParamRuleCollection(
+            new ParamRule(CommonParams::PARAMETER_ID),
+        );
     }
 
     public function getValidationRuleForUpdate(): ParamRuleCollection

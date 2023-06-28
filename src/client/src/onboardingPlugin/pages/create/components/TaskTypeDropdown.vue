@@ -12,14 +12,23 @@
 <script>
 import {onBeforeMount, ref} from 'vue';
 import {APIService} from '@/core/util/services/api.service';
+import {OxdInputField} from '@ohrm/oxd';
 
 export default {
   name: 'TaskTypeDropdown',
+  components: {
+    OxdInputField,
+  },
   props: {
     rules: {
       type: Array,
       required: false,
       default: Array.from([]),
+    },
+    selected: {
+      type: Array,
+      required: false,
+      default: () => Array.from([]),
     },
     required: {
       type: Boolean,
@@ -31,6 +40,7 @@ export default {
   setup() {
     const options = ref([]);
     const selectedOptions = ref([]);
+
     const http = new APIService(
       window.appGlobal.baseUrl,
       '/api/v2/task-management/task-types',
@@ -53,6 +63,9 @@ export default {
   watch: {
     selectedOptions(options) {
       this.$emit('optionsChanged', options);
+    },
+    selected(options) {
+      this.selectedOptions = options;
     },
   },
 };

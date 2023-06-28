@@ -11,6 +11,7 @@ use OrangeHRM\Core\Api\V2\ResourceEndpoint;
 use OrangeHRM\Core\Api\V2\Serializer\NormalizeException;
 use OrangeHRM\Core\Exception\DaoException;
 use OrangeHRM\Onboarding\Api\Validation\TaskGroupActionValidation;
+use OrangeHRM\Onboarding\Exception\PermissionDeniedException;
 use OrangeHRM\Onboarding\Traits\Service\GroupAssignmentServiceTrait;
 use OrangeHRM\Onboarding\Traits\Service\TaskGroupServiceTrait;
 
@@ -21,11 +22,15 @@ class TaskGroupActionAPI extends Endpoint implements ResourceEndpoint
     public const ACTION_TOGGLE_COMPLETE = 'toggle_complete';
     public const ACTION_COMPLETE_ASSIGNMENT = 'complete_assignment';
     public const ACTION_SUBMIT = 'submit';
+    public const ACTION_APPROVE = 'approve';
+    public const ACTION_REJECT = 'reject';
 
     public const ALLOWED_ACTIONS = [
         self::ACTION_TOGGLE_COMPLETE,
         self::ACTION_COMPLETE_ASSIGNMENT,
         self::ACTION_SUBMIT,
+        self::ACTION_APPROVE,
+        self::ACTION_REJECT,
     ];
     public const PARAMETER_ACTION = 'action';
     public const PARAMETER_GROUP_ASSIGNMENT_ID = 'groupAssignmentId';
@@ -39,6 +44,7 @@ class TaskGroupActionAPI extends Endpoint implements ResourceEndpoint
     /**
      * @throws DaoException
      * @throws NormalizeException
+     * @throws PermissionDeniedException
      */
     public function update(): EndpointResult
     {
@@ -56,6 +62,12 @@ class TaskGroupActionAPI extends Endpoint implements ResourceEndpoint
                 break;
             case self::ACTION_COMPLETE_ASSIGNMENT:
                 $this->getGroupAssignmentService()->markAsComplete($groupAssignmentId);
+                break;
+            case self::ACTION_APPROVE:
+                $this->getGroupAssignmentService()->approveAssignment($groupAssignmentId);
+                break;
+            case self::ACTION_REJECT:
+                $this->getGroupAssignmentService()->rejectAssignment($groupAssignmentId);
                 break;
         }
         return new EndpointResourceResult(ArrayModel::class, [$results]);

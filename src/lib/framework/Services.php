@@ -281,6 +281,8 @@ final class Services
 
     public const GROUP_ASSIGNMENT_SERVICE = 'onboarding.group_assignment_service';
 
+    public const COMMENT_SERVICE = 'comments.comment_service';
+
     /**
      * @see \OrangeHRM\Pim\Service\EmployeeSalaryService
      */

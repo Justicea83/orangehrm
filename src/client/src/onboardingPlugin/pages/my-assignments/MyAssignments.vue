@@ -13,7 +13,10 @@
         @toggle-active="toggleActive"
       >
         <template #exportOptions>
-          <task-progress :progress="task.progress" />
+          <task-progress
+            :fill-color="theme['--oxd-primary-one-color'] ?? null"
+            :progress="task.progress"
+          />
         </template>
       </assignment>
     </div>
@@ -42,8 +45,8 @@ import AssignmentDetail from '@/onboardingPlugin/pages/my-assignments/components
 import DeleteConfirmationDialog from '@/core/components/dialogs/DeleteConfirmationDialog';
 import TaskProgress from '@/onboardingPlugin/pages/task-groups/components/TaskProgress';
 
-const ACTION_COMPLETE = 'complete_assignment';
-const ACTION_SUBMIT = 'submit';
+export const ACTION_COMPLETE = 'complete_assignment';
+export const ACTION_SUBMIT = 'submit';
 
 export default {
   name: 'MyAssignments',
@@ -52,6 +55,12 @@ export default {
     Assignment,
     AssignmentDetail,
     'delete-confirmation': DeleteConfirmationDialog,
+  },
+  props: {
+    theme: {
+      type: Object,
+      required: true,
+    },
   },
   setup() {
     const http = new APIService(
@@ -128,11 +137,12 @@ export default {
           },
         })
         .then(() => {
-          const tasks = this.tasks;
+          const tasks = [...this.tasks];
           const taskIndex = tasks.findIndex(
             (task) => task.id === this.selectedTask?.id,
           );
           tasks[taskIndex].completed = true;
+          tasks[taskIndex].progress = 100;
           tasks[taskIndex].taskGroups = tasks[taskIndex].taskGroups.map(
             (task) => ({
               ...task,
@@ -140,6 +150,7 @@ export default {
             }),
           );
           this.tasks = tasks;
+          this.selectedTask = {...tasks[taskIndex]};
           this.$toast.generalSuccess('Assignment completed successfully');
         });
     },
@@ -160,11 +171,12 @@ export default {
           },
         })
         .then(() => {
-          const tasks = this.tasks;
+          const tasks = [...this.tasks];
           const taskIndex = tasks.findIndex(
             (task) => task.id === this.selectedTask?.id,
           );
           tasks[taskIndex].submittedAt = new Date().toISOString();
+          this.selectedTask = {...tasks[taskIndex]};
 
           this.tasks = tasks;
           this.$toast.generalSuccess('Assignment submitted successfully');

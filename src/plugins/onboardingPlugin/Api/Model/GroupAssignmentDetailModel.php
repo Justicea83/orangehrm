@@ -35,8 +35,14 @@ class GroupAssignmentDetailModel implements Normalizable
                     ['getTask', 'getId', 'getTitle', 'getNotes']
                 ]
             ],
+            'getStatus',
             ['getSupervisor', 'getFullName'],
+            ['getSupervisor', 'getEmpNumber'],
             ['getCreatedBy', 'getFullName'],
+            ['getCreatedBy', 'getEmpNumber'],
+            ['getEmployee', 'getFullName'],
+            ['getEmployee', 'getEmpNumber'],
+            'getComments'
         ]);
 
         $this->setAttributeNames([
@@ -60,8 +66,14 @@ class GroupAssignmentDetailModel implements Normalizable
                     ['task', 'id', 'title', 'notes'],
                 ]
             ],
+            'status',
             ['supervisor', 'name'],
+            ['supervisor', 'id'],
             ['creator', 'name'],
+            ['creator', 'id'],
+            ['assignee', 'name'],
+            ['assignee', 'id'],
+            'comments'
         ]);
     }
 }

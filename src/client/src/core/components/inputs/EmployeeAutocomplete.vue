@@ -41,8 +41,13 @@
 
 <script>
 import {APIService} from '@ohrm/core/util/services/api.service';
+import {OxdInputField} from '@ohrm/oxd';
+
 export default {
   name: 'EmployeeAutocomplete',
+  components: {
+    OxdInputField,
+  },
   props: {
     params: {
       type: Object,
@@ -75,7 +80,7 @@ export default {
                     id: employee.empNumber,
                     label: `${employee.firstName} ${employee.middleName} ${employee.lastName}`,
                     _employee: employee,
-                    isPastEmployee: employee.terminationId ? true : false,
+                    isPastEmployee: !!employee.terminationId,
                   };
                 }),
               );

@@ -6,6 +6,7 @@ use OrangeHRM\Core\Exception\DaoException;
 use OrangeHRM\Entity\GroupAssignment;
 use OrangeHRM\Onboarding\Dao\GroupAssignmentDao;
 use OrangeHRM\Onboarding\Dto\GroupAssignmentSearchFilterParams;
+use OrangeHRM\Onboarding\Exception\PermissionDeniedException;
 
 class GroupAssignmentService
 {
@@ -64,6 +65,7 @@ class GroupAssignmentService
 
     /**
      * @throws DaoException
+     * @throws PermissionDeniedException
      */
     public function deleteGroupAssignmentById(array $ids): int
     {
@@ -72,6 +74,7 @@ class GroupAssignmentService
 
     /**
      * @throws DaoException
+     * @throws PermissionDeniedException
      */
     public function markAsComplete(int $id): void
     {
@@ -89,5 +92,23 @@ class GroupAssignmentService
     public function changeCompleteState(int $id, bool $state): void
     {
         $this->getGroupAssignmentDao()->changeCompleteState($id, $state);
+    }
+
+    /**
+     * @throws DaoException
+     * @throws PermissionDeniedException
+     */
+    public function approveAssignment(int $id): void
+    {
+        $this->getGroupAssignmentDao()->approveAssignment($id);
+    }
+
+    /**
+     * @throws DaoException
+     * @throws PermissionDeniedException
+     */
+    public function rejectAssignment(int $id): void
+    {
+        $this->getGroupAssignmentDao()->rejectAssignment($id);
     }
 }

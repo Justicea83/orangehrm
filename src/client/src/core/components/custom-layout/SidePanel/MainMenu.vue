@@ -2,18 +2,20 @@
   <!-- Search -->
   <div class="oxd-main-menu --fixed">
     <div class="oxd-main-menu-search">
-      <oxd-icon
-        name="search"
-        type="svg"
-        width="22"
-        height="22"
-        class="oxd-menu-icon"
-      ></oxd-icon>
-      <oxd-input
-        v-model="searchTerm"
-        placeholder="Search"
-        :class="{toggled: toggle}"
-      />
+      <div class="flex flex-row justify-center">
+        <oxd-icon
+          name="search"
+          type="svg"
+          width="22"
+          height="22"
+          class="oxd-menu-icon"
+        ></oxd-icon>
+        <oxd-input
+          v-model="searchTerm"
+          placeholder="Search"
+          :class="{toggled: toggle}"
+        />
+      </div>
       <oxd-icon-button
         :name="toggle ? 'chevron-right' : 'chevron-left'"
         class="oxd-main-menu-button"
@@ -34,6 +36,7 @@
       :active="menuItem.active"
       :collapsed="toggle"
       :name="menuItem.name"
+      :icon-type="menuItem?.iconType"
       :icon="menuItem.icon"
     ></oxd-main-menu-item>
   </ul>

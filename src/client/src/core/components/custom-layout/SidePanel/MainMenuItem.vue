@@ -24,10 +24,11 @@
     <a :class="menuClasses" :href="url">
       <oxd-icon
         :name="icon"
-        type="svg"
+        :type="iconType || 'svg'"
         width="22"
         height="22"
         class="oxd-main-menu-item--icon"
+        :class="{'text-bold': iconType === 'bootstrap'}"
       ></oxd-icon>
       <oxd-text tag="span" class="oxd-main-menu-item--name">
         {{ name }}
@@ -68,6 +69,11 @@ export default defineComponent({
       type: String,
       required: false,
       default: '',
+    },
+    iconType: {
+      type: String,
+      required: false,
+      default: null,
     },
     icon: {
       type: String,

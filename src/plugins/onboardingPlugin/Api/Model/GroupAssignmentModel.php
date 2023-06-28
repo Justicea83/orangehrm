@@ -24,9 +24,14 @@ class GroupAssignmentModel implements Normalizable
             'dueDate',
             'submittedAt',
             'getProgress',
+            'getStatus',
             ['getSupervisor', 'getFullName'],
+            ['getSupervisor', 'getEmpNumber'],
             ['getCreatedBy', 'getFullName'],
+            ['getCreatedBy', 'getEmpNumber'],
             ['getEmployee', 'getFullName'],
+            ['getEmployee', 'getEmpNumber'],
+            'getComments',
         ]);
 
         $this->setAttributeNames([
@@ -39,9 +44,14 @@ class GroupAssignmentModel implements Normalizable
             'dueDate',
             'submittedAt',
             'progress',
+            'status',
             ['supervisor', 'name'],
+            ['supervisor', 'id'],
             ['creator', 'name'],
+            ['creator', 'id'],
             ['assignee', 'name'],
+            ['assignee', 'id'],
+            'comments'
         ]);
     }
 }

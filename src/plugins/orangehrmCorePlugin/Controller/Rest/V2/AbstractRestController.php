@@ -35,6 +35,7 @@ use OrangeHRM\Core\Traits\LoggerTrait;
 use OrangeHRM\Framework\Http\Request as HttpRequest;
 use OrangeHRM\Framework\Http\Response as HttpResponse;
 use OrangeHRM\I18N\Traits\Service\I18NHelperTrait;
+use OrangeHRM\Onboarding\Exception\PermissionDeniedException;
 
 abstract class AbstractRestController extends AbstractController
 {
@@ -208,6 +209,21 @@ abstract class AbstractRestController extends AbstractController
                         'error' => [
                             'status' => '400',
                             'message' => $this->getI18NHelper()->transBySource($e->getMessage())
+                        ]
+                    ]
+                )
+            );
+            $response->setStatusCode(400);
+        }catch (PermissionDeniedException $e) {
+            $this->getLogger()->info($e->getMessage());
+            $this->getLogger()->info($e->getTraceAsString());
+
+            $response->setContent(
+                Response::formatError(
+                    [
+                        'error' => [
+                            'status' => '403',
+                            'message' => 'Permission Denied'
                         ]
                     ]
                 )

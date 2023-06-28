@@ -14,6 +14,7 @@
         <oxd-grid-item>
           <employee-autocomplete
             v-model="activityModel.employee"
+            :value="activityModel.employee"
             label="Employee"
             name="employee"
             :required="false"
@@ -31,6 +32,7 @@
           <task-type-dropdown
             required
             name="type"
+            :selected="activityModel.types"
             label="Type"
             :rules="rules.type"
             @options-changed="optionsChanged"

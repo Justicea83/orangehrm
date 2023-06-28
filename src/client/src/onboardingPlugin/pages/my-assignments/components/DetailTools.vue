@@ -1,7 +1,7 @@
 <template>
   <div class="flex justify-between p-2 items-center">
     <dropdown-menu
-      v-if="!taskGroup.submittedAt"
+      v-if="!taskGroup.submittedAt && isOwner"
       :menu-items="menuItems"
       @menu-item-clicked="menuItemClicked"
     >
@@ -33,6 +33,10 @@ export default {
     taskGroup: {
       type: Object,
       required: true,
+    },
+    isOwner: {
+      type: Boolean,
+      default: true,
     },
   },
   emits: ['onToggleMarkComplete', 'onClose', 'onSubmit'],

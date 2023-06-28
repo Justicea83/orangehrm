@@ -54,7 +54,7 @@ import type {
 } from '@ohrm/oxd/types/components/Topbar/types';
 
 export default defineComponent({
-  name: 'AppLayout',
+  name: 'OxdLayout',
 
   components: {
     'oxd-top-bar': OxdTopbar,
@@ -107,10 +107,6 @@ export default defineComponent({
         '--collapse': this.collapse,
       };
     },
-  },
-
-  mounted() {
-    console.log('base mounted 1');
   },
 
   methods: {

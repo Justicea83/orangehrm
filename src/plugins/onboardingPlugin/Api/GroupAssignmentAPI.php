@@ -16,6 +16,7 @@ use OrangeHRM\Core\Api\V2\RequestParams;
 use OrangeHRM\Core\Api\V2\Serializer\NormalizeException;
 use OrangeHRM\Core\Exception\DaoException;
 use OrangeHRM\Entity\GroupAssignment;
+use OrangeHRM\Onboarding\Api\Model\GroupAssignmentDetailModel;
 use OrangeHRM\Onboarding\Api\Model\GroupAssignmentModel;
 use OrangeHRM\Onboarding\Api\Validation\GroupAssignmentValidation;
 use OrangeHRM\Onboarding\Traits\Service\GroupAssignmentServiceTrait;
@@ -87,9 +88,21 @@ class GroupAssignmentAPI extends Endpoint implements CrudEndpoint
         return new EndpointResourceResult(ArrayModel::class, $ids);
     }
 
+    /**
+     * @throws NormalizeException
+     * @throws InvalidParamException
+     * @throws RecordNotFoundException
+     * @throws DaoException
+     */
     public function getOne(): EndpointResult
     {
-       throw $this->getNotImplementedException();
+        $id = $this->getRequestParams()->getInt(RequestParams::PARAM_TYPE_ATTRIBUTE, CommonParams::PARAMETER_ID);
+        $groupAssignment = $this->getGroupAssignmentService()->getGroupAssignmentById($id);
+        if (!$groupAssignment instanceof GroupAssignment) {
+            throw new RecordNotFoundException();
+        }
+
+        return new EndpointResourceResult(GroupAssignmentDetailModel::class, $groupAssignment);
     }
 
     /**

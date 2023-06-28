@@ -77,6 +77,7 @@
             "OrangeHRM\\OpenidAuthentication\\": "./plugins/orangehrmOpenidAuthenticationPlugin",
             "OrangeHRM\\Performance\\": "./plugins/orangehrmPerformancePlugin",
             "OrangeHRM\\Pim\\": "./plugins/orangehrmPimPlugin",
+            "OrangeHRM\\Comments\\": "./plugins/commentsPlugin",
             "OrangeHRM\\Recruitment\\": "./plugins/orangehrmRecruitmentPlugin",
             "OrangeHRM\\Time\\": "./plugins/orangehrmTimePlugin",
             "OrangeHRM\\I18N\\": "./plugins/orangehrmI18NPlugin",
@@ -102,7 +103,8 @@
                 "./plugins/orangehrmLDAPAuthenticationPlugin/entity",
                 "./plugins/orangehrmBuzzPlugin/entity",
                 "./plugins/onboardingPlugin/entity",
-                "./plugins/orangehrmClaimPlugin/entity"
+                "./plugins/orangehrmClaimPlugin/entity",
+                "./plugins/commentsPlugin/entity"
             ]
         }
     },
@@ -127,6 +129,7 @@
             "OrangeHRM\\Tests\\LDAP\\": "./plugins/orangehrmLDAPAuthenticationPlugin/test",
             "OrangeHRM\\Tests\\Buzz\\": "./plugins/orangehrmBuzzPlugin/test",
             "OrangeHRM\\Tests\\Onboarding\\": "./plugins/onboardingPlugin/test",
+            "OrangeHRM\\Tests\\Comments\\": "./plugins/commentsPlugin/test",
             "OrangeHRM\\Tests\\Help\\": "./plugins/orangehrmHelpPlugin/test",
             "OrangeHRM\\Tests\\Claim\\": "./plugins/orangehrmClaimPlugin/test",
             "OrangeHRM\\Tests\\Mobile\\": "./plugins/orangehrmMobilePlugin/test"

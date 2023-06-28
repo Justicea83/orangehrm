@@ -270,7 +270,7 @@ class I18NService
             // Re-fetch cache item once update the cache
             $cacheItem = $this->getCache()->getItem($cacheKey);
         }
-        return $cacheItem->get();
+        return $cacheItem->get() ?? '';
     }
 
     /**

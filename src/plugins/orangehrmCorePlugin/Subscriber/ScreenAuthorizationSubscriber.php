@@ -21,6 +21,7 @@ namespace OrangeHRM\Core\Subscriber;
 
 use OrangeHRM\Authentication\Controller\ForbiddenController;
 use OrangeHRM\Authentication\Exception\ForbiddenException;
+use OrangeHRM\Config\Config;
 use OrangeHRM\Core\Authorization\Controller\CapableViewController;
 use OrangeHRM\Core\Authorization\Dto\ResourcePermission;
 use OrangeHRM\Core\Controller\AbstractViewController;
@@ -71,6 +72,10 @@ class ScreenAuthorizationSubscriber extends AbstractEventSubscriber
         $screen = $this->getCurrentModuleAndScreen()->getScreen();
 
         if ($module === 'auth' && $screen == 'logout') {
+            return;
+        }
+
+        if(Config::PRODUCT_MODE === Config::MODE_DEV) {
             return;
         }
 

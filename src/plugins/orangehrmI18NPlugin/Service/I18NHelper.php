@@ -23,6 +23,7 @@ use OrangeHRM\Config\Config;
 use OrangeHRM\Core\Traits\Auth\AuthUserTrait;
 use OrangeHRM\Core\Traits\ServiceContainerTrait;
 use OrangeHRM\Framework\Services;
+use Throwable;
 
 class I18NHelper
 {
@@ -58,10 +59,14 @@ class I18NHelper
      */
     public function transBySource(string $sourceLangString, array $parameters = [], string $langCode = null): string
     {
-        if (!Config::get(Config::I18N_ENABLED) || !$this->getAuthUser()->getOrgId()) {
+        try {
+            if (!Config::get(Config::I18N_ENABLED) || !$this->getAuthUser()->getOrgId()) {
+                return $sourceLangString;
+            }
+            return $this->getI18NService()->transBySource($sourceLangString, $parameters, $langCode);
+        }catch (Throwable) {
             return $sourceLangString;
         }
-        return $this->getI18NService()->transBySource($sourceLangString, $parameters, $langCode);
     }
 
     /**

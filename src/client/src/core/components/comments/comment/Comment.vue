@@ -4,7 +4,7 @@
       <div class="comment__header mb-[10px]">
         <div class="comment__author">
           <div class="comment__avatar">
-            <img :src="comment.user?.avatar ?? avatar" alt="" />
+            <img :src="imgSrc" alt="" />
           </div>
           <div class="comment__content">
             <h3 class="comment__title">
@@ -37,10 +37,26 @@
 </template>
 
 <script lang="ts">
-import {PropType} from 'vue';
+import {computed, PropType} from 'vue';
 import {Comment} from '@/core/components/comments/models';
 
+const defaultPic = `${
+  (window as any).appGlobal.publicPath
+}/images/default-photo.png`;
+
 export default {
+  setup(props: {comment: Comment}) {
+    const imgSrc = computed(() => {
+      return props.comment?.user
+        ? `${(window as any).appGlobal.baseUrl}/pim/viewPhoto/empNumber/${
+            props.comment?.user?.id
+          }`
+        : defaultPic;
+    });
+    return {
+      imgSrc,
+    };
+  },
   props: {
     avatar: {
       type: String,

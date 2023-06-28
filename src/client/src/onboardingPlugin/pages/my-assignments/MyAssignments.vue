@@ -137,11 +137,12 @@ export default {
           },
         })
         .then(() => {
-          const tasks = this.tasks;
+          const tasks = [...this.tasks];
           const taskIndex = tasks.findIndex(
             (task) => task.id === this.selectedTask?.id,
           );
           tasks[taskIndex].completed = true;
+          tasks[taskIndex].progress = 100;
           tasks[taskIndex].taskGroups = tasks[taskIndex].taskGroups.map(
             (task) => ({
               ...task,
@@ -149,6 +150,7 @@ export default {
             }),
           );
           this.tasks = tasks;
+          this.selectedTask = {...tasks[taskIndex]};
           this.$toast.generalSuccess('Assignment completed successfully');
         });
     },
@@ -169,11 +171,12 @@ export default {
           },
         })
         .then(() => {
-          const tasks = this.tasks;
+          const tasks = [...this.tasks];
           const taskIndex = tasks.findIndex(
             (task) => task.id === this.selectedTask?.id,
           );
           tasks[taskIndex].submittedAt = new Date().toISOString();
+          this.selectedTask = {...tasks[taskIndex]};
 
           this.tasks = tasks;
           this.$toast.generalSuccess('Assignment submitted successfully');

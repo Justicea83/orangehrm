@@ -29,6 +29,7 @@
       <task-group
         :is-owner="isOwner"
         :task-list="taskGroup.taskGroups"
+        :task-group="taskGroup"
         :task-group-id="taskGroup.id"
         :completed="taskGroup.completed"
         :submitted-at="taskGroup.submittedAt"

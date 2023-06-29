@@ -353,6 +353,7 @@ trait GroupAssignmentValidation
         $groupAssignment->getDecorator()->setEmployeeById($employeeId);
         $groupAssignment->getDecorator()->setSupervisorById($supervisorId);
         $groupAssignment->setName($name);
+        $groupAssignment->setStatus(GroupAssignment::STATUS_PENDING);
         $groupAssignment->setNotes($notes);
         $groupAssignment->setTypes($types);
         $groupAssignment->setUpdatedAt($now);

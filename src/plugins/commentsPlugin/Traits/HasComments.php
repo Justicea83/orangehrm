@@ -3,7 +3,6 @@
 namespace OrangeHRM\Comments\Traits;
 
 use OrangeHRM\Comments\Exception\ClassNotFoundException;
-use OrangeHRM\Core\Traits\Auth\AuthUserTrait;
 use OrangeHRM\Core\Traits\ORM\EntityManagerHelperTrait;
 use OrangeHRM\Entity\Comment;
 use OrangeHRM\ORM\ListSorter;
@@ -13,7 +12,7 @@ use Throwable;
 
 trait HasComments
 {
-    use AuthUserTrait, EntityManagerHelperTrait;
+    use EntityManagerHelperTrait;
 
     public function getComments(): array
     {
@@ -28,9 +27,6 @@ trait HasComments
 
             $q->andWhere('c.modelId = :modelId')
                 ->setParameter('modelId', $modelId);
-
-            $q->andWhere('c.empNumber = :empNumber')
-                ->setParameter('empNumber', $this->getAuthUser()->getEmpNumber());
 
             $q->andWhere(
                 $q->expr()->isNull('c.parentId')

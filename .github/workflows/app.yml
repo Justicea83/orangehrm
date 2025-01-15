@@ -19,6 +19,15 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v2
 
+      - name: Set up environment variables for VM credentials
+        run: |
+          if [[ "${{ github.ref }}" == "refs/heads/main" ]]; then
+            # setup the environment variable for production
+            echo "CURRENT_ENV=prod" >> $GITHUB_ENV
+
+            echo "VM_HOST=${{ secrets.VM_HOST_PROD }}" >> $GITHUB_ENV
+          fi
+
       - name: Create .env file
         run: |
           echo "${{ vars.ENV_PROD }}" > .env

@@ -59,7 +59,7 @@ jobs:
             fi
             docker image prune -a -f
             docker pull ghcr.io/justicea83/orangehrm:latest
-            docker run -d --name taskflow-hr-app --network static-services_shared --restart unless-stopped ghcr.io/justicea83/orangehrm:latest
+            docker run -d --name taskflow-hr-app --network taskflow_hr_shared --restart unless-stopped ghcr.io/justicea83/orangehrm:latest
           
 
       - name: Deploy taskflow-hr-app-nginx to VM
@@ -76,7 +76,7 @@ jobs:
             fi
             docker image prune -a -f
             docker pull ghcr.io/justicea83/orangehrm_nginx:latest
-            docker run -d -p 8000:80 --name taskflow-hr-app-nginx --network static-services_shared --restart unless-stopped ghcr.io/justicea83/orangehrm_nginx:latest
+            docker run -d -p 8000:80 --name taskflow-hr-app-nginx --network taskflow_hr_shared --restart unless-stopped ghcr.io/justicea83/orangehrm_nginx:latest
 
       - name: Cleanup .env file
         run: rm -rf .env

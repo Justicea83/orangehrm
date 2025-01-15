@@ -19,24 +19,11 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v2
 
-      - name: Set up environment variables for VM credentials
-        run: |
-          if [[ "${{ github.ref }}" == "refs/heads/main" ]]; then
-            # setup the environment variable for production
-            echo "CURRENT_ENV=prod" >> $GITHUB_ENV
-
-            echo "VM_HOST=${{ secrets.VM_HOST_PROD }}" >> $GITHUB_ENV
-            echo "DB_PASSWORD=${{ secrets.DB_PASSWORD_PROD }}" >> $GITHUB_ENV
-            echo "DB_DATABASE=${{ secrets.DB_DATABASE_PROD }}" >> $GITHUB_ENV
-            echo "DB_USERNAME=${{ secrets.DB_USERNAME_PROD }}" >> $GITHUB_ENV
-          fi
-
       - name: Create .env file
         run: |
           echo "${{ vars.ENV_PROD }}" > .env
           cat .env  # Optional: Display the contents for debugging (remove in production)
           ls -la
-
 
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v1
@@ -44,38 +31,10 @@ jobs:
       - name: Log in to GitHub Container Registry
         run: echo "${{ secrets.GH_PAT }}" | docker login ghcr.io -u $GH_USERNAME --password-stdin
 
-      - name: Clear VM Directory
-        uses: appleboy/ssh-action@master
-        with:
-          host: ${{ env.VM_HOST }}
-          username: justicea83
-          key: ${{ (env.CURRENT_ENV == 'dev' && secrets.VM_SSH_SECRET_DEV) || (env.CURRENT_ENV == 'prod' && secrets.VM_SSH_SECRET_PROD) }}
-          script: |
-            cd /home/justicea83
-            rm -rf docker-compose.ta.${{ env.CURRENT_ENV }}.api.yml
-
-      - name: Transfer docker-compose to VM
+      - name: Build and push images with Docker Compose
         run: |
-          # Write the SSH private key to a temporary file
-          if [[ "${{ env.CURRENT_ENV }}" == "dev" ]]; then
-            echo "${{ secrets.VM_SSH_SECRET_DEV }}" > ssh_key
-          elif [[ "${{ env.CURRENT_ENV }}" == "prod" ]]; then
-            echo "${{ secrets.VM_SSH_SECRET_PROD }}" > ssh_key
-          fi
-
-          chmod 600 ssh_key
-
-          # Use the temporary file for SCP
-          scp -o StrictHostKeyChecking=no -i ssh_key docker-compose.ta.${{ env.CURRENT_ENV }}.api.yml justicea83@${{ env.VM_HOST }}:/home/justicea83
-
-          # Clean up by removing the temporary SSH key file
-          rm -f ssh_key
-
-      - name: Build and Push Image
-        run: |
-          echo "building ane push"
-          docker build -f deploy.Dockerfile . -t $APP_ROOT/$IMAGE_NAME:$IMAGE_TAG
-          docker push $APP_ROOT/$IMAGE_NAME:$IMAGE_TAG
+          docker-compose -f docker-compose.prod.yml build
+          docker-compose -f docker-compose.prod.yml push
 
       - name: Deploy to VM
         uses: appleboy/ssh-action@master
@@ -85,12 +44,30 @@ jobs:
           username: justicea83
           key: ${{ (env.CURRENT_ENV == 'dev' && secrets.VM_SSH_SECRET_DEV) || (env.CURRENT_ENV == 'prod' && secrets.VM_SSH_SECRET_PROD) }}
           script: |
-            cd /home/justicea83
-
-            if [ $( docker ps -a | grep ${{ env.IMAGE_NAME }} | wc -l ) -gt 0 ]; then
-               docker compose -f docker-compose.ta.${{ env.CURRENT_ENV }}.api.yml pull
+            if [ $(docker ps -a | grep taskflow-hr-app | wc -l) -gt 0 ]; then
+              docker stop taskflow-hr-app
+              docker rm taskflow-hr-app
             fi
-
-            docker compose -f docker-compose.ta.${{ env.CURRENT_ENV }}.api.yml up -d --build
-
             docker image prune -a -f
+            docker pull ghcr.io/justicea83/orangehrm:latest
+            docker run -d --name taskflow-hr-app --network static-services_shared --restart unless-stopped ghcr.io/justicea83/orangehrm:latest
+          
+
+      - name: Deploy taskflow-hr-app-nginx to VM
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ env.VM_HOST }}
+          command_timeout: 200m
+          username: justicea83
+          key: ${{ (env.CURRENT_ENV == 'dev' && secrets.VM_SSH_SECRET_DEV) || (env.CURRENT_ENV == 'prod' && secrets.VM_SSH_SECRET_PROD) }}
+          script: |
+            if [ $(docker ps -a | grep taskflow-hr-app-nginx | wc -l) -gt 0 ]; then
+              docker stop taskflow-hr-app-nginx
+              docker rm taskflow-hr-app-nginx
+            fi
+            docker image prune -a -f
+            docker pull ghcr.io/justicea83/orangehrm_nginx:latest
+            docker run -d -p 8000:80 --name taskflow-hr-app-nginx --network static-services_shared --restart unless-stopped ghcr.io/justicea83/orangehrm_nginx:latest
+
+      - name: Cleanup .env file
+        run: rm -rf .env

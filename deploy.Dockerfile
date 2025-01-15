@@ -57,3 +57,7 @@ RUN echo "${TZ}" > /etc/timezone \
 WORKDIR /var/www
 
 COPY . .
+
+RUN cd src/
+
+RUN composer install

@@ -1,0 +1,28 @@
+services:
+  taskflow-hr-app:
+    container_name: taskflow-hr-app
+    build:
+      context: "."
+      dockerfile: "deploy.Dockerfile"
+    image: ghcr.io/justicea83/orangehrm:latest
+    networks:
+      - taskflow_hr_shared
+    expose:
+      - "9000"
+
+  taskflow-hr-app-nginx:
+    container_name: taskflow-hr-app-nginx
+    build:
+      context: "."
+      dockerfile: "nginx.Dockerfile"
+    image: ghcr.io/justicea83/orangehrm_nginx:latest
+    depends_on:
+      - taskflow-hr-app
+    ports:
+      - "${NGINX_HOST_HTTP_PORT}:80"
+    networks:
+      - taskflow_hr_shared
+
+networks:
+  taskflow_hr_shared:
+    external: true

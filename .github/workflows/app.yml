@@ -68,8 +68,8 @@ jobs:
 
       - name: Build and push images with Docker Compose
         run: |
-          docker compose -f docker-compose.ta.${{ env.CURRENT_ENV }}.yml build
-          docker compose -f docker-compose.ta.${{ env.CURRENT_ENV }}.yml push
+          docker compose -f docker-compose.prod.yml build
+          docker compose -f docker-compose.prod.yml push
 
       - name: Deploy to VM
         uses: appleboy/ssh-action@master

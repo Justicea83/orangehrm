@@ -2,8 +2,6 @@ services:
   taskflow-hr-app:
     container_name: taskflow-hr-app
     image: ghcr.io/justicea83/orangehrm:latest
-    networks:
-      - taskflow_hr_shared
     expose:
       - "9000"
 
@@ -14,9 +12,3 @@ services:
       - taskflow-hr-app
     ports:
       - "6202:80"
-    networks:
-      - taskflow_hr_shared
-
-networks:
-  taskflow_hr_shared:
-    external: true

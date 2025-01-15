@@ -66,8 +66,6 @@ jobs:
           chmod 600 ssh_key
 
           # Use the temporary file for SCP
-          scp -o StrictHostKeyChecking=no -i ssh_key docker-compose.ta.${{ env.CURRENT_ENV }}.api.static.yml justicea83@${{ env.VM_HOST }}:/home/justicea83
-
           scp -o StrictHostKeyChecking=no -i ssh_key docker-compose.ta.${{ env.CURRENT_ENV }}.api.yml justicea83@${{ env.VM_HOST }}:/home/justicea83
 
           # Clean up by removing the temporary SSH key file
@@ -88,8 +86,6 @@ jobs:
           key: ${{ (env.CURRENT_ENV == 'dev' && secrets.VM_SSH_SECRET_DEV) || (env.CURRENT_ENV == 'prod' && secrets.VM_SSH_SECRET_PROD) }}
           script: |
             cd /home/justicea83
-
-            DB_USERNAME="${{ env.DB_USERNAME }}" DB_DATABASE="${{ env.DB_DATABASE }}" DB_PASSWORD="${{ env.DB_PASSWORD }}" docker compose -f docker-compose.ta.${{ env.CURRENT_ENV }}.api.static.yml up -d
 
             if [ $( docker ps -a | grep ${{ env.IMAGE_NAME }} | wc -l ) -gt 0 ]; then
                docker compose -f docker-compose.ta.${{ env.CURRENT_ENV }}.api.yml pull

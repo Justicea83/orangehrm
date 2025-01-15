@@ -61,7 +61,7 @@ jobs:
 
           chmod 600 ssh_key
 
-          scp -o StrictHostKeyChecking=no -i ssh_key docker-compose.ta.${{ env.CURRENT_ENV }}.api.yml justicea83@${{ env.VM_HOST }}:/home/justicea83
+          scp -o StrictHostKeyChecking=no -i ssh_key docker-compose.ta.${{ env.CURRENT_ENV }}.yml justicea83@${{ env.VM_HOST }}:/home/justicea83
 
           # Clean up by removing the temporary SSH key file
           rm -f ssh_key

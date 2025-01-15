@@ -58,6 +58,8 @@ WORKDIR /var/www
 
 COPY . .
 
-RUN cd src/
+RUN cd /var/www/src/ && composer install
 
-RUN composer install
+RUN mkdir -p /var/www/src/log \
+    && chown -R www-data:www-data /var/www/src/log \
+    && chmod -R 775 /var/www/src/log

@@ -34,7 +34,7 @@ RUN set -e \
 
 # Install composer and add its bin to the PATH.
 RUN curl -s http://getcomposer.org/installer | php && \
-    echo "export PATH=${PATH}:/var/www/vendor/bin" >> ~/.bashrc && \
+    echo "export PATH=${PATH}:/var/www/src/vendor/bin" >> ~/.bashrc && \
     mv composer.phar /usr/local/bin/composer
 # Source the bash
 RUN . ~/.bashrc

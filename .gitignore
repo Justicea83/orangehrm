@@ -1,5 +1,6 @@
 .idea
 .env
+.env.prod
 .vscode
 src/cache/
 src/config/

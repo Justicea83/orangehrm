@@ -1,0 +1,7 @@
+services:
+  taskflow-hr-app:
+    container_name: taskflow-hr-app
+    image: ghcr.io/justicea83/orangehrm:latest
+    restart: always
+    ports:
+      - '6202:9000'

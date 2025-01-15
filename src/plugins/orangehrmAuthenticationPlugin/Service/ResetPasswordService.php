@@ -198,7 +198,7 @@ class ResetPasswordService
     public function sendPasswordResetCodeEmail(Employee $receiver, string $resetCode, string $userName): bool
     {
         try {
-            $this->getEmailService()->setMessageTo([$userName, $receiver->getWorkEmail()]);
+            $this->getEmailService()->setMessageTo([$userName]);
             $this->getEmailService()->setMessageFrom(
                 [$this->getEmailService()->getEmailConfig()->getSentAs() => 'TaskflowHR']
             );

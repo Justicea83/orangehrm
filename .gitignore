@@ -12,4 +12,6 @@ logInsatall.log
 coverage/
 src/plugins/orangehrmFunctionalTestingPlugin
 .php-cs-fixer.cache
+vendor/
+**/.DS_Store
 .php-cs-fixer.php

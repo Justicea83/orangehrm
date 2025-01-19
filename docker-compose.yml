@@ -1,4 +1,3 @@
-version: "3.7"
 services:
   nginx:
     build:
@@ -8,8 +7,6 @@ services:
       - "${NGINX_SSL_PORT}:443"
     volumes:
       - ${LOCAL_SRC}:${REMOTE_SRC}
-    networks:
-      - sail
     restart: always
     container_name: os_nginx
 
@@ -21,8 +18,6 @@ services:
     environment:
       #- PMA_ARBITRARY=1
       - PMA_HOST=mariadb
-    networks:
-      - sail
     container_name: phpmyadmin
 
   mariadb:
@@ -36,13 +31,13 @@ services:
       MYSQL_PASSWORD: '${DB_PASSWORD}'
       MYSQL_ALLOW_EMPTY_PASSWORD: 1
     command:
-      --sql_mode=STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION
+      [
+        "--bind-address=0.0.0.0",
+        "--sql_mode=STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION"
+      ]
     volumes:
       - mariadb-data:/var/lib/mysql/
     mem_swappiness: 1
-    networks:
-      - sail
-      - shared
     restart: always
     container_name: mariadb_10
 
@@ -57,16 +52,9 @@ services:
       - $HOME/.bash_history:/root/.bash_history
     depends_on:
       - nginx
-    networks:
-      - sail
     restart: always
     container_name: os_dev_php82
 
-networks:
-  sail:
-    driver: bridge
-  shared:
-    driver: bridge
 volumes:
   sail-mysql:
     driver: local

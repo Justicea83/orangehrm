@@ -63,3 +63,7 @@ RUN cd /var/www/src/ && composer install
 RUN mkdir -p /var/www/src/log \
     && chown -R www-data:www-data /var/www/src/log \
     && chmod -R 775 /var/www/src/log
+
+RUN mkdir -p /var/www/src/cache \
+    && chown -R www-data:www-data /var/www/src/cache \
+    && chmod -R 775 /var/www/src/cache

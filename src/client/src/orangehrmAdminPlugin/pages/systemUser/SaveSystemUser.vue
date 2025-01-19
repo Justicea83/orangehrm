@@ -179,6 +179,9 @@ export default {
         .then(() => {
           // go back
           this.onCancel();
+        })
+        .catch(() => {
+          this.isLoading = false;
         });
     },
     validateUserName(user) {

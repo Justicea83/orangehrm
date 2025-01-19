@@ -17,6 +17,7 @@
  * Boston, MA  02110-1301, USA
  */
 
+use OrangeHRM\Admin\Service\OrganizationService;
 use OrangeHRM\Core\Traits\ServiceContainerTrait;
 use OrangeHRM\Framework\Http\Request;
 use OrangeHRM\Framework\PluginConfigurationInterface;
@@ -40,6 +41,10 @@ class PimPluginConfiguration implements PluginConfigurationInterface
         $this->getContainer()->register(
             Services::EMPLOYEE_SALARY_SERVICE,
             EmployeeSalaryService::class
+        );
+        $this->getContainer()->register(
+            Services::ORGANIZATION_SERVICE,
+            OrganizationService::class
         );
     }
 }

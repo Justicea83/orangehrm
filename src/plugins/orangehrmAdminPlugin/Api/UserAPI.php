@@ -22,12 +22,15 @@ namespace OrangeHRM\Admin\Api;
 use OrangeHRM\Admin\Api\Model\UserModel;
 use OrangeHRM\Admin\Dto\UserSearchFilterParams;
 use OrangeHRM\Admin\Service\UserService;
+use OrangeHRM\Admin\Traits\Service\OrganizationServiceTrait;
 use OrangeHRM\Admin\Traits\Service\UserServiceTrait;
+use OrangeHRM\Authentication\Auth\User as AuthUser;
 use OrangeHRM\Core\Api\CommonParams;
 use OrangeHRM\Core\Api\V2\CrudEndpoint;
 use OrangeHRM\Core\Api\V2\Endpoint;
 use OrangeHRM\Core\Api\V2\EndpointCollectionResult;
 use OrangeHRM\Core\Api\V2\EndpointResourceResult;
+use OrangeHRM\Core\Api\V2\Exception\InvalidLicenseException;
 use OrangeHRM\Core\Api\V2\Model\ArrayModel;
 use OrangeHRM\Core\Api\V2\ParameterBag;
 use OrangeHRM\Core\Api\V2\RequestParams;
@@ -45,6 +48,7 @@ class UserAPI extends Endpoint implements CrudEndpoint
     use UserServiceTrait;
     use DateTimeHelperTrait;
     use AuthUserTrait;
+    use OrganizationServiceTrait;
 
     public const PARAMETER_USERNAME = 'username';
     public const PARAMETER_PASSWORD = 'password';
@@ -247,9 +251,14 @@ class UserAPI extends Endpoint implements CrudEndpoint
      * )
      *
      * @inheritDoc
+     * @throws InvalidLicenseException
      */
     public function create(): EndpointResourceResult
     {
+        if ($this->getOrganizationService()->getUserCount() >= $this->getOrganizationService()->findById($this->getAuthUser()->getOrgId())->getLicenses()) {
+            throw new InvalidLicenseException();
+        }
+
         $user = new User();
         $this->setUserParams($user);
         $user->setDateEntered($this->getDateTimeHelper()->getNow());

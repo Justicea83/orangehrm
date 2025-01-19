@@ -19,12 +19,14 @@
 
 namespace OrangeHRM\Pim\Api;
 
+use OrangeHRM\Admin\Traits\Service\OrganizationServiceTrait;
 use OrangeHRM\Core\Api\CommonParams;
 use OrangeHRM\Core\Api\V2\CrudEndpoint;
 use OrangeHRM\Core\Api\V2\Endpoint;
 use OrangeHRM\Core\Api\V2\EndpointCollectionResult;
 use OrangeHRM\Core\Api\V2\EndpointResourceResult;
 use OrangeHRM\Core\Api\V2\Exception\BadRequestException;
+use OrangeHRM\Core\Api\V2\Exception\InvalidLicenseException;
 use OrangeHRM\Core\Api\V2\Model\ArrayModel;
 use OrangeHRM\Core\Api\V2\ParameterBag;
 use OrangeHRM\Core\Api\V2\RequestParams;
@@ -32,6 +34,7 @@ use OrangeHRM\Core\Api\V2\Validator\ParamRule;
 use OrangeHRM\Core\Api\V2\Validator\ParamRuleCollection;
 use OrangeHRM\Core\Api\V2\Validator\Rule;
 use OrangeHRM\Core\Api\V2\Validator\Rules;
+use OrangeHRM\Core\Traits\Auth\AuthUserTrait;
 use OrangeHRM\Core\Traits\UserRoleManagerTrait;
 use OrangeHRM\Entity\Employee;
 use OrangeHRM\Entity\EmpPicture;
@@ -47,6 +50,8 @@ class EmployeeAPI extends Endpoint implements CrudEndpoint
 {
     use EmployeeServiceTrait;
     use UserRoleManagerTrait;
+    use AuthUserTrait;
+    use OrganizationServiceTrait;
 
     public const FILTER_NAME = 'name';
     public const FILTER_EMP_NUMBER = 'empNumber';
@@ -307,6 +312,10 @@ class EmployeeAPI extends Endpoint implements CrudEndpoint
      */
     public function create(): EndpointResourceResult
     {
+        if ($this->getOrganizationService()->getUserCount() >= $this->getOrganizationService()->findById($this->getAuthUser()->getOrgId())->getLicenses()) {
+            throw new InvalidLicenseException();
+        }
+
         $allowedToAddEmployee = $this->getUserRoleManager()->isActionAllowed(
             WorkflowStateMachine::FLOW_EMPLOYEE,
             Employee::STATE_NOT_EXIST,

@@ -61,6 +61,11 @@ class OrganizationDao extends BaseDao
             ->findOneBy(['id' => $organizationId]);
     }
 
+    public function getUserCount(): int
+    {
+        return $this->getRepository(User::class)->count(['orgId' => $this->getAuthUser()->getOrgId()]);
+    }
+
     /**
      * @param Organization $organization
      * @return Organization

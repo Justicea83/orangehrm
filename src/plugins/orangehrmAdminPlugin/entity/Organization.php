@@ -39,6 +39,13 @@ class Organization
     private int $id;
 
     /**
+     * @var int
+     *
+     * @ORM\Column(name="licenses", type="integer")
+     */
+    private int $licenses;
+
+    /**
      * @var string
      *
      * @ORM\Column(name="name", type="string", length=100)
@@ -379,5 +386,15 @@ class Organization
     public function setIsSetup(bool $isSetup): void
     {
         $this->isSetup = $isSetup;
+    }
+
+    public function getLicenses(): int
+    {
+        return $this->licenses;
+    }
+
+    public function setLicenses(int $licenses): void
+    {
+        $this->licenses = $licenses;
     }
 }

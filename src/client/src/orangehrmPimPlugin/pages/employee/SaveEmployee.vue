@@ -302,6 +302,9 @@ export default {
           } else {
             this.onCancel();
           }
+        })
+        .catch(() => {
+          this.isLoading = false;
         });
     },
   },

@@ -84,4 +84,9 @@ class OrganizationService
     {
         return $this->getOrganizationDao()->findById($id);
     }
+
+    public function getUserCount(): int
+    {
+        return $this->getOrganizationDao()->getUserCount();
+    }
 }

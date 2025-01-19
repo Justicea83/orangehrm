@@ -23,6 +23,7 @@ use Error;
 use Exception;
 use OrangeHRM\Core\Api\V2\Exception\BadRequestException;
 use OrangeHRM\Core\Api\V2\Exception\ForbiddenException;
+use OrangeHRM\Core\Api\V2\Exception\InvalidLicenseException;
 use OrangeHRM\Core\Api\V2\Exception\InvalidParamException;
 use OrangeHRM\Core\Api\V2\Exception\NotImplementedException;
 use OrangeHRM\Core\Api\V2\Exception\RecordNotFoundException;
@@ -228,7 +229,22 @@ abstract class AbstractRestController extends AbstractController
                     ]
                 )
             );
-            $response->setStatusCode(400);
+            $response->setStatusCode(403);
+        } catch (InvalidLicenseException $e) {
+            $this->getLogger()->info($e->getMessage());
+            $this->getLogger()->info($e->getTraceAsString());
+
+            $response->setContent(
+                Response::formatError(
+                    [
+                        'error' => [
+                            'status' => '403',
+                            'message' => $e->getMessage()
+                        ]
+                    ]
+                )
+            );
+            $response->setStatusCode(403);
         } catch (ForbiddenException $e) {
             // Escape this exception to handle it in
             // \OrangeHRM\Core\Subscriber\ApiAuthorizationSubscriber::onExceptionEvent

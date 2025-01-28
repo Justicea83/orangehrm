@@ -83,6 +83,7 @@ RUN echo "upstream php-upstream { server ${PHP_UPSTREAM_CONTAINER}:${PHP_UPSTREA
     && rm /etc/nginx/conf.d/default.conf
 
 RUN mkdir -p /var/www
+RUN mv /var/www/html/.env /var/www/
 
 # Copy web files to the appropriate directory
 COPY . /var/www/

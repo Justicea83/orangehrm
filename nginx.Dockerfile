@@ -85,8 +85,7 @@ RUN echo "upstream php-upstream { server ${PHP_UPSTREAM_CONTAINER}:${PHP_UPSTREA
 RUN mkdir -p /var/www
 
 # Copy web files to the appropriate directory
-COPY ./src /var/www/
-COPY ./web /var/www/
+COPY . /var/www/
 
 # Copy vendor directory from builder stage
 COPY --from=builder /app/vendor /var/www/src/vendor

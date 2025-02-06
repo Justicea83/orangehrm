@@ -43,7 +43,7 @@ class Organization
      *
      * @ORM\Column(name="licenses", type="integer")
      */
-    private int $licenses;
+    private int $licenses = 0;
 
     /**
      * @var string

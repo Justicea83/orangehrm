@@ -94,6 +94,7 @@ class OrganizationDao extends BaseDao
         $organization = Organization::instance();
         $organization->setName($organizationSetup->getOrganizationName());
         $organization->setCountry($organizationSetup->getCountryCode());
+        $organization->setLicenses(1);
         $organization->setIsSetup(false);
 
         // Subunit Details

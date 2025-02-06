@@ -30,7 +30,7 @@ class SubscriptionDao extends BaseDao
             )
         )
             ->setParameter('status', 'active')
-            ->setParameter('now', new \DateTime());
+            ->setParameter('now', new DateTime());
 
         return $qb->getQuery()->getOneOrNullResult();
     }

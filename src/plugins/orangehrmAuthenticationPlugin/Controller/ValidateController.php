@@ -20,6 +20,7 @@
 namespace OrangeHRM\Authentication\Controller;
 
 use OrangeHRM\Admin\Service\OrganizationService;
+use OrangeHRM\Admin\Service\SubscriptionService;
 use OrangeHRM\Authentication\Auth\AuthProviderChain;
 use OrangeHRM\Authentication\Auth\User as AuthUser;
 use OrangeHRM\Authentication\Dto\AuthParams;
@@ -50,6 +51,7 @@ class ValidateController extends AbstractController implements PublicControllerI
     public const PARAMETER_PASSWORD = 'password';
 
     protected ?OrganizationService $organizationService = null;
+    protected ?SubscriptionService $subscriptionService = null;
 
     protected ?LoginService $loginService = null;
 
@@ -71,6 +73,15 @@ class ValidateController extends AbstractController implements PublicControllerI
         return $this->organizationService;
     }
 
+    public function getSubscriptionService()
+    {
+        if (!$this->subscriptionService instanceof SubscriptionService) {
+            $this->subscriptionService = new SubscriptionService();
+        }
+        return $this->subscriptionService;
+
+    }
+
     public function getLoginService(): LoginService
     {
         if (is_null($this->loginService)) {
@@ -83,6 +94,7 @@ class ValidateController extends AbstractController implements PublicControllerI
     {
         $username = $request->request->get(self::PARAMETER_USERNAME, '');
         $password = $request->request->get(self::PARAMETER_PASSWORD, '');
+
         $credentials = new UserCredential($username, $password);
 
         /** @var UrlGenerator $urlGenerator */
@@ -105,12 +117,22 @@ class ValidateController extends AbstractController implements PublicControllerI
             if (!$success) {
                 throw AuthenticationException::invalidCredentials();
             }
+
             $organization = $this->getOrganizationService()->findById($this->getAuthUser()->getOrgId());
 
             if (!$organization->isSetup()) {
                 $session->invalidate();
                 $session->getFlashBag()->add(AuthUser::FLASH_LOGIN_ERROR, [
                     'message' => 'We are currently setting you up, try again in a few minutes'
+                ]);
+                return new RedirectResponse($loginUrl);
+            }
+
+            $subscription = $this->getSubscriptionService()->getActiveSubscription();
+            if(!$subscription) {
+                $session->invalidate();
+                $session->getFlashBag()->add(AuthUser::FLASH_LOGIN_ERROR, [
+                    'message' => 'You do not have an active subscription, please contact your administrator'
                 ]);
                 return new RedirectResponse($loginUrl);
             }

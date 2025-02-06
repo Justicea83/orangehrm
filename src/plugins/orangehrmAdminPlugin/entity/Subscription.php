@@ -1,9 +1,10 @@
 <?php
 
-namespace OrangeHRM\Admin\entity;
+namespace OrangeHRM\Entity;
 
 use DateTimeInterface;
 use OrangeHRM\ORM\Tenancy\TenantAware;
+use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ORM\Entity

@@ -4,7 +4,7 @@ namespace OrangeHRM\Admin\Service;
 
 use Doctrine\ORM\NonUniqueResultException;
 use OrangeHRM\Admin\Dao\SubscriptionDao;
-use OrangeHRM\Admin\entity\Subscription;
+use OrangeHRM\Entity\Subscription;
 
 class SubscriptionService
 {

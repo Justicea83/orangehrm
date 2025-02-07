@@ -88,9 +88,7 @@
               <oxd-text tag="p" class="orangehrm-ldap-switch-text">
                 Override Salary
               </oxd-text>
-              <oxd-switch-input
-                  v-model="configuration.overrideSalary"
-              />
+              <oxd-switch-input v-model="configuration.overrideSalary" />
             </oxd-grid-item>
             <oxd-grid-item class="--offset-row-2">
               <oxd-input-field
@@ -143,9 +141,9 @@
     </div>
 
     <zk-teco-test-connection-modal
-        v-if="testModalState"
-        :status="testModalState"
-        @close="onCloseTestModal"
+      v-if="testModalState"
+      :status="testModalState"
+      @close="onCloseTestModal"
     />
 
     <br />
@@ -245,10 +243,7 @@ export default {
         ],
         port: [required, validPortRange(5, 0, 65535)],
         adminUsername: [required, shouldNotExceedCharLength(255)],
-        adminPassword: [
-          (v) => required(v),
-          shouldNotExceedCharLength(255),
-        ],
+        adminPassword: [(v) => required(v), shouldNotExceedCharLength(255)],
         syncInterval: [
           required,
           digitsOnly,
@@ -322,29 +317,29 @@ export default {
   beforeMount() {
     this.isLoading = true;
     this.http
-        .getAll()
-        .then((response) => {
-          const {data} = response.data;
+      .getAll()
+      .then((response) => {
+        const {data} = response.data;
 
-          if(!data) {
-            return
-          }
+        if (!data) {
+          return;
+        }
 
-          this.configuration.enable = data.enabled;
-          this.configuration.hostname = data.host;
-          this.configuration.port = data.port;
-          this.configuration.scheme = {
-            id: data.scheme?.toString()?.toLowerCase(),
-            label: data.scheme
-          };
-          this.configuration.adminUsername = data.adminUsername;
-          this.configuration.adminPassword = data.adminPassword;
-          this.configuration.syncInterval = data.syncInterval;
-          this.configuration.overrideSalary = data.overrideSalary;
-        })
-        .finally(() => {
-          this.isLoading = false;
-        });
+        this.configuration.enable = data.enabled;
+        this.configuration.hostname = data.host;
+        this.configuration.port = data.port;
+        this.configuration.scheme = {
+          id: data.scheme?.toString()?.toLowerCase(),
+          label: data.scheme,
+        };
+        this.configuration.adminUsername = data.adminUsername;
+        this.configuration.adminPassword = data.adminPassword;
+        this.configuration.syncInterval = data.syncInterval;
+        this.configuration.overrideSalary = data.overrideSalary;
+      })
+      .finally(() => {
+        this.isLoading = false;
+      });
   },
   methods: {
     getRequestBody() {
@@ -392,16 +387,16 @@ export default {
         this.isLoading = true;
         const data = this.getTestConnectionRequestBody();
         this.http
-            .request({
-              method: 'POST',
-              url: '/api/v2/zkteco/test-connection',
-              data,
-            })
-            .then((response) => {
-              const {data} = response.data;
-              this.testModalState = data?.status;
-            })
-            .finally(() => (this.isLoading = false));
+          .request({
+            method: 'POST',
+            url: '/api/v2/zkteco/test-connection',
+            data,
+          })
+          .then((response) => {
+            const {data} = response.data;
+            this.testModalState = data?.status;
+          })
+          .finally(() => (this.isLoading = false));
       });
     },
     onClickAdd() {

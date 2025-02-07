@@ -5,15 +5,11 @@
         {{ $t('admin.connection_status') }}
       </oxd-text>
     </div>
-    <oxd-divider/>
+    <oxd-divider />
 
     <div class="orangehrm-ldap-test">
-      <oxd-text tag="p" class="orangehrm-ldap-test-title">
-        Status
-      </oxd-text>
-      <div
-          class="orangehrm-ldap-test-row"
-      >
+      <oxd-text tag="p" class="orangehrm-ldap-test-title"> Status </oxd-text>
+      <div class="orangehrm-ldap-test-row">
         <oxd-text class="orangehrm-ldap-test-content">
           {{ status ? status.toUpperCase() : '' }}
         </oxd-text>
@@ -43,16 +39,16 @@ export default {
   methods: {
     getClass() {
       return this.status === 'success'
-          ? 'orangehrm-ldap-test-value --success'
-          : 'orangehrm-ldap-test-value --error';
+        ? 'orangehrm-ldap-test-value --success'
+        : 'orangehrm-ldap-test-value --error';
     },
     onCancel() {
       this.$emit('close');
     },
     getText() {
       return this.status === 'success'
-          ? 'Connected successfully.'
-          : 'Error connecting.';
+        ? 'Connected successfully.'
+        : 'Error connecting.';
     },
   },
 };

@@ -7,6 +7,7 @@ use OrangeHRM\Admin\Service\OrganizationService;
 use OrangeHRM\Framework\Services;
 use OrangeHRM\Pim\Service\EmployeeSalaryService;
 use OrangeHRM\Pim\Service\EmployeeService;
+use OrangeHRM\ZkTeco\Service\ZkTecoService;
 
 class ZkTecoPluginConfiguration implements PluginConfigurationInterface
 {
@@ -25,6 +26,10 @@ class ZkTecoPluginConfiguration implements PluginConfigurationInterface
         $this->getContainer()->register(
             Services::ORGANIZATION_SERVICE,
             OrganizationService::class
+        );
+        $this->getContainer()->register(
+            Services::ZKTECO_SERVICE,
+            ZkTecoService::class
         );
     }
 }

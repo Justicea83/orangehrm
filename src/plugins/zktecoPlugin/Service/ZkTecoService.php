@@ -2,7 +2,28 @@
 
 namespace OrangeHRM\ZkTeco\Service;
 
+use OrangeHRM\Core\Exception\DaoException;
+use OrangeHRM\Entity\ZkTecoConfig;
+use OrangeHRM\ZkTeco\Dao\ZkTecoDao;
+
 class ZkTecoService
 {
+    protected ?ZkTecoDao $zkTecoDao = null;
 
+    public function getZkTecoDao(): ZkTecoDao
+    {
+        if (is_null($this->zkTecoDao)) {
+            $this->zkTecoDao = new ZkTecoDao();
+        }
+
+        return $this->zkTecoDao;
+    }
+
+    /**
+     * @throws DaoException
+     */
+    public function saveConfig(ZkTecoConfig $config): ZkTecoConfig
+    {
+        return $this->zkTecoDao->saveConfig($config);
+    }
 }

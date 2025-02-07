@@ -142,11 +142,11 @@
       </oxd-form>
     </div>
 
-    <ldap-test-connection-modal
-      v-if="testModalState"
-      :data="testModalState"
-      @close="onCloseTestModal"
-    ></ldap-test-connection-modal>
+    <zk-teco-test-connection-modal
+        v-if="testModalState"
+        :status="testModalState"
+        @close="onCloseTestModal"
+    />
 
     <br />
 
@@ -157,7 +157,6 @@
 <script>
 import {OxdSwitchInput} from '@ohrm/oxd';
 import LdapSyncConnection from '@/orangehrmAdminPlugin/components/LdapSyncConnection.vue';
-import LdapTestConnectionModal from '@/orangehrmAdminPlugin/components/LdapTestConnectionModal.vue';
 import {
   digitsOnly,
   numberShouldBeBetweenMinAndMaxValue,
@@ -171,6 +170,7 @@ import DeleteConfirmationDialog from '@ohrm/components/dialogs/DeleteConfirmatio
 import {APIService} from '@/core/util/services/api.service';
 import useForm from '@/core/util/composable/useForm';
 import {reloadPage} from '@/core/util/helper/navigation';
+import ZkTecoTestConnectionModal from '@/zktecoPlugin/pages/configure/connection/components/ZkTecoTestConnectionModal.vue';
 
 const configurationModel = {
   enable: false,
@@ -189,8 +189,8 @@ export default {
     'profile-action-header': ProfileActionHeader,
     'oxd-switch-input': OxdSwitchInput,
     'ldap-sync-connection': LdapSyncConnection,
-    'ldap-test-connection-modal': LdapTestConnectionModal,
     'delete-confirmation': DeleteConfirmationDialog,
+    ZkTecoTestConnectionModal,
   },
   props: {
     paygrades: {
@@ -222,6 +222,7 @@ export default {
   },
   data() {
     return {
+      testModalState: null,
       schemes: [
         {
           id: 'http',
@@ -318,14 +319,12 @@ export default {
         : this.headers;
     },
   },
-  mounted() {
+  beforeMount() {
     this.isLoading = true;
     this.http
         .getAll()
         .then((response) => {
           const {data} = response.data;
-
-          console.log('[data-->>]', data)
 
           if(!data) {
             return
@@ -360,9 +359,16 @@ export default {
         syncInterval: parseInt(this.configuration.syncInterval),
       };
     },
+    getTestConnectionRequestBody() {
+      return {
+        host: this.configuration.hostname,
+        scheme: this.configuration.scheme?.id,
+        port: parseInt(this.configuration.port),
+        adminUsername: this.configuration.adminUsername,
+        adminPassword: this.configuration.adminPassword,
+      };
+    },
     onClickSave() {
-      console.clear();
-      console.log('[Payload]', this.getRequestBody());
       this.validate().then(() => {
         if (this.invalid === true) return;
         this.isLoading = true;
@@ -377,8 +383,26 @@ export default {
           .finally(() => reloadPage());
       });
     },
+    onCloseTestModal() {
+      this.testModalState = null;
+    },
     onClickTest() {
-      console.log('test');
+      this.validate().then(() => {
+        if (this.invalid === true) return;
+        this.isLoading = true;
+        const data = this.getTestConnectionRequestBody();
+        this.http
+            .request({
+              method: 'POST',
+              url: '/api/v2/zkteco/test-connection',
+              data,
+            })
+            .then((response) => {
+              const {data} = response.data;
+              this.testModalState = data?.status;
+            })
+            .finally(() => (this.isLoading = false));
+      });
     },
     onClickAdd() {
       this.showEditModal = false;

@@ -125,6 +125,5 @@ class ZkTecoAPI extends Endpoint implements ResourceEndpoint
     public function getValidationRuleForDelete(): ParamRuleCollection
     {
         throw $this->getNotImplementedException();
-        // TODO: Implement getValidationRuleForDelete() method.
     }
 }

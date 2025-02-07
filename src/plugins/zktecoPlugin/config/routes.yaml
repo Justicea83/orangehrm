@@ -6,6 +6,13 @@ apiv2_zkteco_configuration:
     id: 0
     _api: OrangeHRM\ZkTeco\Api\ZkTecoAPI
 
+apiv2_zkteco_test_connection:
+  path: /api/v2/zkteco/test-connection
+  controller: OrangeHRM\Core\Controller\Rest\V2\GenericRestController::handle
+  methods: [ POST ]
+  defaults:
+    _api: OrangeHRM\ZkTeco\Api\ZkTecoTestConnectionAPI
+
 
 ##########################
 #        Screens

@@ -179,12 +179,10 @@ class ZkTecoDao extends BaseDao
      * @return array
      * @throws DaoException
      */
-    public function testConnection(): array
+    public function testConnection(ZkTecoConfig $config): array
     {
         try {
-            $config = $this->getConfig();
-
-            if (!$config || !$config->getHost() || !$config->getPort()) {
+            if (!$config->getHost() || !$config->getPort()) {
                 throw new DaoException("Host or port not configured");
             }
 

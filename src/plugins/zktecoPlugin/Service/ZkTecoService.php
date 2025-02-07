@@ -2,6 +2,7 @@
 
 namespace OrangeHRM\ZkTeco\Service;
 
+use Exception;
 use OrangeHRM\Core\Exception\DaoException;
 use OrangeHRM\Entity\ZkTecoConfig;
 use OrangeHRM\ZkTeco\Dao\ZkTecoDao;
@@ -17,6 +18,18 @@ class ZkTecoService
         }
 
         return $this->zkTecoDao;
+    }
+
+    public function testConnection(ZkTecoConfig $config): array
+    {
+        try {
+            return $this->getZkTecoDao()->testConnection($config);
+        } catch (Exception) {
+            return [
+                'status' => 'error',
+                'message' => 'Connection NOT successful',
+            ];
+        }
     }
 
     /**

@@ -9432,6 +9432,33 @@ span[data-v-8530db26] {
   font-weight: 700;
   font-size: 12px;
 }
+/*!**************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** css ./node_modules/css-loader/dist/cjs.js??clonedRuleSet-22.use[1]!./node_modules/vue-loader/dist/stylePostLoader.js!./node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-22.use[2]!./node_modules/sass-loader/dist/cjs.js??clonedRuleSet-22.use[3]!./node_modules/vue-loader/dist/index.js??ruleSet[0].use[0]!./src/zktecoPlugin/pages/configure/connection/components/ZkTecoTestConnectionModal.vue?vue&type=style&index=0&id=5d969fc4&lang=scss&scoped=true ***!
+  \**************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************/
+/* Import OXD Globals */
+.orangehrm-ldap-test[data-v-5d969fc4] {
+  margin-bottom: 0.75rem;
+}
+.orangehrm-ldap-test-title[data-v-5d969fc4] {
+  font-size: 14px;
+  font-weight: 700;
+  margin-bottom: 0.2rem;
+}
+.orangehrm-ldap-test-value.--success[data-v-5d969fc4] {
+  color: var(--oxd-feedback-success-color, #34bc40);
+}
+.orangehrm-ldap-test-value.--error[data-v-5d969fc4] {
+  color: var(--oxd-feedback-danger-color, #eb0910);
+}
+.orangehrm-ldap-test-row[data-v-5d969fc4] {
+  width: 100%;
+  display: flex;
+  font-size: 14px;
+  margin-bottom: 0.2rem;
+}
+.orangehrm-ldap-test-content[data-v-5d969fc4] {
+  flex: 1;
+}
 /*!************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
   !*** css ./node_modules/css-loader/dist/cjs.js??clonedRuleSet-22.use[1]!./node_modules/vue-loader/dist/stylePostLoader.js!./node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-22.use[2]!./node_modules/sass-loader/dist/cjs.js??clonedRuleSet-22.use[3]!./src/zktecoPlugin/pages/configure/connection/zkteco-configuration.scss?vue&type=style&index=0&id=013361e2&lang=scss&scoped=true ***!
   \************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************/

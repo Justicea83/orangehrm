@@ -24,6 +24,14 @@ class ZkTecoService
      */
     public function saveConfig(ZkTecoConfig $config): ZkTecoConfig
     {
-        return $this->zkTecoDao->saveConfig($config);
+        return $this->getZkTecoDao()->saveConfig($config);
+    }
+
+    /**
+     * @throws DaoException
+     */
+    public function getConfig(): ?ZkTecoConfig
+    {
+        return $this->getZkTecoDao()->getConfig();
     }
 }

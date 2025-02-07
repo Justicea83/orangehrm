@@ -6,11 +6,13 @@ use GuzzleHttp\Client;
 use GuzzleHttp\Exception\RequestException;
 use OrangeHRM\Core\Dao\BaseDao;
 use OrangeHRM\Core\Exception\DaoException;
+use OrangeHRM\Core\Traits\LoggerTrait;
 use OrangeHRM\Entity\ZkTecoConfig;
 use Exception;
 
 class ZkTecoDao extends BaseDao
 {
+    use LoggerTrait;
     /**
      * Get the first configuration
      *
@@ -45,6 +47,7 @@ class ZkTecoDao extends BaseDao
                 $existingConfig->setOverrideSalary($config->isOverrideSalary());
                 $existingConfig->setHost($config->getHost());
                 $existingConfig->setPort($config->getPort());
+                $existingConfig->setScheme($config->getScheme());
                 $existingConfig->setAdminUsername($config->getAdminUsername());
                 $existingConfig->setAdminPassword($config->getAdminPassword());
                 $existingConfig->setSyncInterval($config->getSyncInterval());
@@ -219,5 +222,4 @@ class ZkTecoDao extends BaseDao
             throw new DaoException($e->getMessage(), $e->getCode(), $e);
         }
     }
-
 }

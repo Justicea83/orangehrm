@@ -24,77 +24,77 @@ class ZkTecoConfig extends TenantAware
     /**
      * @var bool
      *
-     * @ORM\Column(type="boolean", options={"default" : false})
+     * @ORM\Column(name="enabled", type="boolean", options={"default" : false})
      */
     private bool $enabled = false;
 
     /**
      * @var bool
      *
-     * @ORM\Column(type="boolean", options={"default" : false})
+     * @ORM\Column(name="override_salary", type="boolean", options={"default" : false})
      */
     private bool $overrideSalary = false;
 
     /**
      * @var bool
      *
-     * @ORM\Column(type="boolean", options={"default" : false})
+     * @ORM\Column(name="syncing", type="boolean", options={"default" : false})
      */
     private bool $syncing = false;
 
     /**
      * @var DateTime|null
      *
-     * @ORM\Column(type="datetime", nullable=true)
+     * @ORM\Column(name="last_sync", type="datetime", nullable=true)
      */
     private ?DateTime $lastSync = null;
 
     /**
      * @var string|null
      *
-     * @ORM\Column(type="string", length=255, nullable=true)
+     * @ORM\Column(name="host", type="string", length=255, nullable=true)
      */
     private ?string $host = null;
 
     /**
      * @var string|null
      *
-     * @ORM\Column(type="string", length=255, nullable=true)
+     * @ORM\Column(name="scheme", type="string", length=255, nullable=true)
      */
     private ?string $scheme = null;
 
     /**
      * @var string|null
      *
-     * @ORM\Column(type="string", length=255, nullable=true)
+     * @ORM\Column(name="port", type="string", length=255, nullable=true)
      */
     private ?string $port = null;
 
     /**
      * @var string|null
      *
-     * @ORM\Column(type="string", length=255, nullable=true)
+     * @ORM\Column(name="admin_username", type="string", length=255, nullable=true)
      */
     private ?string $adminUsername = null;
 
     /**
      * @var string|null
      *
-     * @ORM\Column(type="string", length=255, nullable=true)
+     * @ORM\Column(name="admin_password", type="string", length=255, nullable=true)
      */
     private ?string $adminPassword = null;
 
     /**
      * @var int|null
      *
-     * @ORM\Column(type="integer", length=10, nullable=true, options={"unsigned" : true})
+     * @ORM\Column(name="sync_interval", type="integer", length=10, nullable=true, options={"unsigned" : true})
      */
     private ?int $syncInterval = null;
 
     /**
      * @var array|null
      *
-     * @ORM\Column(type="json", nullable=true)
+     * @ORM\Column(name="extra_data", type="json", nullable=true)
      */
     private ?array $extraData = null;
 
@@ -207,5 +207,10 @@ class ZkTecoConfig extends TenantAware
     public function setExtraData(?array $extraData): void
     {
         $this->extraData = $extraData;
+    }
+
+    public function setScheme(?string $scheme): void
+    {
+        $this->scheme = $scheme;
     }
 }

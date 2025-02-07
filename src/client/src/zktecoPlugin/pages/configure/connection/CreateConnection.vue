@@ -21,6 +21,15 @@
           <oxd-grid :cols="3" class="orangehrm-full-width-grid">
             <oxd-grid-item>
               <oxd-input-field
+                v-model="configuration.scheme"
+                type="select"
+                :show-empty-selector="false"
+                :options="schemes"
+                label="Scheme"
+              />
+            </oxd-grid-item>
+            <oxd-grid-item>
+              <oxd-input-field
                 v-model="configuration.hostname"
                 :label="$t('admin.host')"
                 :rules="rules.hostname"
@@ -44,24 +53,24 @@
           Authentication Settings
         </oxd-text>
 
-        <oxd-form-row v-if="!configuration.bindAnonymously">
+        <oxd-form-row>
           <oxd-grid :cols="3" class="orangehrm-full-width-grid">
             <oxd-grid-item>
               <oxd-input-field
-                v-model="configuration.bindUserDN"
+                v-model="configuration.adminUsername"
                 label="Admin Username"
-                :rules="rules.bindUserDN"
+                :rules="rules.adminUsername"
                 required
               />
             </oxd-grid-item>
             <oxd-grid-item>
               <oxd-input-field
-                v-model="configuration.bindUserPassword"
+                v-model="configuration.adminPassword"
                 type="password"
                 label="Admin Password"
                 :placeholder="passwordPlaceHolder"
-                :rules="rules.bindUserPassword"
-                :required="!configuration.hasBindUserPassword"
+                :rules="rules.adminPassword"
+                :required="!configuration.hasadminPassword"
               />
             </oxd-grid-item>
           </oxd-grid>
@@ -75,6 +84,14 @@
 
         <oxd-form-row>
           <oxd-grid :cols="3" class="orangehrm-full-width-grid">
+            <oxd-grid-item class="orangehrm-ldap-switch --offset-row-1">
+              <oxd-text tag="p" class="orangehrm-ldap-switch-text">
+                Override Salary
+              </oxd-text>
+              <oxd-switch-input
+                  v-model="configuration.overrideSalary"
+              />
+            </oxd-grid-item>
             <oxd-grid-item class="--offset-row-2">
               <oxd-input-field
                 v-model="configuration.syncInterval"
@@ -90,24 +107,20 @@
 
         <!--  Salary Components      -->
         <div class="orangehrm-horizontal-padding orangehrm-vertical-padding">
-          <profile-action-header
-              action-button-shown
-              @click="onClickAdd"
-          >
+          <profile-action-header action-button-shown @click="onClickAdd">
             {{ $t('pim.assigned_salary_components') }}
           </profile-action-header>
         </div>
         <oxd-card-table
-            v-model:selected="checkedItems"
-            :headers="tableHeaders"
-            :items="[]"
-            selectable
-            :clickable="false"
-            :loading="isLoading"
-            row-decorator="oxd-table-decorator-card"
+          v-model:selected="checkedItems"
+          :headers="tableHeaders"
+          :items="[]"
+          selectable
+          :clickable="false"
+          :loading="isLoading"
+          row-decorator="oxd-table-decorator-card"
         />
         <delete-confirmation ref="deleteDialog"></delete-confirmation>
-
 
         <oxd-divider />
 
@@ -155,14 +168,18 @@ import {
 } from '@/core/util/validation/rules';
 import ProfileActionHeader from '@/orangehrmPimPlugin/components/ProfileActionHeader.vue';
 import DeleteConfirmationDialog from '@ohrm/components/dialogs/DeleteConfirmationDialog';
+import {APIService} from '@/core/util/services/api.service';
+import useForm from '@/core/util/composable/useForm';
+import {reloadPage} from '@/core/util/helper/navigation';
 
 const configurationModel = {
   enable: false,
+  overrideSalary: false,
   hostname: 'localhost',
   port: 80,
-  adminUserName: null,
+  scheme: 'http',
+  adminUsername: null,
   adminPassword: null,
-  searchScope: null,
   syncInterval: 1,
 };
 
@@ -188,6 +205,83 @@ export default {
       type: Array,
       default: () => [],
     },
+  },
+  setup() {
+    const http = new APIService(
+      window.appGlobal.baseUrl,
+      '/api/v2/zkteco/config',
+    );
+    const {formRef, invalid, validate} = useForm();
+
+    return {
+      http,
+      formRef,
+      invalid,
+      validate,
+    };
+  },
+  data() {
+    return {
+      schemes: [
+        {
+          id: 'http',
+          label: 'Http',
+        },
+        {
+          id: 'https',
+          label: 'Https',
+        },
+      ],
+      isLoading: false,
+      configuration: {
+        ...configurationModel,
+      },
+      rules: {
+        hostname: [
+          required,
+          validHostnameFormat,
+          shouldNotExceedCharLength(255),
+        ],
+        port: [required, validPortRange(5, 0, 65535)],
+        adminUsername: [required, shouldNotExceedCharLength(255)],
+        adminPassword: [
+          (v) => required(v),
+          shouldNotExceedCharLength(255),
+        ],
+        syncInterval: [
+          required,
+          digitsOnly,
+          numberShouldBeBetweenMinAndMaxValue(1, 23),
+        ],
+      },
+      headers: [
+        {
+          name: 'name',
+          slot: 'title',
+          title: this.$t('pim.salary_component'),
+          style: {flex: 1},
+        },
+        {name: 'amount', title: this.$t('pim.amount'), style: {flex: 1}},
+        {
+          name: 'currency',
+          title: this.$t('general.currency'),
+          style: {flex: 1},
+        },
+        {
+          name: 'frequency',
+          title: this.$t('pim.pay_frequency'),
+          style: {flex: 1},
+        },
+        {
+          name: 'depositAmount',
+          title: this.$t('pim.direct_deposit_amount'),
+          style: {flex: 1},
+        },
+      ],
+      checkedItems: [],
+      showSaveModal: false,
+      showEditModal: false,
+    };
   },
   computed: {
     isDisabled() {
@@ -220,101 +314,78 @@ export default {
         };
       }
       return Object.keys(headerActions.cellConfig).length > 0
-          ? this.headers.concat([headerActions])
-          : this.headers;
+        ? this.headers.concat([headerActions])
+        : this.headers;
     },
   },
-  data() {
-    return {
-      isLoading: false,
-      configuration: {
-        ...configurationModel,
-      },
-      rules: {
-        hostname: [
-          required,
-          validHostnameFormat,
-          shouldNotExceedCharLength(255),
-        ],
-        port: [required, validPortRange(5, 0, 65535)],
-        bindUserDN: [required, shouldNotExceedCharLength(255)],
-        bindUserPassword: [
-          (v) => this.configuration.hasBindUserPassword || required(v),
-          shouldNotExceedCharLength(255),
-        ],
-        baseDistinguishedName: [required, shouldNotExceedCharLength(255)],
-        userNameAttribute: [required, shouldNotExceedCharLength(100)],
-        userSearchFilter: [required, shouldNotExceedCharLength(100)],
-        userUniqueIdAttribute: [shouldNotExceedCharLength(100)],
-        firstNameAttribute: [required, shouldNotExceedCharLength(100)],
-        lastNameAttribute: [required, shouldNotExceedCharLength(100)],
-        syncInterval: [
-          required,
-          digitsOnly,
-          numberShouldBeBetweenMinAndMaxValue(1, 23),
-        ],
-        middleNameAttribute: [shouldNotExceedCharLength(100)],
-        userStatusAttribute: [shouldNotExceedCharLength(100)],
-        workEmailAttribute: [
-          (v) =>
-            this.configuration.employeeSelectorMapping === 'workEmail'
-              ? required(v)
-              : true,
-          shouldNotExceedCharLength(100),
-        ],
-        employeeIdAttribute: [
-          (v) =>
-            this.configuration.employeeSelectorMapping === 'employeeId'
-              ? required(v)
-              : true,
-          shouldNotExceedCharLength(100),
-        ],
-      },
-      headers: [
-        {
-          name: 'name',
-          slot: 'title',
-          title: this.$t('pim.salary_component'),
-          style: {flex: 1},
-        },
-        {name: 'amount', title: this.$t('pim.amount'), style: {flex: 1}},
-        {
-          name: 'currency',
-          title: this.$t('general.currency'),
-          style: {flex: 1},
-        },
-        {
-          name: 'frequency',
-          title: this.$t('pim.pay_frequency'),
-          style: {flex: 1},
-        },
-        {
-          name: 'depositAmount',
-          title: this.$t('pim.direct_deposit_amount'),
-          style: {flex: 1},
-        },
-      ],
-      checkedItems: [],
-      showSaveModal: false,
-      showEditModal: false,
-    };
-  },
-  setup(props) {
-    return {}
+  mounted() {
+    this.isLoading = true;
+    this.http
+        .getAll()
+        .then((response) => {
+          const {data} = response.data;
+
+          console.log('[data-->>]', data)
+
+          if(!data) {
+            return
+          }
+
+          this.configuration.enable = data.enabled;
+          this.configuration.hostname = data.host;
+          this.configuration.port = data.port;
+          this.configuration.scheme = {
+            id: data.scheme?.toString()?.toLowerCase(),
+            label: data.scheme
+          };
+          this.configuration.adminUsername = data.adminUsername;
+          this.configuration.adminPassword = data.adminPassword;
+          this.configuration.syncInterval = data.syncInterval;
+          this.configuration.overrideSalary = data.overrideSalary;
+        })
+        .finally(() => {
+          this.isLoading = false;
+        });
   },
   methods: {
+    getRequestBody() {
+      return {
+        enable: this.configuration.enable,
+        host: this.configuration.hostname,
+        scheme: this.configuration.scheme?.id,
+        overrideSalary: this.configuration.overrideSalary,
+        port: parseInt(this.configuration.port),
+        adminUsername: this.configuration.adminUsername,
+        adminPassword: this.configuration.adminPassword,
+        syncInterval: parseInt(this.configuration.syncInterval),
+      };
+    },
     onClickSave() {
-      console.log('save')
+      console.clear();
+      console.log('[Payload]', this.getRequestBody());
+      this.validate().then(() => {
+        if (this.invalid === true) return;
+        this.isLoading = true;
+        this.http
+          .request({
+            method: 'PUT',
+            data: this.getRequestBody(),
+          })
+          .then(() => {
+            return this.$toast.updateSuccess();
+          })
+          .finally(() => reloadPage());
+      });
     },
     onClickTest() {
-      console.log('test')
+      console.log('test');
     },
     onClickAdd() {
       this.showEditModal = false;
       this.editModalState = null;
       this.showSaveModal = true;
     },
-  }
+  },
 };
 </script>
 

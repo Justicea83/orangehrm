@@ -1,6 +1,6 @@
 <?php
 
-namespace OrangeHRM\ZkTeco\Traits;
+namespace OrangeHRM\ZkTeco\Api\Traits;
 
 use OrangeHRM\Core\Traits\ServiceContainerTrait;
 use OrangeHRM\ZkTeco\Service\ZkTecoService;

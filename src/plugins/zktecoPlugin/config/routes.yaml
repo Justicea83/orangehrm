@@ -1,4 +1,10 @@
-
+apiv2_zkteco_configuration:
+  path: /api/v2/zkteco/config
+  controller: OrangeHRM\Core\Controller\Rest\V2\GenericRestController::handle
+  methods: [ GET, PUT ]
+  defaults:
+    id: 0
+    _api: OrangeHRM\ZkTeco\Api\ZkTecoAPI
 
 
 ##########################

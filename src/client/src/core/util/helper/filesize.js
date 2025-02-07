@@ -24,28 +24,31 @@ const GIGA_BYTE = 1073741824; // 1024 * 1024 * 1024
  * @param {number|null} digits
  * @param {boolean} withSuffix
  */
-export const convertFilesizeToString = function (value, digits, withSuffix = true) {
-    let divisor = BYTE;
-    let suffix = 'B';
-    let filesize;
-    if (typeof value === 'number') {
-        filesize = value;
-    }
-    else {
-        filesize = parseInt(value, 10);
-    }
-    if (filesize >= GIGA_BYTE) {
-        divisor = GIGA_BYTE;
-        suffix = 'GB';
-    }
-    else if (filesize >= MEGA_BYTE) {
-        divisor = MEGA_BYTE;
-        suffix = 'MB';
-    }
-    else if (filesize >= KILO_BYTE) {
-        divisor = KILO_BYTE;
-        suffix = 'kB';
-    }
-    return ((filesize / divisor).toFixed(digits) + (withSuffix ? ' ' + suffix : ''));
+export const convertFilesizeToString = function (
+  value,
+  digits,
+  withSuffix = true,
+) {
+  let divisor = BYTE;
+  let suffix = 'B';
+  let filesize;
+  if (typeof value === 'number') {
+    filesize = value;
+  } else {
+    filesize = parseInt(value, 10);
+  }
+  if (filesize >= GIGA_BYTE) {
+    divisor = GIGA_BYTE;
+    suffix = 'GB';
+  } else if (filesize >= MEGA_BYTE) {
+    divisor = MEGA_BYTE;
+    suffix = 'MB';
+  } else if (filesize >= KILO_BYTE) {
+    divisor = KILO_BYTE;
+    suffix = 'kB';
+  }
+  return (
+    (filesize / divisor).toFixed(digits) + (withSuffix ? ' ' + suffix : '')
+  );
 };
 //# sourceMappingURL=filesize.js.map

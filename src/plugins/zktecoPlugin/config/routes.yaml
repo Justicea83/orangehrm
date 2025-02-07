@@ -1,0 +1,10 @@
+
+
+
+##########################
+#        Screens
+##########################
+zkteco_create_connection:
+  path: /zkteco/createConnection
+  controller: OrangeHRM\ZkTeco\Controller\CreateConnectionController::handle
+  methods: [ GET ]

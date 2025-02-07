@@ -11,17 +11,17 @@ import EditTaskType from './pages/task-types/EditTaskType.vue';
 import FullAssignment from './pages/full-assignment/FullAssignment.vue';
 import EditAssignment from './pages/edit-assignment/EditAssignment.vue';
 export default {
-    'create-onboarding': CreateOnboarding,
-    'my-assignments': MyAssignments,
-    'task-groups': TaskGroups,
-    'employee-task-groups': EmployeeTaskGroup,
-    'task-types': TaskTypes,
-    'task-list': TaskList,
-    'save-task': SaveTask,
-    'edit-task': EditTask,
-    'save-task-type': SaveTaskType,
-    'edit-task-type': EditTaskType,
-    'full-assignment': FullAssignment,
-    'edit-assignment': EditAssignment,
+  'create-onboarding': CreateOnboarding,
+  'my-assignments': MyAssignments,
+  'task-groups': TaskGroups,
+  'employee-task-groups': EmployeeTaskGroup,
+  'task-types': TaskTypes,
+  'task-list': TaskList,
+  'save-task': SaveTask,
+  'edit-task': EditTask,
+  'save-task-type': SaveTaskType,
+  'edit-task-type': EditTaskType,
+  'full-assignment': FullAssignment,
+  'edit-assignment': EditAssignment,
 };
 //# sourceMappingURL=index.js.map

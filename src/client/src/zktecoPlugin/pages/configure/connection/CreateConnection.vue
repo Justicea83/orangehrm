@@ -1,0 +1,321 @@
+<template>
+  <div class="orangehrm-background-container">
+    <div class="orangehrm-card-container">
+      <div class="orangehrm-header-container">
+        <oxd-text tag="h6" class="orangehrm-main-title">
+          ZkTeco Configuration
+        </oxd-text>
+        <oxd-switch-input
+          v-model="configuration.enable"
+          label-position="left"
+          :option-label="$t('general.enable')"
+        />
+      </div>
+      <oxd-divider />
+
+      <oxd-form ref="formRef" :loading="isLoading">
+        <oxd-text tag="p" class="orangehrm-subtitle">
+          {{ $t('admin.server_settings') }}
+        </oxd-text>
+        <oxd-form-row>
+          <oxd-grid :cols="3" class="orangehrm-full-width-grid">
+            <oxd-grid-item>
+              <oxd-input-field
+                v-model="configuration.hostname"
+                :label="$t('admin.host')"
+                :rules="rules.hostname"
+                required
+              />
+            </oxd-grid-item>
+            <oxd-grid-item class="orangehrm-column-half">
+              <oxd-input-field
+                v-model="configuration.port"
+                :label="$t('admin.port')"
+                :rules="rules.port"
+                required
+              />
+            </oxd-grid-item>
+          </oxd-grid>
+        </oxd-form-row>
+
+        <oxd-divider class="orangehrm-form-divider" />
+
+        <oxd-text tag="p" class="orangehrm-subtitle">
+          Authentication Settings
+        </oxd-text>
+
+        <oxd-form-row v-if="!configuration.bindAnonymously">
+          <oxd-grid :cols="3" class="orangehrm-full-width-grid">
+            <oxd-grid-item>
+              <oxd-input-field
+                v-model="configuration.bindUserDN"
+                label="Admin Username"
+                :rules="rules.bindUserDN"
+                required
+              />
+            </oxd-grid-item>
+            <oxd-grid-item>
+              <oxd-input-field
+                v-model="configuration.bindUserPassword"
+                type="password"
+                label="Admin Password"
+                :placeholder="passwordPlaceHolder"
+                :rules="rules.bindUserPassword"
+                :required="!configuration.hasBindUserPassword"
+              />
+            </oxd-grid-item>
+          </oxd-grid>
+        </oxd-form-row>
+
+        <oxd-divider class="orangehrm-form-divider" />
+
+        <oxd-text tag="p" class="orangehrm-subtitle mb-2">
+          {{ $t('admin.additional_settings') }}
+        </oxd-text>
+
+        <oxd-form-row>
+          <oxd-grid :cols="3" class="orangehrm-full-width-grid">
+            <oxd-grid-item class="--offset-row-2">
+              <oxd-input-field
+                v-model="configuration.syncInterval"
+                :label="$t('admin.sync_interval')"
+                :rules="rules.syncInterval"
+                required
+              />
+            </oxd-grid-item>
+          </oxd-grid>
+        </oxd-form-row>
+
+        <oxd-divider class="orangehrm-form-divider" />
+
+        <!--  Salary Components      -->
+        <div class="orangehrm-horizontal-padding orangehrm-vertical-padding">
+          <profile-action-header
+              action-button-shown
+              @click="onClickAdd"
+          >
+            {{ $t('pim.assigned_salary_components') }}
+          </profile-action-header>
+        </div>
+        <oxd-card-table
+            v-model:selected="checkedItems"
+            :headers="tableHeaders"
+            :items="[]"
+            selectable
+            :clickable="false"
+            :loading="isLoading"
+            row-decorator="oxd-table-decorator-card"
+        />
+        <delete-confirmation ref="deleteDialog"></delete-confirmation>
+
+
+        <oxd-divider />
+
+        <oxd-form-actions>
+          <oxd-button
+            type="button"
+            display-type="ghost"
+            :label="$t('admin.test_connection')"
+            @click="onClickTest"
+          />
+          <oxd-button
+            type="button"
+            class="orangehrm-left-space"
+            display-type="secondary"
+            :label="$t('general.save')"
+            @click="onClickSave"
+          />
+        </oxd-form-actions>
+      </oxd-form>
+    </div>
+
+    <ldap-test-connection-modal
+      v-if="testModalState"
+      :data="testModalState"
+      @close="onCloseTestModal"
+    ></ldap-test-connection-modal>
+
+    <br />
+
+    <ldap-sync-connection v-if="showSync"></ldap-sync-connection>
+  </div>
+</template>
+
+<script>
+import {OxdSwitchInput} from '@ohrm/oxd';
+import LdapSyncConnection from '@/orangehrmAdminPlugin/components/LdapSyncConnection.vue';
+import LdapTestConnectionModal from '@/orangehrmAdminPlugin/components/LdapTestConnectionModal.vue';
+import {
+  digitsOnly,
+  numberShouldBeBetweenMinAndMaxValue,
+  required,
+  shouldNotExceedCharLength,
+  validHostnameFormat,
+  validPortRange,
+} from '@/core/util/validation/rules';
+import ProfileActionHeader from '@/orangehrmPimPlugin/components/ProfileActionHeader.vue';
+import DeleteConfirmationDialog from '@ohrm/components/dialogs/DeleteConfirmationDialog';
+
+const configurationModel = {
+  enable: false,
+  hostname: 'localhost',
+  port: 80,
+  adminUserName: null,
+  adminPassword: null,
+  searchScope: null,
+  syncInterval: 1,
+};
+
+export default {
+  name: 'CreateConnection',
+  components: {
+    'profile-action-header': ProfileActionHeader,
+    'oxd-switch-input': OxdSwitchInput,
+    'ldap-sync-connection': LdapSyncConnection,
+    'ldap-test-connection-modal': LdapTestConnectionModal,
+    'delete-confirmation': DeleteConfirmationDialog,
+  },
+  props: {
+    paygrades: {
+      type: Array,
+      default: () => [],
+    },
+    payFrequencies: {
+      type: Array,
+      default: () => [],
+    },
+    currencies: {
+      type: Array,
+      default: () => [],
+    },
+  },
+  computed: {
+    isDisabled() {
+      return this.showSaveModal || this.showEditModal;
+    },
+    tableHeaders() {
+      const headerActions = {
+        name: 'actions',
+        slot: 'action',
+        title: this.$t('general.actions'),
+        style: {flex: 1},
+        cellType: 'oxd-table-cell-actions',
+        cellConfig: {},
+      };
+      if (this.$can.delete(`salary_details`)) {
+        headerActions.cellConfig.delete = {
+          onClick: this.onClickDelete,
+          component: 'oxd-icon-button',
+          props: {
+            name: 'trash',
+          },
+        };
+      }
+      if (this.$can.update(`salary_details`)) {
+        headerActions.cellConfig.edit = {
+          onClick: this.onClickEdit,
+          props: {
+            name: 'pencil-fill',
+          },
+        };
+      }
+      return Object.keys(headerActions.cellConfig).length > 0
+          ? this.headers.concat([headerActions])
+          : this.headers;
+    },
+  },
+  data() {
+    return {
+      isLoading: false,
+      configuration: {
+        ...configurationModel,
+      },
+      rules: {
+        hostname: [
+          required,
+          validHostnameFormat,
+          shouldNotExceedCharLength(255),
+        ],
+        port: [required, validPortRange(5, 0, 65535)],
+        bindUserDN: [required, shouldNotExceedCharLength(255)],
+        bindUserPassword: [
+          (v) => this.configuration.hasBindUserPassword || required(v),
+          shouldNotExceedCharLength(255),
+        ],
+        baseDistinguishedName: [required, shouldNotExceedCharLength(255)],
+        userNameAttribute: [required, shouldNotExceedCharLength(100)],
+        userSearchFilter: [required, shouldNotExceedCharLength(100)],
+        userUniqueIdAttribute: [shouldNotExceedCharLength(100)],
+        firstNameAttribute: [required, shouldNotExceedCharLength(100)],
+        lastNameAttribute: [required, shouldNotExceedCharLength(100)],
+        syncInterval: [
+          required,
+          digitsOnly,
+          numberShouldBeBetweenMinAndMaxValue(1, 23),
+        ],
+        middleNameAttribute: [shouldNotExceedCharLength(100)],
+        userStatusAttribute: [shouldNotExceedCharLength(100)],
+        workEmailAttribute: [
+          (v) =>
+            this.configuration.employeeSelectorMapping === 'workEmail'
+              ? required(v)
+              : true,
+          shouldNotExceedCharLength(100),
+        ],
+        employeeIdAttribute: [
+          (v) =>
+            this.configuration.employeeSelectorMapping === 'employeeId'
+              ? required(v)
+              : true,
+          shouldNotExceedCharLength(100),
+        ],
+      },
+      headers: [
+        {
+          name: 'name',
+          slot: 'title',
+          title: this.$t('pim.salary_component'),
+          style: {flex: 1},
+        },
+        {name: 'amount', title: this.$t('pim.amount'), style: {flex: 1}},
+        {
+          name: 'currency',
+          title: this.$t('general.currency'),
+          style: {flex: 1},
+        },
+        {
+          name: 'frequency',
+          title: this.$t('pim.pay_frequency'),
+          style: {flex: 1},
+        },
+        {
+          name: 'depositAmount',
+          title: this.$t('pim.direct_deposit_amount'),
+          style: {flex: 1},
+        },
+      ],
+      checkedItems: [],
+      showSaveModal: false,
+      showEditModal: false,
+    };
+  },
+  setup(props) {
+    return {}
+  },
+  methods: {
+    onClickSave() {
+      console.log('save')
+    },
+    onClickTest() {
+      console.log('test')
+    },
+    onClickAdd() {
+      this.showEditModal = false;
+      this.editModalState = null;
+      this.showSaveModal = true;
+    },
+  }
+};
+</script>
+
+<style src="./zkteco-configuration.scss" lang="scss" scoped></style>

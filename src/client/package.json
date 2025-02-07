@@ -4,7 +4,8 @@
   "private": true,
   "scripts": {
     "serve": "vue-cli-service serve",
-    "dev": "vue-cli-service build --watch --mode development --dest ../../web/dist && tailwindcss -i ./src/index.css -o ../../web/dist/output.css --watch",
+    "dev": "vue-cli-service build --watch --mode development --dest ../../web/dist && npx @tailwindcss/cli -i ./src/index.css  -o ../../web/dist/output.css --watch",
+    "tailwind": "npx @tailwindcss/cli -i ./src/index.css  -o ../../web/dist/output.css --watch",
     "build": "vue-cli-service build --dest ../../web/dist && tailwindcss -i ./src/index.css -o ../../web/dist/output.css --minify",
     "test:unit": "vue-cli-service test:unit",
     "lint": "vue-cli-service lint --max-warnings=0 --mode production"
@@ -13,6 +14,7 @@
     "@headlessui/vue": "^1.7.13",
     "@heroicons/vue": "^2.0.17",
     "@ohrm/oxd": "2.0.0",
+    "@tailwindcss/cli": "^4.0.4",
     "axios": "^1.2.2",
     "core-js": "^3.27.1",
     "date-fns": "^2.22.1",
@@ -23,6 +25,7 @@
     "moment": "^2.29.4",
     "primeicons": "^6.0.1",
     "qrcode": "^1.5.1",
+    "tailwindcss": "^4.0.4",
     "v-tooltip": "^2.1.3",
     "vue": "^3.2.45",
     "vue3-circle-progress": "^1.0.7",

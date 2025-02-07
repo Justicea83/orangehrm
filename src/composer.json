@@ -86,6 +86,7 @@
             "OrangeHRM\\SystemCheck\\": "./plugins/orangehrmSystemCheckPlugin",
             "OrangeHRM\\Claim\\": "./plugins/orangehrmClaimPlugin",
             "OrangeHRM\\Mobile\\": "./plugins/orangehrmMobilePlugin",
+            "OrangeHRM\\ZkTeco\\": "./plugins/zktecoPlugin",
             "OrangeHRM\\Installer\\": "../installer",
             "OrangeHRM\\Entity\\": [
                 "./plugins/orangehrmAdminPlugin/entity",
@@ -104,7 +105,8 @@
                 "./plugins/orangehrmBuzzPlugin/entity",
                 "./plugins/onboardingPlugin/entity",
                 "./plugins/orangehrmClaimPlugin/entity",
-                "./plugins/commentsPlugin/entity"
+                "./plugins/commentsPlugin/entity",
+                "./plugins/zktecoPlugin/entity"
             ]
         }
     },
@@ -129,6 +131,7 @@
             "OrangeHRM\\Tests\\LDAP\\": "./plugins/orangehrmLDAPAuthenticationPlugin/test",
             "OrangeHRM\\Tests\\Buzz\\": "./plugins/orangehrmBuzzPlugin/test",
             "OrangeHRM\\Tests\\Onboarding\\": "./plugins/onboardingPlugin/test",
+            "OrangeHRM\\Tests\\ZkTeco\\": "./plugins/zktecoPlugin/test",
             "OrangeHRM\\Tests\\Comments\\": "./plugins/commentsPlugin/test",
             "OrangeHRM\\Tests\\Help\\": "./plugins/orangehrmHelpPlugin/test",
             "OrangeHRM\\Tests\\Claim\\": "./plugins/orangehrmClaimPlugin/test",

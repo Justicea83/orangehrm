@@ -16,78 +16,81 @@
  * Boston, MA  02110-1301, USA
  */
 const approve = {
-    component: 'oxd-button',
-    props: {
-        label: 'Approve',
-        displayType: 'label-success',
-        size: 'medium',
-        onClick: null,
-    },
+  component: 'oxd-button',
+  props: {
+    label: 'Approve',
+    displayType: 'label-success',
+    size: 'medium',
+    onClick: null,
+  },
 };
 const reject = {
-    component: 'oxd-button',
-    props: {
-        label: 'Reject',
-        displayType: 'label-danger',
-        size: 'medium',
-        onClick: null,
-    },
+  component: 'oxd-button',
+  props: {
+    label: 'Reject',
+    displayType: 'label-danger',
+    size: 'medium',
+    onClick: null,
+  },
 };
 const cancel = {
-    component: 'oxd-button',
-    props: {
-        label: 'Cancel',
-        displayType: 'label-warn',
-        size: 'medium',
-        onClick: null,
-    },
+  component: 'oxd-button',
+  props: {
+    label: 'Cancel',
+    displayType: 'label-warn',
+    size: 'medium',
+    onClick: null,
+  },
 };
 const more = {
-    component: 'oxd-table-dropdown',
-    props: {
-        options: [],
-        style: { 'margin-left': 'auto' },
-        onClick: null,
-    },
+  component: 'oxd-table-dropdown',
+  props: {
+    options: [],
+    style: {'margin-left': 'auto'},
+    onClick: null,
+  },
 };
-export default function useLeaveActions(http, { primaryActions = { approve, reject, cancel, more } } = {}) {
-    const processLeaveAction = (id, actionType) => {
-        return http.request({
-            method: 'PUT',
-            url: `/api/v2/leave/leaves/${id}`,
-            data: {
-                action: actionType,
-            },
-        });
-    };
-    const processLeaveRequestAction = (id, actionType) => {
-        return http.request({
-            method: 'PUT',
-            url: `/api/v2/leave/employees/leave-requests/${id}`,
-            data: {
-                action: actionType,
-            },
-        });
-    };
-    const processLeaveRequestBulkAction = (ids, actionType) => {
-        return http.request({
-            method: 'PUT',
-            url: '/api/v2/leave/employees/leave-requests/bulk',
-            data: {
-                data: ids.map((id) => {
-                    return {
-                        leaveRequestId: id,
-                        action: actionType,
-                    };
-                }),
-            },
-        });
-    };
-    return {
-        leaveActions: primaryActions,
-        processLeaveAction,
-        processLeaveRequestAction,
-        processLeaveRequestBulkAction,
-    };
+export default function useLeaveActions(
+  http,
+  {primaryActions = {approve, reject, cancel, more}} = {},
+) {
+  const processLeaveAction = (id, actionType) => {
+    return http.request({
+      method: 'PUT',
+      url: `/api/v2/leave/leaves/${id}`,
+      data: {
+        action: actionType,
+      },
+    });
+  };
+  const processLeaveRequestAction = (id, actionType) => {
+    return http.request({
+      method: 'PUT',
+      url: `/api/v2/leave/employees/leave-requests/${id}`,
+      data: {
+        action: actionType,
+      },
+    });
+  };
+  const processLeaveRequestBulkAction = (ids, actionType) => {
+    return http.request({
+      method: 'PUT',
+      url: '/api/v2/leave/employees/leave-requests/bulk',
+      data: {
+        data: ids.map((id) => {
+          return {
+            leaveRequestId: id,
+            action: actionType,
+          };
+        }),
+      },
+    });
+  };
+  return {
+    leaveActions: primaryActions,
+    processLeaveAction,
+    processLeaveRequestAction,
+    processLeaveRequestBulkAction,
+  };
 }
 //# sourceMappingURL=useLeaveActions.js.map

@@ -16,15 +16,14 @@
  * Boston, MA  02110-1301, USA
  */
 export default function useAutoFocus() {
-    const autofocus = {
-        mounted(el) {
-            if (!el)
-                return;
-            el.querySelector('input')?.focus();
-        },
-    };
-    return {
-        autofocus,
-    };
+  const autofocus = {
+    mounted(el) {
+      if (!el) return;
+      el.querySelector('input')?.focus();
+    },
+  };
+  return {
+    autofocus,
+  };
 }
 //# sourceMappingURL=useAutoFocus.js.map

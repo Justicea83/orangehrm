@@ -15,22 +15,22 @@
  * if not, write to the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor,
  * Boston, MA  02110-1301, USA
  */
-import { ref, computed } from 'vue';
-export default function useForm({ refName = 'formRef' } = {}) {
-    // https://v3.vuejs.org/guide/typescript-support.html#typing-template-refs
-    const form = ref();
-    const submit = () => form.value?.onSubmit(new Event('submit'));
-    const reset = () => form.value?.onReset();
-    const validate = () => form.value?.validate();
-    const invalid = computed(() => form.value?.isFromInvalid);
-    const errorbag = computed(() => form.value?.errorbag);
-    return {
-        reset,
-        submit,
-        validate,
-        [refName]: form,
-        errorbag,
-        invalid,
-    };
+import {ref, computed} from 'vue';
+export default function useForm({refName = 'formRef'} = {}) {
+  // https://v3.vuejs.org/guide/typescript-support.html#typing-template-refs
+  const form = ref();
+  const submit = () => form.value?.onSubmit(new Event('submit'));
+  const reset = () => form.value?.onReset();
+  const validate = () => form.value?.validate();
+  const invalid = computed(() => form.value?.isFromInvalid);
+  const errorbag = computed(() => form.value?.errorbag);
+  return {
+    reset,
+    submit,
+    validate,
+    [refName]: form,
+    errorbag,
+    invalid,
+  };
 }
 //# sourceMappingURL=useForm.js.map

@@ -17,6 +17,6 @@
  */
 import ViewSupport from './pages/ViewSupport.vue';
 export default {
-    'view-support': ViewSupport,
+  'view-support': ViewSupport,
 };
 //# sourceMappingURL=index.js.map

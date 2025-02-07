@@ -16,77 +16,84 @@
  * Boston, MA  02110-1301, USA
  */
 import IntlMessageFormat from 'intl-messageformat';
-import { APIService } from '@/core/util/services/api.service';
-import { StoreService } from '@ohrm/oxd';
+import {APIService} from '@/core/util/services/api.service';
+import {StoreService} from '@ohrm/oxd';
 export const langStrings = {};
 /**
  * A factory function that will return translator function
  * @return {function(key, parameters): string}
  */
-export const translate = () => (key, 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-parameters = {}) => {
+export const translate =
+  () =>
+  (
+    key,
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    parameters = {},
+  ) => {
     // IntlMessageFormat.format method will throw error if not every argument in the message pattern
     // has been provided. sourrounded by try catch to fallback incase of param resolution
     try {
-        if (!langStrings[key])
-            return key;
-        const translatedString = langStrings[key].format(parameters);
-        if (Array.isArray(translatedString)) {
-            return typeof translatedString[0] === 'string'
-                ? translatedString[0]
-                : key;
-        }
-        return translatedString;
+      if (!langStrings[key]) return key;
+      const translatedString = langStrings[key].format(parameters);
+      if (Array.isArray(translatedString)) {
+        return typeof translatedString[0] === 'string'
+          ? translatedString[0]
+          : key;
+      }
+      return translatedString;
+    } catch (error) {
+      // eslint-disable-next-line no-console
+      console.error(error);
+      return key;
     }
-    catch (error) {
-        // eslint-disable-next-line no-console
-        console.error(error);
-        return key;
-    }
-};
+  };
 const defineMixin = () => {
-    return {
-        beforeCreate() {
-            this.$t = translate();
-        },
-    };
+  return {
+    beforeCreate() {
+      this.$t = translate();
+    },
+  };
 };
 function createI18n(options) {
-    const http = new APIService(options.baseUrl, options.resourceUrl);
-    return {
-        init: function () {
-            return new Promise((resolve) => {
-                http
-                    .request({
-                    method: 'GET',
-                    headers: {
-                        Accept: 'application/json',
-                        contentType: 'application/json',
-                        ...(process.env.NODE_ENV === 'development' && {
-                            'Cache-Control': 'public,  max-age=60',
-                        }),
-                    },
-                })
-                    .then((response) => {
-                    const { data } = response;
-                    const language = {};
-                    for (const key in data) {
-                        // https://formatjs.io/docs/intl-messageformat#intlmessageformat-constructor
-                        language[key] = data[key].target || data[key].source;
-                        langStrings[key] = new IntlMessageFormat(data[key].target || data[key].source, undefined, undefined, { ignoreTag: true });
-                    }
-                    StoreService.mergeConfig({
-                        language,
-                    });
-                })
-                    .finally(() => resolve());
+  const http = new APIService(options.baseUrl, options.resourceUrl);
+  return {
+    init: function () {
+      return new Promise((resolve) => {
+        http
+          .request({
+            method: 'GET',
+            headers: {
+              Accept: 'application/json',
+              contentType: 'application/json',
+              ...(process.env.NODE_ENV === 'development' && {
+                'Cache-Control': 'public,  max-age=60',
+              }),
+            },
+          })
+          .then((response) => {
+            const {data} = response;
+            const language = {};
+            for (const key in data) {
+              // https://formatjs.io/docs/intl-messageformat#intlmessageformat-constructor
+              language[key] = data[key].target || data[key].source;
+              langStrings[key] = new IntlMessageFormat(
+                data[key].target || data[key].source,
+                undefined,
+                undefined,
+                {ignoreTag: true},
+              );
+            }
+            StoreService.mergeConfig({
+              language,
             });
-        },
-        i18n: function (app) {
-            app.mixin(defineMixin());
-        },
-    };
+          })
+          .finally(() => resolve());
+      });
+    },
+    i18n: function (app) {
+      app.mixin(defineMixin());
+    },
+  };
 }
 export default createI18n;
 //# sourceMappingURL=translate.js.map

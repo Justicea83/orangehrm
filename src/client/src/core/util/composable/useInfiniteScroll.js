@@ -15,52 +15,59 @@
  * if not, write to the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor,
  * Boston, MA  02110-1301, USA
  */
-import { ref, nextTick, onMounted, onBeforeUnmount } from 'vue';
-import { promiseDebounce } from '@ohrm/oxd';
-export default function useInfiniteScroll(executor, { refName = 'scrollerRef', scrollDistance = 100, debounceInterval = 100, } = {}) {
-    let scrolledAmount = 0, isScrollDown = false;
-    const scrollContainer = ref();
-    const onScroll = promiseDebounce(async () => executor(), debounceInterval);
-    const onScrollEvent = () => {
-        let scrollHeight, clientHeight, scrollTop;
-        if (scrollContainer.value) {
-            ({ scrollHeight, clientHeight, scrollTop } =
-                scrollContainer.value.$el || scrollContainer.value);
-        }
-        else {
-            scrollTop = window.scrollY;
-            scrollHeight = document.body.scrollHeight;
-            clientHeight = document.body.clientHeight;
-        }
-        // compare previous scroll with current scroll top to find vertical direction
-        isScrollDown = scrollTop > scrolledAmount;
-        scrolledAmount = scrollTop;
-        // clientHeight = inner height of an element in pixels (without overflow)
-        // scrollHeight = inner height of an element in pixels including overflown content
-        // scrollTop = how much content is scrolled vertically in pixels
-        const scrollerAtBottom = scrollTop + clientHeight >= scrollHeight - (scrollDistance || 0);
-        if (isScrollDown && scrollerAtBottom)
-            onScroll();
-    };
-    onMounted(async () => {
-        await nextTick();
-        if (scrollContainer.value) {
-            (scrollContainer.value.$el || scrollContainer.value).addEventListener('scroll', onScrollEvent);
-        }
-        else {
-            document.addEventListener('scroll', onScrollEvent);
-        }
-    });
-    onBeforeUnmount(() => {
-        if (scrollContainer.value) {
-            (scrollContainer.value.$el || scrollContainer.value).removeEventListener('scroll', onScrollEvent);
-        }
-        else {
-            document.removeEventListener('scroll', onScrollEvent);
-        }
-    });
-    return {
-        [refName]: scrollContainer,
-    };
+import {ref, nextTick, onMounted, onBeforeUnmount} from 'vue';
+import {promiseDebounce} from '@ohrm/oxd';
+export default function useInfiniteScroll(
+  executor,
+  {refName = 'scrollerRef', scrollDistance = 100, debounceInterval = 100} = {},
+) {
+  let scrolledAmount = 0,
+    isScrollDown = false;
+  const scrollContainer = ref();
+  const onScroll = promiseDebounce(async () => executor(), debounceInterval);
+  const onScrollEvent = () => {
+    let scrollHeight, clientHeight, scrollTop;
+    if (scrollContainer.value) {
+      ({scrollHeight, clientHeight, scrollTop} =
+        scrollContainer.value.$el || scrollContainer.value);
+    } else {
+      scrollTop = window.scrollY;
+      scrollHeight = document.body.scrollHeight;
+      clientHeight = document.body.clientHeight;
+    }
+    // compare previous scroll with current scroll top to find vertical direction
+    isScrollDown = scrollTop > scrolledAmount;
+    scrolledAmount = scrollTop;
+    // clientHeight = inner height of an element in pixels (without overflow)
+    // scrollHeight = inner height of an element in pixels including overflown content
+    // scrollTop = how much content is scrolled vertically in pixels
+    const scrollerAtBottom =
+      scrollTop + clientHeight >= scrollHeight - (scrollDistance || 0);
+    if (isScrollDown && scrollerAtBottom) onScroll();
+  };
+  onMounted(async () => {
+    await nextTick();
+    if (scrollContainer.value) {
+      (scrollContainer.value.$el || scrollContainer.value).addEventListener(
+        'scroll',
+        onScrollEvent,
+      );
+    } else {
+      document.addEventListener('scroll', onScrollEvent);
+    }
+  });
+  onBeforeUnmount(() => {
+    if (scrollContainer.value) {
+      (scrollContainer.value.$el || scrollContainer.value).removeEventListener(
+        'scroll',
+        onScrollEvent,
+      );
+    } else {
+      document.removeEventListener('scroll', onScrollEvent);
+    }
+  });
+  return {
+    [refName]: scrollContainer,
+  };
 }
 //# sourceMappingURL=useInfiniteScroll.js.map

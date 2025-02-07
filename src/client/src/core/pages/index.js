@@ -21,10 +21,10 @@ import ModuleUnderDevelopment from './ModuleUnderDevelopment.vue';
 import Disabled from './Disabled.vue';
 import TimeSheetPeriodNotDefined from './TimeSheetPeriodNotDefined.vue';
 export default {
-    'bad-request': BadRequest,
-    'no-records-found': NoRecordsFound,
-    'module-under-development': ModuleUnderDevelopment,
-    'disabled-module': Disabled,
-    'time-sheet-period-not-defined': TimeSheetPeriodNotDefined,
+  'bad-request': BadRequest,
+  'no-records-found': NoRecordsFound,
+  'module-under-development': ModuleUnderDevelopment,
+  'disabled-module': Disabled,
+  'time-sheet-period-not-defined': TimeSheetPeriodNotDefined,
 };
 //# sourceMappingURL=index.js.map

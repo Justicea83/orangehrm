@@ -45,7 +45,7 @@ app.config.globalProperties.emitter = emitter;
 app.use(components);
 
 // Tooltip
-app.use(VTooltip);
+app.use(VTooltip as any);
 
 app.use(toaster, {
   duration: 2500,

@@ -30,19 +30,19 @@ import EmployeeTimeReport from './pages/reports/EmployeeTimeReport.vue';
 import ProjectActivityReport from './pages/reports/ProjectActivityReport.vue';
 import ActivityDetailsReport from './pages/reports/ActivityDetailsReport.vue';
 export default {
-    'time-sheet-period': TimeSheetPeriodConfig,
-    'customer-list': Customer,
-    'customer-save': SaveCustomer,
-    'customer-edit': EditCustomer,
-    'my-timesheet': MyTimesheet,
-    'edit-timesheet': EditTimeSheet,
-    'project-list': Project,
-    'project-save': ProjectSave,
-    'project-edit': ProjectEdit,
-    'employee-timesheet': EmployeeTimesheet,
-    'view-employee-timesheet': ViewEmployeeTimesheet,
-    'employee-time-report': EmployeeTimeReport,
-    'project-activity-report': ProjectActivityReport,
-    'activity-details-report': ActivityDetailsReport,
+  'time-sheet-period': TimeSheetPeriodConfig,
+  'customer-list': Customer,
+  'customer-save': SaveCustomer,
+  'customer-edit': EditCustomer,
+  'my-timesheet': MyTimesheet,
+  'edit-timesheet': EditTimeSheet,
+  'project-list': Project,
+  'project-save': ProjectSave,
+  'project-edit': ProjectEdit,
+  'employee-timesheet': EmployeeTimesheet,
+  'view-employee-timesheet': ViewEmployeeTimesheet,
+  'employee-time-report': EmployeeTimeReport,
+  'project-activity-report': ProjectActivityReport,
+  'activity-details-report': ActivityDetailsReport,
 };
 //# sourceMappingURL=index.js.map

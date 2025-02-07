@@ -16,23 +16,24 @@
  * Boston, MA  02110-1301, USA
  */
 import Hammer from 'hammerjs';
-import { onBeforeUnmount, onMounted, ref } from 'vue';
+import {onBeforeUnmount, onMounted, ref} from 'vue';
 export default function useSwipe(executor) {
-    let manager;
-    const swipeContainer = ref();
-    onMounted(() => {
-        if (!swipeContainer.value)
-            return;
-        manager = new Hammer.Manager(swipeContainer.value?.$el || swipeContainer.value);
-        const Swipe = new Hammer.Swipe();
-        manager.add(Swipe);
-        manager.on('swipe', executor);
-    });
-    onBeforeUnmount(() => {
-        manager?.destroy();
-    });
-    return {
-        swipeContainer,
-    };
+  let manager;
+  const swipeContainer = ref();
+  onMounted(() => {
+    if (!swipeContainer.value) return;
+    manager = new Hammer.Manager(
+      swipeContainer.value?.$el || swipeContainer.value,
+    );
+    const Swipe = new Hammer.Swipe();
+    manager.add(Swipe);
+    manager.on('swipe', executor);
+  });
+  onBeforeUnmount(() => {
+    manager?.destroy();
+  });
+  return {
+    swipeContainer,
+  };
 }
 //# sourceMappingURL=useSwipe.js.map

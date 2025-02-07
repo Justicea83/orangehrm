@@ -19,8 +19,8 @@ import OAuthClient from './pages/registerOAuthClient/OAuthClient.vue';
 import SaveOAuthClient from './pages/registerOAuthClient/SaveOAuthClient.vue';
 import OAuthAuthorize from './pages/oauth/OAuthAuthorize.vue';
 export default {
-    'oauth-client-list': OAuthClient,
-    'oauth-client-save': SaveOAuthClient,
-    'oauth-authorize': OAuthAuthorize,
+  'oauth-client-list': OAuthClient,
+  'oauth-client-save': SaveOAuthClient,
+  'oauth-authorize': OAuthAuthorize,
 };
 //# sourceMappingURL=index.js.map

@@ -15,7 +15,7 @@
  * if not, write to the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor,
  * Boston, MA  02110-1301, USA
  */
-import { createApp } from 'vue';
+import {createApp} from 'vue';
 import components from './components';
 import pages from './pages';
 import mitt from 'mitt';
@@ -29,10 +29,10 @@ import './core/styles/global.scss';
 import './core/plugins/toaster/toaster.scss';
 import './core/plugins/loader/loader.scss';
 const app = createApp({
-    name: 'App',
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-ignore
-    components: pages,
+  name: 'App',
+  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+  // @ts-ignore
+  components: pages,
 });
 // setup global emitter
 const emitter = mitt();
@@ -40,21 +40,21 @@ app.config.globalProperties.emitter = emitter;
 // Global Register Components
 app.use(components);
 app.use(toaster, {
-    duration: 2500,
-    persist: false,
-    animation: 'oxd-toast-list',
-    position: 'bottom',
+  duration: 2500,
+  persist: false,
+  animation: 'oxd-toast-list',
+  position: 'bottom',
 });
 // @ts-expect-error: appGlobal is not in window object by default
 const baseUrl = window.appGlobal.baseUrl;
-const { i18n, init } = createI18n({
-    baseUrl: baseUrl,
-    resourceUrl: 'core/i18n/messages',
+const {i18n, init} = createI18n({
+  baseUrl: baseUrl,
+  resourceUrl: 'core/i18n/messages',
 });
 app.use(acl);
 app.use(i18n);
 app.config.globalProperties.global = {
-    baseUrl,
+  baseUrl,
 };
 init().then(() => app.mount('#app'));
 //# sourceMappingURL=main.js.map

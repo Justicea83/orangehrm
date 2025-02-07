@@ -15,11 +15,11 @@
  * if not, write to the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor,
  * Boston, MA  02110-1301, USA
  */
-import { translate as translatorFactory } from '@/core/plugins/i18n/translate';
+import {translate as translatorFactory} from '@/core/plugins/i18n/translate';
 export default function usei18n() {
-    const translate = translatorFactory();
-    return {
-        $t: translate,
-    };
+  const translate = translatorFactory();
+  return {
+    $t: translate,
+  };
 }
 //# sourceMappingURL=usei18n.js.map

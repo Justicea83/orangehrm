@@ -3,6 +3,7 @@
 namespace OrangeHRM\ZkTeco\Dao;
 
 use GuzzleHttp\Client;
+use GuzzleHttp\Exception\GuzzleException;
 use GuzzleHttp\Exception\RequestException;
 use OrangeHRM\Core\Dao\BaseDao;
 use OrangeHRM\Core\Exception\DaoException;
@@ -177,7 +178,7 @@ class ZkTecoDao extends BaseDao
      * Test connection by making a request to the configured host and port.
      *
      * @return array
-     * @throws DaoException
+     * @throws DaoException|GuzzleException
      */
     public function testConnection(ZkTecoConfig $config): array
     {

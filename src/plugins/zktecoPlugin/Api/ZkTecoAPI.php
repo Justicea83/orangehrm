@@ -27,17 +27,6 @@ class ZkTecoAPI extends Endpoint implements ResourceEndpoint
     public const PARAMETER_ADMIN_PASSWORD = 'adminPassword';
     public const PARAMETER_SYNC_INTERVAL = 'syncInterval';
 
-    // Salary parameters
-    public const PARAMETER_SALARY_PAY_GRADE_ID = 'payGradeId';
-    public const PARAMETER_SALARY_SALARY_COMPONENT = 'salaryComponent';
-    public const PARAMETER_SALARY_PAY_FREQUENCY_ID = 'payFrequencyId';
-    public const PARAMETER_SALARY_CURRENCY_ID = 'currencyId';
-    public const PARAMETER_SALARY_SALARY_AMOUNT = 'salaryAmount';
-
-    public const PARAM_SALARY_RULE_SALARY_COMPONENT_MAX_LENGTH = 100;
-    public const PARAM_SALARY_RULE_SALARY_AMOUNT_MAX_LENGTH = 100;
-    public const PARAM_SALARY_RULE_DIRECT_DEPOSIT_AMOUNT_MIN = 0;
-    public const PARAM_SALARY_RULE_DIRECT_DEPOSIT_AMOUNT_MAX = 999999999.99;
 
     public const PARAMETER_RULE_ALL_MAX_LENGTH = 255;
 

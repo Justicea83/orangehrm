@@ -7,6 +7,7 @@ use OrangeHRM\Core\Api\V2\Validator\ParamRuleCollection;
 use OrangeHRM\Core\Api\V2\Validator\Rule;
 use OrangeHRM\Core\Api\V2\Validator\Rules;
 use OrangeHRM\ZkTeco\Api\ZkTecoAPI;
+use OrangeHRM\ZkTeco\Api\ZkTecoSalaryAPI;
 
 trait ZkTecoCommonParamRuleCollection
 {
@@ -49,6 +50,38 @@ trait ZkTecoCommonParamRuleCollection
             new ParamRule(
                 ZkTecoAPI::PARAMETER_OVERRIDE_SALARY,
                 new Rule(Rules::BOOL_VAL)
+            ),
+        );
+    }
+
+    private function getSalaryParamRuleCollection(): ParamRuleCollection
+    {
+        return new ParamRuleCollection(
+            $this->getValidationDecorator()->notRequiredParamRule(
+                new ParamRule(
+                    ZkTecoSalaryAPI::PARAMETER_PAY_GRADE_ID,
+                    new Rule(Rules::POSITIVE)
+                )
+            ),
+            new ParamRule(
+                ZkTecoSalaryAPI::PARAMETER_SALARY_COMPONENT,
+                new Rule(Rules::STRING_TYPE),
+                new Rule(Rules::LENGTH, [null, ZkTecoAPI::PARAMETER_RULE_ALL_MAX_LENGTH])
+            ),
+            $this->getValidationDecorator()->notRequiredParamRule(
+                new ParamRule(
+                    ZkTecoSalaryAPI::PARAMETER_PAY_FREQUENCY_ID,
+                    new Rule(Rules::POSITIVE)
+                )
+            ),
+            new ParamRule(
+                ZkTecoSalaryAPI::PARAMETER_CURRENCY_ID,
+                new Rule(Rules::CURRENCY)
+            ),
+            new ParamRule(
+                ZkTecoSalaryAPI::PARAMETER_SALARY_AMOUNT,
+                new Rule(Rules::STRING_TYPE),
+                new Rule(Rules::LENGTH, [null, ZkTecoAPI::PARAMETER_RULE_ALL_MAX_LENGTH])
             ),
         );
     }

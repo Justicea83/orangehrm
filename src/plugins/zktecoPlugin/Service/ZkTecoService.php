@@ -47,4 +47,12 @@ class ZkTecoService
     {
         return $this->getZkTecoDao()->getConfig();
     }
+
+    /**
+     * @throws DaoException
+     */
+    public function saveSalary(array $salaryData): ?ZkTecoConfig
+    {
+        return $this->getZkTecoDao()->saveSalary($salaryData);
+    }
 }

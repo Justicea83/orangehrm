@@ -13,7 +13,20 @@ apiv2_zkteco_test_connection:
   defaults:
     _api: OrangeHRM\ZkTeco\Api\ZkTecoTestConnectionAPI
 
+apiv2_pim_zkteco_salary_component:
+  path: /api/v2/zkteco/salary-components
+  controller: OrangeHRM\Core\Controller\Rest\V2\GenericRestController::handle
+  methods: [ PUT ]
+  defaults:
+    _api: OrangeHRM\ZkTeco\Api\ZkTecoSalaryAPI
 
+apiv2_pim_zkteco_salary_components:
+  path: /api/v2/zkteco/salary-components
+  controller: OrangeHRM\Core\Controller\Rest\V2\GenericRestController::handle
+  methods: [ POST, DELETE ]
+  defaults:
+    _api: OrangeHRM\ZkTeco\Api\ZkTecoSalaryAPI
+    
 ##########################
 #        Screens
 ##########################

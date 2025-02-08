@@ -156,6 +156,16 @@
         :currencies="currencies"
         @close="onSaveModalClose"
       />
+
+      <edit-zk-teco-salary-component
+        v-if="showEditModal"
+        :http="http"
+        :data="editModalState"
+        :paygrades="paygrades"
+        :pay-frequencies="payFrequencies"
+        :currencies="currencies"
+        @close="onEditModalClose"
+      />
     </div>
 
     <zk-teco-test-connection-modal
@@ -200,6 +210,7 @@ import {reloadPage} from '@/core/util/helper/navigation';
 import ZkTecoTestConnectionModal from '@/zktecoPlugin/pages/configure/connection/components/ZkTecoTestConnectionModal.vue';
 import SaveZkTecoSalaryComponent from '@/zktecoPlugin/pages/configure/connection/components/SaveZkTecoSalaryComponent.vue';
 import FrequencyCell from '@/zktecoPlugin/pages/configure/connection/components/FrequencyCell.vue';
+import EditZkTecoSalaryComponent from '@/zktecoPlugin/pages/configure/connection/components/EditZkTecoSalaryComponent.vue';
 
 const configurationModel = {
   enable: false,
@@ -221,6 +232,7 @@ export default {
     'delete-confirmation': DeleteConfirmationDialog,
     ZkTecoTestConnectionModal,
     SaveZkTecoSalaryComponent,
+    EditZkTecoSalaryComponent,
     OxdForm,
     OxdFormActions,
     OxdFormRow,
@@ -261,6 +273,7 @@ export default {
   },
   data() {
     return {
+      editModalState: null,
       testModalState: null,
       schemes: [
         {
@@ -372,6 +385,11 @@ export default {
       });
   },
   methods: {
+    onClickEdit(item) {
+      this.showSaveModal = false;
+      this.editModalState = item;
+      this.showEditModal = true;
+    },
     onClickDelete(item) {
       this.$refs.deleteDialog.showDialog().then((confirmation) => {
         if (confirmation === 'ok') {

@@ -22,6 +22,7 @@ class ZkTecoConfigModel implements Normalizable
         $salaries = [];
         if (isset($this->zkTecoConfig->getExtraData()['salary'])) {
             $salaries = array_map(function ($salary) {
+                $salary['amount'] = $salary['salaryAmount'];
                 $salary['salaryAmount'] = sprintf('%s %s', $salary['currencyId'], number_format($salary['salaryAmount'], 2));
                 return $salary;
             }, $this->zkTecoConfig->getExtraData()['salary']);

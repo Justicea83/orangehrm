@@ -1,7 +1,7 @@
 <template>
   <div class="orangehrm-horizontal-padding orangehrm-vertical-padding">
     <oxd-text tag="h6" class="orangehrm-main-title">
-      Add Salary Component
+      Update Salary Component
     </oxd-text>
     <oxd-divider />
     <oxd-form :loading="isLoading" @submit-valid="onSave">
@@ -93,10 +93,14 @@ const salComponentModel = {
 };
 
 export default {
-  name: 'SaveZkTecoSalaryComponent',
+  name: 'EditZkTecoSalaryComponent',
 
   props: {
     http: {
+      type: Object,
+      required: true,
+    },
+    data: {
       type: Object,
       required: true,
     },
@@ -200,6 +204,26 @@ export default {
     },
   },
 
+  beforeMount() {
+    console.clear();
+    console.log(JSON.parse(JSON.stringify(this.currencies)));
+    this.salaryComponent.name = this.data.salaryComponent;
+    this.salaryComponent.salaryAmount = this.data.amount;
+    this.salaryComponent.payGradeId = this.data.payGradeId
+      ? this.paygrades.find(
+          (item) => parseInt(item.id) === parseInt(this.data.payGradeId),
+        )
+      : null;
+    this.salaryComponent.payFrequencyId = this.data.payFrequencyId
+      ? this.payFrequencies.find(
+          (item) => parseInt(item.id) === parseInt(this.data.payFrequencyId),
+        )
+      : null;
+    this.salaryComponent.currencyId = this.data.currencyId
+      ? this.currencies.find((item) => item.id === this.data.currencyId)
+      : null;
+  },
+
   mounted() {
     this.$nextTick(() => {
       this.rules.salaryAmount.push((v) => {
@@ -218,14 +242,15 @@ export default {
       this.isLoading = true;
       this.http
         .request({
-          method: 'POST',
-          url: '/api/v2/zkteco/salary-components',
+          method: 'PUT',
+          url: `/api/v2/zkteco/salary-components/${this.data.id}`,
           data: {
             salaryComponent: this.salaryComponent.name,
             salaryAmount: this.salaryComponent.salaryAmount,
             payGradeId: this.salaryComponent.payGradeId?.id,
             currencyId: this.salaryComponent.currencyId?.id,
             payFrequencyId: this.salaryComponent.payFrequencyId?.id,
+            id: this.data.id,
           },
         })
         .then(() => {

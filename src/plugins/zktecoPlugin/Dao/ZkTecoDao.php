@@ -10,10 +10,12 @@ use OrangeHRM\Core\Exception\DaoException;
 use OrangeHRM\Core\Traits\LoggerTrait;
 use OrangeHRM\Entity\ZkTecoConfig;
 use Exception;
+use OrangeHRM\Framework\Logger\Logger;
 
 class ZkTecoDao extends BaseDao
 {
     use LoggerTrait;
+
     /**
      * Get the first configuration
      *
@@ -98,13 +100,13 @@ class ZkTecoDao extends BaseDao
     }
 
     /**
-     * Delete a salary entry by ID from extraData['salary']
+     * Delete multiple salary entries by their IDs from extraData['salary']
      *
-     * @param string $salaryId
+     * @param array $salaryIds
      * @return ZkTecoConfig|null
      * @throws DaoException
      */
-    public function deleteSalaryById(string $salaryId): ?ZkTecoConfig
+    public function deleteSalariesByIds(array $salaryIds): ?ZkTecoConfig
     {
         try {
             $config = $this->getConfig();
@@ -113,25 +115,29 @@ class ZkTecoDao extends BaseDao
                 throw new DaoException("ZkTecoConfig not found");
             }
 
-            $extraData = $config->getExtraData() ?? [];
+            // Decode extraData from JSON
+            $extraData = $config->getExtraData();
 
-            if (!isset($extraData['salary'])) {
+            if (!isset($extraData['salary']) || !is_array($extraData['salary'])) {
                 throw new DaoException("No salary records found");
             }
 
-            // Filter out the salary entry with the given ID
-            $extraData['salary'] = array_filter($extraData['salary'], function ($entry) use ($salaryId) {
-                return $entry['id'] !== $salaryId;
-            });
+            // Ensure `salary` remains an indexed array after deletion
+            $extraData['salary'] = array_values(array_filter($extraData['salary'], function ($entry) use ($salaryIds) {
+                return !in_array($entry['id'] ?? '', $salaryIds, true);
+            }));
 
+            // Re-encode the extraData back to JSON before saving
             $config->setExtraData($extraData);
+
             $this->persist($config);
 
             return $config;
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             throw new DaoException($e->getMessage(), $e->getCode(), $e);
         }
     }
+
 
     /**
      * Edit a salary entry by ID in extraData['salary']
@@ -157,12 +163,12 @@ class ZkTecoDao extends BaseDao
             }
 
             // Find and update the salary entry with the given ID
-            $extraData['salary'] = array_map(function ($entry) use ($salaryId, $updatedData) {
+            $extraData['salary'] = array_values(array_map(function ($entry) use ($salaryId, $updatedData) {
                 if ($entry['id'] === $salaryId) {
                     return array_merge($entry, $updatedData); // Merge updated data
                 }
                 return $entry;
-            }, $extraData['salary']);
+            }, $extraData['salary']));
 
             $config->setExtraData($extraData);
             $this->persist($config);

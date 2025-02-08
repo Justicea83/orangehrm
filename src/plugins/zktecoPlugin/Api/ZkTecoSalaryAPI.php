@@ -11,7 +11,11 @@ use OrangeHRM\Core\Api\V2\Model\ArrayModel;
 use OrangeHRM\Core\Api\V2\ParameterBag;
 use OrangeHRM\Core\Api\V2\RequestParams;
 use OrangeHRM\Core\Api\V2\Serializer\NormalizeException;
+use OrangeHRM\Core\Api\V2\Validator\ParamRule;
 use OrangeHRM\Core\Api\V2\Validator\ParamRuleCollection;
+use OrangeHRM\Core\Api\V2\Validator\Rule;
+use OrangeHRM\Core\Api\V2\Validator\Rules;
+use OrangeHRM\Core\Api\V2\Validator\ValidatorException;
 use OrangeHRM\Core\Exception\DaoException;
 use OrangeHRM\Pim\Api\Model\EmployeeSalaryModel;
 use OrangeHRM\ZkTeco\Api\Traits\ZkServiceTrait;
@@ -79,14 +83,25 @@ class ZkTecoSalaryAPI extends Endpoint implements CrudEndpoint
         return $this->getSalaryParamRuleCollection();
     }
 
+    /**
+     * @throws NormalizeException
+     * @throws DaoException
+     */
     public function delete(): EndpointResult
     {
-        // TODO: Implement delete() method.
+        $ids = $this->getRequestParams()->getArray(RequestParams::PARAM_TYPE_BODY, CommonParams::PARAMETER_IDS);
+        $this->getZkTecoService()->deleteSalariesByIds($ids);
+        return new EndpointResourceResult(
+            ArrayModel::class,
+            $ids,
+        );
     }
 
     public function getValidationRuleForDelete(): ParamRuleCollection
     {
-        // TODO: Implement getValidationRuleForDelete() method.
+        return new ParamRuleCollection(
+            new ParamRule(CommonParams::PARAMETER_IDS),
+        );
     }
 
     public function getOne(): EndpointResult
@@ -99,13 +114,60 @@ class ZkTecoSalaryAPI extends Endpoint implements CrudEndpoint
         throw $this->getNotImplementedException();
     }
 
+    /**
+     * @throws NormalizeException
+     * @throws DaoException
+     */
     public function update(): EndpointResult
     {
-        // TODO: Implement update() method.
+        $id = $this->getRequestParams()->getStringOrNull(
+            RequestParams::PARAM_TYPE_BODY,
+            CommonParams::PARAMETER_ID
+        );
+
+        $salaryData = [
+            self::PARAMETER_PAY_GRADE_ID => $this->getRequestParams()->getStringOrNull(
+                RequestParams::PARAM_TYPE_BODY,
+                self::PARAMETER_PAY_GRADE_ID
+            ),
+            self::PARAMETER_SALARY_COMPONENT => $this->getRequestParams()->getStringOrNull(
+                RequestParams::PARAM_TYPE_BODY,
+                self::PARAMETER_SALARY_COMPONENT
+            ),
+            self::PARAMETER_PAY_FREQUENCY_ID => $this->getRequestParams()->getStringOrNull(
+                RequestParams::PARAM_TYPE_BODY,
+                self::PARAMETER_PAY_FREQUENCY_ID
+            ),
+            self::PARAMETER_CURRENCY_ID => $this->getRequestParams()->getStringOrNull(
+                RequestParams::PARAM_TYPE_BODY,
+                self::PARAMETER_CURRENCY_ID
+            ),
+            self::PARAMETER_SALARY_AMOUNT => $this->getRequestParams()->getStringOrNull(
+                RequestParams::PARAM_TYPE_BODY,
+                self::PARAMETER_SALARY_AMOUNT
+            ),
+        ];
+
+        $this->getZkTecoService()->editSalaryById($id, $salaryData);
+
+        return new EndpointResourceResult(
+            ArrayModel::class,
+            [],
+        );
     }
 
+    /**
+     * @throws ValidatorException
+     */
     public function getValidationRuleForUpdate(): ParamRuleCollection
     {
-        // TODO: Implement getValidationRuleForUpdate() method.
+        $paramRules = $this->getSalaryParamRuleCollection();
+        $paramRules->addParamValidation(
+            new ParamRule(
+                CommonParams::PARAMETER_ID,
+                new Rule(Rules::STRING_TYPE)
+            )
+        );
+        return $paramRules;
     }
 }

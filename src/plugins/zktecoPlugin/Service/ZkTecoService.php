@@ -55,4 +55,20 @@ class ZkTecoService
     {
         return $this->getZkTecoDao()->saveSalary($salaryData);
     }
+
+    /**
+     * @throws DaoException
+     */
+    public function deleteSalariesByIds(array $salaryIds): ?ZkTecoConfig
+    {
+        return $this->getZkTecoDao()->deleteSalariesByIds($salaryIds);
+    }
+
+    /**
+     * @throws DaoException
+     */
+    public function editSalaryById(string $salaryId, array $updatedData): ?ZkTecoConfig
+    {
+        return $this->getZkTecoDao()->editSalaryById($salaryId, $updatedData);
+    }
 }

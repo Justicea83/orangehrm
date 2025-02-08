@@ -111,6 +111,12 @@
               {{ $t('pim.assigned_salary_components') }}
             </profile-action-header>
           </div>
+          <table-header
+            :selected="checkedItems.length"
+            :total="salaries.length"
+            :loading="isLoading"
+            @delete="onClickDeleteSelected"
+          />
           <oxd-card-table
             v-model:selected="checkedItems"
             :headers="tableHeaders"
@@ -319,23 +325,19 @@ export default {
         cellType: 'oxd-table-cell-actions',
         cellConfig: {},
       };
-      if (this.$can.delete(`salary_details`)) {
-        headerActions.cellConfig.delete = {
-          onClick: this.onClickDelete,
-          component: 'oxd-icon-button',
-          props: {
-            name: 'trash',
-          },
-        };
-      }
-      if (this.$can.update(`salary_details`)) {
-        headerActions.cellConfig.edit = {
-          onClick: this.onClickEdit,
-          props: {
-            name: 'pencil-fill',
-          },
-        };
-      }
+      headerActions.cellConfig.delete = {
+        onClick: this.onClickDelete,
+        component: 'oxd-icon-button',
+        props: {
+          name: 'trash',
+        },
+      };
+      headerActions.cellConfig.edit = {
+        onClick: this.onClickEdit,
+        props: {
+          name: 'pencil-fill',
+        },
+      };
       return Object.keys(headerActions.cellConfig).length > 0
         ? this.headers.concat([headerActions])
         : this.headers;
@@ -370,10 +372,47 @@ export default {
       });
   },
   methods: {
+    onClickDelete(item) {
+      this.$refs.deleteDialog.showDialog().then((confirmation) => {
+        if (confirmation === 'ok') {
+          this.deleteItems([item.id]);
+        }
+      });
+    },
+    onClickDeleteSelected() {
+      const ids = this.checkedItems.map((index) => {
+        return this.salaries[index].id;
+      });
+      this.$refs.deleteDialog.showDialog().then((confirmation) => {
+        if (confirmation === 'ok') {
+          this.deleteItems(ids);
+        }
+      });
+    },
+    deleteItems(items) {
+      if (items instanceof Array) {
+        this.isLoading = true;
+        this.http
+          .request({
+            method: 'DELETE',
+            url: '/api/v2/zkteco/salary-components',
+            data: {
+              ids: items,
+            },
+          })
+          .then(() => {
+            return this.$toast.deleteSuccess();
+          })
+          .then(() => {
+            this.isLoading = false;
+            reloadPage();
+          });
+      }
+    },
     frequencyCellRenderer(...args) {
-      const cellData = args[1];
+      const cellData = this.salaries[args[0]];
       const frequency = this.payFrequencies.find(
-        (freq) => freq.id === cellData,
+        (freq) => freq.id === cellData.payFrequencyId,
       );
       return {
         component: FrequencyCell,

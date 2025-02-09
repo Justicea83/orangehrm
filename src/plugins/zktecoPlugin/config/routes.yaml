@@ -26,11 +26,17 @@ apiv2_pim_zkteco_salary_components:
   methods: [ POST, DELETE ]
   defaults:
     _api: OrangeHRM\ZkTeco\Api\ZkTecoSalaryAPI
-    
+
+
 ##########################
 #        Screens
 ##########################
-zkteco_create_connection:
-  path: /zkteco/createConnection
+zkteco_attendance_punch_pair_report:
+  path: /zkteco/attendance/punchPair
+  controller: OrangeHRM\ZkTeco\Controller\Attendance\AttendancePunchPairController::handle
+  methods: [ GET ]
+
+zkteco_config:
+  path: /zkteco/configure
   controller: OrangeHRM\ZkTeco\Controller\CreateConnectionController::handle
   methods: [ GET ]

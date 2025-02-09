@@ -17,7 +17,9 @@
  */
 
 import CreateConnection from './pages/configure/connection/CreateConnection.vue';
+import PunchPairReport from './pages/attendance/punch-pair/components/PunchPairReport.vue';
 
 export default {
   'create-connection': CreateConnection,
+  'punch-pair-report': PunchPairReport,
 };

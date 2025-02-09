@@ -31,6 +31,7 @@ use OrangeHRM\Entity\Employee;
 use OrangeHRM\Entity\WorkflowStateMachine;
 use OrangeHRM\I18N\Traits\Service\I18NHelperTrait;
 
+// TODO add taxes here
 class PIMLeftMenuService
 {
     use UserRoleManagerTrait;

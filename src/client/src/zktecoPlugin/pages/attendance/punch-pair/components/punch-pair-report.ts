@@ -21,6 +21,8 @@ import JobtitleDropdown from '@/orangehrmPimPlugin/components/JobtitleDropdown';
 import SubunitDropdown from '@/orangehrmPimPlugin/components/SubunitDropdown';
 import ReportModeDropdown from '@/zktecoPlugin/pages/attendance/components/ReportModeDropdown.vue';
 import {format} from 'date-fns';
+import {CardHeader} from '@ohrm/oxd/types/components/CardTable/types';
+import SubunitAutocomplete from '@/zktecoPlugin/pages/attendance/components/SubunitAutocomplete.vue';
 
 type Filters = {
   date?: string;
@@ -52,17 +54,17 @@ export default {
     OxdInputField,
     EmployeeAutocomplete,
     SubunitDropdown,
+    SubunitAutocomplete,
   },
   methods: {
     async filterItems() {
-      console.log(JSON.parse(JSON.stringify(this.filters)));
-      //await this.execQuery();
+      await this.execQuery();
     },
   },
   props: {
     apiUrl: {
       type: String,
-      default: () => '/api/v2/task-management/task-assignments',
+      default: () => '/api/v2/zkteco/attendance/punch-pair-report',
     },
   },
   setup(props: {apiUrl: string}) {
@@ -77,15 +79,12 @@ export default {
 
     const serializedFilters = computed(() => {
       return {
-        employees: filters.value.employees?.map(emp => emp.id),
+        employees: filters.value.employees?.map((emp) => emp.id).join(','),
         date: filters.value.date,
-        departments: filters.value.departments?.map(dep => dep.id),
-        jobTitles: filters.value.jobTitles?.map(job => job.id),
+        departments: filters.value.departments?.map((dep) => dep.id).join(','),
         reportMode: filters.value.reportMode?.id,
       };
     });
-
-    console.log('sea', serializedFilters)
 
     const http = new APIService(
       (window as any).appGlobal.baseUrl,
@@ -124,5 +123,72 @@ export default {
       execQuery,
       showReportDate,
     };
+  },
+  computed: {
+    headers(): CardHeader[] {
+      return [
+        {
+          name: 'first_name',
+          slot: 'first_name',
+          title: 'First Name',
+          style: {flex: 1},
+        },
+        {
+          name: 'last_name',
+          slot: 'last_name',
+          title: 'Last Name',
+          style: {flex: 1},
+        },
+        {
+          name: 'nick_name',
+          slot: 'nick_name',
+          title: 'Nick Name',
+          style: {flex: 1},
+        },
+        {
+          name: 'weekday',
+          slot: 'weekday',
+          title: 'Week Day',
+          sortField: 't.dueDate',
+          style: {flex: 1},
+        },
+        {
+          name: 'check_in',
+          slot: 'check_in',
+          title: 'Check In',
+          style: {flex: 1},
+        },
+        {
+          name: 'check_out',
+          slot: 'check_out',
+          title: 'Check Out',
+          style: {flex: 1},
+        },
+        {
+          name: 'total_time',
+          slot: 'total_time',
+          title: 'Total Time',
+          style: {flex: 1},
+        },
+        {
+          name: 'hourly_rate',
+          slot: 'hourly_rate',
+          title: 'Hourly Rate',
+          style: {flex: 1},
+        },
+        {
+          name: 'total_comp',
+          slot: 'total_comp',
+          title: 'Total Comp',
+          style: {flex: 1},
+        },
+        {
+          name: 'currency',
+          slot: 'currency',
+          title: 'Currency',
+          style: {flex: 1},
+        },
+      ];
+    },
   },
 };

@@ -280,13 +280,15 @@ class TransactionReport extends AbstractZkTecoReport
 
             $totalSalary = array_sum(array_column($employees, 'ebsal_basic_salary'));
             $record['hourly_rate'] = number_format($totalSalary, 2);
-            $record['total_comp'] = $this->calculateCompensation($record['emp_code'], $totalSalary);
+            $record['total_comp'] = $this->calculateCompensation($totalSalary, $record['total_time']);
             $record['currency'] = $employees[0]['currency_id'] ?? null;
         }
     }
 
     function calculateCompensation($hourlyRate, $timeWorked): string
     {
+        $hourlyRate = (float)$hourlyRate;
+
         // Check if $timeWorked is a string and contains a colon (indicating "HH:MM" format)
         if (is_string($timeWorked) && str_contains($timeWorked, ':')) {
             list($hours, $minutes) = explode(':', $timeWorked);

@@ -559,6 +559,13 @@ class Employee implements TenantAwareInterface
     private ?int $orgId = null;
 
     /**
+     * @var array|null
+     *
+     * @ORM\Column(name="extra_data", type="json", nullable=true)
+     */
+    private ?array $extraData = null;
+
+    /**
      * Constructor
      */
     public function __construct()
@@ -1606,5 +1613,15 @@ class Employee implements TenantAwareInterface
         }
 
         return trim($fullName);
+    }
+
+    public function setExtraData(?array $extraData): void
+    {
+        $this->extraData = $extraData;
+    }
+
+    public function getExtraData(): ?array
+    {
+        return $this->extraData;
     }
 }

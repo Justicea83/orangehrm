@@ -24,7 +24,6 @@ import {format} from 'date-fns';
 
 type Filters = {
   date?: string;
-  completed?: boolean;
   employees?: {id: number}[] | null;
   departments?: {id: number}[] | null;
   jobTitles?: {id: number}[] | null;
@@ -56,9 +55,14 @@ export default {
   },
   methods: {
     async filterItems() {
-      console.clear();
       console.log(JSON.parse(JSON.stringify(this.filters)));
       //await this.execQuery();
+    },
+  },
+  props: {
+    apiUrl: {
+      type: String,
+      default: () => '/api/v2/task-management/task-assignments',
     },
   },
   setup(props: {apiUrl: string}) {
@@ -73,9 +77,15 @@ export default {
 
     const serializedFilters = computed(() => {
       return {
-        employeeId: filters.value.employee?.id,
+        employees: filters.value.employees?.map(emp => emp.id),
+        date: filters.value.date,
+        departments: filters.value.departments?.map(dep => dep.id),
+        jobTitles: filters.value.jobTitles?.map(job => job.id),
+        reportMode: filters.value.reportMode?.id,
       };
     });
+
+    console.log('sea', serializedFilters)
 
     const http = new APIService(
       (window as any).appGlobal.baseUrl,

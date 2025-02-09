@@ -13,24 +13,33 @@ apiv2_zkteco_test_connection:
   defaults:
     _api: OrangeHRM\ZkTeco\Api\ZkTecoTestConnectionAPI
 
-apiv2_pim_zkteco_salary_component:
+apiv2_zkteco_salary_component:
   path: /api/v2/zkteco/salary-components/{id}
   controller: OrangeHRM\Core\Controller\Rest\V2\GenericRestController::handle
   methods: [ PUT ]
   defaults:
     _api: OrangeHRM\ZkTeco\Api\ZkTecoSalaryAPI
 
-apiv2_pim_zkteco_salary_components:
+apiv2_zkteco_salary_components:
   path: /api/v2/zkteco/salary-components
   controller: OrangeHRM\Core\Controller\Rest\V2\GenericRestController::handle
   methods: [ POST, DELETE ]
   defaults:
     _api: OrangeHRM\ZkTeco\Api\ZkTecoSalaryAPI
 
+apiv2_zkteco_attendance_punch_pair_report:
+  path: /api/v2/zkteco/attendance/punch-pair-report
+  controller: OrangeHRM\Core\Controller\Rest\V2\GenericRestController::handle
+  methods: [ GET ]
+  defaults:
+    _api: OrangeHRM\ZkTeco\Api\PunchPairReportAPI
+
 
 ##########################
 #        Screens
 ##########################
+
+
 zkteco_attendance_punch_pair_report:
   path: /zkteco/attendance/punchPair
   controller: OrangeHRM\ZkTeco\Controller\Attendance\AttendancePunchPairController::handle

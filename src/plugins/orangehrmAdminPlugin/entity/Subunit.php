@@ -93,6 +93,13 @@ class Subunit extends TenantAware implements NestedSetInterface
     private ?NodeInterface $node = null;
 
     /**
+     * @var array|null
+     *
+     * @ORM\Column(name="extra_data", type="json", nullable=true)
+     */
+    private ?array $extraData = null;
+
+    /**
      * @return int
      */
     public function getId(): int
@@ -221,5 +228,15 @@ class Subunit extends TenantAware implements NestedSetInterface
     public function setNode(?NodeInterface $node): void
     {
         $this->node = $node;
+    }
+
+    public function setExtraData(?array $extraData): void
+    {
+        $this->extraData = $extraData;
+    }
+
+    public function getExtraData(): ?array
+    {
+        return $this->extraData;
     }
 }

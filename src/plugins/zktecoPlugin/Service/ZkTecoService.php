@@ -5,13 +5,16 @@ namespace OrangeHRM\ZkTeco\Service;
 use Exception;
 use OrangeHRM\Core\Exception\DaoException;
 use OrangeHRM\Entity\ZkTecoConfig;
+use OrangeHRM\ZkTeco\Dao\PunchPairFilterParams;
 use OrangeHRM\ZkTeco\Dao\ZkTecoDao;
+use OrangeHRM\ZkTeco\Reports\TransactionReport;
+use OrangeHRM\ZkTeco\Reports\ZkTecoApiResponse;
 
 class ZkTecoService
 {
     protected ?ZkTecoDao $zkTecoDao = null;
 
-    public function getZkTecoDao(): ZkTecoDao
+    private function getZkTecoDao(): ZkTecoDao
     {
         if (is_null($this->zkTecoDao)) {
             $this->zkTecoDao = new ZkTecoDao();
@@ -70,5 +73,10 @@ class ZkTecoService
     public function editSalaryById(string $salaryId, array $updatedData): ?ZkTecoConfig
     {
         return $this->getZkTecoDao()->editSalaryById($salaryId, $updatedData);
+    }
+
+    public function fetchTransactions(PunchPairFilterParams $params): ZkTecoApiResponse
+    {
+        return $this->getZkTecoDao()->fetchTransactions($params);
     }
 }

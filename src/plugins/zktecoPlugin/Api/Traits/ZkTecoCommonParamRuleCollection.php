@@ -2,12 +2,14 @@
 
 namespace OrangeHRM\ZkTeco\Api\Traits;
 
+use OrangeHRM\Core\Api\V2\RequestParams;
 use OrangeHRM\Core\Api\V2\Validator\ParamRule;
 use OrangeHRM\Core\Api\V2\Validator\ParamRuleCollection;
 use OrangeHRM\Core\Api\V2\Validator\Rule;
 use OrangeHRM\Core\Api\V2\Validator\Rules;
 use OrangeHRM\ZkTeco\Api\ZkTecoAPI;
 use OrangeHRM\ZkTeco\Api\ZkTecoSalaryAPI;
+use OrangeHRM\ZkTeco\Dao\PunchPairFilterParams;
 
 trait ZkTecoCommonParamRuleCollection
 {
@@ -84,5 +86,49 @@ trait ZkTecoCommonParamRuleCollection
                 new Rule(Rules::LENGTH, [null, ZkTecoAPI::PARAMETER_RULE_ALL_MAX_LENGTH])
             ),
         );
+    }
+
+    private function setPunchPairReportParams() : PunchPairFilterParams
+    {
+        return PunchPairFilterParams::instance()
+            ->setDate(
+                $this->getRequestParams()->getStringOrNull(
+                    RequestParams::PARAM_TYPE_QUERY,
+                    PunchPairFilterParams::PARAMETER_DATE
+                )
+            )
+            ->setDepartments(
+                array_filter(
+                    explode(',', $this->getRequestParams()->getStringOrNull(
+                        RequestParams::PARAM_TYPE_QUERY,
+                        PunchPairFilterParams::PARAMETER_DEPARTMENTS
+                    ) ?? ''),
+                    fn($value) => $value !== ''
+                )
+            )
+            ->setEmployees(
+                array_filter(
+                    explode(',', $this->getRequestParams()->getStringOrNull(
+                        RequestParams::PARAM_TYPE_QUERY,
+                        PunchPairFilterParams::PARAMETER_EMPLOYEES
+                    ) ?? ''),
+                    fn($value) => $value !== ''
+                )
+            )
+            ->setJobTitles(
+                array_filter(
+                    explode(',', $this->getRequestParams()->getStringOrNull(
+                        RequestParams::PARAM_TYPE_QUERY,
+                        PunchPairFilterParams::PARAMETER_JOB_TITLES
+                    ) ?? ''),
+                    fn($value) => $value !== ''
+                )
+            )
+            ->setReportMode(
+                $this->getRequestParams()->getStringOrNull(
+                    RequestParams::PARAM_TYPE_QUERY,
+                    PunchPairFilterParams::PARAMETER_REPORT_MODE
+                )
+            );
     }
 }

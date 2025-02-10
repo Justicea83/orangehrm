@@ -2,11 +2,11 @@
   <oxd-table-filter filter-title="Punch Pair Report">
     <template #exportOptions>
       <oxd-button
-          size="small"
-          display-type="tool"
-          @click="exportCsv()"
-          label="CSV"
-          icon-name="file-earmark-spreadsheet"
+        size="small"
+        display-type="tool"
+        label="CSV"
+        icon-name="file-earmark-spreadsheet"
+        @click="onClickExportCsv()"
       />
     </template>
     <oxd-form @submit-valid="filterItems">
@@ -52,6 +52,13 @@
   </oxd-table-filter>
 
   <br />
+
+  <export-column-picker-modal
+    v-if="showExportModal"
+    :columns="headers"
+    @on-export="onExport"
+    @close="showExportModal = false"
+  />
 
   <div class="orangehrm-background-container">
     <div class="orangehrm-paper-container">

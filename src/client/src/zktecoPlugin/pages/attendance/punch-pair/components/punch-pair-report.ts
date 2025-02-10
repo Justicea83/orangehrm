@@ -23,6 +23,7 @@ import ReportModeDropdown from '@/zktecoPlugin/pages/attendance/components/Repor
 import {format} from 'date-fns';
 import {CardHeader} from '@ohrm/oxd/types/components/CardTable/types';
 import SubunitAutocomplete from '@/zktecoPlugin/pages/attendance/components/SubunitAutocomplete.vue';
+import ExportColumnPickerModal from '@/zktecoPlugin/pages/attendance/components/ExportColumnPickerModal.vue';
 
 type Filters = {
   date?: string;
@@ -55,22 +56,39 @@ export default {
     EmployeeAutocomplete,
     SubunitDropdown,
     SubunitAutocomplete,
+    ExportColumnPickerModal,
+  },
+  data() {
+    return {
+      showExportModal: false,
+      exportType: 'csv',
+    };
   },
   methods: {
     async filterItems() {
       await this.execQuery();
     },
-    exportCsv() {
+    onClickExportCsv() {
+      this.showExportModal = true;
+      this.exportType = 'csv';
+    },
+    onExport(columns: string[]) {
+      this.showExportModal = false;
+      this.exportCsv(columns);
+    },
+    exportCsv(columns: string[] = []) {
       const baseUrl = `${window.appGlobal.baseUrl}/zkteco/attendance/punch-pair-report-export`;
 
       const filters = {
         ...this.serializedFilters,
-        columns: ['first_name', 'last_name', 'weekday', 'total_time', 'hourly_rate', 'total_comp', 'currency'].join(','),
-        type: 'csv',
-      }
+        columns: columns.join(','),
+        type: this.exportType,
+      };
 
       const filteredParams = Object.fromEntries(
-          Object.entries(filters).filter(([_, v]) => v !== undefined && v !== null)
+        Object.entries(filters).filter(
+          ([_, v]) => v !== undefined && v !== null,
+        ),
       );
 
       const params = new URLSearchParams(filteredParams).toString();

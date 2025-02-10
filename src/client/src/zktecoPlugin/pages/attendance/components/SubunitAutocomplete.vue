@@ -53,7 +53,8 @@ export default {
               label: item.name,
               _indent: item.level ? item.level + 1 : 1,
             };
-          }).sort((a, b) => a.label.localeCompare(b.label));
+          })
+          .sort((a, b) => a.label.localeCompare(b.label));
       });
     });
     return {

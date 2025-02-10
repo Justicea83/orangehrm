@@ -2,6 +2,7 @@
 
 namespace OrangeHRM\ZkTeco\Dao;
 
+use DateTime;
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\GuzzleException;
 use GuzzleHttp\Exception\RequestException;
@@ -63,6 +64,26 @@ class ZkTecoDao extends BaseDao
 
             $this->persist($config);
             return $config;
+        } catch (Exception $e) {
+            throw new DaoException($e->getMessage(), $e->getCode(), $e);
+        }
+    }
+
+    public function triggerForceSync(): ?ZkTecoConfig
+    {
+        try {
+            $existingConfig = $this->getConfig();
+
+            if ($existingConfig && !$existingConfig->isSyncing() && $existingConfig->isEnabled()) {
+                $existingConfig->setForceSyncAt(new DateTime());
+                $existingConfig->setSyncing(true);
+
+                $config = $existingConfig;
+
+                $this->persist($config);
+                return $config;
+            }
+            return null;
         } catch (Exception $e) {
             throw new DaoException($e->getMessage(), $e->getCode(), $e);
         }

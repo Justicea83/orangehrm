@@ -13,6 +13,13 @@ apiv2_zkteco_test_connection:
   defaults:
     _api: OrangeHRM\ZkTeco\Api\ZkTecoTestConnectionAPI
 
+apiv2_zkteco_force_sync:
+  path: /api/v2/zkteco/force-sync
+  controller: OrangeHRM\Core\Controller\Rest\V2\GenericRestController::handle
+  methods: [ POST ]
+  defaults:
+    _api: OrangeHRM\ZkTeco\Api\ZkTecoUserSyncAPI
+
 apiv2_zkteco_salary_component:
   path: /api/v2/zkteco/salary-components/{id}
   controller: OrangeHRM\Core\Controller\Rest\V2\GenericRestController::handle

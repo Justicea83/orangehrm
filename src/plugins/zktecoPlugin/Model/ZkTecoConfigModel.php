@@ -38,6 +38,7 @@ class ZkTecoConfigModel implements Normalizable
             'adminUsername' => $this->zkTecoConfig->getAdminUsername(),
             'adminPassword' => $this->zkTecoConfig->getAdminPassword(),
             'syncInterval' => $this->zkTecoConfig->getSyncInterval(),
+            'forceSyncAt' => $this->zkTecoConfig->getForceSyncAt(),
             'salaries' => $salaries
         ];
     }

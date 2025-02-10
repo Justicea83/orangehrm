@@ -50,6 +50,13 @@ class ZkTecoConfig extends TenantAware
     private ?DateTime $lastSync = null;
 
     /**
+     * @var DateTime|null
+     *
+     * @ORM\Column(name="force_sync_at", type="datetime", nullable=true)
+     */
+    private ?DateTime $forceSyncAt = null;
+
+    /**
      * @var string|null
      *
      * @ORM\Column(name="host", type="string", length=255, nullable=true)
@@ -212,5 +219,15 @@ class ZkTecoConfig extends TenantAware
     public function setScheme(?string $scheme): void
     {
         $this->scheme = $scheme;
+    }
+
+    public function getForceSyncAt(): ?DateTime
+    {
+        return $this->forceSyncAt;
+    }
+
+    public function setForceSyncAt(?DateTime $forceSyncAt): void
+    {
+        $this->forceSyncAt = $forceSyncAt;
     }
 }

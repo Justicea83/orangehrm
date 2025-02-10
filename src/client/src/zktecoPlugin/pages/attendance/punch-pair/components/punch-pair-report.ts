@@ -17,13 +17,14 @@ import EmployeeAutocomplete from '@/core/components/inputs/EmployeeAutocomplete.
 import {computed, ref, watch} from 'vue';
 import {APIService} from '@/core/util/services/api.service';
 import usePaginate from '@/core/util/composable/usePaginate';
-import JobtitleDropdown from '@/orangehrmPimPlugin/components/JobtitleDropdown';
-import SubunitDropdown from '@/orangehrmPimPlugin/components/SubunitDropdown';
+import JobtitleDropdown from '@/orangehrmPimPlugin/components/JobtitleDropdown.vue';
+import SubunitDropdown from '@/orangehrmPimPlugin/components/SubunitDropdown.vue';
 import ReportModeDropdown from '@/zktecoPlugin/pages/attendance/components/ReportModeDropdown.vue';
 import {format} from 'date-fns';
 import {CardHeader} from '@ohrm/oxd/types/components/CardTable/types';
 import SubunitAutocomplete from '@/zktecoPlugin/pages/attendance/components/SubunitAutocomplete.vue';
 import ExportColumnPickerModal from '@/zktecoPlugin/pages/attendance/components/ExportColumnPickerModal.vue';
+import SyncZkTeco from '@/zktecoPlugin/pages/configure/connection/components/SyncZkTeco.vue';
 
 type Filters = {
   date?: string;
@@ -38,6 +39,7 @@ const REPORT_MODE_DAILY = 'daily';
 export default {
   name: 'PunchPairReport',
   components: {
+    SyncZkTeco,
     JobtitleDropdown,
     ReportModeDropdown,
     OxdCardTable,

@@ -1,4 +1,5 @@
 <template>
+  <sync-zk-teco />
   <oxd-table-filter filter-title="Punch Pair Report">
     <template #exportOptions>
       <oxd-button

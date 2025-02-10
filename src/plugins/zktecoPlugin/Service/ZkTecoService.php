@@ -46,6 +46,14 @@ class ZkTecoService
     /**
      * @throws DaoException
      */
+    public function triggerForceSync(): ?ZkTecoConfig
+    {
+        return $this->getZkTecoDao()->triggerForceSync();
+    }
+
+    /**
+     * @throws DaoException
+     */
     public function getConfig(): ?ZkTecoConfig
     {
         return $this->getZkTecoDao()->getConfig();

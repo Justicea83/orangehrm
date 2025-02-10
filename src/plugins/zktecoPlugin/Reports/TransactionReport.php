@@ -11,6 +11,8 @@ class TransactionReport extends AbstractZkTecoReport
 {
     use EntityManagerHelperTrait, AuthUserTrait;
 
+    const MAX_SHIFT_HOURS = 16;
+
     const COLUMN_MAPPINGS = [
         "emp_code"       => "Employee Code",
         "first_name"     => "First Name",
@@ -74,7 +76,7 @@ class TransactionReport extends AbstractZkTecoReport
         return new TransactionReport();
     }
 
-    public function generateDTRReport($records, $startDate): array
+    public function generateDTRReport1($records, $startDate): array
     {
         // Group records by employee code and add a DateTime field (for proper sorting)
         $employeeRecords = [];
@@ -152,6 +154,104 @@ class TransactionReport extends AbstractZkTecoReport
         foreach ($report as &$record) {
             $this->computerSalary($record);
             //$record['computed_amount'] = $record['hours_worked'] * $record['hourly_rate'];
+        }
+
+        return $report;
+    }
+
+    /**
+     * @throws Exception
+     */
+    public function generateDTRReport($records, $startDate): array
+    {
+        // Group records by employee code and add a DateTime field (for proper sorting)
+        $employeeRecords = [];
+        foreach ($records as $record) {
+            $empCode = $record['emp_code'];
+            // Create a DateTime object by combining the att_date and punch_time
+            $record['datetime'] = DateTime::createFromFormat('Y-m-d H:i', $record['att_date'] . ' ' . $record['punch_time']);
+            $employeeRecords[$empCode][] = $record;
+        }
+
+        // Sort each employee's records in ascending order (by the datetime)
+        foreach ($employeeRecords as $empCode => &$recordsList) {
+            usort($recordsList, function ($a, $b) {
+                return $a['datetime'] <=> $b['datetime'];
+            });
+        }
+        unset($recordsList);
+
+        $report = [];
+
+        // Process each employee's records to find a valid punch pair.
+        // We only accept pairs where the Check In is on the $startDate.
+        foreach ($employeeRecords as $empCode => $recordsList) {
+            foreach ($recordsList as $index => $record) {
+                // Only consider a Check In if its att_date equals the start date.
+                if ($record['punch_state'] === 'Check In' && $record['att_date'] === $startDate) {
+                    $checkIn = $record;
+                    // Look for the next valid Check Out (it may fall on the next day).
+                    for ($i = $index + 1; $i < count($recordsList); $i++) {
+                        $nextRecord = $recordsList[$i];
+                        if ($nextRecord['punch_state'] === 'Check Out' && $nextRecord['datetime'] > $checkIn['datetime']) {
+                            $checkOut = $nextRecord;
+
+                            // Compute the total time difference.
+                            $interval = $checkIn['datetime']->diff($checkOut['datetime']);
+                            // Calculate hours, taking days into account in case the shift crosses midnight.
+                            $totalHours = $interval->h + ($interval->days * 24);
+                            $minutes = $interval->i;
+
+                            // Check if the computed duration is unreasonably high.
+                            if ($totalHours >= self::MAX_SHIFT_HOURS) {
+                                // The interval exceeds our acceptable threshold,
+                                // so we assume the employee forgot to punch out.
+                                // You could log this event or handle it differently.
+                                $checkOut['punch_time'] = "";
+                                $totalTime = "00:00";
+                            } else {
+                                $totalTime = sprintf("%02d:%02d", $totalHours, $minutes);
+                            }
+
+                            // Determine the weekday from the Check In date.
+                            $weekday = date('l', strtotime($checkIn['att_date']));
+
+                            // Build the report entry.
+                            $report[] = [
+                                "emp_code"       => $checkIn['emp_code']       ?? "",
+                                "first_name"     => $checkIn['first_name']     ?? "",
+                                "last_name"      => $checkIn['last_name']      ?? "",
+                                "nick_name"      => $checkIn['nick_name']      ?? "",
+                                "gender"         => $checkIn['gender']         ?? "",
+                                "dept_code"      => $checkIn['dept_code']      ?? "",
+                                "dept_name"      => $checkIn['dept_name']      ?? "",
+                                "position_code"  => $checkIn['position_code']  ?? "",
+                                "company_code"   => $checkIn['company_code']   ?? "",
+                                "company_name"   => $checkIn['company_name']   ?? "",
+                                "position_name"  => $checkIn['position_name']  ?? "",
+                                "att_date"       => $checkIn['att_date']       ?? "",
+                                "weekday"        => $weekday,
+                                "check_in"       => $checkIn['punch_time']     ?? "",
+                                "check_out"      => $checkOut['punch_time']    ?? "",
+                                "total_time"     => $totalTime,
+                                "hourly_rate"    => $record['hourly_rate']     ?? "",
+                                "total_comp"     => $record['total_comp']      ?? "",
+                                "currency"       => $record['currency']        ?? ""
+                            ];
+                            break 2;  // Stop further processing for this employee once a valid pair is found.
+                        }
+                    }
+                }
+            }
+        }
+
+        // Sort the final report array by att_date.
+        usort($report, function ($a, $b) {
+            return strcmp($a['att_date'], $b['att_date']);
+        });
+
+        foreach ($report as &$record) {
+            $this->computerSalary($record);
         }
 
         return $report;

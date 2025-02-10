@@ -28,14 +28,14 @@ export default {
           id: 'daily',
           label: 'Daily',
         },
-        {
-          id: 'monthly',
-          label: 'Monthly',
-        },
-        {
-          id: 'yearly',
-          label: 'Yearly',
-        },
+        // {
+        //   id: 'monthly',
+        //   label: 'Monthly',
+        // },
+        // {
+        //   id: 'yearly',
+        //   label: 'Yearly',
+        // },
       ],
     };
   },

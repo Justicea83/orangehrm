@@ -111,6 +111,7 @@ export default {
       date: format(new Date(Date.now() - 86400000), 'yyyy-MM-dd'),
     });
     const showReportDate = ref<boolean>(true);
+    const columns = ref<string[]>([]);
 
     const serializedFilters = computed(() => {
       return {
@@ -146,6 +147,18 @@ export default {
       {deep: true},
     );
 
+    watch(
+      response,
+      (val) => {
+        if (val?.data?.length > 0) {
+          columns.value = Object.keys(val.data[0]);
+        } else {
+          columns.value = [];
+        }
+      },
+      {deep: true},
+    );
+
     return {
       http,
       showPaginator,
@@ -157,6 +170,7 @@ export default {
       reportData: response,
       serializedFilters,
       execQuery,
+      columns,
       showReportDate,
     };
   },
@@ -179,6 +193,18 @@ export default {
           name: 'nick_name',
           slot: 'nick_name',
           title: 'Nick Name',
+          style: {flex: 1},
+        },
+        {
+          name: 'dept_name',
+          slot: 'dept_name',
+          title: 'Department',
+          style: {flex: 1},
+        },
+        {
+          name: 'att_date',
+          slot: 'att_date',
+          title: 'Date',
           style: {flex: 1},
         },
         {
@@ -222,6 +248,12 @@ export default {
           name: 'currency',
           slot: 'currency',
           title: 'Currency',
+          style: {flex: 1},
+        },
+        {
+          name: 'position_name',
+          slot: 'position_name',
+          title: 'Position',
           style: {flex: 1},
         },
       ];

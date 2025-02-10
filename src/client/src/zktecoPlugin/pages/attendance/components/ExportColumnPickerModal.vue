@@ -11,11 +11,11 @@
         <oxd-grid :cols="3" class="orangehrm-full-width-grid">
           <oxd-grid-item
             v-for="column in columns"
-            :key="column.name"
+            :key="column"
             class="spacing-y"
             @change="checkChange($event, column)"
           >
-            <oxd-checkbox-input :option-label="column.title" />
+            <oxd-checkbox-input :option-label="columnMappings[column] ?? ''" />
           </oxd-grid-item>
         </oxd-grid>
       </oxd-form-row>
@@ -76,6 +76,27 @@ export default {
   data() {
     return {
       selectedColumns: [],
+      columnMappings: {
+        emp_code: 'Employee Code',
+        first_name: 'First Name',
+        last_name: 'Last Name',
+        nick_name: 'Nickname',
+        gender: 'Gender',
+        dept_code: 'Department Code',
+        dept_name: 'Department Name',
+        position_code: 'Position Code',
+        company_code: 'Company Code',
+        company_name: 'Company Name',
+        position_name: 'Position Name',
+        att_date: 'Attendance Date',
+        weekday: 'Day of the Week',
+        check_in: 'Check-in Time',
+        check_out: 'Check-out Time',
+        total_time: 'Total Work Time',
+        hourly_rate: 'Hourly Rate',
+        total_comp: 'Total Compensation',
+        currency: 'Currency',
+      },
     };
   },
   methods: {
@@ -88,10 +109,10 @@ export default {
     },
     checkChange(event, column) {
       if (event.target.checked) {
-        this.selectedColumns.push(column.name);
+        this.selectedColumns.push(column);
       } else {
         this.selectedColumns = this.selectedColumns.filter(
-          (item) => item !== column.name,
+          (item) => item !== column,
         );
       }
     },

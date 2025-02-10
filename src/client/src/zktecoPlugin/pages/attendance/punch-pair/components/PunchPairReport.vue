@@ -3,6 +3,7 @@
     <template #exportOptions>
       <oxd-button
         size="small"
+        :disabled="columns.length === 0"
         display-type="tool"
         label="CSV"
         icon-name="file-earmark-spreadsheet"
@@ -55,7 +56,7 @@
 
   <export-column-picker-modal
     v-if="showExportModal"
-    :columns="headers"
+    :columns="columns"
     @on-export="onExport"
     @close="showExportModal = false"
   />

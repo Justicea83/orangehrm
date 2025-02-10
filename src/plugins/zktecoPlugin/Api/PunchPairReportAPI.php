@@ -69,6 +69,18 @@ class PunchPairReportAPI extends Endpoint implements CollectionEndpoint
                     new Rule(Rules::STRING_TYPE),
                 ),
             ),
+            $this->getValidationDecorator()->notRequiredParamRule(
+                new ParamRule(
+                    PunchPairFilterParams::PARAMETER_EXPORT_TYPE,
+                    new Rule(Rules::STRING_TYPE),
+                ),
+            ),
+            $this->getValidationDecorator()->notRequiredParamRule(
+                new ParamRule(
+                    PunchPairFilterParams::PARAMETER_EXPORT_COLUMNS,
+                    new Rule(Rules::STRING_TYPE),
+                ),
+            ),
             ...$this->getSortingAndPaginationParamsRules(PunchPairFilterParams::ALLOWED_SORT_FIELDS)
         );
     }

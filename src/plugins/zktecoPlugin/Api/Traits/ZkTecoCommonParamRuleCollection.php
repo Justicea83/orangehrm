@@ -10,6 +10,7 @@ use OrangeHRM\Core\Api\V2\Validator\Rules;
 use OrangeHRM\ZkTeco\Api\ZkTecoAPI;
 use OrangeHRM\ZkTeco\Api\ZkTecoSalaryAPI;
 use OrangeHRM\ZkTeco\Dao\PunchPairFilterParams;
+use OrangeHRM\Framework\Http\Request;
 
 trait ZkTecoCommonParamRuleCollection
 {
@@ -88,13 +89,19 @@ trait ZkTecoCommonParamRuleCollection
         );
     }
 
-    private function setPunchPairReportParams() : PunchPairFilterParams
+    private function setPunchPairReportParams(): PunchPairFilterParams
     {
         return PunchPairFilterParams::instance()
             ->setDate(
                 $this->getRequestParams()->getStringOrNull(
                     RequestParams::PARAM_TYPE_QUERY,
                     PunchPairFilterParams::PARAMETER_DATE
+                )
+            )
+            ->setExportType(
+                $this->getRequestParams()->getStringOrNull(
+                    RequestParams::PARAM_TYPE_QUERY,
+                    PunchPairFilterParams::PARAMETER_EXPORT_TYPE
                 )
             )
             ->setDepartments(
@@ -124,11 +131,58 @@ trait ZkTecoCommonParamRuleCollection
                     fn($value) => $value !== ''
                 )
             )
+            ->setExportColumns(
+                array_filter(
+                    explode(',', $this->getRequestParams()->getStringOrNull(
+                        RequestParams::PARAM_TYPE_QUERY,
+                        PunchPairFilterParams::PARAMETER_EXPORT_COLUMNS
+                    ) ?? ''),
+                    fn($value) => $value !== ''
+                )
+            )
             ->setReportMode(
                 $this->getRequestParams()->getStringOrNull(
                     RequestParams::PARAM_TYPE_QUERY,
                     PunchPairFilterParams::PARAMETER_REPORT_MODE
                 )
+            );
+    }
+
+    private function setPunchPairExportReportParams(Request $request): PunchPairFilterParams
+    {
+        return PunchPairFilterParams::instance()
+            ->setDate(
+                $request->query->get(PunchPairFilterParams::PARAMETER_DATE)
+            )
+            ->setExportType(
+                $request->query->get(PunchPairFilterParams::PARAMETER_EXPORT_TYPE)
+            )
+            ->setDepartments(
+                array_filter(
+                    explode(',', $request->query->get(PunchPairFilterParams::PARAMETER_DEPARTMENTS) ?? ''),
+                    fn($value) => $value !== ''
+                )
+            )
+            ->setEmployees(
+                array_filter(
+                    explode(',', $request->query->get(PunchPairFilterParams::PARAMETER_EMPLOYEES) ?? ''),
+                    fn($value) => $value !== ''
+                )
+            )
+            ->setJobTitles(
+                array_filter(
+                    explode(',', $request->query->get(PunchPairFilterParams::PARAMETER_JOB_TITLES) ?? ''),
+                    fn($value) => $value !== ''
+                )
+            )
+            ->setExportColumns(
+                array_filter(
+                    explode(',', $request->query->get(PunchPairFilterParams::PARAMETER_EXPORT_COLUMNS) ?? ''),
+                    fn($value) => $value !== ''
+                )
+            )
+            ->setReportMode(
+                $request->query->get(PunchPairFilterParams::PARAMETER_REPORT_MODE)
             );
     }
 }

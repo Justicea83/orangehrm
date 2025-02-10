@@ -60,6 +60,23 @@ export default {
     async filterItems() {
       await this.execQuery();
     },
+    exportCsv() {
+      const baseUrl = `${window.appGlobal.baseUrl}/zkteco/attendance/punch-pair-report-export`;
+
+      const filters = {
+        ...this.serializedFilters,
+        columns: ['first_name', 'last_name', 'weekday', 'total_time', 'hourly_rate', 'total_comp', 'currency'].join(','),
+        type: 'csv',
+      }
+
+      const filteredParams = Object.fromEntries(
+          Object.entries(filters).filter(([_, v]) => v !== undefined && v !== null)
+      );
+
+      const params = new URLSearchParams(filteredParams).toString();
+      const downUrl = `${baseUrl}?${params}`;
+      window.open(downUrl, '_blank');
+    },
   },
   props: {
     apiUrl: {
@@ -120,6 +137,7 @@ export default {
       pages,
       filters,
       reportData: response,
+      serializedFilters,
       execQuery,
       showReportDate,
     };

@@ -11,6 +11,8 @@ class PunchPairFilterParams extends FilterParams
     public const PARAMETER_DEPARTMENTS = 'departments';
     public const PARAMETER_JOB_TITLES = 'jobTitles';
     public const PARAMETER_REPORT_MODE = 'reportMode';
+    public const PARAMETER_EXPORT_TYPE = 'type';
+    public const PARAMETER_EXPORT_COLUMNS = 'columns';
 
     public const ALLOWED_SORT_FIELDS = [
         self::PARAMETER_DATE
@@ -21,6 +23,8 @@ class PunchPairFilterParams extends FilterParams
     private ?array $employees;
     private ?array $departments;
     private ?array $jobTitles;
+    private ?array $exportColumns;
+    private ?string $exportType;
 
     public function setDate(?string $date): PunchPairFilterParams
     {
@@ -80,5 +84,27 @@ class PunchPairFilterParams extends FilterParams
     public static function instance(): PunchPairFilterParams
     {
         return new PunchPairFilterParams();
+    }
+
+    public function setExportColumns(?array $exportColumns): PunchPairFilterParams
+    {
+        $this->exportColumns = $exportColumns;
+        return $this;
+    }
+
+    public function getExportColumns(): ?array
+    {
+        return $this->exportColumns;
+    }
+
+    public function setExportType(?string $exportType): PunchPairFilterParams
+    {
+        $this->exportType = $exportType;
+        return $this;
+    }
+
+    public function getExportType(): ?string
+    {
+        return $this->exportType;
     }
 }

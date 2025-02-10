@@ -11,6 +11,28 @@ class TransactionReport extends AbstractZkTecoReport
 {
     use EntityManagerHelperTrait, AuthUserTrait;
 
+    const COLUMN_MAPPINGS = [
+        "emp_code"       => "Employee Code",
+        "first_name"     => "First Name",
+        "last_name"      => "Last Name",
+        "nick_name"      => "Nickname",
+        "gender"         => "Gender",
+        "dept_code"      => "Department Code",
+        "dept_name"      => "Department Name",
+        "position_code"  => "Position Code",
+        "company_code"   => "Company Code",
+        "company_name"   => "Company Name",
+        "position_name"  => "Position Name",
+        "att_date"       => "Attendance Date",
+        "weekday"        => "Day of the Week",
+        "check_in"       => "Check-in Time",
+        "check_out"      => "Check-out Time",
+        "total_time"     => "Total Work Time",
+        "hourly_rate"    => "Hourly Rate",
+        "total_comp"     => "Total Compensation",
+        "currency"       => "Currency",
+    ];
+
     public function fetchTransactions(
         array  $queryParams = [],
         string $endpoint = '/att/api/transactionReport/'
@@ -302,4 +324,18 @@ class TransactionReport extends AbstractZkTecoReport
 
         return number_format($compensation, 2, '.', '');
     }
+
+    public static function filterColumns(array $columns, array $data): array
+    {
+        return array_map(function ($row) use ($columns) {
+            $filteredRow = array_intersect_key($row, array_flip($columns));
+
+            // Rename keys to their mapped values
+            return array_combine(
+                array_map(fn($key) => self::COLUMN_MAPPINGS[$key] ?? $key, array_keys($filteredRow)),
+                array_values($filteredRow)
+            );
+        }, $data);
+    }
+
 }

@@ -1,5 +1,14 @@
 <template>
-  <oxd-table-filter filter-title="Generate Punch Pair Report">
+  <oxd-table-filter filter-title="Punch Pair Report">
+    <template #exportOptions>
+      <oxd-button
+          size="small"
+          display-type="tool"
+          @click="exportCsv()"
+          label="CSV"
+          icon-name="file-earmark-spreadsheet"
+      />
+    </template>
     <oxd-form @submit-valid="filterItems">
       <oxd-form-row>
         <oxd-grid :cols="2" class="orangehrm-full-width-grid">
@@ -35,7 +44,7 @@
         <oxd-button
           class="orangehrm-left-space"
           display-type="secondary"
-          label="Generate"
+          label="Filter"
           type="submit"
         />
       </oxd-form-actions>
@@ -46,14 +55,6 @@
 
   <div class="orangehrm-background-container">
     <div class="orangehrm-paper-container">
-      <div class="orangehrm-header-container">
-        <oxd-button
-          label="Assign"
-          icon-name="plus"
-          display-type="secondary"
-          @click="onClickAdd"
-        />
-      </div>
       <table-header :total="total" :loading="isLoading" />
       <div class="orangehrm-container">
         <oxd-card-table

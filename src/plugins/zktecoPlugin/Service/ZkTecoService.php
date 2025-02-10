@@ -79,4 +79,9 @@ class ZkTecoService
     {
         return $this->getZkTecoDao()->fetchTransactions($params);
     }
+
+    public function exportTransactions(PunchPairFilterParams $params): ZkTecoApiResponse
+    {
+        return $this->getZkTecoDao()->exportTransactions($params);
+    }
 }

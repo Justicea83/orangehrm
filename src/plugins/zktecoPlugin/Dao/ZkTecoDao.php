@@ -239,6 +239,7 @@ class ZkTecoDao extends BaseDao
         ];
 
         $reportMode = $params->getReportMode();
+
         $date = $params->getDate();
 
         if ($reportMode === 'daily') {
@@ -297,6 +298,87 @@ class ZkTecoDao extends BaseDao
 
         if ($params->getReportMode() == 'daily') {
             $response->setData(TransactionReport::instance()->generateDTRReport($response->getData(), $query_params['start_date']));
+        }
+
+        return $response;
+    }
+
+    public function exportTransactions(PunchPairFilterParams $params): ZkTecoApiResponse
+    {
+        $query_params = [
+            'page' => 1,
+            'page_size' => 1,
+        ];
+
+        $reportMode = $params->getReportMode();
+
+        $date = $params->getDate();
+
+        if ($reportMode === 'daily') {
+            $query_params['start_date'] = $date;
+            $query_params['end_date'] = date('Y-m-d', strtotime($date . ' +1 day'));
+        } elseif ($reportMode === 'monthly') {
+            $query_params['start_date'] = date('Y-m-01', strtotime($date));
+            $query_params['end_date'] = date('Y-m-t', strtotime($date));
+        } elseif ($reportMode === 'yearly') {
+            $query_params['start_date'] = date('Y-01-01', strtotime($date));
+            $query_params['end_date'] = date('Y-12-31', strtotime($date));
+        } else {
+            // Default to today's date if report mode is not recognized
+            $query_params['start_date'] = date('Y-m-d');
+            $query_params['end_date'] = date('Y-m-d');
+        }
+
+        if (count($params->getDepartments()) > 0) {
+            $departments = array_map(function (Subunit $subunit) {
+                $extraData = $subunit->getExtraData();
+                return $extraData['zk_external_id'] ?? null;
+            }, $this->getRepository(Subunit::class)
+                ->createQueryBuilder('s')
+                ->where('s.id IN (:departments)')
+                ->setParameter('departments', $params->getDepartments())
+                ->getQuery()
+                ->getResult());
+
+            $departments = array_filter($departments);
+
+            if (!empty($departments)) {
+                $query_params['departments'] = implode(',', $departments);
+            }
+        }
+
+        if (count($params->getEmployees()) > 0) {
+            $employees = array_map(function (Employee $employee) {
+                $extraData = $employee->getExtraData();
+                return $extraData['zk_external_id'] ?? null;
+            }, $this->getRepository(Employee::class)
+                ->createQueryBuilder('s')
+                ->where('s.empNumber IN (:employees)')
+                ->setParameter('employees', $params->getEmployees())
+                ->getQuery()
+                ->getResult());
+
+            $employees = array_filter($employees);
+
+            if (!empty($employees)) {
+                $query_params['employees'] = implode(',', $employees);
+            }
+        }
+
+        $response = TransactionReport::instance()->fetchTransactions($query_params);
+
+        if ($response->getCount() === 0) {
+            return $response;
+        }
+
+        $query_params['page_size'] = $response->getCount();
+
+        $response = TransactionReport::instance()->fetchTransactions($query_params);
+
+        if ($params->getReportMode() == 'daily') {
+            $response->setData(
+                TransactionReport::instance()->generateDTRReport($response->getData(), $query_params['start_date'])
+            );
         }
 
         return $response;

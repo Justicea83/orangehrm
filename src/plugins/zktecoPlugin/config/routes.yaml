@@ -41,8 +41,8 @@ apiv2_zkteco_attendance_punch_pair_report:
   defaults:
     _api: OrangeHRM\ZkTeco\Api\PunchPairReportAPI
 
-zkteco_attendance_punch_pair_report_export:
-  path: /zkteco/attendance/punch-pair-report-export
+zkteco_exports_punch_pair_report_export:
+  path: /zkteco/exports/punchPair
   controller: OrangeHRM\ZkTeco\Controller\File\AttendancePunchPairReportFileController::handle
 
 
@@ -56,8 +56,8 @@ zkteco_attendance_punch_pair_report:
   controller: OrangeHRM\ZkTeco\Controller\Attendance\AttendancePunchPairController::handle
   methods: [ GET ]
 
-zkteco_config:
-  path: /zkteco/configure
+zkteco_configuration:
+  path: /zkteco/configuration/setup
   controller: OrangeHRM\ZkTeco\Controller\CreateConnectionController::handle
   methods: [ GET ]
 

@@ -79,7 +79,7 @@ export default {
       this.exportCsv(columns);
     },
     exportCsv(columns: string[] = []) {
-      const baseUrl = `${window.appGlobal.baseUrl}/zkteco/attendance/punch-pair-report-export`;
+      const baseUrl = `${window.appGlobal.baseUrl}/zkteco/exports/punchPair`;
 
       const filters = {
         ...this.serializedFilters,

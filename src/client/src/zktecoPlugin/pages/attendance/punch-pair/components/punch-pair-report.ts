@@ -79,7 +79,9 @@ export default {
       this.exportCsv(columns);
     },
     exportCsv(columns: string[] = []) {
-      const baseUrl = `${window.appGlobal.baseUrl}/zkteco/exports/punchPair`;
+      const baseUrl = `${
+        (window as any).appGlobal.baseUrl
+      }/zkteco/exports/punchPair`;
 
       const filters = {
         ...this.serializedFilters,
@@ -87,10 +89,10 @@ export default {
         type: this.exportType,
       };
 
-      const filteredParams = Object.fromEntries(
-        Object.entries(filters).filter(
-          ([_, v]) => v !== undefined && v !== null,
-        ),
+      const filteredParams: Record<string, string> = Object.fromEntries(
+        Object.entries(filters)
+          .filter(([_, v]) => v !== undefined && v !== null)
+          .map(([k, v]) => [k, String(v)]), // Ensure all values are strings
       );
 
       const params = new URLSearchParams(filteredParams).toString();

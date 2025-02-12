@@ -6,7 +6,7 @@
     "serve": "vue-cli-service serve",
     "dev": "vue-cli-service build --watch --mode development --dest ../../web/dist && npx @tailwindcss/cli -i ./src/index.css  -o ../../web/dist/output.css --watch",
     "tailwind": "npx @tailwindcss/cli -i ./src/index.css  -o ../../web/dist/output.css --watch",
-    "build": "vue-cli-service build --dest ../../web/dist && tailwindcss -i ./src/index.css -o ../../web/dist/output.css --minify",
+    "build": "vue-cli-service build --dest ../../web/dist && npx @tailwindcss/cli -i ./src/index.css -o ../../web/dist/output.css --minify",
     "test:unit": "vue-cli-service test:unit",
     "lint": "vue-cli-service lint --max-warnings=0 --mode production"
   },

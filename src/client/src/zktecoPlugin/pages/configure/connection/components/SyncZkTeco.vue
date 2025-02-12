@@ -40,7 +40,7 @@ export default {
   emits: ['onDismissAlert', 'serverConfigChanged'],
   setup() {
     const http = new APIService(
-      window.appGlobal.baseUrl,
+      (window as any).appGlobal.baseUrl,
       '/api/v2/zkteco/config',
     );
 
@@ -65,7 +65,7 @@ export default {
       immediate: true,
     },
     serverConfig: {
-      handler(val, oldVal) {
+      handler(val: ServerConfig, oldVal: ServerConfig) {
         if (val?.syncing) {
           // Clear existing interval if already running
           if (this.intervalId) {

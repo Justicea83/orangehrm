@@ -36,8 +36,8 @@ import {PropType} from 'vue';
 import {format} from 'date-fns';
 import {zonedTimeToUtc, utcToZonedTime} from 'date-fns-tz';
 import {ServerConfig} from '@/zktecoPlugin/pages/configure/connection/types/serverConfig';
-import {AxiosResponse} from "axios";
-import {da} from "date-fns/locale";
+import {AxiosResponse} from 'axios';
+import {da} from 'date-fns/locale';
 
 export default {
   name: 'ForceSyncZkTeco',
@@ -55,7 +55,7 @@ export default {
   emits: ['serverConfigChanged'],
   setup() {
     const http = new APIService(
-      window.appGlobal.baseUrl,
+      (window as any).appGlobal.baseUrl,
       '/api/v2/zkteco/force-sync',
     );
     const {jsDateFormat} = useDateFormat();
@@ -117,7 +117,7 @@ export default {
         .then((response: AxiosResponse) => {
           const data = response.data.data as ServerConfig | null;
 
-          if(data) {
+          if (data) {
             this.serverConfig = data;
             this.$emit('serverConfigChanged', data);
           }

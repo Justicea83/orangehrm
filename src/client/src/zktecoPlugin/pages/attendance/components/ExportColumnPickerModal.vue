@@ -35,7 +35,7 @@
   </oxd-dialog>
 </template>
 
-<script lang="ts">
+<script>
 import {
   OxdForm,
   OxdFormRow,

@@ -40,6 +40,11 @@ class FilterParams
         return $this->sortOrder;
     }
 
+    public function getPage(): int
+    {
+        return (int) floor($this->offset / $this->limit) + 1;
+    }
+
     /**
      * @param string $sortOrder
      * @throws SearchParamException

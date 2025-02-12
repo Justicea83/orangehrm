@@ -15,10 +15,10 @@
  * if not, write to the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor,
  * Boston, MA  02110-1301, USA
  */
-export const truncate = (text, { length = 50, ellipsis = '...' } = {}) => {
-    if (typeof text === 'string') {
-        return text.length > length ? text.substr(0, length) + ellipsis : text;
-    }
-    return '';
+export const truncate = (text, {length = 50, ellipsis = '...'} = {}) => {
+  if (typeof text === 'string') {
+    return text.length > length ? text.substr(0, length) + ellipsis : text;
+  }
+  return '';
 };
 //# sourceMappingURL=truncate.js.map

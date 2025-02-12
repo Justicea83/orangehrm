@@ -15,34 +15,35 @@
  * if not, write to the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor,
  * Boston, MA  02110-1301, USA
  */
-import { getCurrentInstance } from 'vue';
+import {getCurrentInstance} from 'vue';
 export default function useToast() {
-    const $toast = getCurrentInstance()?.appContext.config.globalProperties.$toast;
-    /**
-     * typesafe & nullsafe wrapper for functions
-     * https://stackoverflow.com/a/61212868/2182418
-     */
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const wrap = (fn) => {
-        return (...args) => {
-            return fn && fn(...args);
-        };
+  const $toast =
+    getCurrentInstance()?.appContext.config.globalProperties.$toast;
+  /**
+   * typesafe & nullsafe wrapper for functions
+   * https://stackoverflow.com/a/61212868/2182418
+   */
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const wrap = (fn) => {
+    return (...args) => {
+      return fn && fn(...args);
     };
-    return {
-        notify: wrap($toast?.notify),
-        show: wrap($toast?.show),
-        success: wrap($toast?.success),
-        error: wrap($toast?.error),
-        info: wrap($toast?.info),
-        warn: wrap($toast?.warn),
-        clear: wrap($toast?.clear),
-        clearAll: wrap($toast?.clearAll),
-        saveSuccess: wrap($toast?.saveSuccess),
-        addSuccess: wrap($toast?.addSuccess),
-        updateSuccess: wrap($toast?.updateSuccess),
-        deleteSuccess: wrap($toast?.deleteSuccess),
-        cannotDelete: wrap($toast?.cannotDelete),
-        noRecordsFound: wrap($toast?.noRecordsFound),
-    };
+  };
+  return {
+    notify: wrap($toast?.notify),
+    show: wrap($toast?.show),
+    success: wrap($toast?.success),
+    error: wrap($toast?.error),
+    info: wrap($toast?.info),
+    warn: wrap($toast?.warn),
+    clear: wrap($toast?.clear),
+    clearAll: wrap($toast?.clearAll),
+    saveSuccess: wrap($toast?.saveSuccess),
+    addSuccess: wrap($toast?.addSuccess),
+    updateSuccess: wrap($toast?.updateSuccess),
+    deleteSuccess: wrap($toast?.deleteSuccess),
+    cannotDelete: wrap($toast?.cannotDelete),
+    noRecordsFound: wrap($toast?.noRecordsFound),
+  };
 }
 //# sourceMappingURL=useToast.js.map

@@ -274,6 +274,7 @@ final class Services
     public const EMPLOYEE_SERVICE = 'pim.employee_service';
 
     public const TASK_SERVICE = 'onboarding.task_service';
+    public const ZKTECO_SERVICE = 'zkteco.zkteco_service';
     public const ORGANIZATION_SERVICE = 'admin.organization_service';
 
     public const TASK_GROUP_SERVICE = 'onboarding.gruop.task_service';

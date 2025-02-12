@@ -17,30 +17,32 @@
  */
 import usei18n from '@/core/util/composable/usei18n';
 export default function useEmployeeNameTranslate() {
-    const { $t } = usei18n();
-    const translateEmployeeName = (employee, options) => {
-        if (employee.firstName === 'Purged' && employee.lastName === 'Employee') {
-            return $t('general.purged_employee');
-        }
-        const includeMiddle = options?.includeMiddle;
-        const excludePastEmpTag = options?.excludePastEmpTag;
-        const resolvedMiddleName = typeof includeMiddle === 'boolean' &&
-            includeMiddle &&
-            typeof employee.middleName === 'string'
-            ? ` ${employee.middleName} `
-            : ' ';
-        if (employee.terminationId) {
-            const resolvedPastEmpTag = typeof excludePastEmpTag === 'undefined'
-                ? ` ${$t('general.past_employee')}`
-                : excludePastEmpTag
-                    ? ''
-                    : ` ${$t('general.past_employee')}`;
-            return `${employee.firstName}${resolvedMiddleName}${employee.lastName}${resolvedPastEmpTag}`;
-        }
-        return `${employee.firstName}${resolvedMiddleName}${employee.lastName}`;
-    };
-    return {
-        $tEmpName: translateEmployeeName,
-    };
+  const {$t} = usei18n();
+  const translateEmployeeName = (employee, options) => {
+    if (employee.firstName === 'Purged' && employee.lastName === 'Employee') {
+      return $t('general.purged_employee');
+    }
+    const includeMiddle = options?.includeMiddle;
+    const excludePastEmpTag = options?.excludePastEmpTag;
+    const resolvedMiddleName =
+      typeof includeMiddle === 'boolean' &&
+      includeMiddle &&
+      typeof employee.middleName === 'string'
+        ? ` ${employee.middleName} `
+        : ' ';
+    if (employee.terminationId) {
+      const resolvedPastEmpTag =
+        typeof excludePastEmpTag === 'undefined'
+          ? ` ${$t('general.past_employee')}`
+          : excludePastEmpTag
+          ? ''
+          : ` ${$t('general.past_employee')}`;
+      return `${employee.firstName}${resolvedMiddleName}${employee.lastName}${resolvedPastEmpTag}`;
+    }
+    return `${employee.firstName}${resolvedMiddleName}${employee.lastName}`;
+  };
+  return {
+    $tEmpName: translateEmployeeName,
+  };
 }
 //# sourceMappingURL=useEmployeeNameTranslate.js.map

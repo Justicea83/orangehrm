@@ -1,0 +1,63 @@
+apiv2_zkteco_configuration:
+  path: /api/v2/zkteco/config
+  controller: OrangeHRM\Core\Controller\Rest\V2\GenericRestController::handle
+  methods: [ GET, PUT ]
+  defaults:
+    id: 0
+    _api: OrangeHRM\ZkTeco\Api\ZkTecoAPI
+
+apiv2_zkteco_test_connection:
+  path: /api/v2/zkteco/test-connection
+  controller: OrangeHRM\Core\Controller\Rest\V2\GenericRestController::handle
+  methods: [ POST ]
+  defaults:
+    _api: OrangeHRM\ZkTeco\Api\ZkTecoTestConnectionAPI
+
+apiv2_zkteco_force_sync:
+  path: /api/v2/zkteco/force-sync
+  controller: OrangeHRM\Core\Controller\Rest\V2\GenericRestController::handle
+  methods: [ POST ]
+  defaults:
+    _api: OrangeHRM\ZkTeco\Api\ZkTecoUserSyncAPI
+
+apiv2_zkteco_salary_component:
+  path: /api/v2/zkteco/salary-components/{id}
+  controller: OrangeHRM\Core\Controller\Rest\V2\GenericRestController::handle
+  methods: [ PUT ]
+  defaults:
+    _api: OrangeHRM\ZkTeco\Api\ZkTecoSalaryAPI
+
+apiv2_zkteco_salary_components:
+  path: /api/v2/zkteco/salary-components
+  controller: OrangeHRM\Core\Controller\Rest\V2\GenericRestController::handle
+  methods: [ POST, DELETE ]
+  defaults:
+    _api: OrangeHRM\ZkTeco\Api\ZkTecoSalaryAPI
+
+apiv2_zkteco_attendance_punch_pair_report:
+  path: /api/v2/zkteco/attendance/punch-pair-report
+  controller: OrangeHRM\Core\Controller\Rest\V2\GenericRestController::handle
+  methods: [ GET ]
+  defaults:
+    _api: OrangeHRM\ZkTeco\Api\PunchPairReportAPI
+
+zkteco_exports_punch_pair_report_export:
+  path: /zkteco/exports/punchPair
+  controller: OrangeHRM\ZkTeco\Controller\File\AttendancePunchPairReportFileController::handle
+
+
+##########################
+#        Screens
+##########################
+
+
+zkteco_attendance_punch_pair_report:
+  path: /zkteco/attendance/punchPair
+  controller: OrangeHRM\ZkTeco\Controller\Attendance\AttendancePunchPairController::handle
+  methods: [ GET ]
+
+zkteco_configuration:
+  path: /zkteco/configuration/setup
+  controller: OrangeHRM\ZkTeco\Controller\CreateConnectionController::handle
+  methods: [ GET ]
+

@@ -15,40 +15,38 @@
  * if not, write to the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor,
  * Boston, MA  02110-1301, USA
  */
-import { ref } from 'vue';
+import {ref} from 'vue';
 export default function usePasswordPolicy(http) {
-    const passwordStrength = ref(0);
-    const validatePassword = (password) => {
-        return new Promise((resolve) => {
-            if (password.trim() !== '') {
-                http
-                    .request({
-                    method: 'POST',
-                    url: `/api/v2/auth/public/validation/password`,
-                    data: {
-                        password,
-                    },
-                })
-                    .then((response) => {
-                    const { data, meta } = response.data;
-                    passwordStrength.value = meta?.strength || 0;
-                    if (Array.isArray(data?.messages) && data.messages.length > 0) {
-                        resolve(data.messages[0]);
-                    }
-                    else {
-                        resolve(true);
-                    }
-                });
+  const passwordStrength = ref(0);
+  const validatePassword = (password) => {
+    return new Promise((resolve) => {
+      if (password.trim() !== '') {
+        http
+          .request({
+            method: 'POST',
+            url: `/api/v2/auth/public/validation/password`,
+            data: {
+              password,
+            },
+          })
+          .then((response) => {
+            const {data, meta} = response.data;
+            passwordStrength.value = meta?.strength || 0;
+            if (Array.isArray(data?.messages) && data.messages.length > 0) {
+              resolve(data.messages[0]);
+            } else {
+              resolve(true);
             }
-            else {
-                passwordStrength.value = 0;
-                resolve(true);
-            }
-        });
-    };
-    return {
-        passwordStrength,
-        validatePassword,
-    };
+          });
+      } else {
+        passwordStrength.value = 0;
+        resolve(true);
+      }
+    });
+  };
+  return {
+    passwordStrength,
+    validatePassword,
+  };
 }
 //# sourceMappingURL=usePasswordPolicy.js.map

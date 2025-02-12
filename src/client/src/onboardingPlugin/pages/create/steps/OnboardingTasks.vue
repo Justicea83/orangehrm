@@ -46,7 +46,7 @@
         <div class="flex flex-col w-full">
           <!--    header      -->
           <div class="board-group-header">
-            <h4>Boarding Tasks</h4>
+            <h4>Assigning Tasks</h4>
             <dropdown-menu
               :menu-items="dropdownMenuItems"
               @menu-item-clicked="elpTasksMenuItemClicked"

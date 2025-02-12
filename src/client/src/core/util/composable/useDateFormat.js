@@ -15,22 +15,21 @@
  * if not, write to the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor,
  * Boston, MA  02110-1301, USA
  */
-import { inject } from 'vue';
-import { convertPHPDateFormat } from '@ohrm/oxd';
+import {inject} from 'vue';
+import {convertPHPDateFormat} from '@ohrm/oxd';
 export const dateFormatKey = Symbol('dateFormat');
 export default function useDateFormat() {
-    const dateFormat = inject(dateFormatKey);
-    if (!dateFormat)
-        throw new Error('Date format is invalid');
-    const jsDateFormat = convertPHPDateFormat(dateFormat.id);
-    const userDateFormat = dateFormat.label;
-    const timeFormat = 'HH:mm';
-    const jsTimeFormat = 'hh:mm a';
-    return {
-        timeFormat,
-        jsTimeFormat,
-        jsDateFormat,
-        userDateFormat,
-    };
+  const dateFormat = inject(dateFormatKey);
+  if (!dateFormat) throw new Error('Date format is invalid');
+  const jsDateFormat = convertPHPDateFormat(dateFormat.id);
+  const userDateFormat = dateFormat.label;
+  const timeFormat = 'HH:mm';
+  const jsTimeFormat = 'hh:mm a';
+  return {
+    timeFormat,
+    jsTimeFormat,
+    jsDateFormat,
+    userDateFormat,
+  };
 }
 //# sourceMappingURL=useDateFormat.js.map

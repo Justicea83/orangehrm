@@ -15,75 +15,79 @@
  * if not, write to the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor,
  * Boston, MA  02110-1301, USA
  */
-import { reactive } from 'vue';
+import {reactive} from 'vue';
 export default function useTimesheetAPIs(http) {
-    const state = reactive({
-        isLoading: false,
-        employee: null,
-        timesheet: null,
-        timesheetId: null,
-        timesheetRecords: [],
-        timesheetStatus: null,
-        timesheetColumns: null,
-        timesheetSubtotal: null,
-        timesheetAllowedActions: [],
-        date: null,
+  const state = reactive({
+    isLoading: false,
+    employee: null,
+    timesheet: null,
+    timesheetId: null,
+    timesheetRecords: [],
+    timesheetStatus: null,
+    timesheetColumns: null,
+    timesheetSubtotal: null,
+    timesheetAllowedActions: [],
+    date: null,
+  });
+  const fetchTimesheet = (date, empNumber) => {
+    return http.request({
+      method: 'GET',
+      url: '/api/v2/time/timesheets/default',
+      params: {
+        date,
+        empNumber,
+      },
     });
-    const fetchTimesheet = (date, empNumber) => {
-        return http.request({
-            method: 'GET',
-            url: '/api/v2/time/timesheets/default',
-            params: {
-                date,
-                empNumber,
-            },
+  };
+  const updateTimesheet = (timesheetId, action, comment, empNumber) => {
+    return http.request({
+      method: 'PUT',
+      url: empNumber
+        ? `/api/v2/time/employees/${empNumber}/timesheets/${timesheetId}`
+        : `/api/v2/time/timesheets/${timesheetId}`,
+      data: {
+        action,
+        comment: comment ? comment : undefined,
+      },
+    });
+  };
+  const fetchTimesheetEntries = (timesheetId, isEmployeeTimesheet) => {
+    return new Promise((resolve) => {
+      http
+        .request({
+          method: 'GET',
+          url: isEmployeeTimesheet
+            ? `/api/v2/time/employees/timesheets/${timesheetId}/entries`
+            : `/api/v2/time/timesheets/${timesheetId}/entries`,
+        })
+        .then((response) => {
+          const {data, meta} = response.data;
+          const {timesheet, allowedActions} = meta;
+          resolve({data, meta, timesheet, allowedActions});
         });
-    };
-    const updateTimesheet = (timesheetId, action, comment, empNumber) => {
-        return http.request({
-            method: 'PUT',
-            url: empNumber
-                ? `/api/v2/time/employees/${empNumber}/timesheets/${timesheetId}`
-                : `/api/v2/time/timesheets/${timesheetId}`,
-            data: {
-                action,
-                comment: comment ? comment : undefined,
-            },
-        });
-    };
-    const fetchTimesheetEntries = (timesheetId, isEmployeeTimesheet) => {
-        return new Promise((resolve) => {
-            http
-                .request({
-                method: 'GET',
-                url: isEmployeeTimesheet
-                    ? `/api/v2/time/employees/timesheets/${timesheetId}/entries`
-                    : `/api/v2/time/timesheets/${timesheetId}/entries`,
-            })
-                .then((response) => {
-                const { data, meta } = response.data;
-                const { timesheet, allowedActions } = meta;
-                resolve({ data, meta, timesheet, allowedActions });
-            });
-        });
-    };
-    const updateTimesheetEntries = (timesheetId, payload, isEmployeeTimesheet) => {
-        return http.request({
-            method: 'PUT',
-            url: isEmployeeTimesheet
-                ? `/api/v2/time/employees/timesheets/${timesheetId}/entries`
-                : `/api/v2/time/timesheets/${timesheetId}/entries`,
-            data: {
-                ...payload,
-            },
-        });
-    };
-    return {
-        state,
-        fetchTimesheet,
-        updateTimesheet,
-        fetchTimesheetEntries,
-        updateTimesheetEntries,
-    };
+    });
+  };
+  const updateTimesheetEntries = (
+    timesheetId,
+    payload,
+    isEmployeeTimesheet,
+  ) => {
+    return http.request({
+      method: 'PUT',
+      url: isEmployeeTimesheet
+        ? `/api/v2/time/employees/timesheets/${timesheetId}/entries`
+        : `/api/v2/time/timesheets/${timesheetId}/entries`,
+      data: {
+        ...payload,
+      },
+    });
+  };
+  return {
+    state,
+    fetchTimesheet,
+    updateTimesheet,
+    fetchTimesheetEntries,
+    updateTimesheetEntries,
+  };
 }
 //# sourceMappingURL=useTimesheetAPIs.js.map

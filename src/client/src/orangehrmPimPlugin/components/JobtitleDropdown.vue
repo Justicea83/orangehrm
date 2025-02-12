@@ -20,7 +20,7 @@
 
 <template>
   <oxd-input-field
-    type="select"
+    :type="multiple ? 'multiselect' : 'select'"
     :label="$t('general.job_title')"
     :options="options"
     :rules="rules"
@@ -31,8 +31,13 @@
 <script>
 import {ref, onBeforeMount} from 'vue';
 import {APIService} from '@ohrm/core/util/services/api.service';
+import {OxdInputField} from '@ohrm/oxd';
+
 export default {
   name: 'JobtitleDropdown',
+  components: {
+    OxdInputField,
+  },
   props: {
     rules: {
       type: Array,
@@ -40,6 +45,11 @@ export default {
       default: Array.from([]),
     },
     required: {
+      type: Boolean,
+      required: false,
+      default: false,
+    },
+    multiple: {
       type: Boolean,
       required: false,
       default: false,

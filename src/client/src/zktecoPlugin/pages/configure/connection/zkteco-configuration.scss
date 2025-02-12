@@ -1,0 +1,48 @@
+.orangehrm-header-container {
+  padding: 0;
+}
+.orangehrm-column-half {
+  width: 50%;
+}
+.orangehrm-form-divider {
+  margin: 1rem 0;
+}
+.orangehrm-subtitle {
+  font-size: 14px;
+  font-weight: 700;
+  margin-bottom: 1rem;
+}
+.orangehrm-ldap-switch {
+  display: flex;
+  align-items: center;
+  white-space: nowrap;
+  justify-content: space-between;
+  margin-bottom: 1rem;
+  &-text {
+    font-size: $oxd-input-control-font-size;
+  }
+}
+.orangehrm-ldap-grid {
+  grid-template-columns: repeat(3, 1fr);
+  &-header {
+    font-size: 12px;
+    font-weight: 700;
+    align-self: start;
+    margin-bottom: 1rem;
+  }
+  &-content {
+    font-size: 12px;
+    position: relative;
+  }
+  &-icon {
+    right: 0;
+    font-size: 18px;
+    position: absolute;
+  }
+  ::v-deep(.oxd-input-group__label-wrapper) {
+    display: none;
+  }
+  ::v-deep(.oxd-switch-wrapper) {
+    margin-top: 0.75rem;
+  }
+}

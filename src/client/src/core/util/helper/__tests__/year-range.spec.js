@@ -15,17 +15,17 @@
  * if not, write to the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor,
  * Boston, MA  02110-1301, USA
  */
-import { yearRange } from '../year-range';
+import {yearRange} from '../year-range';
 describe('core/util/helper/year-range', () => {
-    const currentTime = new Date();
-    const range = 100;
-    const value = new Array(range);
-    for (let i = 0; i < range; i++) {
-        value[i] = currentTime.getFullYear() - Math.floor(range / 2) + i;
-    }
-    test('all the years', () => {
-        const result = yearRange();
-        expect(result).toStrictEqual(value);
-    });
+  const currentTime = new Date();
+  const range = 100;
+  const value = new Array(range);
+  for (let i = 0; i < range; i++) {
+    value[i] = currentTime.getFullYear() - Math.floor(range / 2) + i;
+  }
+  test('all the years', () => {
+    const result = yearRange();
+    expect(result).toStrictEqual(value);
+  });
 });
 //# sourceMappingURL=year-range.spec.js.map

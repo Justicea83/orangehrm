@@ -20,7 +20,7 @@
 
 <template>
   <oxd-input-field
-    type="select"
+    :type="multiple ? 'multiselect' : 'select'"
     :label="$t('general.sub_unit')"
     :options="options"
   />
@@ -29,8 +29,20 @@
 <script>
 import {ref, onBeforeMount} from 'vue';
 import {APIService} from '@ohrm/core/util/services/api.service';
+import {OxdInputField} from '@ohrm/oxd';
+
 export default {
   name: 'SubunitDropdown',
+  components: {
+    OxdInputField,
+  },
+  props: {
+    multiple: {
+      type: Boolean,
+      required: false,
+      default: false,
+    },
+  },
   setup() {
     const options = ref([]);
     const http = new APIService(
@@ -39,13 +51,15 @@ export default {
     );
     onBeforeMount(() => {
       http.getAll().then(({data}) => {
-        options.value = data.data.map((item) => {
-          return {
-            id: item.id,
-            label: item.name,
-            _indent: item.level ? item.level + 1 : 1,
-          };
-        });
+        options.value = data.data
+          .filter((item) => item.level > 0)
+          .map((item) => {
+            return {
+              id: item.id,
+              label: item.name,
+              _indent: item.level ? item.level + 1 : 1,
+            };
+          });
       });
     });
     return {

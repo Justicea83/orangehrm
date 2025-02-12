@@ -15,26 +15,26 @@
  * if not, write to the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor,
  * Boston, MA  02110-1301, USA
  */
-import { computed, ref, watch } from 'vue';
+import {computed, ref, watch} from 'vue';
 export default function useSort(sortParams) {
-    const sortDefinition = ref({
-        ...JSON.parse(JSON.stringify(sortParams.sortDefinition)),
-    });
-    const sortField = computed(() => {
-        return Object.keys(sortDefinition.value).filter((column) => {
-            const order = sortDefinition.value[column];
-            return order && order != 'DEFAULT';
-        })[0];
-    });
-    const sortOrder = computed(() => {
-        return sortDefinition.value[sortField.value];
-    });
-    const onSort = (func) => watch(sortDefinition, func);
-    return {
-        sortDefinition,
-        sortField,
-        sortOrder,
-        onSort,
-    };
+  const sortDefinition = ref({
+    ...JSON.parse(JSON.stringify(sortParams.sortDefinition)),
+  });
+  const sortField = computed(() => {
+    return Object.keys(sortDefinition.value).filter((column) => {
+      const order = sortDefinition.value[column];
+      return order && order != 'DEFAULT';
+    })[0];
+  });
+  const sortOrder = computed(() => {
+    return sortDefinition.value[sortField.value];
+  });
+  const onSort = (func) => watch(sortDefinition, func);
+  return {
+    sortDefinition,
+    sortField,
+    sortOrder,
+    onSort,
+  };
 }
 //# sourceMappingURL=useSort.js.map

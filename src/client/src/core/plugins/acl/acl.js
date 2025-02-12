@@ -15,35 +15,39 @@
  * if not, write to the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor,
  * Boston, MA  02110-1301, USA
  */
-import { inject, getCurrentInstance } from 'vue';
+import {inject, getCurrentInstance} from 'vue';
 const ResolvePermissions = (capability) => {
-    return (...args) => {
-        const instance = getCurrentInstance();
-        if (!instance) {
-            throw new Error('Vue app context not found!');
-        }
-        const permissions = inject('permissions', undefined);
-        if (permissions) {
-            return args.reduce((acc, rule) => acc && Boolean(permissions[rule]) && permissions[rule][capability], true);
-        }
-        return false;
-    };
+  return (...args) => {
+    const instance = getCurrentInstance();
+    if (!instance) {
+      throw new Error('Vue app context not found!');
+    }
+    const permissions = inject('permissions', undefined);
+    if (permissions) {
+      return args.reduce(
+        (acc, rule) =>
+          acc && Boolean(permissions[rule]) && permissions[rule][capability],
+        true,
+      );
+    }
+    return false;
+  };
 };
 function defineMixin() {
-    return {
-        beforeCreate() {
-            this.$can = {
-                read: ResolvePermissions('canRead'),
-                create: ResolvePermissions('canCreate'),
-                update: ResolvePermissions('canUpdate'),
-                delete: ResolvePermissions('canDelete'),
-            };
-        },
-    };
+  return {
+    beforeCreate() {
+      this.$can = {
+        read: ResolvePermissions('canRead'),
+        create: ResolvePermissions('canCreate'),
+        update: ResolvePermissions('canUpdate'),
+        delete: ResolvePermissions('canDelete'),
+      };
+    },
+  };
 }
 export default {
-    install: (app) => {
-        app.mixin(defineMixin());
-    },
+  install: (app) => {
+    app.mixin(defineMixin());
+  },
 };
 //# sourceMappingURL=acl.js.map

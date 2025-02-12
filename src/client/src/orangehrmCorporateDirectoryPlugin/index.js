@@ -17,6 +17,6 @@
  */
 import CorporateDirectory from './pages/CorporateDirectory.vue';
 export default {
-    'corporate-directory-employee-list': CorporateDirectory,
+  'corporate-directory-employee-list': CorporateDirectory,
 };
 //# sourceMappingURL=index.js.map

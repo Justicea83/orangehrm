@@ -23,12 +23,12 @@ import SaveClaimExpenseType from '@/orangehrmClaimPlugin/pages/claimExpenseTypes
 import EditClaimExpenseType from '@/orangehrmClaimPlugin/pages/claimExpenseTypes/EditClaimExpenseType.vue';
 import SubmitClaimRequest from '@/orangehrmClaimPlugin/pages/submitClaim/SubmitClaimRequest.vue';
 export default {
-    'claim-event': ClaimEvent,
-    'claim-event-create': SaveClaimEvent,
-    'claim-event-edit': EditClaimEvent,
-    'claim-expense-types': ClaimExpenseType,
-    'claim-expense-type-create': SaveClaimExpenseType,
-    'claim-expense-type-edit': EditClaimExpenseType,
-    'submit-claim-request': SubmitClaimRequest,
+  'claim-event': ClaimEvent,
+  'claim-event-create': SaveClaimEvent,
+  'claim-event-edit': EditClaimEvent,
+  'claim-expense-types': ClaimExpenseType,
+  'claim-expense-type-create': SaveClaimExpenseType,
+  'claim-expense-type-edit': EditClaimExpenseType,
+  'submit-claim-request': SubmitClaimRequest,
 };
 //# sourceMappingURL=index.js.map

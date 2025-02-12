@@ -502,8 +502,6 @@ export default {
   },
 
   mounted() {
-    console.clear();
-    console.log('this', this);
     this.emitter.on('approve', (taskGroup: TaskGroup) => {
       this.confirmationMessage = MESSAGE_APPROVE;
       this.$refs.deleteDialog.showDialog().then((confirmation: string) => {

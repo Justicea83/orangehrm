@@ -17,6 +17,6 @@
  */
 import ViewDashboard from '@/orangehrmDashboardPlugin/pages/ViewDashboard.vue';
 export default {
-    'view-dashboard': ViewDashboard,
+  'view-dashboard': ViewDashboard,
 };
 //# sourceMappingURL=index.js.map

@@ -17,6 +17,6 @@
  */
 import ViewBuzz from '@/orangehrmBuzzPlugin/pages/ViewBuzz.vue';
 export default {
-    'view-buzz': ViewBuzz,
+  'view-buzz': ViewBuzz,
 };
 //# sourceMappingURL=index.js.map

@@ -24,13 +24,13 @@ import AttendanceSummaryReport from './pages/AttendanceSummaryReport.vue';
 import ViewEmployeeAttendanceSummary from './pages/ViewEmployeeAttendanceSummary.vue';
 import ViewEmployeeAttendanceDetailed from './pages/ViewEmployeeAttendanceDetailed.vue';
 export default {
-    'attendance-punch-in': PunchIn,
-    'attendance-punch-out': PunchOut,
-    'edit-attendance': EditAttendance,
-    'view-my-attendance': ViewMyAttendance,
-    'attendance-configuration': AttendanceConfiguration,
-    'attendance-summary-report': AttendanceSummaryReport,
-    'view-employee-attendance-summary': ViewEmployeeAttendanceSummary,
-    'view-employee-attendance-detailed': ViewEmployeeAttendanceDetailed,
+  'attendance-punch-in': PunchIn,
+  'attendance-punch-out': PunchOut,
+  'edit-attendance': EditAttendance,
+  'view-my-attendance': ViewMyAttendance,
+  'attendance-configuration': AttendanceConfiguration,
+  'attendance-summary-report': AttendanceSummaryReport,
+  'view-employee-attendance-summary': ViewEmployeeAttendanceSummary,
+  'view-employee-attendance-detailed': ViewEmployeeAttendanceDetailed,
 };
 //# sourceMappingURL=index.js.map

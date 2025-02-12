@@ -15,16 +15,16 @@
  * if not, write to the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor,
  * Boston, MA  02110-1301, USA
  */
-import { urlFor } from '@ohrm/core/util/helper/url';
+import {urlFor} from '@ohrm/core/util/helper/url';
 /**
  * @param path
  * @param params
  * @param query
  */
 export const navigate = function (path, params = {}, query = {}) {
-    window.location.href = urlFor(path, params, query);
+  window.location.href = urlFor(path, params, query);
 };
 export const reloadPage = function () {
-    window.location.reload();
+  window.location.reload();
 };
 //# sourceMappingURL=navigation.js.map

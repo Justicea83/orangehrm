@@ -17,6 +17,6 @@
  */
 import SystemCheckScreen from './pages/SystemCheckScreen.vue';
 export default {
-    'system-check': SystemCheckScreen,
+  'system-check': SystemCheckScreen,
 };
 //# sourceMappingURL=index.js.map

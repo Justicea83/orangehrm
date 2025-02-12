@@ -16,57 +16,57 @@
  * Boston, MA  02110-1301, USA
  */
 export const viewIcon = {
-    component: 'oxd-icon-button',
-    props: {
-        name: 'eye-fill',
-        title: 'View',
-    },
+  component: 'oxd-icon-button',
+  props: {
+    name: 'eye-fill',
+    title: 'View',
+  },
 };
 export const editIcon = {
-    component: 'oxd-icon-button',
-    props: {
-        name: 'pencil-fill',
-        title: 'Edit',
-    },
+  component: 'oxd-icon-button',
+  props: {
+    name: 'pencil-fill',
+    title: 'Edit',
+  },
 };
 export const evaluateIcon = {
-    component: 'oxd-icon-button',
-    props: {
-        name: 'file-text-fill',
-        title: 'Evaluate',
-    },
+  component: 'oxd-icon-button',
+  props: {
+    name: 'file-text-fill',
+    title: 'Evaluate',
+  },
 };
 export const viewLabel = {
-    component: 'oxd-button',
-    props: {
-        label: 'View',
-        displayType: 'text',
-        size: 'medium',
-        style: {
-            'min-width': '120px',
-        },
+  component: 'oxd-button',
+  props: {
+    label: 'View',
+    displayType: 'text',
+    size: 'medium',
+    style: {
+      'min-width': '120px',
     },
+  },
 };
 export const editLabel = {
-    component: 'oxd-button',
-    props: {
-        label: 'Edit',
-        displayType: 'text',
-        size: 'medium',
-        style: {
-            'min-width': '120px',
-        },
+  component: 'oxd-button',
+  props: {
+    label: 'Edit',
+    displayType: 'text',
+    size: 'medium',
+    style: {
+      'min-width': '120px',
     },
+  },
 };
 export const evaluateLabel = {
-    component: 'oxd-button',
-    props: {
-        label: 'Evaluate',
-        displayType: 'text',
-        size: 'medium',
-        style: {
-            'min-width': '120px',
-        },
+  component: 'oxd-button',
+  props: {
+    label: 'Evaluate',
+    displayType: 'text',
+    size: 'medium',
+    style: {
+      'min-width': '120px',
     },
+  },
 };
 //# sourceMappingURL=useReviewActions.js.map

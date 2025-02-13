@@ -1,16 +1,21 @@
 <template>
-  <div v-if="taskGroup.submittedAt" class="flex">
-    <span v-tooltip="'Approve Assignment'">
-      <oxd-icon-button
-        class="mr-2"
-        name="check"
-        display-type="success"
-        @click="onApprove"
-      />
-    </span>
+  <template v-if="taskGroup.status === 'approved'">
+    <span></span>
+  </template>
+  <template v-else>
+    <div v-if="taskGroup.submittedAt" class="flex">
+      <span v-tooltip="'Approve Assignment'">
+        <oxd-icon-button
+          class="mr-2"
+          name="check"
+          display-type="success"
+          @click="onApprove"
+        />
+      </span>
 
-    <oxd-icon-button name="x" display-type="danger" @click="onReject" />
-  </div>
+      <oxd-icon-button name="x" display-type="danger" @click="onReject" />
+    </div>
+  </template>
 </template>
 
 <script>
@@ -30,7 +35,6 @@ export default {
   emits: ['approve', 'reject'],
   methods: {
     onApprove() {
-      console.log('approve');
       this.emitter.emit('approve', this.taskGroup);
     },
     onReject() {

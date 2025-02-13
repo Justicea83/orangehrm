@@ -33,6 +33,7 @@
         :task-group-id="taskGroup.id"
         :completed="taskGroup.completed"
         :submitted-at="taskGroup.submittedAt"
+        @progress-changed="$emit('progressChanged', $event)"
       />
       <comment
         v-for="comment in comments"
@@ -107,7 +108,7 @@ export default {
       default: true,
     },
   },
-  emits: ['open-details', 'toggleActive'],
+  emits: ['open-details', 'toggleActive', 'progressChanged'],
   setup() {
     const http = new APIService(window.appGlobal.baseUrl, '');
     const {addComment, deleteComment, editComment} = useComments(http);

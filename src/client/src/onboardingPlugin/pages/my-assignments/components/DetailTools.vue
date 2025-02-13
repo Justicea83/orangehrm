@@ -53,9 +53,6 @@ export default {
         {
           title: MENU_COMPLETE,
         },
-        {
-          title: MENU_SUBMIT,
-        },
       ];
     },
   },

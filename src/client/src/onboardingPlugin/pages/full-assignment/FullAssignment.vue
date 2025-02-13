@@ -9,6 +9,7 @@
         :task-group="selectedTask"
         :class="{active: true}"
         :is-owner="isOwner"
+        @progress-changed="progressChanged()"
         @open-details="openAssignmentDetail"
         @toggle-active="toggleActive"
       >
@@ -20,7 +21,7 @@
         </template>
       </assignment>
     </div>
-    <div class="fixed top-15 right-3 h-screen w-1/4">
+    <div class="fixed mt-1 right-3 h-screen w-1/4">
       <assignment-detail
         v-if="selectedTask && showDetails"
         :is-owner="isOwner"
@@ -30,6 +31,12 @@
         @on-submit="onSubmit"
       />
     </div>
+    <delete-confirmation
+      ref="deleteDialog"
+      confirm-button-text="Yes, Submit"
+      :with-confirmation-icon="false"
+      :message="submitConfirmation"
+    ></delete-confirmation>
   </div>
 </template>
 
@@ -39,10 +46,12 @@ import Assignment from '@/onboardingPlugin/pages/my-assignments/components/Assig
 import AssignmentDetail from '@/onboardingPlugin/pages/my-assignments/components/AssignmentDetail';
 import TaskProgress from '@/onboardingPlugin/pages/task-groups/components/TaskProgress';
 import {ACTION_SUBMIT, ACTION_COMPLETE} from '../my-assignments/MyAssignments';
+import DeleteConfirmationDialog from '@/core/components/dialogs/DeleteConfirmationDialog.vue';
 
 export default {
   name: 'FullAssignment',
   components: {
+    'delete-confirmation': DeleteConfirmationDialog,
     TaskProgress,
     Assignment,
     AssignmentDetail,
@@ -74,6 +83,8 @@ export default {
     return {
       selectedTask: null,
       showDetails: true,
+      submitConfirmation:
+        "The will be submitted and can't be edited again. Are you sure you want to continue?",
     };
   },
   computed: {
@@ -91,6 +102,15 @@ export default {
     this.loadData();
   },
   methods: {
+    progressChanged(progress) {
+      if (progress) {
+        this.selectedTask = {
+          ...this.selectedTask,
+          completed: progress === 100,
+          progress: progress,
+        };
+      }
+    },
     toggleActive() {
       this.$nextTick(() => {
         const activeElement = this.$refs.list.querySelector('.active');
@@ -130,18 +150,14 @@ export default {
           },
         })
         .then(() => {
-          const tasks = this.tasks;
-          const taskIndex = tasks.findIndex(
-            (task) => task.id === this.selectedTask?.id,
-          );
-          tasks[taskIndex].completed = true;
-          tasks[taskIndex].taskGroups = tasks[taskIndex].taskGroups.map(
-            (task) => ({
-              ...task,
-              isCompleted: true,
+          this.selectedTask = {
+            ...this.selectedTask,
+            completed: true,
+            progress: 100,
+            taskGroups: this.selectedTask.taskGroups.map((group) => {
+              return {...group, isCompleted: true};
             }),
-          );
-          this.tasks = tasks;
+          };
           this.$toast.generalSuccess('Assignment completed successfully');
         });
     },
@@ -162,13 +178,10 @@ export default {
           },
         })
         .then(() => {
-          const tasks = this.tasks;
-          const taskIndex = tasks.findIndex(
-            (task) => task.id === this.selectedTask?.id,
-          );
-          tasks[taskIndex].submittedAt = new Date().toISOString();
-
-          this.tasks = tasks;
+          this.selectedTask = {
+            ...this.selectedTask,
+            submittedAt: new Date().toISOString(),
+          };
           this.$toast.generalSuccess('Assignment submitted successfully');
         });
     },

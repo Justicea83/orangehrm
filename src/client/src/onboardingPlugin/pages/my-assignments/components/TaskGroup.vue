@@ -76,7 +76,7 @@ export default {
       required: true,
     },
   },
-  emits: ['update:prop'],
+  emits: ['update:prop', 'progressChanged'],
   setup() {
     const http = new APIService(
       (window as any).appGlobal.baseUrl,
@@ -153,6 +153,7 @@ export default {
             totalTasks === 0
               ? 0
               : Math.round((completedTasks / totalTasks) * 100);
+          this.$emit('progressChanged', this.taskGroupModel.progress);
         });
     },
     formatDate(date?: string): string {

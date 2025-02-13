@@ -67,6 +67,7 @@ class AppSetupUtility
         '5.2' => \OrangeHRM\Installer\Migration\V5_2_0\Migration::class,
         '5.3' => \OrangeHRM\Installer\Migration\V5_3_0\Migration::class,
         '5.4' => \OrangeHRM\Installer\Migration\V5_4_0\Migration::class,
+        '5.5' => \OrangeHRM\Installer\Migration\V5_5_0\Migration::class,
     ];
 
     public const INSTALLATION_DB_TYPE_NEW = 'new';
@@ -493,12 +494,12 @@ class AppSetupUtility
         $isIn = false;
         $versions = [];
         foreach (self::MIGRATIONS_MAP as $version => $migration) {
-            if ($version == $toVersion) {
+            if ($version === $toVersion) {
                 $isIn = false;
                 $versions[] = $version;
             } elseif ($isIn) {
                 $versions[] = $version;
-            } elseif ($version == $fromVersion) {
+            } elseif ($version === $fromVersion) {
                 $isIn = true;
                 !$includeFromVersion ?: $versions[] = $version;
             }

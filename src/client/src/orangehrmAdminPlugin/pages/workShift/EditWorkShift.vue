@@ -34,6 +34,7 @@
                 v-model="workShift.name"
                 :label="$t('admin.shift_name')"
                 :rules="rules.name"
+                required
               />
             </oxd-grid-item>
           </oxd-grid>
@@ -142,8 +143,9 @@ export default {
       workShift: {...workShiftModel},
       rules: {
         name: [required, shouldNotExceedCharLength(50)],
-        fromTime: [validTimeFormat],
+        fromTime: [required, validTimeFormat],
         endTime: [
+          required,
           validTimeFormat,
           endTimeShouldBeAfterStartTime(
             () => this.workShift.startTime,

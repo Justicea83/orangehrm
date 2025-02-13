@@ -23,6 +23,7 @@ use OrangeHRM\Claim\Dto\ClaimAttachmentSearchFilterParams;
 use OrangeHRM\Claim\Dto\ClaimEventSearchFilterParams;
 use OrangeHRM\Claim\Dto\ClaimExpenseSearchFilterParams;
 use OrangeHRM\Claim\Dto\ClaimExpenseTypeSearchFilterParams;
+use OrangeHRM\Claim\Dto\ClaimRequestSearchFilterParams;
 use OrangeHRM\Claim\Dto\PartialClaimAttachment;
 use OrangeHRM\Core\Dao\BaseDao;
 use OrangeHRM\Entity\ClaimAttachment;
@@ -74,7 +75,7 @@ class ClaimDao extends BaseDao
             $q->andWhere('claimEvent.id = :id');
             $q->setParameter('id', $claimEventSearchFilterParams->getId());
         }
-        $q->andWhere('claimEvent.isDeleted = :isDeleted'); //TODO:
+        $q->andWhere('claimEvent.isDeleted = :isDeleted');
         $q->setParameter('isDeleted', false);
         return $this->getPaginator($q);
     }
@@ -453,5 +454,119 @@ class ClaimDao extends BaseDao
             ->setParameter('requestId', $requestId)
             ->setParameter('ids', $ids);
         $q->getQuery()->execute();
+    }
+
+    /**
+     * @param ClaimRequestSearchFilterParams $myClaimRequestSearchFilterParams
+     * @return array
+     */
+    public function getClaimRequestList(ClaimRequestSearchFilterParams $myClaimRequestSearchFilterParams): array
+    {
+        $qb = $this->getClaimRequestPaginator($myClaimRequestSearchFilterParams);
+        return $qb->getQuery()->execute();
+    }
+
+    /**
+     * @param ClaimRequestSearchFilterParams $myClaimRequestSearchFilterParams
+     * @return Paginator
+     */
+    protected function getClaimRequestPaginator(ClaimRequestSearchFilterParams $myClaimRequestSearchFilterParams): Paginator
+    {
+        $q = $this->createQueryBuilder(ClaimRequest::class, 'claimRequest');
+        $q->leftJoin('claimRequest.claimEvent', 'claimEvent');
+        $q->leftJoin('claimRequest.employee', 'employee');
+        $this->setSortingAndPaginationParams($q, $myClaimRequestSearchFilterParams);
+
+        if (!is_null($myClaimRequestSearchFilterParams->getEmpNumbers())) {
+            $q->andWhere($q->expr()->in('claimRequest.employee', ':empNumbers'))
+                ->setParameter('empNumbers', $myClaimRequestSearchFilterParams->getEmpNumbers());
+        }
+
+        if (!is_null($myClaimRequestSearchFilterParams->getReferenceId())) {
+            $q->andWhere($q->expr()->like('claimRequest.referenceId', ':referenceId'));
+            $q->setParameter('referenceId', '%' . $myClaimRequestSearchFilterParams->getReferenceId() . '%');
+        }
+
+        if (!is_null($myClaimRequestSearchFilterParams->getEventId())) {
+            $q->andWhere('claimRequest.claimEvent = :eventId');
+            $q->setParameter('eventId', $myClaimRequestSearchFilterParams->getEventId());
+        }
+
+        if (!is_null($myClaimRequestSearchFilterParams->getStatus())) {
+            $q->andWhere($q->expr()->like('claimRequest.status', ':status'));
+            $q->setParameter('status', '%' . $myClaimRequestSearchFilterParams->getStatus() . '%');
+        }
+
+        if (!is_null($myClaimRequestSearchFilterParams->getFromDate())) {
+            $q->andWhere($q->expr()->gte('claimRequest.submittedDate', ':fromDate'));
+            $q->setParameter('fromDate', $myClaimRequestSearchFilterParams->getFromDate());
+        }
+
+        if (!is_null($myClaimRequestSearchFilterParams->getToDate())) {
+            $q->andWhere($q->expr()->lte('claimRequest.submittedDate', ':toDate'));
+            $q->setParameter('toDate', $myClaimRequestSearchFilterParams->getToDate());
+        }
+
+        if ($myClaimRequestSearchFilterParams->getIncludeEmployees() === null ||
+            $myClaimRequestSearchFilterParams->getIncludeEmployees() ===
+            ClaimRequestSearchFilterParams::INCLUDE_EMPLOYEES_ONLY_CURRENT
+        ) {
+            $q->andWhere($q->expr()->isNull('employee.employeeTerminationRecord'));
+        } elseif (
+            $myClaimRequestSearchFilterParams->getIncludeEmployees() ===
+            ClaimRequestSearchFilterParams::INCLUDE_EMPLOYEES_ONLY_PAST
+        ) {
+            $q->andWhere($q->expr()->isNotNull('employee.employeeTerminationRecord'));
+        }
+
+        $q->andWhere('claimRequest.isDeleted = :isDeleted');
+        $q->setParameter('isDeleted', false);
+
+        return $this->getPaginator($q);
+    }
+
+    /**
+     * @param ClaimRequestSearchFilterParams $myClaimRequestSearchFilterParams
+     * @return int
+     */
+    public function getClaimRequestCount(ClaimRequestSearchFilterParams $myClaimRequestSearchFilterParams): int
+    {
+        return $this->getClaimRequestPaginator($myClaimRequestSearchFilterParams)->count();
+    }
+
+    /**
+     * @param int $requestId
+     * @param int $attachId
+     * @return ClaimAttachment|null
+     */
+    public function getClaimAttachmentFile(int $requestId, int $attachId): ?ClaimAttachment
+    {
+        $criteria = ['requestId' => $requestId, 'attachId' => $attachId];
+        return $this->getRepository(ClaimAttachment::class)->findOneBy($criteria);
+    }
+
+    /**
+     * @param int $eventId
+     * @return bool
+     */
+    public function isClaimEventUsed(int $eventId): bool
+    {
+        $qb = $this->createQueryBuilder(ClaimRequest::class, 'claimRequest');
+        $qb->andWhere('claimRequest.claimEvent = :eventId');
+        $qb->setParameter('eventId', $eventId);
+        return $this->getPaginator($qb)->count() > 0;
+    }
+
+    /**
+     * @param int $expenseTypeId
+     * @return bool
+     */
+    public function isExpenseTypeUsed(int $expenseTypeId): bool
+    {
+        $qb = $this->createQueryBuilder(ClaimExpense::class, 'claimExpense');
+        $qb->leftJoin('claimExpense.expenseType', 'expenseType');
+        $qb->andWhere('claimExpense.expenseType = :expenseTypeId');
+        $qb->setParameter('expenseTypeId', $expenseTypeId);
+        return $this->getPaginator($qb)->count() > 0;
     }
 }

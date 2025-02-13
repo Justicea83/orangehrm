@@ -36,10 +36,22 @@ class Migration extends AbstractMigration
     public function up(): void
     {
         $this->insertI18nGroups();
+        $groups = ['claim', 'general'];
         $this->getLangStringHelper()->deleteNonCustomizedLangStrings('claim');
-        $this->getLangStringHelper()->insertOrUpdateLangStrings('claim');
+        foreach ($groups as $group) {
+            $this->getLangStringHelper()->insertOrUpdateLangStrings($group);
+        }
 
         $this->updateLangStringVersion($this->getVersion());
+
+        $this->getLangHelper()->deleteLangStringByUnitId(
+            'this_page_is_being_developed',
+            $this->getLangHelper()->getGroupIdByName('general')
+        );
+        $this->getLangHelper()->deleteLangStringByUnitId(
+            'download_latest_release_with_all_features',
+            $this->getLangHelper()->getGroupIdByName('general')
+        );
 
         if (!$this->getSchemaHelper()->tableExists(['ohrm_claim_event'])) {
             $this->getSchemaHelper()->createTable('ohrm_claim_event')
@@ -120,7 +132,7 @@ class Migration extends AbstractMigration
                 'ohrm_user',
                 ['id'],
                 'requestByUser',
-                ['onDelete' => 'CASCADE']
+                ['onDelete' => 'SET NULL']
             );
             $this->getSchemaHelper()->addForeignKey('ohrm_claim_request', $foreignKeyConstraint1);
             $foreignKeyConstraint2 = new ForeignKeyConstraint(
@@ -128,7 +140,7 @@ class Migration extends AbstractMigration
                 'ohrm_claim_event',
                 ['id'],
                 'claimEventId',
-                ['onDelete' => 'RESTRICT']
+                ['onDelete' => 'SET NULL']
             );
             $this->getSchemaHelper()->addForeignKey('ohrm_claim_request', $foreignKeyConstraint2);
             $foreignKeyConstraint3 = new ForeignKeyConstraint(
@@ -136,7 +148,7 @@ class Migration extends AbstractMigration
                 'hs_hr_employee',
                 ['emp_number'],
                 'claim_Request_Employee_Number',
-                ['onDelete' => 'RESTRICT']
+                ['onDelete' => 'SET NULL']
             );
             $this->getSchemaHelper()->addForeignKey('ohrm_claim_request', $foreignKeyConstraint3);
         }
@@ -214,11 +226,13 @@ class Migration extends AbstractMigration
                         'module_id' => ':module_id',
                         'user_role_id' => ':user_role_id',
                         'action' => ':action',
+                        'priority' => ':priority',
                     ]
                 )
                 ->setParameter('module_id', $this->getDataGroupHelper()->getModuleIdByName('claim'))
                 ->setParameter('user_role_id', $this->getDataGroupHelper()->getUserRoleIdByName('Admin'))
-                ->setParameter('action', 'claim/viewEvents')
+                ->setParameter('action', 'claim/viewAssignClaim')
+                ->setParameter('priority', 20)
                 ->executeQuery();
 
             $this->getConnection()->createQueryBuilder()
@@ -228,11 +242,29 @@ class Migration extends AbstractMigration
                         'module_id' => ':module_id',
                         'user_role_id' => ':user_role_id',
                         'action' => ':action',
+                        'priority' => ':priority',
+                    ]
+                )
+                ->setParameter('module_id', $this->getDataGroupHelper()->getModuleIdByName('claim'))
+                ->setParameter('user_role_id', $this->getDataGroupHelper()->getUserRoleIdByName('Supervisor'))
+                ->setParameter('action', 'claim/viewAssignClaim')
+                ->setParameter('priority', 10)
+                ->executeQuery();
+
+            $this->getConnection()->createQueryBuilder()
+                ->insert('ohrm_module_default_page')
+                ->values(
+                    [
+                        'module_id' => ':module_id',
+                        'user_role_id' => ':user_role_id',
+                        'action' => ':action',
+                        'priority' => ':priority',
                     ]
                 )
                 ->setParameter('module_id', $this->getDataGroupHelper()->getModuleIdByName('claim'))
                 ->setParameter('user_role_id', $this->getDataGroupHelper()->getUserRoleIdByName('ESS'))
-                ->setParameter('action', 'claim/submitClaim') //TODO: change to myClaim
+                ->setParameter('action', 'claim/viewClaim')
+                ->setParameter('priority', 0)
                 ->executeQuery();
 
             $viewClaimModuleScreenId = $this->getConnection()
@@ -261,9 +293,17 @@ class Migration extends AbstractMigration
             $this->insertMenuItems('Expense Types', $expenseTypeScreenId, $claimConfigMenuItemId, 3, 200, 1, null);
             $submitClaimScreenId = $this->getScreenId('Submit Claim');
             $this->insertMenuItems('Submit Claim', $submitClaimScreenId, $claimMenuItemId, 2, 100, 1, null);
+            $myClaimsScreenId = $this->getScreenId('My Claims');
+            $this->insertMenuItems('My Claims', $myClaimsScreenId, $claimMenuItemId, 2, 100, 1, null);
+            $employeeClaimsScreenId = $this->getScreenId('Employee Claims');
+            $this->insertMenuItems('Employee Claims', $employeeClaimsScreenId, $claimMenuItemId, 2, 100, 1, null);
+            $assignClaimScreenId = $this->getScreenId('Assign Claim');
+            $this->insertMenuItems('Assign Claim', $assignClaimScreenId, $claimMenuItemId, 2, 100, 1, null);
         }
 
         $this->deleteClaimWorkflowStates();
+        $this->removeMarketplaceTables();
+        $this->updateI18nGroups();
 
         $this->insertWorkflowState(
             'INITIATED',
@@ -399,6 +439,7 @@ class Migration extends AbstractMigration
             'name' => [
                 'Notnull' => true,
                 'Type' => Type::getType(Types::STRING),
+                'Length' => 100
             ],
             'description' => [
                 'Type' => Type::getType(Types::STRING),
@@ -417,6 +458,7 @@ class Migration extends AbstractMigration
             'name' => [
                 'Notnull' => true,
                 'Type' => Type::getType(Types::STRING),
+                'Length' => 100
             ],
             'description' => [
                 'Length' => 1000
@@ -674,6 +716,24 @@ class Migration extends AbstractMigration
             ->delete('ohrm_workflow_state_machine')
             ->where('workflow = :workflow')
             ->setParameter('workflow', 'CLAIM')
+            ->executeQuery();
+    }
+
+    private function removeMarketplaceTables(): void
+    {
+        if ($this->getSchemaManager()->tablesExist('ohrm_marketplace_addon')) {
+            $this->getSchemaManager()->dropTable('ohrm_marketplace_addon');
+        }
+    }
+
+    private function updateI18nGroups(): void
+    {
+        $qb = $this->createQueryBuilder()
+            ->update('ohrm_i18n_lang_string', 'langString')
+            ->set('langString.group_id', ':groupId')
+            ->setParameter('groupId', $this->getLangHelper()->getGroupIdByName('general'));
+        $qb->andWhere($qb->expr()->in('langString.unit_id', ':unitIdToChangeGroup'))
+            ->setParameter('unitIdToChangeGroup', 'today')
             ->executeQuery();
     }
 }

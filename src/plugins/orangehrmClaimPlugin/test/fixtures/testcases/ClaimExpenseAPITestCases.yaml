@@ -17,10 +17,12 @@ Create:
       amount: 7000.0
       note: "sample note"
     data:
-      id: 5
+      id: 6
       expenseType:
         id: 1
         name: transport
+        isDeleted: false
+        status: true
       amount: 7000.0
       note: sample note
       date: "2023-02-20"
@@ -44,10 +46,12 @@ Create:
       amount: 7000.0
       note: "sample note"
     data:
-      id: 5
+      id: 6
       expenseType:
         id: 1
         name: transport
+        isDeleted: false
+        status: true
       amount: 7000.0
       note: sample note
       date: "2023-02-20"
@@ -113,11 +117,42 @@ Create:
       amount: 7000.0
       note: "sample note"
     data:
-      id: 5
+      id: 6
       expenseType:
         id: 1
         name: transport
+        isDeleted: false
+        status: true
       amount: 7000.0
+      note: sample note
+      date: "2023-02-20"
+    meta: [ ]
+
+  'Create - Claim Expense with maximum amount':
+    userId: 1
+    services:
+      claim.claim_service: OrangeHRM\Claim\Service\ClaimService
+      admin.user_service: \OrangeHRM\Admin\Service\UserService
+      pim.employee_service: \OrangeHRM\Pim\Service\EmployeeService
+      core.authorization.user_role_manager_helper: \OrangeHRM\Core\Authorization\Helper\UserRoleManagerHelper
+      core.config_service: \OrangeHRM\Core\Service\ConfigService
+    factories:
+      core.authorization.user_role_manager: [ '\OrangeHRM\Core\Authorization\Manager\UserRoleManagerFactory', 'getNewUserRoleManager' ]
+    attributes:
+      requestId: 1
+    body:
+      expenseTypeId: 1
+      date: "2023-02-20"
+      amount: 9999999999.99
+      note: "sample note"
+    data:
+      id: 6
+      expenseType:
+        id: 1
+        name: transport
+        isDeleted: false
+        status: true
+      amount: 9999999999.99
       note: sample note
       date: "2023-02-20"
     meta: [ ]
@@ -161,6 +196,48 @@ Create:
       note: "sample note"
     invalidOnly: [ amount ]
 
+  'Create - amount with 3 decimal points':
+    userId: 1
+    services:
+      claim.claim_service: OrangeHRM\Claim\Service\ClaimService
+      admin.user_service: \OrangeHRM\Admin\Service\UserService
+      pim.employee_service: \OrangeHRM\Pim\Service\EmployeeService
+      core.authorization.user_role_manager_helper: \OrangeHRM\Core\Authorization\Helper\UserRoleManagerHelper
+      core.config_service: \OrangeHRM\Core\Service\ConfigService
+    factories:
+      core.authorization.user_role_manager: [ '\OrangeHRM\Core\Authorization\Manager\UserRoleManagerFactory', 'getNewUserRoleManager' ]
+    attributes:
+      requestId: 1
+    body:
+      amount: 7000.899
+      expenseTypeId: 1
+      date: "2023-02-20"
+      note: "sample note"
+    exception:
+      class: '\OrangeHRM\Core\Api\V2\Exception\InvalidParamException'
+      message: 'Invalid Parameter'
+
+  'Create - amount with more than 10,000,000,000':
+    userId: 1
+    services:
+      claim.claim_service: OrangeHRM\Claim\Service\ClaimService
+      admin.user_service: \OrangeHRM\Admin\Service\UserService
+      pim.employee_service: \OrangeHRM\Pim\Service\EmployeeService
+      core.authorization.user_role_manager_helper: \OrangeHRM\Core\Authorization\Helper\UserRoleManagerHelper
+      core.config_service: \OrangeHRM\Core\Service\ConfigService
+    factories:
+      core.authorization.user_role_manager: [ '\OrangeHRM\Core\Authorization\Manager\UserRoleManagerFactory', 'getNewUserRoleManager' ]
+    attributes:
+      requestId: 1
+    body:
+      amount: 10000000001.0
+      expenseTypeId: 1
+      date: "2023-02-20"
+      note: "sample note"
+    exception:
+      class: '\OrangeHRM\Core\Api\V2\Exception\InvalidParamException'
+      message: 'Invalid Parameter'
+
   'Create - Without date':
     userId: 1
     services:
@@ -196,10 +273,12 @@ Create:
       date: "2023-02-20"
       amount: 7000.0
     data:
-      id: 5
+      id: 6
       expenseType:
         id: 1
         name: transport
+        isDeleted: false
+        status: true
       amount: 7000
       note: null
       date: "2023-02-20"
@@ -227,6 +306,8 @@ Create:
         expenseType:
           id: 1
           name: transport
+          isDeleted: false
+          status: true
         amount: 7000
         note: null
         date: "2023-02-20"
@@ -274,6 +355,27 @@ Create:
       class: '\OrangeHRM\Core\Api\V2\Exception\RecordNotFoundException'
       message: 'Record Not Found'
 
+  'Create - Claim Expense for deactivated expense type':
+    userId: 1
+    services:
+      claim.claim_service: OrangeHRM\Claim\Service\ClaimService
+      admin.user_service: \OrangeHRM\Admin\Service\UserService
+      pim.employee_service: \OrangeHRM\Pim\Service\EmployeeService
+      core.authorization.user_role_manager_helper: \OrangeHRM\Core\Authorization\Helper\UserRoleManagerHelper
+      core.config_service: \OrangeHRM\Core\Service\ConfigService
+    factories:
+      core.authorization.user_role_manager: [ '\OrangeHRM\Core\Authorization\Manager\UserRoleManagerFactory', 'getNewUserRoleManager' ]
+    attributes:
+      requestId: 1
+    body:
+      expenseTypeId: 3
+      date: "2023-02-20"
+      amount: 7000.0
+      note: "sample note"
+    exception:
+      class: '\OrangeHRM\Core\Api\V2\Exception\InvalidParamException'
+      message: 'Invalid Parameter'
+
 GetAll:
   'Get All - Claim Expense':
     userId: 1
@@ -292,7 +394,9 @@ GetAll:
         "id": 1,
         "expenseType": {
           "id": 1,
-          "name": "transport"
+          "name": "transport",
+          "isDeleted": false,
+          "status": true
         },
         "amount": 100,
         "note": "Travel expenses for business trip to New York",
@@ -302,7 +406,9 @@ GetAll:
         "id": 2,
         "expenseType": {
           "id": 2,
-          "name": "medical"
+          "name": "medical",
+          "isDeleted": false,
+          "status": true
         },
         "amount": 200,
         "note": "Marketing expenses for trade show",
@@ -346,6 +452,8 @@ GetOne:
       expenseType:
         id: 1
         name: transport
+        isDeleted: false
+        status: true
       amount: 100.0
       note: Travel expenses for business trip to New York
       date: "2022-12-01"
@@ -380,6 +488,23 @@ GetOne:
       class: '\OrangeHRM\Core\Api\V2\Exception\RecordNotFoundException'
       message: 'Record Not Found'
 
+  'Get One - Deleted Claim Expense':
+    userId: 1
+    services:
+      claim.claim_service: OrangeHRM\Claim\Service\ClaimService
+      admin.user_service: \OrangeHRM\Admin\Service\UserService
+      pim.employee_service: \OrangeHRM\Pim\Service\EmployeeService
+      core.authorization.user_role_manager_helper: \OrangeHRM\Core\Authorization\Helper\UserRoleManagerHelper
+      core.config_service: \OrangeHRM\Core\Service\ConfigService
+    factories:
+      core.authorization.user_role_manager: [ '\OrangeHRM\Core\Authorization\Manager\UserRoleManagerFactory', 'getNewUserRoleManager' ]
+    attributes:
+      requestId: 4
+      id: 5
+    exception:
+      class: '\OrangeHRM\Core\Api\V2\Exception\RecordNotFoundException'
+      message: 'Record Not Found'
+
 Update:
   'Update - Claim Expense':
     userId: 1
@@ -404,6 +529,8 @@ Update:
       expenseType:
         id: 2
         name: medical
+        isDeleted: false
+        status: true
       amount: 7000.0
       note: sample note
       date: "2023-02-20"
@@ -432,6 +559,8 @@ Update:
       expenseType:
         id: 2
         name: medical
+        isDeleted: false
+        status: true
       amount: 7000.0
       note: sample note
       date: "2023-02-20"
@@ -522,6 +651,8 @@ Update:
       expenseType:
         id: 2
         name: medical
+        isDeleted: false
+        status: true
       amount: 7000.0
       note: null
       date: "2023-02-20"
@@ -610,6 +741,8 @@ Update:
       expenseType:
         id: 2
         name: medical
+        isDeleted: false
+        status: true
       amount: 7000.0
       note: null
       date: "2023-02-20"
@@ -638,10 +771,56 @@ Update:
       expenseType:
         id: 2
         name: medical
+        isDeleted: false
+        status: true
       amount: 7000.0
       note: null
       date: "2023-02-20"
     meta: [ ]
+
+  'Update - with 3 decimal points':
+    userId: 1
+    services:
+      claim.claim_service: OrangeHRM\Claim\Service\ClaimService
+      admin.user_service: \OrangeHRM\Admin\Service\UserService
+      pim.employee_service: \OrangeHRM\Pim\Service\EmployeeService
+      core.authorization.user_role_manager_helper: \OrangeHRM\Core\Authorization\Helper\UserRoleManagerHelper
+      core.config_service: \OrangeHRM\Core\Service\ConfigService
+    factories:
+      core.authorization.user_role_manager: [ '\OrangeHRM\Core\Authorization\Manager\UserRoleManagerFactory', 'getNewUserRoleManager' ]
+    attributes:
+      requestId: 1
+      id: 1
+    body:
+      expenseTypeId: 2
+      date: "2023-02-20"
+      amount: 7000.877
+      note: ""
+    exception:
+      class: '\OrangeHRM\Core\Api\V2\Exception\InvalidParamException'
+      message: 'Invalid Parameter'
+
+  'Update Deleted Claim Expense':
+    userId: 1
+    services:
+      claim.claim_service: OrangeHRM\Claim\Service\ClaimService
+      admin.user_service: \OrangeHRM\Admin\Service\UserService
+      pim.employee_service: \OrangeHRM\Pim\Service\EmployeeService
+      core.authorization.user_role_manager_helper: \OrangeHRM\Core\Authorization\Helper\UserRoleManagerHelper
+      core.config_service: \OrangeHRM\Core\Service\ConfigService
+    factories:
+      core.authorization.user_role_manager: [ '\OrangeHRM\Core\Authorization\Manager\UserRoleManagerFactory', 'getNewUserRoleManager' ]
+    attributes:
+      requestId: 4
+      id: 5
+    body:
+      expenseTypeId: 2
+      date: "2023-02-20"
+      amount: 7000.0
+      note: "sample note"
+    exception:
+      class: '\OrangeHRM\Core\Api\V2\Exception\RecordNotFoundException'
+      message: 'Record Not Found'
 
 Delete:
   'Delete - Claim Expense':

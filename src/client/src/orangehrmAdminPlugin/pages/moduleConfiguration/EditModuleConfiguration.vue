@@ -96,6 +96,12 @@
               </oxd-text>
               <oxd-switch-input v-model="modules.payroll" />
             </div>
+            <div class="orangehrm-module-field-row">
+              <oxd-text tag="p" class="orangehrm-module-field-label">
+                {{ $t('claim.claim_module') }}
+              </oxd-text>
+              <oxd-switch-input v-model="modules.claim" />
+            </div>
           </oxd-grid>
         </oxd-form-row>
 
@@ -127,6 +133,7 @@ const modulesModel = {
   payroll: false,
   onboarding: false,
   offboarding: false,
+  claim: false,
 };
 
 export default {
@@ -166,6 +173,7 @@ export default {
         this.modules.payroll = data.payroll;
         this.modules.onboarding = data.onboarding;
         this.modules.offboarding = data.offboarding;
+        this.modules.claim = data.claim;
       })
       .finally(() => {
         this.isLoading = false;
@@ -184,6 +192,7 @@ export default {
         maintenance: this.modules.maintenance,
         mobile: this.modules.mobile,
         directory: this.modules.directory,
+        claim: this.modules.claim,
       };
       this.http
         .request({

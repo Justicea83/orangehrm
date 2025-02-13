@@ -68,7 +68,7 @@ jobs:
 
       - name: Build and push images with Docker Compose
         run: |
-          docker compose -f docker-compose.prod.yml build
+          docker compose -f docker-compose.prod.yml build --no-cache
           docker compose -f docker-compose.prod.yml push
 
       - name: Deploy to VM

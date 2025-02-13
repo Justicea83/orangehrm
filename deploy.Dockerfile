@@ -63,7 +63,7 @@ RUN cd /var/www/src/ && composer install
 # Ensure the session directory exists and has correct permissions
 RUN mkdir -p /var/lib/php/sessions \
     && chown -R www-data:www-data /var/lib/php/sessions \
-    && chmod -R 770 /var/lib/php/sessions
+    && chmod -R 775 /var/lib/php/sessions
 
 RUN mkdir -p /var/www/src/log \
     && chown -R www-data:www-data /var/www/src/log \

@@ -26,7 +26,7 @@ use OrangeHRM\Entity\Decorator\DecoratorTrait;
 
 /**
  * @method ClaimAttachmentDecorator getDecorator()
- * @ORM\Table(name="ohrm_claim_attachment")
+ * @ORM\Table(name="claim_attachments")
  * @ORM\Entity
  */
 class ClaimAttachment

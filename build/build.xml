@@ -22,7 +22,7 @@
 -->
 <project name="OrangeHRM" basedir="." default="dist">
 
-  <property name="version" value="5.4"/>
+  <property name="version" value="5.5"/>
   <property name="package.name" value="orangehrm-${version}"/>
   <resolvepath propertyName="project.dir" file=".."/>
   <resolvepath propertyName="dist.dir" file="dist"/>
@@ -68,9 +68,6 @@
         <exclude name="src/test/**"/>
         <exclude name="src/plugins/**/test/**"/>
 
-        <exclude name="installer/Migration/V5_5_0/**"/>
-        <exclude name="src/plugins/orangehrmClaimPlugin/**"/>
-        <exclude name="src/client/src/orangehrmClaimPlugin/**"/>
         <exclude name="src/plugins/orangehrmAuthenticationPlugin/lib/**"/>
         <exclude name="src/plugins/orangehrmCoreOAuthPlugin/lib/**"/>
         <exclude name="src/plugins/orangehrmOpenidAuthenticationPlugin/**"/>

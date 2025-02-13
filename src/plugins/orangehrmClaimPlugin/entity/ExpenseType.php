@@ -46,7 +46,7 @@ class ExpenseType extends TenantAware
     /**
      * @var string
      *
-     * @ORM\Column(name="name", type="text", nullable=false, length=100)
+     * @ORM\Column(name="name", type="string", nullable=false, length=100)
      */
     private string $name;
 

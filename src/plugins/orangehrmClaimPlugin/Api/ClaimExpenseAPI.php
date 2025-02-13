@@ -68,6 +68,7 @@ class ClaimExpenseAPI extends Endpoint implements CrudEndpoint
     public const PARAMETER_REQUEST_ID = 'requestId';
     public const NOTE_MAX_LENGTH = 1000;
     public const PARAMETER_TOTAL_AMOUNT = 'totalAmount';
+    private const AMOUNT_VALIDATOR = '/^\d+(\.\d{1,2})?$/';
 
     /**
      * @OA\Get(
@@ -188,7 +189,7 @@ class ClaimExpenseAPI extends Endpoint implements CrudEndpoint
     /**
      * @param ClaimExpense $claimExpense
      */
-    public function setClaimExpense(ClaimExpense $claimExpense): void
+    public function setClaimExpense(ClaimExpense $claimExpense, bool $isEdit = false): void
     {
         $this->beginTransaction();
         try {
@@ -205,21 +206,30 @@ class ClaimExpenseAPI extends Endpoint implements CrudEndpoint
                 RequestParams::PARAM_TYPE_BODY,
                 self::PARAMETER_EXPENSE_TYPE_ID
             );
-            $expenseType = $this->getClaimService()
-                ->getClaimDao()
-                ->getExpenseTypeById($expenseTypeId);
-            if (!$expenseType instanceof ExpenseType) {
-                throw $this->getInvalidParamException(self::PARAMETER_EXPENSE_TYPE_ID);
+
+            if (!$isEdit || $expenseTypeId !== $claimExpense->getExpenseType()->getId()) {
+                $expenseType = $this->getClaimService()
+                    ->getClaimDao()
+                    ->getExpenseTypeById($expenseTypeId);
+
+                if (!$expenseType instanceof ExpenseType || !$expenseType->getStatus()) {
+                    throw $this->getInvalidParamException(self::PARAMETER_EXPENSE_TYPE_ID);
+                }
+
+                $claimExpense->getDecorator()->setExpenseTypeByExpenseTypeId($expenseTypeId);
             }
-            $claimExpense->getDecorator()->setExpenseTypeByExpenseTypeId($expenseTypeId);
+
             $claimExpense->setDate(
                 $this->getRequestParams()
                     ->getDateTime(RequestParams::PARAM_TYPE_BODY, self::PARAMETER_DATE)
             );
-            $claimExpense->setAmount(
-                $this->getRequestParams()
-                    ->getFloat(RequestParams::PARAM_TYPE_BODY, self::PARAMETER_AMOUNT)
-            );
+
+            $amount = $this->getRequestParams()->getFloat(RequestParams::PARAM_TYPE_BODY, self::PARAMETER_AMOUNT);
+            if (!preg_match(self::AMOUNT_VALIDATOR, $amount)) {
+                throw $this->getInvalidParamException(self::PARAMETER_AMOUNT);
+            }
+            $claimExpense->setAmount($amount);
+
             $claimExpense->setNote(
                 $this->getRequestParams()
                     ->getStringOrNull(RequestParams::PARAM_TYPE_BODY, self::PARAMETER_NOTE)
@@ -253,8 +263,8 @@ class ClaimExpenseAPI extends Endpoint implements CrudEndpoint
             ),
             new ParamRule(
                 self::PARAMETER_AMOUNT,
-                new Rule(Rules::FLOAT_TYPE), //TODO:: handle decimal points
-                new Rule(Rules::MIN, [0])
+                new Rule(Rules::POSITIVE),
+                new Rule(Rules::BETWEEN, [0, 9999999999.99])
             ),
             new ParamRule(
                 self::PARAMETER_DATE,
@@ -430,7 +440,7 @@ class ClaimExpenseAPI extends Endpoint implements CrudEndpoint
             ->getClaimDao()
             ->getClaimRequestExpense($requestId, $claimExpenseId);
         $this->throwRecordNotFoundExceptionIfNotExist($claimExpense, ClaimExpense::class);
-        $this->setClaimExpense($claimExpense);
+        $this->setClaimExpense($claimExpense, true);
         return new EndpointResourceResult(ClaimExpenseModel::class, $claimExpense);
     }
 
@@ -454,8 +464,7 @@ class ClaimExpenseAPI extends Endpoint implements CrudEndpoint
             ),
             new ParamRule(
                 self::PARAMETER_AMOUNT,
-                new Rule(Rules::FLOAT_TYPE),
-                new Rule(Rules::MIN, [0])
+                new Rule(Rules::BETWEEN, [0, 9999999999.99])
             ),
             new ParamRule(
                 self::PARAMETER_DATE,

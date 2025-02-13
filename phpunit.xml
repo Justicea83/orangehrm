@@ -72,8 +72,14 @@
     <testsuite name="Buzz">
       <directory>src/plugins/orangehrmBuzzPlugin/test</directory>
     </testsuite>
+    <testsuite name="Claim">
+      <directory>src/plugins/orangehrmClaimPlugin/test</directory>
+    </testsuite>
     <testsuite name="Help">
       <directory>src/plugins/orangehrmHelpPlugin/test</directory>
+    </testsuite>
+    <testsuite name="Mobile">
+      <directory>src/plugins/orangehrmMobilePlugin/test</directory>
     </testsuite>
   </testsuites>
 

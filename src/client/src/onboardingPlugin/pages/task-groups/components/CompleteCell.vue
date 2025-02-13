@@ -1,11 +1,11 @@
 <template>
   <h3
     :class="{
-      'text-red-400': !isCompleted,
-      'text-green-400': isCompleted,
+      'text-red-400': !isComplete,
+      'text-green-400': isComplete,
     }"
   >
-    {{ isCompleted ? 'Yes' : 'No' }}
+    {{ isComplete ? 'Yes' : 'No' }}
   </h3>
 </template>
 
@@ -13,7 +13,7 @@
 export default {
   name: 'CompleteCell',
   props: {
-    isCompleted: {
+    isComplete: {
       type: Boolean,
       required: true,
     },

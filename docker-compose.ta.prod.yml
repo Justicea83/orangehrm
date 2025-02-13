@@ -2,6 +2,8 @@ services:
   taskflow-hr-app:
     container_name: taskflow-hr-app
     image: ghcr.io/justicea83/orangehrm:latest
+    volumes:
+      - php-sessions:/var/lib/php/sessions
     expose:
       - "9000"
 
@@ -12,3 +14,7 @@ services:
       - taskflow-hr-app
     ports:
       - "6202:80"
+
+volumes:
+  php-sessions:
+    driver: local

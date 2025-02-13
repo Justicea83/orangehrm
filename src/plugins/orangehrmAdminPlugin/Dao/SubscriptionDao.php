@@ -34,4 +34,30 @@ class SubscriptionDao extends BaseDao
 
         return $qb->getQuery()->getOneOrNullResult();
     }
+
+    public function getActiveSubscriptionWithOrgId(int $orgId): ?Subscription
+    {
+        $qb = $this->getRepository(Subscription::class)->createQueryBuilder('s');
+
+        $qb->where(
+            $qb->expr()->eq('s.orgId', ':orgId')
+        )
+            ->andWhere(
+                $qb->expr()->orX(
+                    $qb->expr()->andX(
+                        $qb->expr()->isNotNull('s.currentPeriodEnd'),
+                        $qb->expr()->gt('s.currentPeriodEnd', ':now')
+                    ),
+                    $qb->expr()->andX(
+                        $qb->expr()->isNull('s.currentPeriodEnd'),
+                        $qb->expr()->eq('s.status', ':status')
+                    )
+                )
+            )
+            ->setParameter('orgId', $orgId)
+            ->setParameter('status', 'active')
+            ->setParameter('now', new DateTime());
+
+        return $qb->getQuery()->getOneOrNullResult();
+    }
 }

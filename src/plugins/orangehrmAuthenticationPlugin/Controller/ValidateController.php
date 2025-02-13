@@ -128,7 +128,7 @@ class ValidateController extends AbstractController implements PublicControllerI
                 return new RedirectResponse($loginUrl);
             }
 
-            $subscription = $this->getSubscriptionService()->getActiveSubscription();
+            $subscription = $this->getSubscriptionService()->getActiveSubscriptionWithOrgId($organization->getId());
             if(!$subscription) {
                 $session->invalidate();
                 $session->getFlashBag()->add(AuthUser::FLASH_LOGIN_ERROR, [

@@ -18,6 +18,11 @@ class SubscriptionService
         return $this->getSubscriptionDao()->getActiveSubscription();
     }
 
+    public function getActiveSubscriptionWithOrgId(int $orgId): ?Subscription
+    {
+        return $this->getSubscriptionDao()->getActiveSubscriptionWithOrgId($orgId);
+    }
+
     public function getSubscriptionDao(): SubscriptionDao
     {
         if (!($this->subscriptionDao instanceof SubscriptionDao)) {

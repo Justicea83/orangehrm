@@ -2,6 +2,11 @@ FROM php:8.2-fpm
 
 COPY docker/php/php82/config/php.ini /usr/local/etc/php/
 
+# Ensure the session directory exists and has correct permissions
+RUN mkdir -p /var/lib/php/sessions \
+    && chown -R www-data:www-data /var/lib/php/sessions \
+    && chmod -R 770 /var/lib/php/sessions
+
 RUN apt-get update && apt-get install -y \
         apt-transport-https \
 		libfreetype6-dev \

@@ -52,6 +52,11 @@ abstract class AbstractZkTecoReport
         // Retrieve token from cache or generate a new one
         $token = $this->getCachedToken($organization);
 
+        if (!$token) {
+            throw new \RuntimeException('Failed to retrieve a valid token.');
+        }
+        $this->getLogger()->error("New ZKTeco Token: " . $token);
+
         // Log the request.
         $this->getLogger()->info('ZKTeco Request', [
             'endpoint' => $endpoint,

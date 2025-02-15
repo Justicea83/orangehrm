@@ -1,4 +1,16 @@
 <template>
+  <div v-if="!loading && tasks.length === 0" class="oxd-table-filter">
+    <div class="oxd-table-filter-header">
+      <div class="oxd-table-filter-header-title">
+        <oxd-text
+          class="oxd-table-filter-title cursor-pointer text-center"
+          tag="h5"
+        >
+          No Tasks Assigned to you.
+        </oxd-text>
+      </div>
+    </div>
+  </div>
   <div class="flex relative h-full">
     <div
       ref="list"
@@ -20,7 +32,7 @@
         </template>
       </assignment>
     </div>
-    <div class="fixed top-15 right-3 h-screen w-1/4">
+    <div class="fixed top-[8.4rem] right-3 h-screen w-1/4">
       <assignment-detail
         v-if="selectedTask && showDetails"
         :task-group="selectedTask"
@@ -44,6 +56,7 @@ import Assignment from '@/onboardingPlugin/pages/my-assignments/components/Assig
 import AssignmentDetail from '@/onboardingPlugin/pages/my-assignments/components/AssignmentDetail';
 import DeleteConfirmationDialog from '@/core/components/dialogs/DeleteConfirmationDialog';
 import TaskProgress from '@/onboardingPlugin/pages/task-groups/components/TaskProgress';
+import {OxdText} from '@ohrm/oxd';
 
 export const ACTION_COMPLETE = 'complete_assignment';
 export const ACTION_SUBMIT = 'submit';
@@ -51,6 +64,7 @@ export const ACTION_SUBMIT = 'submit';
 export default {
   name: 'MyAssignments',
   components: {
+    OxdText,
     TaskProgress,
     Assignment,
     AssignmentDetail,
@@ -77,6 +91,7 @@ export default {
       tasks: [],
       selectedTask: null,
       showDetails: true,
+      loading: false,
       submitConfirmation:
         "The will be submitted and can't be edited again. Are you sure you want to continue?",
     };
@@ -113,15 +128,21 @@ export default {
       this.showDetails = true;
     },
     loadData() {
-      this.http.getAll().then((results) => {
-        const {meta, data} = results.data;
-        this.meta = meta;
-        this.tasks = data.map((task, index) => ({
-          ...task,
-          isActive: index === 0,
-        }));
-        this.selectedTask = data[0];
-      });
+      this.loading = true;
+      this.http
+        .getAll()
+        .then((results) => {
+          const {meta, data} = results.data;
+          this.meta = meta;
+          this.tasks = data.map((task, index) => ({
+            ...task,
+            isActive: index === 0,
+          }));
+          this.selectedTask = data[0];
+        })
+        .finally(() => {
+          this.loading = false;
+        });
     },
     allTasksComplete() {
       return this.selectedTask.taskGroups.every((task) => task.isCompleted);

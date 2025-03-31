@@ -44,14 +44,12 @@ class SubscriptionSubscriber extends AbstractEventSubscriber
     {
         try {
             if ($event->isMainRequest()) {
-                $subscription = $this->getSubscriptionService()->getActiveSubscription();
+                $subscription = $this->getSubscriptionService()->getActiveSubscription($this->getAuthUser()->getUserId());
 
                 if (!$subscription) {
                     /** @var UrlGenerator $urlGenerator */
                     $urlGenerator = $this->getContainer()->get(Services::URL_GENERATOR);
                     $loginUrl = $urlGenerator->generate('auth_login', [], UrlGenerator::ABSOLUTE_URL);
-
-                    $request = $this->getCurrentRequest();
 
                     /** @var Session $session */
                     $session = $this->getContainer()->get(Services::SESSION);

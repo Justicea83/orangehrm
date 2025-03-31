@@ -18,6 +18,9 @@ services:
     environment:
       #- PMA_ARBITRARY=1
       - PMA_HOST=mariadb
+      - UPLOAD_LIMIT=64M
+      - POST_MAX_SIZE=64M
+      - MEMORY_LIMIT=128M
     container_name: phpmyadmin
 
   mariadb:

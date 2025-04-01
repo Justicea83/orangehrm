@@ -15,8 +15,8 @@ class SubscriptionService
 
     protected const WHITELIST_EMAILS = [
         'justice+starsteels@crossjobs.co',
-        'johnmaxwelljeon@gmail.com',
-        'dadzieemmanuel94@gmail.com',
+        //'johnmaxwelljeon@gmail.com',
+        //'dadzieemmanuel94@gmail.com',
     ];
 
 
